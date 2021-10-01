@@ -77,7 +77,11 @@ class NavBar extends Component {
                 }
             });
         }
-        window.addEventListener('keplr_keystorechange', this.handleChain);
+        window.addEventListener('keplr_keystorechange', () => {
+            if (localStorage.getItem('of_co_address') || this.props.address) {
+                this.handleChain();
+            }
+        });
     }
 
     componentDidUpdate (pp, ps, ss) {

@@ -11,6 +11,7 @@ import { commaSeparator } from '../../utils/numberFormats';
 import ValidatorName from './ValidatorName';
 import { config } from '../../config';
 import ConnectButton from '../NavBar/ConnectButton';
+import classNames from 'classnames';
 
 class Table extends Component {
     render () {
@@ -56,8 +57,14 @@ class Table extends Component {
             options: {
                 sort: false,
                 customBodyRender: (value) => (
-                    <div className="status" title={value}>
-                        {value}
+                    <div
+                        className={classNames('status', value.jailed ? 'red_status' : '')}
+                        title={value.status === 1 ? 'unbonding'
+                            : value.status === 2 ? 'unbonded'
+                                : value.status === 3 ? 'active' : ''}>
+                        {value.status === 1 ? 'unbonding'
+                            : value.status === 2 ? 'unbonded'
+                                : value.status === 3 ? 'active' : ''}
                     </div>
                 ),
             },
@@ -128,9 +135,7 @@ class Table extends Component {
             ? dataToMap.map((item) =>
                 [
                     item,
-                    item.status === 1 ? 'unbonding'
-                        : item.status === 2 ? 'unbonded'
-                            : item.status === 3 ? 'active' : '',
+                    item,
                     (Number(item.tokens) / 1000000).toFixed(1),
                     item.commission && item.commission.commission_rates &&
                     item.commission.commission_rates.rate
