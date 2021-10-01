@@ -20,7 +20,9 @@ Currently, the aim of inSync is to be the default/defacto interface when bootstr
   ```
 
  2. update chain config
+  
   `NOTE:` below is the chain config for omniflix testnet
+ 
  `src/config.js`
  ```js
  export const config = {
