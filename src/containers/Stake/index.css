@@ -136,6 +136,11 @@
     padding: 6px 12px;
 }
 
+.table td .status.red_status {
+    border: 1px solid #ff0000;
+    color: #ff0000;
+}
+
 .table tfoot td {
     border-bottom: unset;
 }

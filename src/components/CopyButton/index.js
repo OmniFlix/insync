@@ -12,7 +12,7 @@ const CopyButton = (props) => {
     };
 
     const handleCopy = (e) => {
-        navigator.clipboard.writeText(props.data);
+        navigator && navigator.clipboard && navigator.clipboard.writeText(props.data);
 
         e.stopPropagation();
         setOpen(true);
