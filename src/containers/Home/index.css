@@ -1,0 +1,222 @@
+.home .card {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(100px);
+    border-radius: 10px;
+    padding: 80px 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.home .card h2 {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 130%;
+    margin: 0 0 10px;
+}
+
+.home .card .info {
+    font-family: 'Blinker', sans-serif;
+    font-size: 24px;
+    line-height: 130%;
+}
+
+.home .card.telegram_card {
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+.home .telegram_card .connect_button {
+    margin-top: 50px;
+}
+
+.connect_dialog form {
+    margin: 50px 0 20px;
+    text-align: center;
+}
+
+.connect_dialog form .text_field {
+    margin: 0;
+    width: 80%;
+}
+
+.otp_dialog .user_name {
+    margin: 60px 0;
+}
+
+.otp_dialog .user_name .image {
+    background: #0088CC;
+    border: 4px solid #FFFFFF;
+    box-sizing: border-box;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 130%;
+    color: #000000;
+    margin-bottom: 10px;
+}
+
+.otp_dialog .user_name > p {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 130%;
+    color: #FFFFFF;
+}
+
+.otp_dialog .otp .divider {
+    background: #515151;
+    width: 2px;
+    height: 20px;
+    margin: 0 40px 0 10px;
+}
+
+.otp_dialog .otp .copy_button {
+    border: 1px solid #515151;
+    box-sizing: border-box;
+    filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.25));
+    border-radius: 5px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    color: #515151;
+    padding: 0 20px;
+    width: max-content;
+    height: 38px;
+    text-transform: unset;
+    min-width: max-content;
+}
+
+.otp_dialog .otp .copy_button > span:first-child {
+    margin-bottom: 4px;
+}
+
+.otp_dialog .content .link,
+.otp .otp_info > span {
+    color: #0088CC;
+}
+
+.otp .copy_field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    margin-top: 50px;
+}
+
+.otp .copy_field > p {
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    line-height: 136%;
+    color: #FFFFFF;
+}
+
+.otp .otp_info {
+    font-family: 'Blinker', sans-serif;
+    font-size: 24px;
+    line-height: 130%;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+.otp .otp_number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.otp .otp_number > p {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 100%;
+    text-align: center;
+    color: #0088CC;
+    letter-spacing: 30px;
+}
+
+.home .no_data {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 130%;
+}
+
+.content_div .view_all {
+    background: #FFFFFF;
+    border-radius: 50px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 130%;
+    color: #000000;
+    padding: 8px 20px;
+}
+
+.content_div .view_all:hover {
+    background: #FFFFFF;
+}
+
+@media (max-width: 1441px) {
+    .home .card {
+        flex-direction: column;
+        text-align: center;
+        padding: 50px;
+    }
+}
+
+@media (max-width: 769px) {
+    .home .card {
+        padding: 50px 20px;
+    }
+}
+
+@media (max-width: 426px) {
+    .otp .copy_field {
+        flex-direction: column;
+    }
+
+    .otp .otp_info {
+        word-break: break-word;
+        text-align: center;
+    }
+
+    .otp_dialog .otp .copy_button {
+        margin: 10px 0 0;
+    }
+
+    .otp_dialog .user_name {
+        margin: 40px 0;
+    }
+
+    .otp .otp_number > p {
+        letter-spacing: 20px;
+    }
+
+    .otp .otp_number {
+        flex-direction: column;
+    }
+
+    .otp_dialog .otp .divider {
+        display: none;
+    }
+
+    .connect_dialog form .text_field {
+        width: 100%;
+    }
+}

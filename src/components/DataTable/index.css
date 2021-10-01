@@ -1,0 +1,75 @@
+.table table {
+    border-collapse: separate;
+    border-spacing: 0 5px;
+}
+
+.table div[aria-label = 'Table Toolbar'] {
+    display: none;
+}
+
+.table > div {
+    background: transparent;
+    box-shadow: unset;
+}
+
+.table thead th {
+    border-bottom: unset;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.table thead th > span {
+    justify-content: center;
+}
+
+.table th button,
+.table thead th > div {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+    margin: unset;
+}
+
+.table th button div {
+    color: #ffffff;
+}
+
+.table th button svg {
+    fill: #ffffff;
+}
+
+.table th button > span > div > div:last-child {
+    display: flex;
+    align-items: center;
+}
+
+.table tbody tr td {
+    background: #FFFFFF;
+    border: unset;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-color: #ffff;
+}
+
+.table tbody tr td > div {
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    color: #696969;
+}
+
+.table tbody tr td:first-child {
+    border-radius: 50px 0 0 50px;
+}
+
+.table tbody tr td:last-child {
+    border-radius: 0 50px 50px 0;
+}
+
+.table tbody tr td[colspan='6'] {
+    border-radius: 50px;
+}

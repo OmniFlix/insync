@@ -1,0 +1,18 @@
+.of_community .snackbar {
+    left: 10px;
+    transform: translatex(10px);
+}
+
+.snackbar > div {
+    background: #282525;
+}
+
+.snackbar .message {
+    display: flex;
+    align-items: center;
+}
+
+.snackbar .message > img {
+    width: 30px;
+    margin-right: 10px;
+}

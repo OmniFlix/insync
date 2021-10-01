@@ -1,0 +1,180 @@
+html, body, #root, .of_community, .main_content, .content_div {
+    min-height: 100% !important;
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    text-align: center;
+    background: linear-gradient(125.7deg, #0023DA 0.64%, #E4317C 59.22%, #EBFF00 114.62%);
+    color: #ffffff;
+    font-family: 'Blinker', sans-serif;
+}
+
+p {
+    margin: unset;
+}
+
+.padding {
+    padding: 26px 60px;
+}
+
+.of_community .connect_button {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 130%;
+    color: #000000;
+    background: #FFFFFF;
+    border-radius: 5px;
+    padding: 22px;
+    text-transform: unset;
+    box-shadow: unset;
+}
+
+.of_community .connect_button img {
+    width: 60px;
+    margin-right: 26px;
+}
+
+.hash_text {
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 130%;
+    color: #FFFFFF;
+    max-width: 200px;
+    display: flex;
+}
+
+.hash_text .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: -1px;
+}
+
+.scroll_bar {
+    overflow: auto;
+}
+
+.dialog > div:first-child {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(10px);
+}
+
+.dialog div[role='dialog'] {
+    width: 600px;
+    background: #000000;
+    backdrop-filter: blur(35px);
+    border-radius: 10px;
+    color: #ffff;
+}
+
+.dialog > div .content {
+    padding: 50px;
+}
+
+.dialog h2 {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 130%;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+.dialog .note {
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    line-height: 130%;
+    color: #FFFFFF;
+}
+
+.dialog .footer {
+    padding: 0 50px 50px;
+    justify-content: center;
+}
+
+.dialog .footer button {
+    background: #0088CC;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 25%);
+    border-radius: 5px;
+    font-family: 'Blinker', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+    text-transform: capitalize;
+    padding: 10px 30px;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+/* scroll bar */
+html::-webkit-scrollbar,
+.table > div > div::-webkit-scrollbar,
+.scroll_bar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+    border-radius: 4px;
+}
+
+html::-webkit-scrollbar-thumb,
+.table > div > div::-webkit-scrollbar-thumb,
+.scroll_bar::-webkit-scrollbar-thumb {
+    border: 0 solid #fff;
+    box-shadow: inset 0 0 0 20px rgba(0, 0, 0, .24);
+    border-radius: 20px;
+    background: #fff;
+}
+
+@media (max-width: 1025px) {
+    .padding {
+        padding: 20px 40px;
+    }
+
+    .of_community .card > button {
+        font-size: 28px;
+        padding: 14px;
+    }
+
+    .of_community .card > button img {
+        width: 50px;
+        margin-right: 20px;
+    }
+}
+
+@media (max-width: 769px) {
+    .padding {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 426px) {
+    .of_community .card > button {
+        font-size: 20px;
+    }
+
+    .of_community .card > button img {
+        width: 40px;
+        margin-right: 10px;
+    }
+
+    .dialog > div .content {
+        padding: 20px;
+    }
+
+    .dialog div[role='dialog'] {
+        margin: 10px;
+    }
+}

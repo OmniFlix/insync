@@ -1,0 +1,280 @@
+.nav_bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav_bar > img {
+    width: 140px;
+}
+
+.nav_bar .right_content {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.nav_bar .select_fields {
+    background: linear-gradient(
+            91.04deg, rgba(0, 0, 0, 0.3) -2.67%, rgba(0, 0, 0, 0.228) 48.93%, rgba(0, 0, 0, 0.3) 99.58%);
+    border-radius: 50px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.nav_bar .divider {
+    width: 2px;
+    height: 20px;
+    background: #fff;
+    display: inline-block;
+    margin: 0 20px;
+}
+
+.nav_bar .disconnect_button,
+table .disconnect_button {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(240, 231, 231, 0.5544) 100%);
+    box-shadow: 0 4px 20px rgb(0 0 0 / 25%);
+    color: #000000;
+    border-radius: 50px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    padding: 10px 20px;
+    text-transform: unset;
+}
+
+.nav_bar .disconnect_button:hover {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(240, 231, 231, 0.5544) 100%);
+}
+
+.nav_bar .disconnect_button .circular_progress {
+    color: #FFFFFF;
+    margin-left: 20px;
+}
+
+.nav_bar .select_fields .copy_button {
+    width: max-content;
+    background: rgba(255, 255, 255, 0.3);
+    color: #000000;
+    border-radius: 50px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    padding: 0 20px;
+    text-transform: unset;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.nav_bar .select_field > div > div {
+    font-size: 20px;
+}
+
+.nav_bar .select_fields .copy_button > span:first-child {
+    margin-bottom: 2px;
+}
+
+.nav_bar .horizontal_tabs {
+    width: unset;
+    background: unset;
+    box-shadow: unset;
+}
+
+.nav_bar .horizontal_tabs .tab {
+    background: linear-gradient(
+            91.04deg, rgba(0, 0, 0, 0.3) -2.67%, rgba(0, 0, 0, 0.228) 48.93%, rgba(0, 0, 0, 0.3) 99.58%);
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-family: 'Blinker', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 130%;
+    text-align: center;
+    text-transform: unset;
+    opacity: 1;
+    margin: 0 10px;
+    min-width: max-content;
+}
+
+.nav_bar .horizontal_tabs .tab:first-child {
+    margin-left: 0;
+}
+
+.nav_bar .horizontal_tabs .tab:hover,
+.nav_bar .horizontal_tabs .tab.active_tab {
+    background: #FFFFFF;
+    color: #000000;
+}
+
+.nav_bar .toggle_button,
+.nav_bar .right_content .back_button {
+    display: none;
+}
+
+.nav_bar .token_name {
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 130%;
+    color: #FFFFFF;
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1441px) {
+    .nav_bar .horizontal_tabs .tab,
+    .nav_bar .select_field > div > div {
+        font-size: 18px;
+    }
+
+    .of_community .select_fields .select_field:first-child {
+        max-width: unset;
+        min-width: unset;
+    }
+
+    .of_community .select_fields .select_field:nth-child(3) {
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 1120px) {
+    .nav_bar .horizontal_tabs {
+        margin-bottom: 10px;
+    }
+
+    .nav_bar.disconnected_nav .horizontal_tabs {
+        margin: unset;
+    }
+}
+
+@media (max-width: 769px) {
+    .nav_bar .right_content {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .nav_bar .disconnect_button {
+        margin-top: 10px;
+    }
+
+    .nav_bar .toggle_button {
+        display: unset;
+    }
+
+    .right_content .back_button {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        width: 100%;
+        justify-content: flex-end;
+        padding: 20px 48px 0 0;
+    }
+
+    .right_content .back_button .icon {
+        width: 40px;
+    }
+
+    .nav_bar .right_content.show .back_button {
+        display: flex;
+    }
+
+    .nav_bar .right_content {
+        display: none;
+        animation-duration: .5s;
+        animation-fill-mode: both;
+    }
+
+    .nav_bar .right_content.show {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        z-index: 1;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(14, 14, 14, 0.2);
+        backdrop-filter: blur(40px);
+        animation-name: fadeInDown;
+    }
+
+    .nav_bar .horizontal_tabs {
+        margin-top: 60px;
+    }
+
+    .nav_bar .horizontal_tabs .tabs_content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav_bar .horizontal_tabs .tab {
+        margin: 0 0 10px;
+        width: 200px;
+    }
+}
+
+@media (max-width: 426px) {
+    .nav_bar .select_fields {
+        width: 100%;
+        flex-direction: column;
+        background: unset;
+        border-radius: unset;
+        padding: 0;
+    }
+
+    .of_community .nav_bar .select_field {
+        background: linear-gradient(
+                91.04deg, rgba(0, 0, 0, 0.3) -2.67%, rgba(0, 0, 0, 0.228) 48.93%, rgba(0, 0, 0, 0.3) 99.58%);
+        border-radius: 50px;
+        margin: 5px 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 0 20px;
+    }
+
+    .of_community .select_fields .select_field:nth-child(3) {
+        max-width: 100%;
+    }
+
+    .of_community .nav_bar .select_field:last-child {
+        margin-bottom: 0;
+    }
+
+    .nav_bar .divider {
+        margin: 0 10px;
+        display: none;
+    }
+
+    .nav_bar .right_content,
+    .nav_bar .disconnect_button {
+        width: 100%;
+    }
+
+    .nav_bar .horizontal_tabs {
+        margin-bottom: unset;
+        width: 100%;
+    }
+
+    .nav_bar .horizontal_tabs .tab {
+        min-width: 100%;
+        width: 100%;
+    }
+}

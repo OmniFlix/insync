@@ -1,0 +1,156 @@
+.stake .heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.stake .heading .tabs {
+    display: flex;
+    align-items: center;
+}
+
+.stake .tabs > p {
+    cursor: pointer;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 130%;
+    color: #ffffff80;
+}
+
+.stake .tabs > p.active {
+    color: #ffffff;
+}
+
+.stake .tabs > span {
+    border: 1px solid #FFFFFF;
+    height: 30px;
+    margin: 0 20px;
+}
+
+.stake .heading .text_field {
+    margin: unset;
+    width: 400px;
+}
+
+.stake .table {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(100px);
+    border-radius: 10px;
+    margin-top: 16px;
+    padding: 40px 58px;
+}
+
+.stake .table .validator {
+    display: flex;
+    align-items: center;
+    width: 200px;
+}
+
+.table .validator .image {
+    background: #EDEDED;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    margin-right: 20px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*.stake .table tbody tr td {*/
+/*    cursor: pointer;*/
+/*}*/
+
+.stake .table .voting_power {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table .voting_power > span {
+    border: 1px solid #DCDCDC;
+    height: 20px;
+    margin: 0 10px;
+}
+
+.stake .table .actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.table .actions > button {
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 50px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    color: #000000;
+}
+
+.table .actions > button.delegate_button {
+    border-color: #00FF0A;
+}
+
+.table .actions > button.un_delegate {
+    border-color: #FF0000;
+}
+
+.table .actions > span {
+    border: 1px solid #D2D2D2;
+    margin: 0 10px;
+    height: 20px;
+}
+
+.table .no_tokens {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    color: #BDBDBD;
+}
+
+.table td .tokens {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    text-align: center;
+    color: #0085FF;
+}
+
+.table td .status {
+    border: 1px solid #02D70A;
+    box-sizing: border-box;
+    border-radius: 50px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    color: #02D70A;
+    padding: 6px 12px;
+}
+
+.table tfoot td {
+    border-bottom: unset;
+}
+
+@media (max-width: 1025px) {
+    .stake .table {
+        padding: 20px 30px;
+    }
+}
+
+@media (max-width: 769px) {
+    .stake .table {
+        background: unset;
+        padding: 0;
+        backdrop-filter: unset;
+        border-radius: unset;
+    }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "community",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:OmniFlix/community-ui.git",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@cosmjs/amino": "^0.25.4",
+    "@cosmjs/proto-signing": "^0.24.1",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.58",
+    "classnames": "^2.2.6",
+    "history": "^5.0.0",
+    "js-base64": "^3.6.0",
+    "latest": "^0.2.0",
+    "moment": "^2.29.1",
+    "mui-datatables": "^3.7.7",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "@cosmjs/launchpad": "^0.24.1",
+    "@cosmjs/stargate": "^0.25.1",
+    "axios": "^0.21.1",
+    "env-cmd": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.18.3",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

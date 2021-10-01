@@ -1,0 +1,2 @@
+export const SHOW_SIDE_BAR_SET = 'SHOW_SIDE_BAR_SET';
+export const HIDE_SIDE_BAR_SET = 'HIDE_SIDE_BAR_SET';

@@ -1,0 +1,103 @@
+.text_field {
+    width: 100%;
+    position: relative;
+}
+
+.text_field > div {
+    height: 2.573rem;
+    font-weight: 100;
+}
+
+.text_field > p {
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 30px;
+    position: absolute;
+    bottom: -20px;
+}
+
+.text_field input {
+    padding: .429rem 1rem;
+    height: 100%;
+    box-sizing: border-box;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #696969;
+}
+
+.text_field fieldset {
+    border-radius: 5px;
+    border-color: #696969;
+}
+
+.ex_network .text_field > div:hover fieldset,
+.dialog .text_field > div:hover fieldset {
+    border-color: #696969;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+}
+
+.text_field .error {
+    display: flex;
+    justify-content: space-between;
+}
+
+.text_field .error .icon {
+    width: 16px;
+    margin-bottom: 10px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    border: unset;
+    -webkit-text-fill-color: #76838f;
+    caret-color: #76838f;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/*search*/
+.search_text_field .search_icons {
+    display: flex;
+    align-items: center;
+}
+
+.search_text_field .search_icons .icon {
+    width: 24px;
+}
+
+.search_text_field .icon-menu {
+    width: 24px;
+    fill: #ffffff80;
+}
+
+.search_text_field .search_icons .line {
+    border: 1px solid #ffffff80;
+    width: 2px;
+    height: 20px;
+    margin-left: 6px;
+}
+
+.search_text_field > div {
+    background: linear-gradient(
+            91.04deg, rgba(0, 0, 0, 0.3) -2.67%, rgba(0, 0, 0, 0.228) 48.93%, rgba(0, 0, 0, 0.3) 99.58%);
+    border-radius: 50px;
+}
+
+.text_field.search_text_field fieldset {
+    border: unset;
+}
+
+.text_field.search_text_field input {
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    line-height: 130%;
+    color: #FFFFFF;
+    opacity: 0.5;
+}

@@ -1,0 +1,10 @@
+.copy_button {
+    margin-left: 20px;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+}
+
+.copy_button .icon {
+    width: 20px;
+}
