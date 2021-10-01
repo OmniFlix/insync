@@ -1,0 +1,166 @@
+.delegate_dialog .content {
+    text-align: left;
+}
+
+.delegate_dialog .content > h1 {
+    font-family: 'Blinker', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    color: #FFFFFF;
+    margin: unset;
+    margin-bottom: 65px;
+}
+
+.delegate_dialog .content > p {
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    line-height: 22px;
+    color: #696969;
+    margin-bottom: 6px;
+}
+
+.delegate_dialog .text_field {
+    margin: unset;
+}
+
+.delegate_dialog .select_field {
+    margin: unset;
+    margin-bottom: 30px;
+}
+
+.delegate_dialog .select_field > div > div {
+    border: 1px solid #696969;
+    box-sizing: border-box;
+    border-radius: 5px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    color: #696969;
+    display: flex;
+    align-items: center;
+}
+
+.delegate_dialog .select_field svg {
+    fill: #696969;
+    right: 20px;
+}
+
+.delegate_dialog .select_field .image,
+.delegate_dialog .validator_name .image {
+    background: #696969;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.delegate_dialog .text_field > div {
+    height: 50px;
+}
+
+.delegate_dialog .available_tokens {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.delegate_dialog .available_tokens .heading {
+    font-family: 'Blinker', sans-serif;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #696969;
+    margin-right: 20px;
+}
+
+.delegate_dialog .available_tokens .value {
+    font-family: 'Blinker', sans-serif;
+    font-size: 14px;
+    line-height: 17px;
+    color: #0085FF;
+    cursor: pointer;
+}
+
+.dialog.delegate_dialog .footer button {
+    text-transform: uppercase;
+}
+
+.dialog.delegate_dialog .footer button:disabled {
+    opacity: 0.5;
+}
+
+.delegate_dialog .validator_name {
+    border: 1px solid #696969;
+    box-sizing: border-box;
+    border-radius: 10px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    width: 400px;
+    margin: auto;
+    padding: 10px 20px;
+}
+
+.delegate_dialog .validator_name > p {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    text-align: left;
+    color: #696969;
+    flex: 1;
+    word-break: break-all;
+    margin-right: 10px;
+}
+
+.result .content .heading {
+    text-align: center;
+}
+
+.result .content h1 {
+    margin-bottom: 30px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.result .content .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.result .content .row > .hash_text {
+    width: 150px;
+}
+
+.result .content .row p,
+.result .content .row .hash_text {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #D3D3D3;
+}
+
+.result .hash_text.link {
+    cursor: pointer;
+}
+
+.result .hash_text.link:hover {
+    text-decoration: underline;
+}
+
+.result .content .row > .validator {
+    text-align: right;
+}

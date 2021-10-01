@@ -1,0 +1,97 @@
+.token_details {
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
+    margin-left: 20px;
+}
+
+.token_details .chip_info {
+    text-align: center;
+    margin-right: 40px;
+}
+
+.token_details .chip_info:last-child {
+    margin-right: unset;
+}
+
+.token_details .chip {
+    background: #FFFFFF;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    margin: 10px 0;
+}
+
+.token_details .chip > img {
+    margin-right: 20px;
+}
+
+.token_details .chip p {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 130%;
+    color: #000000;
+    width: max-content;
+}
+
+.token_details .chip_info > p {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    width: max-content;
+    margin: auto;
+}
+
+.token_details .outline_button {
+    border: 1px solid #FFFFFF;
+    box-sizing: border-box;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    text-align: center;
+    color: #FFFFFF;
+    border-radius: 100px;
+}
+
+.token_details .buttons_div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.token_details .buttons_div > span {
+    height: 20px;
+    border: .5px solid #FFFFFF;
+    margin: 0 10px;
+}
+
+@media (max-width: 1441px) {
+    .token_details {
+        margin: 40px 0 0;
+        width: 100%;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .token_details .chip_info {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 426px) {
+    .token_details {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .token_details .chip_info {
+        margin: 0 0 20px;
+        width: 100%;
+    }
+}

@@ -1,0 +1,368 @@
+.proposal_dialog {
+    height: 100%;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.proposal_dialog .content {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(100px);
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    padding: 80px;
+    position: relative;
+}
+
+.proposal_dialog .content .close_button {
+    position: absolute;
+    right: 20px;
+    top: -20px;
+    box-shadow: unset;
+    background: linear-gradient(#ffffff24 44%, transparent 50%);
+}
+
+.proposal_dialog .close_button .icon {
+    width: 20px;
+}
+
+.proposal_dialog_section1 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.proposal_dialog_section1_header {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 130%;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+.proposal_dialog_section1_status {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #000000;
+    background: #02D70A;
+    border: 1px solid #00A306;
+    box-sizing: border-box;
+    border-radius: 100px;
+    padding: 8px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 100px;
+    flex-shrink: 0;
+}
+
+.proposal_dialog_section1_status.voting_period {
+    background: #79C7FF;
+    border-color: #3B9BE0;
+}
+
+.proposal_dialog_section1_status.rejected {
+    background: #FF0000;
+    border-color: #C20000;
+    color: #ffffff;
+}
+
+.proposal_dialog_section2 {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+    text-align: left;
+    margin-top: 30px;
+}
+
+.proposal_dialog_section3_left .pds3l_c2.vote_details {
+    justify-content: space-between;
+}
+
+.proposal_dialog_section2_content {
+    height: 2.8em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+    width: 100%;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+}
+
+.proposal_dialog_section2_content.show_more {
+    height: unset;
+}
+
+.proposal_dialog_section2_more {
+    text-decoration-line: underline;
+    cursor: pointer;
+}
+
+.proposal_dialog_section3 {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.proposal_dialog_section3_left {
+    flex: 1;
+    margin-top: 30px;
+}
+
+.proposal_dialog_section3_left .pds3l_c {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 50px;
+}
+
+.proposal_dialog_section3_left .pds3l_c:nth-child(4) {
+    margin-bottom: 20px;
+}
+
+.proposal_dialog_section3_left .pds3l_c1 {
+    font-family: 'Blinker', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+    width: 220px;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+.proposal_dialog_section3_left .pds3l_c2 {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+    text-align: left;
+    flex: 1;
+    display: flex;
+}
+
+.proposal_dialog_section3_left .vp_cards {
+    display: flex;
+    flex: 1;
+}
+
+.proposal_dialog_section3_left .vp_cards > p {
+    background: #F3F3F3;
+    border-radius: 100px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    color: #000000;
+    padding: 8px 20px;
+    margin-right: 20px;
+}
+
+.proposals .pds3l_c2.vote_details > div > p {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+}
+
+.proposal_dialog_section3_left .vote_in_progress {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.proposals .pds3l_c2.vote_in_progress > div {
+    width: 50%;
+    margin-bottom: 30px;
+}
+
+.proposal_dialog_section3_right {
+    width: 50%;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.proposal_dialog .pds3r_heading {
+    font-family: 'Blinker', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+    margin-left: 10px;
+}
+
+.proposal_dialog .voting_card {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 8px;
+    padding: 50px 60px 40px;
+}
+
+.proposal_dialog .voting_card label {
+    margin-bottom: 10px;
+}
+
+.proposal_dialog .voting_card label > span:first-child {
+    margin-right: 20px;
+}
+
+.proposal_dialog .voting_card label > span:last-child {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    text-align: center;
+    color: #000000;
+}
+
+.proposal_dialog .voting_card label svg {
+    fill: #000000;
+}
+
+.voting_card .buttons_div {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.proposal_dialog .voting_card .cancel_button {
+    border: 2px solid #000000;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    text-align: center;
+    color: #000000;
+    margin-right: 20px;
+    padding: 10px 30px;
+}
+
+.proposal_dialog .voting_card .confirm_button {
+    background: #000000;
+    border-radius: 10px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    text-align: center;
+    color: #FFFFFF;
+    padding: 10px 30px;
+}
+
+.proposal_dialog .already_voted {
+    display: flex;
+    align-items: center;
+    margin-left: -40px;
+}
+
+.proposal_dialog .already_voted .icon {
+    width: 34px;
+    margin-right: 20px;
+}
+
+.proposal_dialog .already_voted > p {
+    background: #000000;
+    border: 1px solid #696969;
+    box-sizing: border-box;
+    border-radius: 100px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+    padding: 8px 40px;
+}
+
+.proposal_dialog .vote_info {
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    line-height: 130%;
+    text-align: right;
+    color: #ffffff;
+    flex: 1;
+}
+
+.proposal_dialog .circular_progress {
+    height: 31px;
+}
+
+@media (max-width: 1025px) {
+    .proposal_dialog_section3 {
+        flex-direction: column;
+    }
+
+    .proposal_dialog_section3_right {
+        width: 100%;
+        margin: unset;
+    }
+}
+
+@media (max-width: 769px) {
+    .proposal_dialog .content {
+        padding: 20px 40px;
+    }
+
+    .proposal_dialog_section1 {
+        flex-direction: column;
+    }
+
+    .proposal_dialog_section1_header {
+        width: 100%;
+    }
+
+    .proposal_dialog_section1_status {
+        margin: unset;
+    }
+}
+
+@media (max-width: 426px) {
+    .proposal_dialog_section1_header {
+        font-size: 34px;
+        text-align: center;
+    }
+
+    .proposal_dialog_section1_status {
+        font-size: 16px;
+        padding: 8px 20px;
+    }
+
+    .proposal_dialog_section3_left .pds3l_c {
+        flex-direction: column;
+    }
+
+    .proposal_dialog_section3_left .pds3l_c2,
+    .proposals .pds3l_c2 > div > p {
+        font-size: 20px;
+    }
+
+    .proposal_dialog_section3_left .vp_cards > p {
+        font-size: 14px;
+    }
+
+    .voting_card .buttons_div {
+        margin-top: 30px;
+    }
+
+    .voting_card .buttons_div > button {
+        width: 100%;
+    }
+
+    .proposal_dialog .voting_card .cancel_button {
+        margin: unset;
+    }
+
+    .proposal_dialog .voting_card .confirm_button {
+        margin-top: 10px;
+    }
+}

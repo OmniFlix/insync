@@ -1,0 +1,360 @@
+.proposals .proposals_content {
+    margin-top: 30px;
+}
+
+.proposals .heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.proposals .heading .tabs {
+    display: flex;
+    align-items: center;
+}
+
+.proposals .tabs > p {
+    cursor: pointer;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 130%;
+    color: #ffffff80;
+}
+
+.proposals .tabs > p.active {
+    color: #ffffff;
+}
+
+.proposals .tabs > span {
+    border: 1px solid #FFFFFF;
+    height: 30px;
+    margin: 0 20px;
+}
+
+.proposals .heading .text_field {
+    margin: unset;
+    width: 400px;
+}
+
+.proposals .cards_content {
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(100px);
+    border-radius: 10px;
+    margin-top: 16px;
+    padding: 38px;
+}
+
+.proposals .cards {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.proposals .card {
+    background: #FFFFFF;
+    border-radius: 20px;
+    color: #000000;
+    padding: 18px 28px;
+    width: 31%;
+    text-align: left;
+    position: relative;
+    margin-bottom: 20px;
+    margin-right: 40px;
+    cursor: pointer;
+}
+
+.proposals .card:nth-child(3n) {
+    margin-right: unset;
+}
+
+.proposals .card .number {
+    position: absolute;
+    background: #FFFFFF;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: -20px;
+    top: 16px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+}
+
+.proposals .card_heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.proposals .card_heading > h2 {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 130%;
+    color: #000000;
+    margin: unset;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.proposals .card_heading .icon {
+    width: 32px;
+}
+
+.proposals .card_heading .details {
+    display: flex;
+    align-items: center;
+}
+
+.proposals .card_heading .details > p {
+    font-family: 'Blinker', sans-serif;
+    font-size: 14px;
+    line-height: 130%;
+    text-align: right;
+    color: #696969;
+}
+
+.proposals .card_heading .details > button {
+    background: #EAEAEA;
+    border: 1px solid #CFCFCF;
+    box-sizing: border-box;
+    border-radius: 100px;
+    box-shadow: unset;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    text-align: right;
+    color: #000000;
+    margin-left: 10px;
+    padding: 6px 20px;
+}
+
+.proposals .card_heading .vote_button {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    background: linear-gradient(
+            93.41deg, #FC5C7D 4.98%, #6A82FB 103.86%);
+    border-radius: 100px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    color: #000000;
+    text-transform: unset;
+    padding: 6px 30px;
+}
+
+.proposals .description {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    color: #696969;
+    margin-bottom: 26px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 120px;
+}
+
+.proposals .card > .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.proposals .card .key_text {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    color: #696969;
+    display: flex;
+}
+
+.proposals .card .key_text .hash_text {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    color: #696969;
+    max-width: 110px;
+}
+
+.proposals .card .icon_info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.proposals .card .icon_info .icon {
+    width: 18px;
+    margin-right: 10px;
+}
+
+.proposals .card .value_text {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    color: #0085FF;
+    margin-left: 10px;
+}
+
+.proposals .card .status {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.proposals .card .status > p {
+    background: #02D70A;
+    border: 1px solid #00A306;
+    box-sizing: border-box;
+    box-shadow: inset 0 4px 4px rgb(0 0 0 / 25%);
+    border-radius: 100px;
+    width: max-content;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    color: #000000;
+    padding: 8px 20px;
+}
+
+.proposals .card .status.voting_period > p {
+    background: #79C7FF;
+    border-color: #3B9BE0;
+}
+
+.proposals .card .status.rejected > p {
+    background: #FF0000;
+    border-color: #C20000;
+    color: #ffffff;
+}
+
+.proposals .card .vote_details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.proposals .vote_details > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.proposals .vote_details > div > span {
+    width: 16px;
+    height: 16px;
+    background: #02D70A;
+    border-radius: 50px;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.proposals .vote_details > div.no > span {
+    background: #C0C0C0;
+}
+
+.proposals .vote_details > div.option3 > span {
+    background: #FF6767;
+}
+
+.proposals .vote_details > div.option4 > span {
+    background: #827CE6;
+}
+
+.proposals .vote_details > div > p {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 130%;
+    color: #000000;
+    display: flex;
+}
+
+.proposals .pagination > nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.proposals .pagination li > button {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFFFFF;
+    border-radius: 4px;
+}
+
+.proposals .pagination li > button[aria-current = 'true'] {
+    background: #E1E1E1;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+    color: #393939;
+}
+
+.proposals .pagination li:first-child > button svg,
+.proposals .pagination li:last-child > button svg {
+    display: none;
+}
+
+.proposals .pagination li:first-child > button:before {
+    content: 'Back';
+    text-decoration: underline;
+}
+
+.proposals .pagination li:last-child > button:before {
+    content: 'Next';
+    text-decoration: underline;
+}
+
+@media (max-width: 1350px) {
+    .proposals .card {
+        width: 46%;
+    }
+
+    .proposals .card:nth-child(3n) {
+        margin-right: 40px;
+    }
+
+    .proposals .card:nth-child(2n) {
+        margin-right: unset;
+    }
+}
+
+@media (max-width: 769px) {
+    .proposals .card {
+        width: 100%;
+        margin-right: unset;
+    }
+
+    .proposals .card:nth-child(3n) {
+        margin-right: unset;
+    }
+
+    .proposals .cards_content {
+        background: unset;
+        padding: 0;
+        backdrop-filter: unset;
+        border-radius: unset;
+    }
+}
+
+@media (max-width: 426px) {
+    .proposals .heading {
+        overflow: auto;
+    }
+}
