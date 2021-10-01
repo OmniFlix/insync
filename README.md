@@ -12,14 +12,14 @@ Currently, the aim of inSync is to be the default/defacto interface when bootstr
  yarn
 
 # Instructions 
-  - clone repository and install packages
+  1. clone repository and install packages
   ```sh
   git clone https://github.dev/OmniFlix/insync.git
   cd insync
   yarn
   ```
 
- - update chain config
+ 2. update chain config
   `NOTE:` below is the chain config for omniflix testnet
  `src/config.js`
  ```js
@@ -42,7 +42,7 @@ Currently, the aim of inSync is to be the default/defacto interface when bootstr
  };
  ```
 
- - start app
+ 3. start app
  ```sh
  yarn start
  ```
