@@ -23,6 +23,10 @@ class Table extends Component {
             pagination: false,
             selectableRows: 'none',
             selectToolbarPlacement: 'none',
+            sortOrder: {
+                name: 'validator',
+                direction: 'asc',
+            },
             textLabels: {
                 body: {
                     noMatch: this.props.inProgress
