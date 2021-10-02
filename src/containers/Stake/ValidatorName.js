@@ -19,12 +19,13 @@ const ValidatorName = (props) => {
                 : props.value.description && props.value.description.moniker
                     ? <div className="image">{props.value.description.moniker[0]}</div>
                     : <div className="image"/>}
-            <p className="heading_text1">{props.value.description && props.value.description.moniker}</p>
+            <p className="heading_text1">{props.name}</p>
         </div>
     );
 };
 
 ValidatorName.propTypes = {
+    name: PropTypes.string.isRequired,
     validatorImages: PropTypes.array.isRequired,
     value: PropTypes.object.isRequired,
 };

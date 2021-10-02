@@ -27,6 +27,10 @@ const Router = () => {
                             component={route.component}
                             path={route.path}/>,
                     )}
+                    <Route
+                        exact
+                        component={Home}
+                        path="*"/>
                 </Switch>
             </div>
         </div>
