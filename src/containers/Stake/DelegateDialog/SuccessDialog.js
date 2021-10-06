@@ -79,19 +79,6 @@ const SuccessDialog = (props) => {
                                 <div className="row">
                                     <p>From {variables[props.lang]['validator_address']}</p>
                                     <div className="validator">
-                                        <div className="hash_text" title={props.toValidator}>
-                                            <p className="name">{props.toValidator}</p>
-                                            {props.toValidator &&
-                                            props.toValidator.slice(props.toValidator.length - 6, props.toValidator.length)}
-                                        </div>
-                                        <p>{toValidatorDetails && toValidatorDetails.description && toValidatorDetails.description.moniker
-                                            ? `(${toValidatorDetails.description.moniker})`
-                                            : null}</p>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <p>To {variables[props.lang]['validator_address']}</p>
-                                    <div className="validator">
                                         <div className="hash_text" title={props.validator}>
                                             <p className="name">{props.validator}</p>
                                             {props.validator &&
@@ -99,6 +86,19 @@ const SuccessDialog = (props) => {
                                         </div>
                                         <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
                                             ? `(${validatorDetails.description.moniker})`
+                                            : null}</p>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <p>To {variables[props.lang]['validator_address']}</p>
+                                    <div className="validator">
+                                        <div className="hash_text" title={props.toValidator}>
+                                            <p className="name">{props.toValidator}</p>
+                                            {props.toValidator &&
+                                            props.toValidator.slice(props.toValidator.length - 6, props.toValidator.length)}
+                                        </div>
+                                        <p>{toValidatorDetails && toValidatorDetails.description && toValidatorDetails.description.moniker
+                                            ? `(${toValidatorDetails.description.moniker})`
                                             : null}</p>
                                     </div>
                                 </div>
