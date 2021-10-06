@@ -78,7 +78,7 @@ class NavBar extends Component {
             });
         }
         window.addEventListener('keplr_keystorechange', () => {
-            if (localStorage.getItem('of_co_address') || this.props.address) {
+            if (localStorage.getItem('of_co_address') || this.props.address !== '') {
                 this.handleChain();
             }
         });
@@ -149,7 +149,8 @@ class NavBar extends Component {
                 return;
             }
 
-            const previousAddress = decode(localStorage.getItem('of_co_address'));
+            const previousAddress = localStorage.getItem('of_co_address') &&
+                decode(localStorage.getItem('of_co_address'));
             this.props.setAccountAddress(addressList[0] && addressList[0].address);
             this.handleFetch(addressList[0] && addressList[0].address);
             if (addressList[0] && previousAddress !== addressList[0].address) {
