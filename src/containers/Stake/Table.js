@@ -87,7 +87,7 @@ class Table extends Component {
             options: {
                 sort: true,
                 customBodyRender: (value) => (
-                    value ? value + '%' : ''
+                    value ? value + '%' : '0%'
                 ),
             },
         }, {

@@ -168,16 +168,20 @@ export const aminoSignTxAndBroadcast = (tx, address, cb) => {
             account.sequence,
         );
 
-        const msg = tx.msgs ? tx.msgs : [tx.msg];
-        const fee = tx.fee;
-        const memo = tx.memo;
+        const {
+            signed,
+            signature,
+        } = await offlineSigner.signAmino(address, signDoc);
 
-        const { signature: voteSignature } = await offlineSigner.signAmino(address, signDoc);
+        const msg = signed.msgs ? signed.msgs : [signed.msg];
+        const fee = signed.fee;
+        const memo = signed.memo;
+
         const voteTx = {
             msg,
             fee,
             memo,
-            signatures: [voteSignature],
+            signatures: [signature],
         };
 
         client.broadcastTx(voteTx).then((result) => {
