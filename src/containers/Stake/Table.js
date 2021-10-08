@@ -16,7 +16,6 @@ import classNames from 'classnames';
 class Table extends Component {
     render () {
         const options = {
-            responsive: 'standard',
             serverSide: false,
             print: false,
             fixedHeader: false,

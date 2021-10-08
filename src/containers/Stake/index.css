@@ -149,6 +149,33 @@
     .stake .table {
         padding: 20px 30px;
     }
+
+    .table td .status {
+        width: max-content;
+        margin: auto;
+    }
+}
+
+@media (max-width: 958px) {
+    .stake .heading {
+        margin-top: unset;
+    }
+
+    .stake .table .validator {
+        width: 100%;
+    }
+
+    .table td .status {
+        margin-right: unset;
+    }
+
+    .stake .table .voting_power {
+        justify-content: flex-end;
+    }
+
+    .table td .tokens {
+        text-align: right;
+    }
 }
 
 @media (max-width: 769px) {
@@ -157,5 +184,43 @@
         padding: 0;
         backdrop-filter: unset;
         border-radius: unset;
+    }
+
+    .stake .tabs > p {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 426px) {
+    .stake .heading {
+        overflow: auto;
+    }
+
+    .stake .tabs > p {
+        width: max-content;
+    }
+
+    .table .actions > span {
+        display: none;
+    }
+
+    .stake .table .actions {
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .table .actions > button {
+        padding: 5px 10px;
+    }
+}
+
+@media (max-width: 375px) {
+    .stake .table .actions {
+        flex-direction: column;
+    }
+
+    .table .actions > button {
+        width: 100%;
+        margin: 4px 0;
     }
 }
