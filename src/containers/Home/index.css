@@ -184,6 +184,10 @@
     .home .card {
         padding: 50px 20px;
     }
+
+    .content_div .view_all {
+        font-size: 16px;
+    }
 }
 
 @media (max-width: 426px) {
@@ -218,5 +222,9 @@
 
     .connect_dialog form .text_field {
         width: 100%;
+    }
+
+    .content_div .view_all {
+        display: none;
     }
 }
