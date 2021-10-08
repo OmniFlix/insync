@@ -82,6 +82,7 @@
 
 .proposal_dialog_section3_left .pds3l_c2.vote_details {
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .proposal_dialog_section2_content {
@@ -310,7 +311,7 @@
 
 @media (max-width: 769px) {
     .proposal_dialog .content {
-        padding: 20px 40px;
+        padding: 30px;
     }
 
     .proposal_dialog_section1 {
@@ -323,6 +324,27 @@
 
     .proposal_dialog_section1_status {
         margin: unset;
+    }
+
+    .proposal_dialog_section3_left .vp_cards {
+        flex-wrap: wrap;
+    }
+
+    .proposal_dialog .voting_card {
+        padding: 30px;
+    }
+
+    .proposal_dialog_section3_left .vp_cards > p {
+        margin: 2px;
+    }
+
+    .proposals .vote_details > div {
+        width: 50%;
+        margin-bottom: 30px;
+    }
+
+    .proposal_dialog .already_voted {
+        margin-left: unset;
     }
 }
 
@@ -339,6 +361,7 @@
 
     .proposal_dialog_section3_left .pds3l_c {
         flex-direction: column;
+        margin-bottom: 30px;
     }
 
     .proposal_dialog_section3_left .pds3l_c2,
@@ -364,5 +387,33 @@
 
     .proposal_dialog .voting_card .confirm_button {
         margin-top: 10px;
+    }
+
+    .proposal_dialog .content {
+        padding: 20px;
+    }
+
+    .proposals .vote_details > div,
+    .proposals .pds3l_c2.vote_in_progress > div {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .proposal_dialog_section3 {
+        margin-top: 20px;
+    }
+
+    .proposal_dialog_section3_left .pds3l_c2.type {
+        word-break: break-all;
+    }
+
+    .proposal_dialog .already_voted > p {
+        font-size: 18px;
+        line-height: 110%;
+        padding: 8px 20px;
+    }
+
+    .proposal_dialog .already_voted .icon {
+        display: none;
     }
 }
