@@ -363,4 +363,8 @@
     .proposals .heading {
         overflow: auto;
     }
+
+    .proposals .card .icon_info {
+        flex-wrap: wrap;
+    }
 }

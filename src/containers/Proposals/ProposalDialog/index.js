@@ -174,7 +174,7 @@ class ProposalDialog extends Component {
                             </div>
                             <div className="pds3l_c">
                                 <p className="pds3l_c1">Type</p>
-                                <p className="pds3l_c2">{this.props.proposal && this.props.proposal.content &&
+                                <p className="pds3l_c2 type">{this.props.proposal && this.props.proposal.content &&
                                 this.props.proposal.content.type}</p>
                             </div>
                         </div>
