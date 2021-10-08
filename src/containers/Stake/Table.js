@@ -142,7 +142,7 @@ class Table extends Component {
                     parseFloat((Number(item.tokens) / 1000000).toFixed(1)),
                     item.commission && item.commission.commission_rates &&
                     item.commission.commission_rates.rate
-                        ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(1)) : null,
+                        ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,
                     item,
                     item.operator_address,
                 ])
