@@ -178,7 +178,7 @@ class ProposalDialog extends Component {
                                 this.props.proposal.content.type}</p>
                             </div>
                         </div>
-                        {this.props.proposal && this.props.proposal.status === 2 && !votedOption && !this.props.voteDetailsInProgress
+                        {this.props.proposal && this.props.proposal.status === 2 && !this.props.voteDetailsInProgress
                             ? <Voting proposalId={this.props.proposal && this.props.proposal.id}/>
                             : null}
                     </div>

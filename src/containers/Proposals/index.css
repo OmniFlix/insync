@@ -111,6 +111,7 @@
 .proposals .card_heading .details {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .proposals .card_heading .details > p {
@@ -119,6 +120,8 @@
     line-height: 130%;
     text-align: right;
     color: #696969;
+    width: 100%;
+    margin-left: 10px;
 }
 
 .proposals .card_heading .details > button {
