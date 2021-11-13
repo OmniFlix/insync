@@ -10,8 +10,10 @@ import { config } from '../../../config';
 
 const SuccessDialog = (props) => {
     const handleRedirect = () => {
-        const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
-        window.open(link, '_blank');
+        if (config.EXPLORER_URL) {
+            const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
+            window.open(link, '_blank');
+        }
     };
 
     const validatorDetails = props.validatorList && props.validatorList.length &&
