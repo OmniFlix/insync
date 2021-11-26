@@ -13,7 +13,6 @@ import { fetchVestingBalance, getBalance, getDelegations, getUnBondingDelegation
 import { showMessage } from '../../../actions/snackbar';
 import { config } from '../../../config';
 
-const COIN_DECI_VALUE = 1000000;
 const DelegateDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
     const handleDelegateType = () => {
@@ -28,7 +27,7 @@ const DelegateDialog = (props) => {
             },
             fee: {
                 amount: [{
-                    amount: String(5000),
+                    amount: String(50000000),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
                 gas: String(200000),
@@ -65,7 +64,7 @@ const DelegateDialog = (props) => {
                 delegatorAddress: props.address,
                 validatorAddress: props.validator,
                 amount: {
-                    amount: String(props.amount * COIN_DECI_VALUE),
+                    amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
                     denom: config.COIN_MINIMAL_DENOM,
                 },
             };
@@ -75,7 +74,7 @@ const DelegateDialog = (props) => {
                 validatorSrcAddress: props.validator,
                 validatorDstAddress: props.toValidator,
                 amount: {
-                    amount: String(props.amount * COIN_DECI_VALUE),
+                    amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
                     denom: config.COIN_MINIMAL_DENOM,
                 },
             };

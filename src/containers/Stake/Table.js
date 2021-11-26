@@ -139,7 +139,7 @@ class Table extends Component {
                 [
                     item.description && item.description.moniker,
                     item,
-                    parseFloat((Number(item.tokens) / 1000000).toFixed(1)),
+                    parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
                     item.commission && item.commission.commission_rates &&
                     item.commission.commission_rates.rate
                         ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,
