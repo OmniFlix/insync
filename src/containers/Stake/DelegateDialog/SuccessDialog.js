@@ -10,7 +10,7 @@ import { config } from '../../../config';
 
 const SuccessDialog = (props) => {
     const handleRedirect = () => {
-        const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
+        const link = `${config.EXPLORER_URL}/txs/${props.hash}`;
         window.open(link, '_blank');
     };
 
