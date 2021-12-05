@@ -18,6 +18,10 @@ const DelegateDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
     const handleDelegateType = () => {
         setInProgress(true);
+        let gasValue = 200000;
+        if (props.name === 'Redelegate') {
+            gasValue = 400000;
+        }
         const updatedTx = {
             msg: {
                 typeUrl: props.name === 'Delegate' || props.name === 'Stake'
@@ -31,7 +35,7 @@ const DelegateDialog = (props) => {
                     amount: String(5000),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(200000),
+                gas: String(gasValue),
             },
             memo: '',
         };
