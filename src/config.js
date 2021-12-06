@@ -1,11 +1,11 @@
 export const config = {
     RPC_URL: 'https://rpc.comdex.one',
     REST_URL: 'https://rest.comdex.one',
-    EXPLORER_URL: null,
+    EXPLORER_URL: 'https://www.mintscan.io/comdex',
     NETWORK_NAME: 'Comdex',
     NETWORK_TYPE: 'mainnet',
     CHAIN_ID: 'comdex-1',
-    CHAIN_NAME: 'Comdex Mainnet',
+    CHAIN_NAME: 'Comdex',
     COIN_DENOM: 'CMDX',
     COIN_MINIMAL_DENOM: 'ucmdx',
     COIN_DECIMALS: 6,
