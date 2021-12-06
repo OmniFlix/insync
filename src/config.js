@@ -11,7 +11,7 @@ export const config = {
     COIN_DECIMALS: 6,
     PREFIX: 'omniflix',
     COIN_TYPE: 118,
-    GAS_PRICE_STEP_LOW: 0.01,
-    GAS_PRICE_STEP_AVERAGE: 0.025,
-    GAS_PRICE_STEP_HIGH: 0.04,
+    GAS_PRICE_STEP_LOW: 0.1,
+    GAS_PRICE_STEP_AVERAGE: 0.5,
+    GAS_PRICE_STEP_HIGH: 1,
 };
