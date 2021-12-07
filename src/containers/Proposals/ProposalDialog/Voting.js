@@ -47,10 +47,10 @@ const Voting = (props) => {
             },
             fee: {
                 amount: [{
-                    amount: String(5000),
+                    amount: String(config.DEFAULT_GAS * config.GAS_PRICE_STEP_LOW),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(200000),
+                gas: String(config.DEFAULT_GAS),
             },
             memo: '',
         };
