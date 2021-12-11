@@ -87,7 +87,8 @@ const DelegateDialog = (props) => {
     let staked = props.delegations.reduce((accumulator, currentValue) => {
         return accumulator + Number(currentValue.balance.amount);
     }, 0);
-    const available = (props.balance && props.balance.length && Number(props.balance[0].amount));
+    const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+    const available = (balance && balance.amount && Number(balance.amount));
 
     const vesting = props.vestingBalance && props.vestingBalance.value && props.vestingBalance.value['base_vesting_account'] &&
         props.vestingBalance.value['base_vesting_account']['original_vesting'] &&
