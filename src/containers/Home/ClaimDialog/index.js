@@ -13,7 +13,7 @@ import '../../Stake/DelegateDialog/index.css';
 import ValidatorsSelectField from './ValidatorsSelectField';
 import { signTxAndBroadcast } from '../../../helper';
 import { showMessage } from '../../../actions/snackbar';
-import { fetchRewards } from '../../../actions/accounts';
+import { fetchRewards, fetchVestingBalance, getBalance } from '../../../actions/accounts';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import CircularProgress from '../../../components/CircularProgress';
@@ -24,13 +24,13 @@ const ClaimDialog = (props) => {
     const handleClaimAll = () => {
         setInProgress(true);
         const count = props.rewards && props.rewards.rewards &&
-            props.rewards.rewards.length * 200000;
+            props.rewards.rewards.length * 50000 + config.DEFAULT_GAS;
 
         const updatedTx = {
             msgs: [],
             fee: {
                 amount: [{
-                    amount: String(5000),
+                    amount: String(config.DEFAULT_GAS * config.GAS_PRICE_STEP_AVERAGE),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
                 gas: String(count),
@@ -87,10 +87,10 @@ const ClaimDialog = (props) => {
             },
             fee: {
                 amount: [{
-                    amount: String(5000),
+                    amount: String(config.DEFAULT_GAS * config.GAS_PRICE_STEP_AVERAGE),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(200000),
+                gas: String(config.DEFAULT_GAS),
             },
             memo: '',
         };
@@ -111,6 +111,8 @@ const ClaimDialog = (props) => {
                 props.setTokens(tokens);
                 props.successDialog(result.transactionHash);
                 props.fetchRewards(props.address);
+                props.getBalance(props.address);
+                props.fetchVestingBalance(props.address);
             }
         });
     };
@@ -173,6 +175,8 @@ const ClaimDialog = (props) => {
 ClaimDialog.propTypes = {
     failedDialog: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
+    fetchVestingBalance: PropTypes.func.isRequired,
+    getBalance: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
@@ -203,6 +207,8 @@ const actionToProps = {
     failedDialog: showDelegateFailedDialog,
     successDialog: showDelegateSuccessDialog,
     pendingDialog: showDelegateProcessingDialog,
+    getBalance,
+    fetchVestingBalance,
     showMessage,
     fetchRewards,
     setTokens,

@@ -14,7 +14,13 @@ import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
 import ToValidatorSelectField from './ToValidatorSelectField';
 import { signTxAndBroadcast } from '../../../helper';
-import { fetchVestingBalance, getBalance, getDelegations, getUnBondingDelegations } from '../../../actions/accounts';
+import {
+    fetchRewards,
+    fetchVestingBalance,
+    getBalance,
+    getDelegations,
+    getUnBondingDelegations,
+} from '../../../actions/accounts';
 import { showMessage } from '../../../actions/snackbar';
 import { config } from '../../../config';
 import CircularProgress from '../../../components/CircularProgress';
@@ -25,6 +31,11 @@ const DelegateDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
     const handleDelegateType = () => {
         setInProgress(true);
+        let gasValue = config.DEFAULT_GAS;
+        if (props.name === 'Redelegate') {
+            gasValue = config.DEFAULT_GAS + 100000;
+        }
+
         const updatedTx = {
             msg: {
                 typeUrl: props.name === 'Delegate' || props.name === 'Stake'
@@ -35,10 +46,10 @@ const DelegateDialog = (props) => {
             },
             fee: {
                 amount: [{
-                    amount: String(5000),
+                    amount: String(gasValue * config.GAS_PRICE_STEP_AVERAGE),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(200000),
+                gas: String(gasValue),
             },
             memo: '',
         };
@@ -66,6 +77,7 @@ const DelegateDialog = (props) => {
         props.getDelegations(props.address);
         props.getUnBondingDelegations(props.address);
         props.getDelegatedValidatorsDetails(props.address);
+        props.fetchRewards(props.address);
     };
 
     const getValueObject = (type) => {
@@ -171,6 +183,7 @@ const DelegateDialog = (props) => {
 
 DelegateDialog.propTypes = {
     failedDialog: PropTypes.func.isRequired,
+    fetchRewards: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
@@ -226,6 +239,7 @@ const actionToProps = {
     failedDialog: showDelegateFailedDialog,
     pendingDialog: showDelegateProcessingDialog,
     fetchVestingBalance,
+    fetchRewards,
     getBalance,
     getDelegations,
     getDelegatedValidatorsDetails,
