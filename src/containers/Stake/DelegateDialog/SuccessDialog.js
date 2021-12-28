@@ -39,9 +39,38 @@ const SuccessDialog = (props) => {
                                 ? <h1>{variables[props.lang].vote_success}</h1>
                                 : <h1>{variables[props.lang].success}</h1>}
                 </div>
-                {!props.name
-                    ? props.claimValidator && props.claimValidator !== 'none'
-                        ? <>
+                {props.proposalOpen && props.hash
+                    ? <div className="row">
+                        <p>{variables[props.lang]['transaction_hash']}</p>
+                        <div
+                            className="hash_text link" title={props.hash}
+                            onClick={handleRedirect}>
+                            <p className="name">{props.hash}</p>
+                            {props.hash &&
+                            props.hash.slice(props.hash.length - 6, props.hash.length)}
+                        </div>
+                    </div>
+                    : !props.name
+                        ? props.claimValidator && props.claimValidator !== 'none'
+                            ? <>
+                                <div className="row">
+                                    <p>{variables[props.lang]['transaction_hash']}</p>
+                                    <div
+                                        className="hash_text link" title={props.hash}
+                                        onClick={handleRedirect}>
+                                        <p className="name">{props.hash}</p>
+                                        {props.hash &&
+                                        props.hash.slice(props.hash.length - 6, props.hash.length)}
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <p>{variables[props.lang].tokens}</p>
+                                    <p>{props.tokens
+                                        ? Number(props.tokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                        : null}</p>
+                                </div>
+                            </> : null
+                        : <>
                             <div className="row">
                                 <p>{variables[props.lang]['transaction_hash']}</p>
                                 <div
@@ -53,35 +82,44 @@ const SuccessDialog = (props) => {
                                 </div>
                             </div>
                             <div className="row">
-                                <p>{variables[props.lang].tokens}</p>
-                                <p>{props.tokens
-                                    ? Number(props.tokens).toFixed(4) + ' ' + config.COIN_DENOM
-                                    : null}</p>
+                                <p>{variables[props.lang]['delegator_address']}</p>
+                                <div className="hash_text" title={props.address}>
+                                    <p className="name">{props.address}</p>
+                                    {props.address &&
+                                    props.address.slice(props.address.length - 6, props.address.length)}
+                                </div>
                             </div>
-                        </> : null
-                    : <>
-                        <div className="row">
-                            <p>{variables[props.lang]['transaction_hash']}</p>
-                            <div
-                                className="hash_text link" title={props.hash}
-                                onClick={handleRedirect}>
-                                <p className="name">{props.hash}</p>
-                                {props.hash &&
-                                props.hash.slice(props.hash.length - 6, props.hash.length)}
-                            </div>
-                        </div>
-                        <div className="row">
-                            <p>{variables[props.lang]['delegator_address']}</p>
-                            <div className="hash_text" title={props.address}>
-                                <p className="name">{props.address}</p>
-                                {props.address &&
-                                props.address.slice(props.address.length - 6, props.address.length)}
-                            </div>
-                        </div>
-                        {props.name === 'Redelegate'
-                            ? <>
-                                <div className="row">
-                                    <p>From {variables[props.lang]['validator_address']}</p>
+                            {props.name === 'Redelegate'
+                                ? <>
+                                    <div className="row">
+                                        <p>From {variables[props.lang]['validator_address']}</p>
+                                        <div className="validator">
+                                            <div className="hash_text" title={props.validator}>
+                                                <p className="name">{props.validator}</p>
+                                                {props.validator &&
+                                                props.validator.slice(props.validator.length - 6, props.validator.length)}
+                                            </div>
+                                            <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
+                                                ? `(${validatorDetails.description.moniker})`
+                                                : null}</p>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <p>To {variables[props.lang]['validator_address']}</p>
+                                        <div className="validator">
+                                            <div className="hash_text" title={props.toValidator}>
+                                                <p className="name">{props.toValidator}</p>
+                                                {props.toValidator &&
+                                                props.toValidator.slice(props.toValidator.length - 6, props.toValidator.length)}
+                                            </div>
+                                            <p>{toValidatorDetails && toValidatorDetails.description && toValidatorDetails.description.moniker
+                                                ? `(${toValidatorDetails.description.moniker})`
+                                                : null}</p>
+                                        </div>
+                                    </div>
+                                </>
+                                : <div className="row">
+                                    <p>{variables[props.lang]['validator_address']}</p>
                                     <div className="validator">
                                         <div className="hash_text" title={props.validator}>
                                             <p className="name">{props.validator}</p>
@@ -92,41 +130,14 @@ const SuccessDialog = (props) => {
                                             ? `(${validatorDetails.description.moniker})`
                                             : null}</p>
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <p>To {variables[props.lang]['validator_address']}</p>
-                                    <div className="validator">
-                                        <div className="hash_text" title={props.toValidator}>
-                                            <p className="name">{props.toValidator}</p>
-                                            {props.toValidator &&
-                                            props.toValidator.slice(props.toValidator.length - 6, props.toValidator.length)}
-                                        </div>
-                                        <p>{toValidatorDetails && toValidatorDetails.description && toValidatorDetails.description.moniker
-                                            ? `(${toValidatorDetails.description.moniker})`
-                                            : null}</p>
-                                    </div>
-                                </div>
-                            </>
-                            : <div className="row">
-                                <p>{variables[props.lang]['validator_address']}</p>
-                                <div className="validator">
-                                    <div className="hash_text" title={props.validator}>
-                                        <p className="name">{props.validator}</p>
-                                        {props.validator &&
-                                        props.validator.slice(props.validator.length - 6, props.validator.length)}
-                                    </div>
-                                    <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
-                                        ? `(${validatorDetails.description.moniker})`
-                                        : null}</p>
-                                </div>
-                            </div>}
-                        <div className="row">
-                            <p>{variables[props.lang].tokens}</p>
-                            <p>{props.tokens
-                                ? Number(props.tokens).toFixed(4) + ' ' + config.COIN_DENOM
-                                : null}</p>
-                        </div>
-                    </>}
+                                </div>}
+                            <div className="row">
+                                <p>{variables[props.lang].tokens}</p>
+                                <p>{props.tokens
+                                    ? Number(props.tokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                    : null}</p>
+                            </div>
+                        </>}
             </DialogContent>
             <DialogActions className="footer">
                 <Button variant="contained" onClick={props.handleClose}>
