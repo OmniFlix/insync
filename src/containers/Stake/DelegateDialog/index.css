@@ -164,3 +164,7 @@
 .result .content .row > .validator {
     text-align: right;
 }
+
+.pending img {
+    width: 100px;
+}
