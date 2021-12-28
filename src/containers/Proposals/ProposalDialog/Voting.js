@@ -4,7 +4,7 @@ import { fetchProposalTally, fetchVoteDetails, hideProposalDialog } from '../../
 import { connect } from 'react-redux';
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import CircularProgress from '../../../components/CircularProgress';
-import { aminoSignTxAndBroadcast } from '../../../helper';
+import { signTxAndBroadcast } from '../../../helper';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import { showMessage } from '../../../actions/snackbar';
@@ -43,14 +43,14 @@ const Voting = (props) => {
                     : value === 'NoWithVeto' ? 4 : null;
 
         const tx = {
-            msg: {
-                type: 'cosmos-sdk/MsgVote',
+            msgs: [{
+                typeUrl: '/cosmos.gov.v1beta1.MsgVote',
                 value: {
                     option: option,
-                    proposal_id: props.proposalId,
+                    proposalId: props.proposalId,
                     voter: props.address,
                 },
-            },
+            }],
             fee: {
                 amount: [{
                     amount: String(config.DEFAULT_GAS * config.GAS_PRICE_STEP_AVERAGE),
@@ -61,19 +61,11 @@ const Voting = (props) => {
             memo: '',
         };
 
-        aminoSignTxAndBroadcast(tx, props.address, (error, result) => {
+        signTxAndBroadcast(tx, props.address, (error, result) => {
             setInProgress(false);
             if (error) {
                 if (error.indexOf('not yet found on the chain') > -1) {
                     props.pendingDialog();
-                    return;
-                }
-                if (error.indexOf('Log\'s msg_index must be a number') > -1) {
-                    props.successDialog();
-                    props.fetchVoteDetails(props.proposalId, props.address);
-                    props.fetchProposalTally(props.proposalId);
-                    props.getBalance(props.address);
-                    props.fetchVestingBalance(props.address);
                     return;
                 }
                 props.failedDialog();
@@ -81,7 +73,7 @@ const Voting = (props) => {
                 return;
             }
             if (result) {
-                props.successDialog();
+                props.successDialog(result.transactionHash);
                 props.fetchVoteDetails(props.proposalId, props.address);
                 props.fetchProposalTally(props.proposalId);
                 props.getBalance(props.address);
