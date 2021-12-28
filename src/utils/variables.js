@@ -55,6 +55,7 @@ const variables = {
         transaction_failed: 'Transaction Failed',
         transaction_processing: 'Transaction is in process. use high gas for quick transaction',
         claimed_success: 'CLAIMED TOKENS Successfully',
+        vote_success: 'Vote Submitted Successfully',
         transaction_hash: 'Transaction Hash',
         delegator_address: 'Delegator Address',
         validator_address: 'Validator Address',

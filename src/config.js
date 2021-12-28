@@ -11,8 +11,9 @@ export const config = {
     COIN_DECIMALS: 9,
     PREFIX: 'cheqd',
     COIN_TYPE: 118,
+    DEFAULT_GAS: 200000,
     GAS_PRICE_STEP_LOW: 10,
     GAS_PRICE_STEP_AVERAGE: 25,
     GAS_PRICE_STEP_HIGH: 50,
-    FEATURES: ['stargate', 'ibc-transfer', 'cosmwasm', 'no-legacy-stdTx', 'ibc-go'],
+    FEATURES: ['stargate', 'ibc-transfer'],
 };
