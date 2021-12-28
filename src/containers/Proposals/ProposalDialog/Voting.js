@@ -8,7 +8,12 @@ import { aminoSignTxAndBroadcast } from '../../../helper';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import { showMessage } from '../../../actions/snackbar';
-import { showDelegateFailedDialog, showDelegateProcessingDialog } from '../../../actions/stake';
+import {
+    showDelegateFailedDialog,
+    showDelegateProcessingDialog,
+    showDelegateSuccessDialog,
+} from '../../../actions/stake';
+import { fetchVestingBalance, getBalance } from '../../../actions/accounts';
 
 const Voting = (props) => {
     const [value, setValue] = React.useState('');
@@ -48,10 +53,10 @@ const Voting = (props) => {
             },
             fee: {
                 amount: [{
-                    amount: String(5000),
+                    amount: String(config.DEFAULT_GAS * config.GAS_PRICE_STEP_AVERAGE),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(200000),
+                gas: String(config.DEFAULT_GAS),
             },
             memo: '',
         };
@@ -63,14 +68,24 @@ const Voting = (props) => {
                     props.pendingDialog();
                     return;
                 }
+                if (error.indexOf('Log\'s msg_index must be a number') > -1) {
+                    props.successDialog();
+                    props.fetchVoteDetails(props.proposalId, props.address);
+                    props.fetchProposalTally(props.proposalId);
+                    props.getBalance(props.address);
+                    props.fetchVestingBalance(props.address);
+                    return;
+                }
                 props.failedDialog();
                 props.showMessage(error);
                 return;
             }
             if (result) {
-                props.handleClose();
+                props.successDialog();
                 props.fetchVoteDetails(props.proposalId, props.address);
                 props.fetchProposalTally(props.proposalId);
+                props.getBalance(props.address);
+                props.fetchVestingBalance(props.address);
             }
         });
     };
@@ -118,11 +133,14 @@ const Voting = (props) => {
 Voting.propTypes = {
     failedDialog: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
+    fetchVestingBalance: PropTypes.func.isRequired,
     fetchVoteDetails: PropTypes.func.isRequired,
+    getBalance: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     pendingDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
+    successDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
     proposalId: PropTypes.string,
 };
@@ -137,7 +155,10 @@ const stateToProps = (state) => {
 const actionToProps = {
     fetchProposalTally,
     fetchVoteDetails,
+    getBalance,
+    fetchVestingBalance,
     failedDialog: showDelegateFailedDialog,
+    successDialog: showDelegateSuccessDialog,
     pendingDialog: showDelegateProcessingDialog,
     handleClose: hideProposalDialog,
     showMessage,
