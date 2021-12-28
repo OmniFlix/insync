@@ -10,6 +10,7 @@ import ProposalDialog from './ProposalDialog';
 import { fetchProposalTally, fetchVoteDetails, getProposals } from '../../actions/proposals';
 import UnSuccessDialog from '../Stake/DelegateDialog/UnSuccessDialog';
 import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
+import SuccessDialog from '../Stake/DelegateDialog/SuccessDialog';
 
 const Proposals = (props) => {
     const [active, setActive] = useState(1);
@@ -61,6 +62,7 @@ const Proposals = (props) => {
                 : <ProposalDialog/>}
             <UnSuccessDialog/>
             <PendingDialog/>
+            <SuccessDialog/>
         </div>
     );
 };

@@ -13,7 +13,7 @@ import '../../Stake/DelegateDialog/index.css';
 import ValidatorsSelectField from './ValidatorsSelectField';
 import { signTxAndBroadcast } from '../../../helper';
 import { showMessage } from '../../../actions/snackbar';
-import { fetchRewards } from '../../../actions/accounts';
+import { fetchRewards, fetchVestingBalance, getBalance } from '../../../actions/accounts';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import CircularProgress from '../../../components/CircularProgress';
@@ -25,9 +25,9 @@ const ClaimDialog = (props) => {
         setInProgress(true);
         let gasValue = config.DEFAULT_GAS;
         if (props.rewards && props.rewards.rewards && props.rewards.rewards.length && props.rewards.rewards.length > 2) {
-            gasValue = (props.rewards.rewards.length - 2) * 50000 + config.DEFAULT_GAS;
+            gasValue = (props.rewards.rewards.length - 2) * 80000 + config.DEFAULT_GAS;
         }
-        console.log(gasValue);
+
         const updatedTx = {
             msgs: [],
             fee: {
@@ -113,6 +113,8 @@ const ClaimDialog = (props) => {
                 props.setTokens(tokens);
                 props.successDialog(result.transactionHash);
                 props.fetchRewards(props.address);
+                props.getBalance(props.address);
+                props.fetchVestingBalance(props.address);
             }
         });
     };
@@ -175,6 +177,8 @@ const ClaimDialog = (props) => {
 ClaimDialog.propTypes = {
     failedDialog: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
+    fetchVestingBalance: PropTypes.func.isRequired,
+    getBalance: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
@@ -205,6 +209,8 @@ const actionToProps = {
     failedDialog: showDelegateFailedDialog,
     successDialog: showDelegateSuccessDialog,
     pendingDialog: showDelegateProcessingDialog,
+    getBalance,
+    fetchVestingBalance,
     showMessage,
     fetchRewards,
     setTokens,

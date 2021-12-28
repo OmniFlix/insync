@@ -220,7 +220,6 @@ export const aminoSignTx = (tx, address, cb) => {
             account.accountNumber = accountNumber;
             account.sequence = sequence;
         } catch (e) {
-            console.log(e);
             account.accountNumber = 0;
             account.sequence = 0;
         }
