@@ -14,6 +14,7 @@ import Cards from '../Proposals/Cards';
 import ProposalDialog from '../Proposals/ProposalDialog';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
 
 class Home extends Component {
     constructor (props) {
@@ -123,6 +124,7 @@ class Home extends Component {
                 <DelegateDialog/>
                 <SuccessDialog/>
                 <UnSuccessDialog/>
+                <PendingDialog/>
                 <ClaimDialog/>
             </>
         );

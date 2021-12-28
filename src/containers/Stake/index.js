@@ -8,6 +8,7 @@ import Table from './Table';
 import DelegateDialog from './DelegateDialog';
 import SuccessDialog from './DelegateDialog/SuccessDialog';
 import UnSuccessDialog from './DelegateDialog/UnSuccessDialog';
+import PendingDialog from './DelegateDialog/PendingDialog';
 
 const Stake = (props) => {
     const [active, setActive] = useState(1);
@@ -40,6 +41,7 @@ const Stake = (props) => {
             <DelegateDialog/>
             <SuccessDialog/>
             <UnSuccessDialog/>
+            <PendingDialog/>
         </div>
     );
 };

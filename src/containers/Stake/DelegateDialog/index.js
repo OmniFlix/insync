@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
 import './index.css';
 import variables from '../../../utils/variables';
-import { hideDelegateDialog, showDelegateFailedDialog, showDelegateSuccessDialog } from '../../../actions/stake';
+import {
+    getDelegatedValidatorsDetails,
+    hideDelegateDialog,
+    showDelegateFailedDialog,
+    showDelegateProcessingDialog,
+    showDelegateSuccessDialog,
+} from '../../../actions/stake';
 import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
 import ToValidatorSelectField from './ToValidatorSelectField';
@@ -12,6 +17,8 @@ import { signTxAndBroadcast } from '../../../helper';
 import { fetchVestingBalance, getBalance, getDelegations, getUnBondingDelegations } from '../../../actions/accounts';
 import { showMessage } from '../../../actions/snackbar';
 import { config } from '../../../config';
+import CircularProgress from '../../../components/CircularProgress';
+import { connect } from 'react-redux';
 
 const COIN_DECI_VALUE = 1000000;
 const DelegateDialog = (props) => {
@@ -38,6 +45,10 @@ const DelegateDialog = (props) => {
         signTxAndBroadcast(updatedTx, props.address, (error, result) => {
             setInProgress(false);
             if (error) {
+                if (error.indexOf('not yet found on the chain') > -1) {
+                    props.pendingDialog();
+                    return;
+                }
                 props.failedDialog();
                 props.showMessage(error);
                 return;
@@ -54,6 +65,7 @@ const DelegateDialog = (props) => {
         props.fetchVestingBalance(props.address);
         props.getDelegations(props.address);
         props.getUnBondingDelegations(props.address);
+        props.getDelegatedValidatorsDetails(props.address);
     };
 
     const getValueObject = (type) => {
@@ -126,6 +138,7 @@ const DelegateDialog = (props) => {
             className="dialog delegate_dialog"
             open={props.open}
             onClose={props.handleClose}>
+            {inProgress && <CircularProgress className="full_screen"/>}
             <DialogContent className="content">
                 <h1>{props.name + ' ' + variables[props.lang].tokens}</h1>
                 {props.name === 'Redelegate'
@@ -160,12 +173,14 @@ DelegateDialog.propTypes = {
     failedDialog: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    pendingDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
     vestingBalance: PropTypes.object.isRequired,
@@ -209,9 +224,11 @@ const actionToProps = {
     handleClose: hideDelegateDialog,
     successDialog: showDelegateSuccessDialog,
     failedDialog: showDelegateFailedDialog,
+    pendingDialog: showDelegateProcessingDialog,
     fetchVestingBalance,
     getBalance,
     getDelegations,
+    getDelegatedValidatorsDetails,
     getUnBondingDelegations,
     showMessage,
 };
