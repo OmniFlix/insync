@@ -187,14 +187,12 @@ export const aminoSignTxAndBroadcast = (tx, address, cb) => {
         };
 
         client.broadcastTx(voteTx).then((result) => {
-            console.log('000000', result);
             if (result && result.code !== undefined && result.code !== 0) {
                 cb(result.log || result.rawLog);
             } else {
                 cb(null, result);
             }
         }).catch((error) => {
-            console.log('1111111', error);
             cb(error && error.message);
         });
     })();
