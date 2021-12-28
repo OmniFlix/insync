@@ -2,28 +2,33 @@ inSync by OmniFlix (for Communities)
 ===
 
 inSync is a collaborative interface for an entire community (or) blockchain network to:
-- identify stakeholders such as validator node hosts (will expand to other types of node hosts depending on the network)
-- discover proposals
-& more!
 
-Currently, the aim of inSync is to be the default/defacto interface when bootstrapping community activities of a specific chain (on testnet or mainnet).
+- identify stakeholders such as validator node hosts (will expand to other types of node hosts depending on the network)
+- discover proposals & more!
+
+Currently, the aim of inSync is to be the default/defacto interface when bootstrapping community activities of a
+specific chain (on testnet or mainnet).
 
 # Requirements
- yarn
 
-# Instructions 
-  1. clone repository and install packages
+yarn
+
+# Instructions
+
+1. clone repository and install packages
+
   ```sh
   git clone https://github.dev/OmniFlix/insync.git
   cd insync
   yarn
   ```
 
- 2. update chain config
-  
-  `NOTE:` below is the chain config for omniflix testnet
- 
- `src/config.js`
+2. update chain config
+
+`NOTE:` below is the chain config for omniflix testnet
+
+`src/config.js`
+
  ```js
  export const config = {
     RPC_URL: 'https://rpc.testnet.omniflix.network',
@@ -44,7 +49,8 @@ Currently, the aim of inSync is to be the default/defacto interface when bootstr
  };
  ```
 
- 3. start app
+3. start app
+
  ```sh
  yarn start
  ```

@@ -5,6 +5,7 @@ import {
     hideClaimRewardsDialog,
     setTokens,
     showDelegateFailedDialog,
+    showDelegateProcessingDialog,
     showDelegateSuccessDialog,
 } from '../../../actions/stake';
 import { connect } from 'react-redux';
@@ -15,6 +16,7 @@ import { showMessage } from '../../../actions/snackbar';
 import { fetchRewards } from '../../../actions/accounts';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
+import CircularProgress from '../../../components/CircularProgress';
 
 const ClaimDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -54,6 +56,10 @@ const ClaimDialog = (props) => {
         signTxAndBroadcast(updatedTx, props.address, (error, result) => {
             setInProgress(false);
             if (error) {
+                if (error.indexOf('not yet found on the chain') > -1) {
+                    props.pendingDialog();
+                    return;
+                }
                 props.failedDialog();
                 props.showMessage(error);
                 return;
@@ -92,6 +98,10 @@ const ClaimDialog = (props) => {
         signTxAndBroadcast(updatedTx, props.address, (error, result) => {
             setInProgress(false);
             if (error) {
+                if (error.indexOf('not yet found on the chain') > -1) {
+                    props.pendingDialog();
+                    return;
+                }
                 props.failedDialog();
                 props.showMessage(error);
                 return;
@@ -137,6 +147,7 @@ const ClaimDialog = (props) => {
             className="dialog delegate_dialog claim_dialog"
             open={props.open}
             onClose={props.handleClose}>
+            {inProgress && <CircularProgress className="full_screen"/>}
             <DialogContent className="content">
                 <h1>Claim Rewards</h1>
                 <p>Select validator</p>
@@ -165,6 +176,7 @@ ClaimDialog.propTypes = {
     handleClose: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    pendingDialog: PropTypes.func.isRequired,
     rewards: PropTypes.shape({
         rewards: PropTypes.array,
         total: PropTypes.array,
@@ -190,6 +202,7 @@ const actionToProps = {
     handleClose: hideClaimRewardsDialog,
     failedDialog: showDelegateFailedDialog,
     successDialog: showDelegateSuccessDialog,
+    pendingDialog: showDelegateProcessingDialog,
     showMessage,
     fetchRewards,
     setTokens,

@@ -6,6 +6,8 @@ import {
     DELEGATE_DIALOG_SHOW,
     DELEGATE_FAILED_DIALOG_HIDE,
     DELEGATE_FAILED_DIALOG_SHOW,
+    DELEGATE_PROCESSING_DIALOG_HIDE,
+    DELEGATE_PROCESSING_DIALOG_SHOW,
     DELEGATE_SUCCESS_DIALOG_HIDE,
     DELEGATE_SUCCESS_DIALOG_SHOW,
     DELEGATED_VALIDATORS_FETCH_ERROR,
@@ -103,6 +105,18 @@ export const showDelegateSuccessDialog = (value) => {
 export const hideDelegateSuccessDialog = () => {
     return {
         type: DELEGATE_SUCCESS_DIALOG_HIDE,
+    };
+};
+
+export const showDelegateProcessingDialog = () => {
+    return {
+        type: DELEGATE_PROCESSING_DIALOG_SHOW,
+    };
+};
+
+export const hideDelegateProcessingDialog = () => {
+    return {
+        type: DELEGATE_PROCESSING_DIALOG_HIDE,
     };
 };
 
