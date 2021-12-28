@@ -10,6 +10,7 @@ const coinDenom = config.COIN_DENOM;
 const coinMinimalDenom = config.COIN_MINIMAL_DENOM;
 const coinDecimals = config.COIN_DECIMALS;
 const prefix = config.PREFIX;
+const coinGeckoId = config.COINGECKO_ID;
 
 const chainConfig = {
     chainId: chainId,
@@ -20,7 +21,7 @@ const chainConfig = {
         coinDenom,
         coinMinimalDenom,
         coinDecimals,
-        coinGeckoId: config.COINGECKO_ID,
+        coinGeckoId,
     },
     bip44: {
         coinType: 118,
@@ -38,7 +39,7 @@ const chainConfig = {
             coinDenom,
             coinMinimalDenom,
             coinDecimals,
-            coinGeckoId: config.COINGECKO_ID,
+            coinGeckoId,
         },
     ],
     feeCurrencies: [
@@ -46,7 +47,7 @@ const chainConfig = {
             coinDenom,
             coinMinimalDenom,
             coinDecimals,
-            coinGeckoId: config.COINGECKO_ID,
+            coinGeckoId,
         },
     ],
     coinType: config.COIN_TYPE,
