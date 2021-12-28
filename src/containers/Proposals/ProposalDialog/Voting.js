@@ -58,7 +58,6 @@ const Voting = (props) => {
 
         aminoSignTxAndBroadcast(tx, props.address, (error, result) => {
             setInProgress(false);
-            console.log('55555555', error, result);
             if (error) {
                 if (error.indexOf('not yet found on the chain') > -1) {
                     props.pendingDialog();
