@@ -52,7 +52,7 @@ const chainConfig = {
         average: config.GAS_PRICE_STEP_AVERAGE,
         high: config.GAS_PRICE_STEP_HIGH,
     },
-    features: ['stargate', 'ibc-transfer', 'cosmwasm', 'no-legacy-stdTx', 'ibc-go'],
+    features: config.FEATURES,
 };
 
 export const initializeChain = (cb) => {
