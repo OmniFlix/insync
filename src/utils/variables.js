@@ -53,6 +53,7 @@ const variables = {
         no_data_found: 'No data found',
         success: 'Success',
         transaction_failed: 'Transaction Failed',
+        transaction_processing: 'Transaction is in process. use high gas for quick transaction',
         claimed_success: 'CLAIMED TOKENS Successfully',
         transaction_hash: 'Transaction Hash',
         delegator_address: 'Delegator Address',

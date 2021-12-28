@@ -8,6 +8,7 @@ import { aminoSignTxAndBroadcast } from '../../../helper';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import { showMessage } from '../../../actions/snackbar';
+import { showDelegateFailedDialog, showDelegateProcessingDialog } from '../../../actions/stake';
 
 const Voting = (props) => {
     const [value, setValue] = React.useState('');
@@ -55,11 +56,23 @@ const Voting = (props) => {
             memo: '',
         };
 
-        aminoSignTxAndBroadcast(tx, props.address, () => {
-            props.handleClose();
+        aminoSignTxAndBroadcast(tx, props.address, (error, result) => {
             setInProgress(false);
-            props.fetchVoteDetails(props.proposalId, props.address);
-            props.fetchProposalTally(props.proposalId);
+            console.log('55555555', error, result);
+            if (error) {
+                if (error.indexOf('not yet found on the chain') > -1) {
+                    props.pendingDialog();
+                    return;
+                }
+                props.failedDialog();
+                props.showMessage(error);
+                return;
+            }
+            if (result) {
+                props.handleClose();
+                props.fetchVoteDetails(props.proposalId, props.address);
+                props.fetchProposalTally(props.proposalId);
+            }
         });
     };
 
@@ -104,10 +117,12 @@ const Voting = (props) => {
 };
 
 Voting.propTypes = {
+    failedDialog: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
     fetchVoteDetails: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    pendingDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     address: PropTypes.string,
     proposalId: PropTypes.string,
@@ -123,6 +138,8 @@ const stateToProps = (state) => {
 const actionToProps = {
     fetchProposalTally,
     fetchVoteDetails,
+    failedDialog: showDelegateFailedDialog,
+    pendingDialog: showDelegateProcessingDialog,
     handleClose: hideProposalDialog,
     showMessage,
 };
