@@ -33,7 +33,7 @@ const DelegateDialog = (props) => {
         setInProgress(true);
         let gasValue = config.DEFAULT_GAS;
         if (props.name === 'Redelegate') {
-            gasValue = config.DEFAULT_GAS + 50000;
+            gasValue = config.DEFAULT_GAS + 100000;
         }
 
         const updatedTx = {
