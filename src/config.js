@@ -11,9 +11,10 @@ export const config = {
     COIN_DECIMALS: 6,
     PREFIX: 'omniflix',
     COIN_TYPE: 118,
-    DEFAULT_GAS: 250000,
-    GAS_PRICE_STEP_LOW: 0.01,
+    COINGECKO_ID: '-',
+    DEFAULT_GAS: 200000,
+    GAS_PRICE_STEP_LOW: 0.0025,
     GAS_PRICE_STEP_AVERAGE: 0.025,
     GAS_PRICE_STEP_HIGH: 0.04,
-    FEATURES: ['stargate', 'ibc-transfer', 'cosmwasm', 'no-legacy-stdTx', 'ibc-go'],
+    FEATURES: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
 };
