@@ -24,8 +24,8 @@ const ClaimDialog = (props) => {
     const handleClaimAll = () => {
         setInProgress(true);
         let gasValue = config.DEFAULT_GAS;
-        if (props.rewards && props.rewards.rewards && props.rewards.rewards.length && props.rewards.rewards.length > 2) {
-            gasValue = (props.rewards.rewards.length - 2) * 80000 + config.DEFAULT_GAS;
+        if (props.rewards && props.rewards.rewards && props.rewards.rewards.length) {
+            gasValue = (props.rewards.rewards.length - 1) * 80000 + config.DEFAULT_GAS;
         }
 
         const updatedTx = {
