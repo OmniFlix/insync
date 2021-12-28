@@ -55,6 +55,7 @@ const chainConfig = {
         average: config.GAS_PRICE_STEP_AVERAGE,
         high: config.GAS_PRICE_STEP_HIGH,
     },
+    features: config.FEATURES,
 };
 
 export const initializeChain = (cb) => {
@@ -162,6 +163,7 @@ export const aminoSignTxAndBroadcast = (tx, address, cb) => {
             account.accountNumber = 0;
             account.sequence = 0;
         }
+
         const signDoc = makeSignDoc(
             tx.msgs ? tx.msgs : [tx.msg],
             tx.fee,
