@@ -11,6 +11,7 @@ export const config = {
     COIN_DECIMALS: 6,
     PREFIX: 'juno',
     COIN_TYPE: 118,
+    COINGECKO_ID: '-',
     DEFAULT_GAS: 250000,
     GAS_PRICE_STEP_LOW: 0.025,
     GAS_PRICE_STEP_AVERAGE: 0.03,
