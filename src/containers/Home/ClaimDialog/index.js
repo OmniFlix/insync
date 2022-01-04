@@ -68,6 +68,8 @@ const ClaimDialog = (props) => {
                 props.setTokens(tokens);
                 props.successDialog(result.transactionHash);
                 props.fetchRewards(props.address);
+                props.getBalance(props.address);
+                props.fetchVestingBalance(props.address);
             }
         });
     };
