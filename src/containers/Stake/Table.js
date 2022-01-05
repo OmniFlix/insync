@@ -134,11 +134,8 @@ class Table extends Component {
         }]
         ;
 
-        let dataToMap = this.props.active === 2 ? this.props.delegatedValidatorList
+        const dataToMap = this.props.active === 2 ? this.props.delegatedValidatorList
             : this.randomNoRepeats(this.props.validatorList);
-        if (this.props.home && (dataToMap.length > 6)) {
-            dataToMap = dataToMap.slice(0, 6);
-        }
 
         const tableData = dataToMap && dataToMap.length
             ? dataToMap.map((item) =>
