@@ -36,6 +36,7 @@ class NavBar extends Component {
         this.initKeplr = this.initKeplr.bind(this);
         this.handleFetch = this.handleFetch.bind(this);
         this.handleChain = this.handleChain.bind(this);
+        this.getValidatorImage = this.getValidatorImage.bind(this);
     }
 
     componentDidMount () {
@@ -67,13 +68,7 @@ class NavBar extends Component {
         if (!this.props.validatorList.length && !this.props.validatorListInProgress) {
             this.props.getValidators((data) => {
                 if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
-                    data.map((value) => {
-                        if (value && value.description && value.description.identity) {
-                            this.props.fetchValidatorImage(value.description.identity);
-                        }
-
-                        return null;
-                    });
+                    this.getValidatorImage(0, data);
                 }
             });
         }
@@ -123,6 +118,26 @@ class NavBar extends Component {
 
     componentWillUnmount () {
         window.removeEventListener('keplr_keystorechange', this.handleChain);
+    }
+
+    getValidatorImage (index, data) {
+        const array = [];
+        for (let i = 0; i < 3; i++) {
+            if (data[index + i]) {
+                const value = data[index + i];
+                if (value && value.description && value.description.identity) {
+                    array.push(this.props.fetchValidatorImage(value.description.identity));
+                }
+            } else {
+                break;
+            }
+        }
+
+        Promise.all(array).then(() => {
+            if (index + 3 < data.length - 1) {
+                this.getValidatorImage(index + 3, data);
+            }
+        });
     }
 
     handleFetch (address) {
