@@ -2,7 +2,7 @@ export const config = {
     RPC_URL: 'https://rpc.cheqd.net',
     REST_URL: 'https://api.cheqd.net',
     EXPLORER_URL: 'https://cheqd.didx.co.za',
-    NETWORK_NAME: 'Cheqd',
+    NETWORK_NAME: 'cheqd',
     NETWORK_TYPE: 'mainnet',
     CHAIN_ID: 'cheqd-mainnet-1',
     CHAIN_NAME: 'Cheqd Mainnet',
