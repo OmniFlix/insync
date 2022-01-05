@@ -283,7 +283,7 @@ const fetchValidatorImageError = (message) => {
 export const fetchValidatorImage = (id) => (dispatch) => {
     dispatch(fetchValidatorImageInProgress());
     const URL = validatorImageURL(id);
-    Axios.get(URL, {
+    return Axios.get(URL, {
         headers: {
             Accept: 'application/json, text/plain, */*',
             Connection: 'keep-alive',
