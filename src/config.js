@@ -14,7 +14,7 @@ export const config = {
     COINGECKO_ID: '-',
     DEFAULT_GAS: 200000,
     GAS_PRICE_STEP_LOW: 0.025,
-    GAS_PRICE_STEP_AVERAGE: 0.025,
+    GAS_PRICE_STEP_AVERAGE: 0.03,
     GAS_PRICE_STEP_HIGH: 0.04,
     FEATURES: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
 };
