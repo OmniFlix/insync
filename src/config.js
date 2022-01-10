@@ -2,6 +2,7 @@ export const config = {
     RPC_URL: 'https://rpc.comdex.one',
     REST_URL: 'https://rest.comdex.one',
     EXPLORER_URL: 'https://www.mintscan.io/comdex',
+    STAKING_URL: 'https://comdex.omniflix.co/stake',
     NETWORK_NAME: 'Comdex',
     NETWORK_TYPE: 'mainnet',
     CHAIN_ID: 'comdex-1',
