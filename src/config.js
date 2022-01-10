@@ -2,6 +2,7 @@ export const config = {
     RPC_URL: 'https://rpc.chihuahua.wtf',
     REST_URL: 'https://api.chihuahua.wtf',
     EXPLORER_URL: 'https://www.mintscan.io/chihuahua',
+    STAKING_URL: 'https://chihuahua.omniflix.co/stake',
     NETWORK_NAME: 'Chihuahua',
     NETWORK_TYPE: 'mainnet',
     CHAIN_ID: 'chihuahua-1',
