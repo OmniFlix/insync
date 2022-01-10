@@ -57,6 +57,7 @@ const chainConfig = {
         high: config.GAS_PRICE_STEP_HIGH,
     },
     features: config.FEATURES,
+    walletUrlForStaking: config.STAKING_URL,
 };
 
 export const initializeChain = (cb) => {

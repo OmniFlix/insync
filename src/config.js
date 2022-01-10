@@ -2,6 +2,7 @@ export const config = {
     RPC_URL: 'https://rpc.cheqd.net',
     REST_URL: 'https://api.cheqd.net',
     EXPLORER_URL: 'https://cheqd.didx.co.za',
+    STAKING_URL: 'https://cheqd.omniflix.co/stake',
     NETWORK_NAME: 'cheqd',
     NETWORK_TYPE: 'mainnet',
     CHAIN_ID: 'cheqd-mainnet-1',
