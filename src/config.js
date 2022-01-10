@@ -2,6 +2,7 @@ export const config = {
     RPC_URL: 'https://rpc.flixnet.omniflix.network',
     REST_URL: 'https://rest.flixnet.omniflix.network',
     EXPLORER_URL: 'https://explorer.omniflix.network',
+    STAKING_URL: 'https://flix.omniflix.co/stake',
     NETWORK_NAME: 'OmniFlix',
     NETWORK_TYPE: 'testnet',
     CHAIN_ID: 'flixnet-3',
