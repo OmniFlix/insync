@@ -71,7 +71,7 @@ class Home extends Component {
 
         return (
             <>
-                <NavBar/>
+                <NavBar home={true}/>
                 <div className="home padding">
                     <div className="card">
                         <div className="left_content">
