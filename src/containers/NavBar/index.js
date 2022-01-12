@@ -37,20 +37,26 @@ class NavBar extends Component {
         this.handleFetch = this.handleFetch.bind(this);
         this.handleChain = this.handleChain.bind(this);
         this.getValidatorImage = this.getValidatorImage.bind(this);
+        this.getProposalDetails = this.getProposalDetails.bind(this);
     }
 
     componentDidMount () {
         if (localStorage.getItem('of_co_address')) {
             this.initKeplr();
         }
-        if (!this.props.stake) {
+        if (!this.props.stake && this.props.proposalTab) {
             this.props.getProposals((result) => {
                 if (result && result.length) {
+                    const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
                             Object.keys(this.props.proposalDetails).find((key) => key === val.id);
                         if (!filter) {
-                            this.props.fetchProposalDetails(val.id);
+                            if (this.props.home && val.status !== 2) {
+                                return null;
+                            }
+
+                            array.push(val.id);
                         }
                         if (val.status === 2) {
                             this.props.fetchProposalTally(val.id);
@@ -58,6 +64,7 @@ class NavBar extends Component {
 
                         return null;
                     });
+                    this.getProposalDetails(array);
                 }
             });
         }
@@ -65,10 +72,36 @@ class NavBar extends Component {
             this.handleFetch(this.props.address);
         }
 
-        if (!this.props.validatorList.length && !this.props.validatorListInProgress) {
+        if (!this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
             this.props.getValidators((data) => {
+                if (!this.props.stake) {
+                    this.props.getProposals((result) => {
+                        if (result && result.length) {
+                            const array = [];
+                            result.map((val) => {
+                                const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
+                                    Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                                if (!filter) {
+                                    if (this.props.home && val.status !== 2) {
+                                        return null;
+                                    }
+
+                                    array.push(val.id);
+                                }
+                                if (val.status === 2) {
+                                    this.props.fetchProposalTally(val.id);
+                                }
+
+                                return null;
+                            });
+                            this.getProposalDetails(array);
+                        }
+                    });
+                }
+
                 if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
-                    this.getValidatorImage(0, data);
+                    const array = data.filter((val) => val && val.description && val.description.identity);
+                    this.getValidatorImage(0, array);
                 }
             });
         }
@@ -98,11 +131,16 @@ class NavBar extends Component {
         if ((pp.address !== this.props.address) && pp.address !== '' && !this.props.stake) {
             this.props.getProposals((result) => {
                 if (result && result.length) {
+                    const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
                             Object.keys(this.props.proposalDetails).find((key) => key === val.id);
                         if (!filter) {
-                            this.props.fetchProposalDetails(val.id);
+                            if (this.props.home && val.status !== 2) {
+                                return null;
+                            }
+
+                            array.push(val.id);
                         }
                         if (val.status === 2) {
                             this.props.fetchProposalTally(val.id);
@@ -111,6 +149,7 @@ class NavBar extends Component {
 
                         return null;
                     });
+                    this.getProposalDetails(array);
                 }
             });
         }
@@ -140,15 +179,31 @@ class NavBar extends Component {
         });
     }
 
+    getProposalDetails (data) {
+        if (data && data.length && data[0]) {
+            this.props.fetchProposalDetails(data[0], (res) => {
+                if (data[1]) {
+                    data.splice(0, 1);
+                    this.getProposalDetails(data);
+                }
+            });
+        }
+    }
+
     handleFetch (address) {
+        if (!this.props.proposalTab && !this.props.stake) {
+            this.props.getUnBondingDelegations(address);
+            this.props.fetchRewards(address);
+        }
         if (!this.props.proposalTab) {
             this.props.getDelegations(address);
-            this.props.getDelegatedValidatorsDetails(address);
         }
-        this.props.getUnBondingDelegations(address);
-        this.props.getBalance(address);
-        this.props.fetchVestingBalance(address);
-        this.props.fetchRewards(address);
+        this.props.getBalance(address, (res) => {
+            this.props.fetchVestingBalance(address);
+            if (!this.props.proposalTab) {
+                this.props.getDelegatedValidatorsDetails(address);
+            }
+        });
     }
 
     initKeplr () {
@@ -237,6 +292,7 @@ NavBar.propTypes = {
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
     address: PropTypes.string,
+    home: PropTypes.bool,
     proposalTab: PropTypes.bool,
     proposalsInProgress: PropTypes.bool,
     stake: PropTypes.bool,

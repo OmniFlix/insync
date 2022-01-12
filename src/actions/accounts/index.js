@@ -99,7 +99,7 @@ const fetchBalanceError = (message) => {
     };
 };
 
-export const getBalance = (address) => (dispatch) => {
+export const getBalance = (address, cb) => (dispatch) => {
     dispatch(fetchBalanceInProgress());
     const url = urlFetchBalance(address);
     Axios.get(url, {
@@ -110,6 +110,7 @@ export const getBalance = (address) => (dispatch) => {
     })
         .then((res) => {
             dispatch(fetchBalanceSuccess(res.data && res.data.result));
+            cb(res);
         })
         .catch((error) => {
             dispatch(fetchBalanceError(
@@ -119,6 +120,7 @@ export const getBalance = (address) => (dispatch) => {
                     ? error.response.data.message
                     : 'Failed!',
             ));
+            cb(null);
         });
 };
 
