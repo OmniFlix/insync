@@ -238,7 +238,7 @@ const fetchProposalDetailsError = (message) => {
     };
 };
 
-export const fetchProposalDetails = (id) => (dispatch) => {
+export const fetchProposalDetails = (id, cb) => (dispatch) => {
     dispatch(fetchProposalDetailsInProgress());
 
     const url = urlFetchProposalDetails(id);
@@ -250,6 +250,7 @@ export const fetchProposalDetails = (id) => (dispatch) => {
     })
         .then((res) => {
             dispatch(fetchProposalDetailsSuccess(res.data && res.data.txs, id));
+            cb(res);
         })
         .catch((error) => {
             dispatch(fetchProposalDetailsError(
@@ -259,5 +260,6 @@ export const fetchProposalDetails = (id) => (dispatch) => {
                     ? error.response.data.message
                     : 'Failed!',
             ));
+            cb(null);
         });
 };
