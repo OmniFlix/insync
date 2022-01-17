@@ -17,15 +17,16 @@ import { fetchRewards, fetchVestingBalance, getBalance } from '../../../actions/
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import CircularProgress from '../../../components/CircularProgress';
+import { gas } from '../../../defaultGasValues';
 
 const ClaimDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
     const handleClaimAll = () => {
         setInProgress(true);
-        let gasValue = config.DEFAULT_GAS;
-        if (props.rewards && props.rewards.rewards && props.rewards.rewards.length) {
-            gasValue = (props.rewards.rewards.length - 1) * 80000 + config.DEFAULT_GAS;
+        let gasValue = gas.claim_reward;
+        if (props.rewards && props.rewards.rewards && props.rewards.rewards.length > 1) {
+            gasValue = (props.rewards.rewards.length - 1) / 2 * gas.claim_reward + gas.claim_reward;
         }
 
         const updatedTx = {
@@ -91,10 +92,10 @@ const ClaimDialog = (props) => {
             },
             fee: {
                 amount: [{
-                    amount: String(config.DEFAULT_GAS * config.GAS_PRICE_STEP_LOW),
+                    amount: String(gas.claim_reward * config.GAS_PRICE_STEP_LOW),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(config.DEFAULT_GAS),
+                gas: String(gas.claim_reward),
             },
             memo: '',
         };
