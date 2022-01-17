@@ -255,7 +255,7 @@ class NavBar extends Component {
                     </div>}
                     {localStorage.getItem('of_co_address') || this.props.address
                         ? <DisconnectButton/>
-                        : <ConnectButton proposalTab={this.props.proposalTab}/>}
+                        : <ConnectButton proposalTab={this.props.proposalTab} stake={this.props.stake}/>}
                 </div>
             </div>
         );

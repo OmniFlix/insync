@@ -110,7 +110,9 @@ export const getBalance = (address, cb) => (dispatch) => {
     })
         .then((res) => {
             dispatch(fetchBalanceSuccess(res.data && res.data.result));
-            cb(res);
+            if (cb) {
+                cb(res);
+            }
         })
         .catch((error) => {
             dispatch(fetchBalanceError(
@@ -120,7 +122,9 @@ export const getBalance = (address, cb) => (dispatch) => {
                     ? error.response.data.message
                     : 'Failed!',
             ));
-            cb(null);
+            if (cb) {
+                cb(null);
+            }
         });
 };
 
