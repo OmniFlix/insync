@@ -12,7 +12,6 @@ import UnDelegateButton from './UnDelegateButton';
 import ReDelegateButton from './ReDelegateButton';
 import ClaimButton from './ClaimButton';
 import { config } from '../../../config';
-import DotsLoading from '../../../components/DotsLoading';
 
 const TokenDetails = (props) => {
     const staked = props.delegations.reduce((accumulator, currentValue) => {
@@ -41,9 +40,7 @@ const TokenDetails = (props) => {
                 <p>{variables[props.lang]['available_tokens']}</p>
                 <div className="chip">
                     <img alt="available tokens" src={totalTokens}/>
-                    {props.balanceInProgress
-                        ? <DotsLoading/>
-                        : <p>{available / (10 ** config.COIN_DECIMALS)}</p>}
+                    <p>{available / (10 ** config.COIN_DECIMALS)}</p>
                 </div>
                 <StakeTokensButton/>
             </div>
@@ -51,9 +48,7 @@ const TokenDetails = (props) => {
                 <p>{variables[props.lang]['staked_tokens']}</p>
                 <div className="chip">
                     <img alt="total tokens" src={stakedTokens}/>
-                    {props.delegationsInProgress
-                        ? <DotsLoading/>
-                        : <p>{staked / (10 ** config.COIN_DECIMALS)}</p>}
+                    <p>{staked / (10 ** config.COIN_DECIMALS)}</p>
                 </div>
                 <div className="buttons_div">
                     <UnDelegateButton/>
@@ -65,9 +60,7 @@ const TokenDetails = (props) => {
                 <p>{variables[props.lang].rewards}</p>
                 <div className="chip">
                     <img alt="total tokens" src={rewardsIcon}/>
-                    {props.rewardsInProgress
-                        ? <DotsLoading/>
-                        : <p>{rewards > 0 ? rewards.toFixed(4) : 0}</p>}
+                    <p>{rewards > 0 ? rewards.toFixed(4) : 0}</p>
                 </div>
                 <div className="buttons_div">
                     <ClaimButton disable={rewards <= 0}/>
@@ -77,9 +70,7 @@ const TokenDetails = (props) => {
                 <p>{variables[props.lang]['un_staked_tokens']}</p>
                 <div className="chip">
                     <img alt="unstaked tokens" src={unStake}/>
-                    {props.unBondingDelegationsInProgress
-                        ? <DotsLoading/>
-                        : <p>{unStaked / (10 ** config.COIN_DECIMALS)}</p>}
+                    <p>{unStaked / (10 ** config.COIN_DECIMALS)}</p>
                 </div>
             </div>
         </div>
