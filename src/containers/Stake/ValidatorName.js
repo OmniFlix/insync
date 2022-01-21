@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 
+const colors = ['#FFE761', '#EC2C00', '#0023DA', '#80E3F2',
+    '#E86FC5', '#1F3278', '#C9387E', '#7041B9'];
+
 const ValidatorName = (props) => {
     const image = props.value && props.value.description && props.value.description.identity &&
         props.validatorImages && props.validatorImages.length &&
@@ -17,8 +20,12 @@ const ValidatorName = (props) => {
                     className="image"
                     src={image[0].them[0].pictures.primary.url}/>
                 : props.value.description && props.value.description.moniker
-                    ? <div className="image">{props.value.description.moniker[0]}</div>
-                    : <div className="image"/>}
+                    ? <div
+                        className="image"
+                        style={{ background: colors[Math.floor((Math.random() * colors.length))] }}>
+                        {props.value.description.moniker[0]}
+                    </div>
+                    : <div className="image" style={{ background: colors[Math.floor((Math.random() * colors.length))] }}/>}
             <p className="heading_text1">{props.name}</p>
         </div>
     );
