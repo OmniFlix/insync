@@ -25,14 +25,17 @@ import { showMessage } from '../../../actions/snackbar';
 import { config } from '../../../config';
 import CircularProgress from '../../../components/CircularProgress';
 import { connect } from 'react-redux';
+import { gas } from '../../../defaultGasValues';
 
 const DelegateDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
     const handleDelegateType = () => {
         setInProgress(true);
-        let gasValue = config.DEFAULT_GAS;
+        let gasValue = gas.delegate;
         if (props.name === 'Redelegate') {
-            gasValue = config.DEFAULT_GAS + 100000;
+            gasValue = gas.re_delegate;
+        } else if (props.name === 'Undelegate') {
+            gasValue = gas.un_delegate;
         }
 
         const updatedTx = {

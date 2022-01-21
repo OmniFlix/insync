@@ -39,12 +39,11 @@ const ConnectButton = (props) => {
             if (!props.proposalTab) {
                 props.getDelegations(addressList[0] && addressList[0].address);
             }
-            props.getBalance(addressList[0] && addressList[0].address, (res) => {
-                props.fetchVestingBalance(addressList[0] && addressList[0].address);
-                if (!props.proposalTab) {
-                    props.getDelegatedValidatorsDetails(addressList[0] && addressList[0].address);
-                }
-            });
+            props.getBalance(addressList[0] && addressList[0].address);
+            props.fetchVestingBalance(addressList[0] && addressList[0].address);
+            if (!props.proposalTab) {
+                props.getDelegatedValidatorsDetails(addressList[0] && addressList[0].address);
+            }
             localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
         });
     };

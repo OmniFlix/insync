@@ -14,6 +14,7 @@ import {
     showDelegateSuccessDialog,
 } from '../../../actions/stake';
 import { fetchVestingBalance, getBalance } from '../../../actions/accounts';
+import { gas } from '../../../defaultGasValues';
 
 const Voting = (props) => {
     const [value, setValue] = React.useState('');
@@ -53,10 +54,10 @@ const Voting = (props) => {
             }],
             fee: {
                 amount: [{
-                    amount: String(config.DEFAULT_GAS * config.GAS_PRICE_STEP_AVERAGE),
+                    amount: String(gas.vote * config.GAS_PRICE_STEP_AVERAGE),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(config.DEFAULT_GAS),
+                gas: String(gas.vote),
             },
             memo: '',
         };

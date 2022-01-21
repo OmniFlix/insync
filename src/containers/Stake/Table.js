@@ -7,7 +7,7 @@ import CircularProgress from '../../components/CircularProgress';
 import UnDelegateButton from '../Home/TokenDetails/UnDelegateButton';
 import ReDelegateButton from '../Home/TokenDetails/ReDelegateButton';
 import DelegateButton from './DelegateButton';
-import { commaSeparator } from '../../utils/numberFormats';
+import { formatCount } from '../../utils/numberFormats';
 import ValidatorName from './ValidatorName';
 import { config } from '../../config';
 import ConnectButton from '../NavBar/ConnectButton';
@@ -80,7 +80,7 @@ class Table extends Component {
                 sort: true,
                 customBodyRender: (value) => (
                     <div className="voting_power">
-                        <p>{commaSeparator(parseFloat(value).toFixed(2))}</p>
+                        <p>{formatCount(value, true)}</p>
                     </div>
                 ),
             },

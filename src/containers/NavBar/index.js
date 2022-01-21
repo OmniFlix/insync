@@ -22,7 +22,12 @@ import {
     setAccountAddress,
     showSelectAccountDialog,
 } from '../../actions/accounts';
-import { fetchValidatorImage, getDelegatedValidatorsDetails, getValidators } from '../../actions/stake';
+import {
+    fetchValidatorImage,
+    fetchValidatorImageSuccess,
+    getDelegatedValidatorsDetails,
+    getValidators,
+} from '../../actions/stake';
 import { withRouter } from 'react-router-dom';
 import ConnectButton from './ConnectButton';
 import CopyButton from '../../components/CopyButton/TextButton';
@@ -44,7 +49,9 @@ class NavBar extends Component {
         if (localStorage.getItem('of_co_address')) {
             this.initKeplr();
         }
-        if (!this.props.stake && this.props.proposalTab) {
+
+        if (this.props.proposals && !this.props.proposals.length &&
+            !this.props.proposalsInProgress && !this.props.stake && this.props.proposalTab) {
             this.props.getProposals((result) => {
                 if (result && result.length) {
                     const array = [];
@@ -64,47 +71,24 @@ class NavBar extends Component {
 
                         return null;
                     });
-                    this.getProposalDetails(array);
+                    this.getProposalDetails(array && array.reverse());
                 }
             });
         }
+
         if (this.props.address) {
             this.handleFetch(this.props.address);
         }
 
         if (!this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
             this.props.getValidators((data) => {
-                if (!this.props.stake) {
-                    this.props.getProposals((result) => {
-                        if (result && result.length) {
-                            const array = [];
-                            result.map((val) => {
-                                const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                                    Object.keys(this.props.proposalDetails).find((key) => key === val.id);
-                                if (!filter) {
-                                    if (this.props.home && val.status !== 2) {
-                                        return null;
-                                    }
-
-                                    array.push(val.id);
-                                }
-                                if (val.status === 2) {
-                                    this.props.fetchProposalTally(val.id);
-                                }
-
-                                return null;
-                            });
-                            this.getProposalDetails(array);
-                        }
-                    });
-                }
-
                 if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
                     const array = data.filter((val) => val && val.description && val.description.identity);
                     this.getValidatorImage(0, array);
                 }
             });
         }
+
         window.addEventListener('keplr_keystorechange', () => {
             if (localStorage.getItem('of_co_address') || this.props.address !== '') {
                 this.handleChain();
@@ -149,9 +133,18 @@ class NavBar extends Component {
 
                         return null;
                     });
-                    this.getProposalDetails(array);
+                    this.getProposalDetails(array && array.reverse());
                 }
             });
+        }
+
+        if ((pp.address !== this.props.address) && pp.address !== '') {
+            this.props.getBalance(this.props.address);
+            this.props.fetchVestingBalance(this.props.address);
+            this.props.fetchRewards(this.props.address);
+            this.props.getUnBondingDelegations(this.props.address);
+            this.props.getDelegations(this.props.address);
+            this.props.getDelegatedValidatorsDetails(this.props.address);
         }
     }
 
@@ -164,8 +157,15 @@ class NavBar extends Component {
         for (let i = 0; i < 3; i++) {
             if (data[index + i]) {
                 const value = data[index + i];
-                if (value && value.description && value.description.identity) {
+                let list = sessionStorage.getItem(`${config.PREFIX}_images`) || '{}';
+                list = JSON.parse(list);
+                if (value && value.description && value.description.identity && !list[value.description.identity]) {
                     array.push(this.props.fetchValidatorImage(value.description.identity));
+                } else if (value && value.description && value.description.identity && list[value.description.identity]) {
+                    this.props.fetchValidatorImageSuccess({
+                        ...list[value.description.identity],
+                        _id: value.description.identity,
+                    });
                 }
             } else {
                 break;
@@ -191,26 +191,38 @@ class NavBar extends Component {
     }
 
     handleFetch (address) {
+        if (this.props.balance && !this.props.balance.length &&
+            !this.props.balanceInProgress) {
+            this.props.getBalance(address);
+        }
+        if (this.props.vestingBalance && !this.props.vestingBalance.value &&
+            !this.props.vestingBalanceInProgress) {
+            this.props.fetchVestingBalance(address);
+        }
+
         if (!this.props.proposalTab && !this.props.stake) {
-            this.props.getUnBondingDelegations(address);
             this.props.fetchRewards(address);
         }
-        if (!this.props.proposalTab) {
+
+        if (this.props.unBondingDelegations && !this.props.unBondingDelegations.length &&
+            !this.props.unBondingDelegationsInProgress && !this.props.proposalTab && !this.props.stake) {
+            this.props.getUnBondingDelegations(address);
+        }
+        if (this.props.delegations && !this.props.delegations.length &&
+            !this.props.delegationsInProgress && !this.props.proposalTab) {
             this.props.getDelegations(address);
         }
-        this.props.getBalance(address, (res) => {
-            this.props.fetchVestingBalance(address);
-            if (!this.props.proposalTab) {
-                this.props.getDelegatedValidatorsDetails(address);
-            }
-        });
+        if (this.props.delegatedValidatorList && !this.props.delegatedValidatorList.length &&
+            !this.props.delegatedValidatorListInProgress && !this.props.proposalTab) {
+            this.props.getDelegatedValidatorsDetails(address);
+        }
     }
 
     initKeplr () {
-        window.onload = () => this.handleChain();
+        window.onload = () => this.handleChain(true);
     }
 
-    handleChain () {
+    handleChain (fetch) {
         initializeChain((error, addressList) => {
             if (error) {
                 this.props.showMessage(error);
@@ -222,7 +234,9 @@ class NavBar extends Component {
             const previousAddress = localStorage.getItem('of_co_address') &&
                 decode(localStorage.getItem('of_co_address'));
             this.props.setAccountAddress(addressList[0] && addressList[0].address);
-            this.handleFetch(addressList[0] && addressList[0].address);
+            if (fetch) {
+                this.handleFetch(addressList[0] && addressList[0].address);
+            }
             if (addressList[0] && previousAddress !== addressList[0].address) {
                 localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
             }
@@ -263,10 +277,14 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
+    balanceInProgress: PropTypes.bool.isRequired,
+    delegatedValidatorListInProgress: PropTypes.bool.isRequired,
+    delegationsInProgress: PropTypes.bool.isRequired,
     fetchProposalDetails: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
     fetchValidatorImage: PropTypes.func.isRequired,
+    fetchValidatorImageSuccess: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
     fetchVoteDetails: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
@@ -286,29 +304,62 @@ NavBar.propTypes = {
     show: PropTypes.bool.isRequired,
     showDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
+    unBondingDelegationsInProgress: PropTypes.bool.isRequired,
     validatorImages: PropTypes.array.isRequired,
     validatorList: PropTypes.array.isRequired,
     validatorListInProgress: PropTypes.bool.isRequired,
+    vestingBalance: PropTypes.object.isRequired,
+    vestingBalanceInProgress: PropTypes.bool.isRequired,
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
     address: PropTypes.string,
+    balance: PropTypes.array,
+    delegatedValidatorList: PropTypes.array,
+    delegations: PropTypes.arrayOf(
+        PropTypes.shape({
+            validator_address: PropTypes.string,
+            balance: PropTypes.shape({
+                amount: PropTypes.any,
+                denom: PropTypes.string,
+            }),
+        }),
+    ),
     home: PropTypes.bool,
     proposalTab: PropTypes.bool,
     proposalsInProgress: PropTypes.bool,
     stake: PropTypes.bool,
+    unBondingDelegations: PropTypes.arrayOf(
+        PropTypes.shape({
+            entries: PropTypes.arrayOf(
+                PropTypes.shape({
+                    balance: PropTypes.string,
+                }),
+            ),
+        }),
+    ),
 };
 
 const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
-        validatorList: state.stake.validators.list,
-        validatorListInProgress: state.stake.validators.inProgress,
-        validatorImages: state.stake.validators.images,
+        balance: state.accounts.balance.result,
+        balanceInProgress: state.accounts.balance.inProgress,
+        delegations: state.accounts.delegations.result,
+        delegationsInProgress: state.accounts.delegations.inProgress,
+        delegatedValidatorList: state.stake.delegatedValidators.list,
+        delegatedValidatorListInProgress: state.stake.delegatedValidators.inProgress,
         lang: state.language,
         show: state.navBar.show,
         proposals: state.proposals._.list,
         proposalDetails: state.proposals.proposalDetails.value,
         proposalsInProgress: state.proposals._.inProgress,
+        unBondingDelegations: state.accounts.unBondingDelegations.result,
+        unBondingDelegationsInProgress: state.accounts.unBondingDelegations.inProgress,
+        validatorImages: state.stake.validators.images,
+        validatorList: state.stake.validators.list,
+        validatorListInProgress: state.stake.validators.inProgress,
+        vestingBalance: state.accounts.vestingBalance.result,
+        vestingBalanceInProgress: state.accounts.vestingBalance.inProgress,
         voteDetails: state.proposals.voteDetails.value,
         voteDetailsInProgress: state.proposals.voteDetails.inProgress,
     };
@@ -326,6 +377,7 @@ const actionToProps = {
     getValidators,
     fetchRewards,
     fetchValidatorImage,
+    fetchValidatorImageSuccess,
     fetchVestingBalance,
     getProposals,
     fetchVoteDetails,
