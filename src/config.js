@@ -13,7 +13,6 @@ export const config = {
     PREFIX: 'omniflix',
     COIN_TYPE: 118,
     COINGECKO_ID: '-',
-    DEFAULT_GAS: 200000,
     GAS_PRICE_STEP_LOW: 0.0025,
     GAS_PRICE_STEP_AVERAGE: 0.025,
     GAS_PRICE_STEP_HIGH: 0.04,
