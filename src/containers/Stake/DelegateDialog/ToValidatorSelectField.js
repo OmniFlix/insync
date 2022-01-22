@@ -5,6 +5,9 @@ import SelectField from '../../../components/SelectField/WithChildren';
 import { setToValidator } from '../../../actions/stake';
 import { MenuItem } from '@material-ui/core';
 
+const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
+    '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
+
 const ToValidatorSelectField = (props) => {
     const handleChange = (value) => {
         if (props.value === value) {
@@ -22,7 +25,7 @@ const ToValidatorSelectField = (props) => {
             value={props.value}
             onChange={handleChange}>
             {props.validatorList && props.validatorList.length &&
-            props.validatorList.map((item) => {
+            props.validatorList.map((item, index) => {
                 const image = item && item.description && item.description.identity &&
                         props.validatorImages && props.validatorImages.length &&
                         props.validatorImages.filter((value) => value._id === item.description.identity.toString());
@@ -41,8 +44,12 @@ const ToValidatorSelectField = (props) => {
                                 className="image"
                                 src={image[0].them[0].pictures.primary.url}/>
                             : item.description && item.description.moniker
-                                ? <span className="image">{item.description.moniker[0]}</span>
-                                : <span className="image"/>}
+                                ? <span
+                                    className="image"
+                                    style={{ background: colors[index % 6] }}>
+                                    {item.description.moniker[0]}
+                                </span>
+                                : <span className="image" style={{ background: colors[index % 6] }}/>}
                         {item.name ? item.name : item.type
                             ? item.name : item.description && item.description.moniker}
                     </MenuItem>

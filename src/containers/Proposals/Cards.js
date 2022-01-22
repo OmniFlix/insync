@@ -8,6 +8,7 @@ import { Button } from '@material-ui/core';
 import { showProposalDialog } from '../../actions/proposals';
 import moment from 'moment';
 import { tally } from '../../utils/numberFormats';
+import DotsLoading from '../../components/DotsLoading';
 
 const Cards = (props) => {
     const [page, setPage] = useState(1);
@@ -74,6 +75,9 @@ const Cards = (props) => {
 
                             return null;
                         });
+                        let inProgress = props.proposalDetails && Object.keys(props.proposalDetails).length &&
+                            Object.keys(props.proposalDetails).find((key) => key === proposal.id);
+                        inProgress = !inProgress && props.proposalDetailsInProgress;
 
                         return (
                             <div
@@ -118,11 +122,13 @@ const Cards = (props) => {
                                     <div className="icon_info">
                                         <Icon className="person" icon="person"/>
                                         <span className="key_text">Proposer &nbsp;/&nbsp;
-                                            {proposer && <div className="hash_text" title={proposer}>
-                                                <p className="name">{proposer}</p>
-                                                {proposer &&
+                                            {inProgress
+                                                ? <DotsLoading/>
+                                                : proposer && <div className="hash_text" title={proposer}>
+                                                    <p className="name">{proposer}</p>
+                                                    {proposer &&
                                                 proposer.slice(proposer.length - 6, proposer.length)}
-                                            </div>}
+                                                </div>}
                                         </span>
                                     </div>
                                     <p className="key_text">Submitted on &nbsp;/&nbsp; {proposal.submit_time
@@ -192,6 +198,7 @@ const Cards = (props) => {
 Cards.propTypes = {
     handleShow: PropTypes.func.isRequired,
     proposalDetails: PropTypes.object.isRequired,
+    proposalDetailsInProgress: PropTypes.bool.isRequired,
     tallyDetails: PropTypes.object.isRequired,
     voteDetails: PropTypes.array.isRequired,
     cards: PropTypes.array,
@@ -203,6 +210,7 @@ Cards.propTypes = {
 const stateToProps = (state) => {
     return {
         proposalDetails: state.proposals.proposalDetails.value,
+        proposalDetailsInProgress: state.proposals.proposalDetails.inProgress,
         proposalsInProgress: state.proposals._.inProgress,
         voteDetails: state.proposals.voteDetails.value,
         tallyDetails: state.proposals.tallyDetails.value,
