@@ -2,6 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 
+const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
+    '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
+
 const ValidatorName = (props) => {
     const image = props.value && props.value.description && props.value.description.identity &&
         props.validatorImages && props.validatorImages.length &&
@@ -17,8 +20,12 @@ const ValidatorName = (props) => {
                     className="image"
                     src={image[0].them[0].pictures.primary.url}/>
                 : props.value.description && props.value.description.moniker
-                    ? <div className="image">{props.value.description.moniker[0]}</div>
-                    : <div className="image"/>}
+                    ? <div
+                        className="image"
+                        style={{ background: colors[props.index % 6] }}>
+                        {props.value.description.moniker[0]}
+                    </div>
+                    : <div className="image" style={{ background: colors[props.index % 6] }}/>}
             <p className="heading_text1">{props.name}</p>
         </div>
     );
@@ -28,6 +35,7 @@ ValidatorName.propTypes = {
     name: PropTypes.string.isRequired,
     validatorImages: PropTypes.array.isRequired,
     value: PropTypes.object.isRequired,
+    index: PropTypes.number,
 };
 
 const stateToProps = (state) => {

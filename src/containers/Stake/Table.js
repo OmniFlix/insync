@@ -7,7 +7,7 @@ import CircularProgress from '../../components/CircularProgress';
 import UnDelegateButton from '../Home/TokenDetails/UnDelegateButton';
 import ReDelegateButton from '../Home/TokenDetails/ReDelegateButton';
 import DelegateButton from './DelegateButton';
-import { commaSeparator } from '../../utils/numberFormats';
+import { formatCount } from '../../utils/numberFormats';
 import ValidatorName from './ValidatorName';
 import { config } from '../../config';
 import ConnectButton from '../NavBar/ConnectButton';
@@ -53,7 +53,7 @@ class Table extends Component {
             options: {
                 sort: true,
                 customBodyRender: (value, index) => (
-                    <ValidatorName name={value} value={index.rowData && index.rowData.length && index.rowData[1]}/>
+                    <ValidatorName index={index && index.rowIndex} name={value} value={index.rowData && index.rowData.length && index.rowData[1]}/>
                 ),
             },
         }, {
@@ -80,7 +80,7 @@ class Table extends Component {
                 sort: true,
                 customBodyRender: (value) => (
                     <div className="voting_power">
-                        <p>{commaSeparator(parseFloat(value).toFixed(2))}</p>
+                        <p>{formatCount(value, true)}</p>
                     </div>
                 ),
             },
@@ -142,7 +142,7 @@ class Table extends Component {
                 [
                     item.description && item.description.moniker,
                     item,
-                    parseFloat((Number(item.tokens) / 1000000).toFixed(1)),
+                    parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
                     item.commission && item.commission.commission_rates &&
                     item.commission.commission_rates.rate
                         ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,

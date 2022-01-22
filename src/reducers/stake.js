@@ -282,6 +282,7 @@ const claimDialog = (state = {
         return {
             ...state,
             open: false,
+            validator: 'none',
         };
     case CLAIM_REWARDS_VALIDATOR_SET:
         return {
