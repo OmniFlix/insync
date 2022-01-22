@@ -51,7 +51,7 @@ class NavBar extends Component {
         }
 
         if (this.props.proposals && !this.props.proposals.length &&
-            !this.props.proposalsInProgress && !this.props.stake && this.props.proposalTab) {
+            !this.props.proposalsInProgress && !this.props.stake) {
             this.props.getProposals((result) => {
                 if (result && result.length) {
                     const array = [];
