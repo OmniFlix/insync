@@ -6,8 +6,8 @@ import { setClaimRewardsValidator } from '../../../actions/stake';
 import { MenuItem } from '@material-ui/core';
 import { config } from '../../../config';
 
-const colors = ['#FFE761', '#EC2C00', '#0023DA', '#80E3F2',
-    '#E86FC5', '#1F3278', '#C9387E', '#7041B9'];
+const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
+    '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
 
 const ValidatorSelectField = (props) => {
     const handleChange = (value) => {
@@ -42,7 +42,7 @@ const ValidatorSelectField = (props) => {
             </MenuItem>
             {props.rewards && props.rewards.rewards &&
             props.rewards.rewards.length &&
-            props.rewards.rewards.map((item) => {
+            props.rewards.rewards.map((item, index) => {
                 const validator = item && item.validator_address && props.validatorList && props.validatorList.length &&
                         props.validatorList.filter((value) => value.operator_address === item.validator_address);
 
@@ -63,7 +63,7 @@ const ValidatorSelectField = (props) => {
                                     validator[0].description && validator[0].description.moniker}
                                 className="image"
                                 src={image[0].them[0].pictures.primary.url}/>
-                            : <span className="image" style={{ background: colors[Math.floor((Math.random() * colors.length))] }}/>}
+                            : <span className="image" style={{ background: colors[index % 6] }}/>}
                         {props.validatorList && props.validatorList.map((value) => {
                             const rewards = item.reward && item.reward[0] && item.reward[0].amount
                                 ? item.reward[0].amount / 10 ** config.COIN_DECIMALS : 0;
