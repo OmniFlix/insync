@@ -85,6 +85,7 @@ TokenDetails.propTypes = {
         rewards: PropTypes.array,
         total: PropTypes.array,
     }).isRequired,
+    rewardsInProgress: PropTypes.bool.isRequired,
     unBondingDelegationsInProgress: PropTypes.bool.isRequired,
     balance: PropTypes.arrayOf(
         PropTypes.shape({
@@ -121,6 +122,7 @@ const stateToProps = (state) => {
         unBondingDelegations: state.accounts.unBondingDelegations.result,
         unBondingDelegationsInProgress: state.accounts.unBondingDelegations.inProgress,
         rewards: state.accounts.rewards.result,
+        rewardsInProgress: state.accounts.rewards.inProgress,
     };
 };
 

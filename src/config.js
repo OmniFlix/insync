@@ -13,7 +13,6 @@ export const config = {
     PREFIX: 'cheqd',
     COIN_TYPE: 118,
     COINGECKO_ID: 'cheqd-network',
-    DEFAULT_GAS: 200000,
     GAS_PRICE_STEP_LOW: 25,
     GAS_PRICE_STEP_AVERAGE: 30,
     GAS_PRICE_STEP_HIGH: 50,
