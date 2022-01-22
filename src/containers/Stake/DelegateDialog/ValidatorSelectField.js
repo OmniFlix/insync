@@ -6,8 +6,8 @@ import { setValidator } from '../../../actions/stake';
 import { MenuItem } from '@material-ui/core';
 import variables from '../../../utils/variables';
 
-const colors = ['#FFE761', '#EC2C00', '#0023DA', '#80E3F2',
-    '#E86FC5', '#1F3278', '#C9387E', '#7041B9'];
+const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
+    '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
 
 const ValidatorSelectField = (props) => {
     const handleChange = (value) => {
@@ -36,7 +36,7 @@ const ValidatorSelectField = (props) => {
                 {variables[props.lang]['select_validator']}
             </MenuItem>
             {validatorList && validatorList.length > 0 &&
-            validatorList.map((item) => {
+            validatorList.map((item, index) => {
                 const image = item && item.description && item.description.identity &&
                         props.validatorImages && props.validatorImages.length &&
                         props.validatorImages.filter((value) => value._id === item.description.identity.toString());
@@ -57,10 +57,10 @@ const ValidatorSelectField = (props) => {
                             : item.description && item.description.moniker
                                 ? <span
                                     className="image"
-                                    style={{ background: colors[Math.floor((Math.random() * colors.length))] }}>
+                                    style={{ background: colors[index % 6] }}>
                                     {item.description.moniker[0]}
                                 </span>
-                                : <span className="image" style={{ background: colors[Math.floor((Math.random() * colors.length))] }}/>}
+                                : <span className="image" style={{ background: colors[index % 6] }}/>}
                         {item.name ? item.name : item.type
                             ? item.name : item.description && item.description.moniker}
                     </MenuItem>
