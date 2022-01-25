@@ -13,7 +13,6 @@ export const config = {
     PREFIX: 'comdex',
     COIN_TYPE: 118,
     COINGECKO_ID: 'comdex',
-    DEFAULT_GAS: 200000,
     GAS_PRICE_STEP_LOW: 0.025,
     GAS_PRICE_STEP_AVERAGE: 0.03,
     GAS_PRICE_STEP_HIGH: 0.04,
