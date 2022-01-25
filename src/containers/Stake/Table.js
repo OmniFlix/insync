@@ -14,15 +14,6 @@ import ConnectButton from '../NavBar/ConnectButton';
 import classNames from 'classnames';
 
 class Table extends Component {
-    randomNoRepeats (array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-
-        return array;
-    }
-
     render () {
         const options = {
             serverSide: false,
@@ -31,6 +22,10 @@ class Table extends Component {
             pagination: false,
             selectableRows: 'none',
             selectToolbarPlacement: 'none',
+            sortOrder: {
+                name: 'validator',
+                direction: 'asc',
+            },
             textLabels: {
                 body: {
                     noMatch: this.props.inProgress
@@ -135,7 +130,7 @@ class Table extends Component {
         ;
 
         const dataToMap = this.props.active === 2 ? this.props.delegatedValidatorList
-            : this.randomNoRepeats(this.props.validatorList);
+            : this.props.validatorList;
 
         const tableData = dataToMap && dataToMap.length
             ? dataToMap.map((item) =>
