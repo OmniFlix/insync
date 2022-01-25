@@ -99,7 +99,7 @@ class NavBar extends Component {
     componentDidUpdate (pp, ps, ss) {
         if ((!pp.proposals.length && (pp.proposals !== this.props.proposals) &&
             this.props.proposals && this.props.proposals.length) ||
-            ((pp.address !== this.props.address) && (pp.address === ''))) {
+            ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
             this.props.proposals.map((val) => {
                 const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.id &&
                     this.props.voteDetails.filter((vote) => vote.proposal_id === val.id)[0];
@@ -112,7 +112,8 @@ class NavBar extends Component {
             });
         }
 
-        if ((pp.address !== this.props.address) && pp.address !== '' && !this.props.stake) {
+        if ((pp.address !== this.props.address) && (pp.address !== '') &&
+            (this.props.address !== '') && !this.props.stake) {
             this.props.getProposals((result) => {
                 if (result && result.length) {
                     const array = [];
@@ -138,7 +139,7 @@ class NavBar extends Component {
             });
         }
 
-        if ((pp.address !== this.props.address) && pp.address !== '') {
+        if ((pp.address !== this.props.address) && (pp.address !== '') && (this.props.address !== '')) {
             this.props.getBalance(this.props.address);
             this.props.fetchVestingBalance(this.props.address);
             this.props.fetchRewards(this.props.address);
