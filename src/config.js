@@ -5,7 +5,7 @@ export const config = {
     STAKING_URL: 'https://fetch.omniflix.co/stake',
     NETWORK_NAME: 'Fetch',
     NETWORK_TYPE: 'mainnet',
-    CHAIN_ID: 'fetchhub-2',
+    CHAIN_ID: 'fetchhub-3',
     CHAIN_NAME: 'Fetch',
     COIN_DENOM: 'FET',
     COIN_MINIMAL_DENOM: 'afet',
