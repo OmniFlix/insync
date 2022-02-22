@@ -80,7 +80,7 @@ class NavBar extends Component {
             this.handleFetch(this.props.address);
         }
 
-        if (!this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
+        if (this.props.validatorList && !this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
             this.props.getValidators((data) => {
                 if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
                     const array = data.filter((val) => val && val.description && val.description.identity);
@@ -97,9 +97,10 @@ class NavBar extends Component {
     }
 
     componentDidUpdate (pp, ps, ss) {
-        if ((!pp.proposals.length && (pp.proposals !== this.props.proposals) &&
+        if ((pp.proposals && !pp.proposals.length && (pp.proposals !== this.props.proposals) &&
             this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
+            this.props.proposals && this.props.proposals.length &&
             this.props.proposals.map((val) => {
                 const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.id &&
                     this.props.voteDetails.filter((vote) => vote.proposal_id === val.id)[0];

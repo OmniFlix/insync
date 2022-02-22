@@ -14,12 +14,13 @@ import ClaimButton from './ClaimButton';
 import { config } from '../../../config';
 
 const TokenDetails = (props) => {
-    const staked = props.delegations.reduce((accumulator, currentValue) => {
+    const staked = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
         return accumulator + Number(currentValue.balance.amount);
     }, 0);
     const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
     const available = (balance && balance.amount && Number(balance.amount));
     let unStaked = 0;
+    props.unBondingDelegations && props.unBondingDelegations.length &&
     props.unBondingDelegations.map((delegation) => {
         delegation.entries && delegation.entries.length &&
         delegation.entries.map((entry) => {
