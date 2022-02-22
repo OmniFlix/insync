@@ -13,8 +13,8 @@ export const config = {
     PREFIX: 'omniflix',
     COIN_TYPE: 118,
     COINGECKO_ID: '-',
-    GAS_PRICE_STEP_LOW: 0.0025,
-    GAS_PRICE_STEP_AVERAGE: 0.025,
-    GAS_PRICE_STEP_HIGH: 0.04,
+    GAS_PRICE_STEP_LOW: 0.001,
+    GAS_PRICE_STEP_AVERAGE: 0.0025,
+    GAS_PRICE_STEP_HIGH: 0.025,
     FEATURES: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
 };
