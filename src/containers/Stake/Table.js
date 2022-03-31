@@ -48,7 +48,9 @@ class Table extends Component {
             options: {
                 sort: true,
                 customBodyRender: (value, index) => (
-                    <ValidatorName index={index && index.rowIndex} name={value} value={index.rowData && index.rowData.length && index.rowData[1]}/>
+                    <ValidatorName
+                        index={index && index.rowIndex} name={value}
+                        value={index.rowData && index.rowData.length && index.rowData[1]}/>
                 ),
             },
         }, {
@@ -59,11 +61,11 @@ class Table extends Component {
                 customBodyRender: (value) => (
                     <div
                         className={classNames('status', value.jailed ? 'red_status' : '')}
-                        title={value.status === 1 ? 'unbonding'
-                            : value.status === 2 ? 'unbonded'
+                        title={value.status === 1 ? 'unbonded'
+                            : value.status === 2 ? 'unbonding'
                                 : value.status === 3 ? 'active' : ''}>
-                        {value.status === 1 ? 'unbonding'
-                            : value.status === 2 ? 'unbonded'
+                        {value.status === 1 ? 'unbonded'
+                            : value.status === 2 ? 'unbonding'
                                 : value.status === 3 ? 'active' : ''}
                     </div>
                 ),
