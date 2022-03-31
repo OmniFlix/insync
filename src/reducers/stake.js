@@ -263,7 +263,7 @@ const delegatedValidators = (state = {
 
 const claimDialog = (state = {
     open: false,
-    validator: 'none',
+    validator: 'all',
 }, action) => {
     switch (action.type) {
     case CLAIM_REWARDS_DIALOG_SHOW:
@@ -275,14 +275,14 @@ const claimDialog = (state = {
         return {
             ...state,
             open: false,
-            validator: 'none',
+            validator: 'all',
         };
     case DELEGATE_SUCCESS_DIALOG_HIDE:
     case DELEGATE_FAILED_DIALOG_HIDE:
         return {
             ...state,
             open: false,
-            validator: 'none',
+            validator: 'all',
         };
     case CLAIM_REWARDS_VALIDATOR_SET:
         return {

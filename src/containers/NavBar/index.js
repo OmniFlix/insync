@@ -249,7 +249,11 @@ class NavBar extends Component {
         return (
             <div className={ClassNames('nav_bar padding', localStorage.getItem('of_co_address') || this.props.address
                 ? '' : 'disconnected_nav')}>
-                <img alt="OmniFlix" src={logo}/>
+                <img
+                    alt="OmniFlix"
+                    src={logo}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => window.open('https://omniflix.co', '_self')}/>
                 <ExpansionButton/>
                 <div className={ClassNames('right_content', this.props.show ? 'show' : '')}>
                     <div className="back_button" onClick={this.props.handleClose}>
