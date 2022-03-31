@@ -48,7 +48,9 @@ class Table extends Component {
             options: {
                 sort: true,
                 customBodyRender: (value, index) => (
-                    <ValidatorName index={index && index.rowIndex} name={value} value={index.rowData && index.rowData.length && index.rowData[1]}/>
+                    <ValidatorName
+                        index={index && index.rowIndex} name={value}
+                        value={index.rowData && index.rowData.length && index.rowData[1]}/>
                 ),
             },
         }, {
