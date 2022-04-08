@@ -26,6 +26,7 @@ import { config } from '../../../config';
 import CircularProgress from '../../../components/CircularProgress';
 import { connect } from 'react-redux';
 import { gas } from '../../../defaultGasValues';
+import { noExponent } from '../../../utils/numberFormats';
 
 const DelegateDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -83,6 +84,7 @@ const DelegateDialog = (props) => {
     };
 
     const getValueObject = (type) => {
+        const amount = noExponent(props.amount * (10 ** config.COIN_DECIMALS));
         switch (type) {
         case 'Stake':
         case 'Delegate':
@@ -91,7 +93,7 @@ const DelegateDialog = (props) => {
                 delegatorAddress: props.address,
                 validatorAddress: props.validator,
                 amount: {
-                    amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
+                    amount: String(amount),
                     denom: config.COIN_MINIMAL_DENOM,
                 },
             };
@@ -101,7 +103,7 @@ const DelegateDialog = (props) => {
                 validatorSrcAddress: props.validator,
                 validatorDstAddress: props.toValidator,
                 amount: {
-                    amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
+                    amount: String(amount),
                     denom: config.COIN_MINIMAL_DENOM,
                 },
             };
