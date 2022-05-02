@@ -14,6 +14,9 @@ import {
     DELEGATED_VALIDATORS_FETCH_ERROR,
     DELEGATED_VALIDATORS_FETCH_IN_PROGRESS,
     DELEGATED_VALIDATORS_FETCH_SUCCESS,
+    INACTIVE_VALIDATORS_FETCH_ERROR,
+    INACTIVE_VALIDATORS_FETCH_IN_PROGRESS,
+    INACTIVE_VALIDATORS_FETCH_SUCCESS,
     SEARCH_LIST_SET,
     TO_VALIDATOR_SET,
     TOKENS_SET,
@@ -294,6 +297,44 @@ const claimDialog = (state = {
     }
 };
 
+const inActiveValidators = (state = {
+    inProgress: false,
+    list: [],
+    images: [],
+}, action) => {
+    switch (action.type) {
+    case INACTIVE_VALIDATORS_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case INACTIVE_VALIDATORS_FETCH_SUCCESS:
+        return {
+            ...state,
+            list: action.list,
+            inProgress: false,
+        };
+    case INACTIVE_VALIDATORS_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+        // case VALIDATOR_IMAGE_FETCH_SUCCESS: {
+        //     const array = [...state.images];
+        //     if (action.value && array.indexOf(action.value) === -1) {
+        //         array.push(action.value);
+        //     }
+        //
+        //     return {
+        //         ...state,
+        //         images: [...array],
+        //     };
+        // }
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     search,
     delegateDialog,
@@ -307,4 +348,5 @@ export default combineReducers({
     validatorDetails,
     delegatedValidators,
     claimDialog,
+    inActiveValidators,
 });

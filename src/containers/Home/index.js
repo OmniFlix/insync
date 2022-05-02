@@ -92,6 +92,10 @@ class Home extends Component {
                                 <p className={active === 1 ? 'active' : ''} onClick={() => this.handleChange(1)}>
                                     {variables[this.props.lang]['all_validators']}
                                 </p>
+                                <span/>
+                                <p className={active === 3 ? 'active' : ''} onClick={() => this.handleChange(3)}>
+                                    {variables[this.props.lang]['inactive_validators']}
+                                </p>
                             </div>
                             <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>
                                 {variables[this.props.lang]['view_all']}

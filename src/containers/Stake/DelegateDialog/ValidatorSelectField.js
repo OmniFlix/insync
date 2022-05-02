@@ -18,10 +18,11 @@ const ValidatorSelectField = (props) => {
         props.onChange(value);
     };
 
-    let validatorList = props.validatorList;
+    let validatorList = [...props.validatorList];
+    validatorList.push(...props.inActiveValidators);
 
     if (props.name === 'Undelegate' || props.name === 'Redelegate') {
-        validatorList = props.delegatedValidatorList;
+        validatorList = [...props.delegatedValidatorList];
     }
 
     return (
@@ -72,6 +73,7 @@ const ValidatorSelectField = (props) => {
 };
 
 ValidatorSelectField.propTypes = {
+    inActiveValidators: PropTypes.array.isRequired,
     items: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -118,6 +120,7 @@ const stateToProps = (state) => {
         name: state.stake.delegateDialog.name,
         validatorImages: state.stake.validators.images,
         delegatedValidatorList: state.stake.delegatedValidators.list,
+        inActiveValidators: state.stake.inActiveValidators.list,
     };
 };
 
