@@ -97,7 +97,9 @@ class ProposalDialog extends Component {
                     <div className="proposal_dialog_section1">
                         <div
                             className="proposal_dialog_section1_header">{this.props.proposal && this.props.proposal.content &&
-                        this.props.proposal.content.value && this.props.proposal.content.value.title}</div>
+                        this.props.proposal.content.value && this.props.proposal.content.value.title
+                                ? this.props.proposal.content.value.title
+                                : this.props.proposal.content && this.props.proposal.content.title}</div>
                         <div className={ClassNames('proposal_dialog_section1_status', this.props.proposal.status === 2
                             ? 'voting_period'
                             : this.props.proposal.status === 4
@@ -116,7 +118,9 @@ class ProposalDialog extends Component {
                         <pre
                             className={ClassNames('proposal_dialog_section2_content', this.state.show ? 'show_more' : '')}>
                             {this.props.proposal && this.props.proposal.content &&
-                            this.props.proposal.content.value && this.props.proposal.content.value.description}
+                            this.props.proposal.content.value && this.props.proposal.content.value.description
+                                ? this.props.proposal.content.value.description
+                                : this.props.proposal.content && this.props.proposal.content.description}
                         </pre>
                         <div
                             className="proposal_dialog_section2_more"

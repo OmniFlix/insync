@@ -91,6 +91,8 @@ const Cards = (props) => {
                                     <h2 onClick={() => props.handleShow(proposal)}> {
                                         proposal.content && proposal.content.value &&
                                         proposal.content.value.title
+                                            ? proposal.content.value.title
+                                            : proposal.content && proposal.content.title
                                     }</h2>
                                     {proposal.status === 3
                                         ? <Icon className="success" icon="success"/>
@@ -117,7 +119,9 @@ const Cards = (props) => {
                                                 : null}
                                 </div>
                                 <p className="description">{proposal.content && proposal.content.value &&
-                                proposal.content.value.description}</p>
+                                proposal.content.value.description
+                                    ? proposal.content.value.description
+                                    : proposal.content && proposal.content.description}</p>
                                 <div className="row">
                                     <div className="icon_info">
                                         <Icon className="person" icon="person"/>
