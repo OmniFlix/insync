@@ -10,7 +10,7 @@ export const config = {
     COIN_DENOM: 'LIKE',
     COIN_MINIMAL_DENOM: 'nanolike',
     COIN_DECIMALS: 9,
-    PREFIX: 'cosmos',
+    PREFIX: 'like',
     COIN_TYPE: 118,
     COINGECKO_ID: 'likecoin',
     GAS_PRICE_STEP_LOW: 0.01,
