@@ -127,16 +127,17 @@ const ClaimDialog = (props) => {
         props.rewards.rewards.filter((value) => value.validator_address === props.value);
 
     let tokens = rewards && rewards.length && rewards[0] && rewards[0].reward &&
-    rewards[0].reward.length && rewards[0].reward[0] && rewards[0].reward[0].amount
-        ? rewards[0].reward[0].amount / 10 ** config.COIN_DECIMALS : 0;
+        rewards[0].reward.length && rewards[0].reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+    tokens = tokens && tokens.amount ? tokens.amount / 10 ** config.COIN_DECIMALS : 0;
 
     if (props.value === 'all' && props.rewards && props.rewards.rewards &&
         props.rewards.rewards.length) {
         let total = 0;
 
         props.rewards.rewards.map((value) => {
-            const rewards = value.reward && value.reward[0] && value.reward[0].amount
-                ? value.reward[0].amount / 10 ** config.COIN_DECIMALS : 0;
+            let rewards = value.reward && value.reward.length &&
+                value.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+            rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
             total = rewards + total;
 
             return total;

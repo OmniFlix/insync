@@ -23,8 +23,9 @@ const ValidatorSelectField = (props) => {
     const totalRewards = props.rewards && props.rewards.rewards &&
         props.rewards.rewards.length &&
         props.rewards.rewards.map((value) => {
-            const rewards = value.reward && value.reward[0] && value.reward[0].amount
-                ? value.reward[0].amount / 10 ** config.COIN_DECIMALS : 0;
+            let rewards = value.reward && value.reward.length &&
+                value.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+            rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
             total = rewards + total;
 
             return total;
@@ -65,8 +66,9 @@ const ValidatorSelectField = (props) => {
                                 src={image[0].them[0].pictures.primary.url}/>
                             : <span className="image" style={{ background: colors[index % 6] }}/>}
                         {props.validatorList && props.validatorList.map((value) => {
-                            const rewards = item.reward && item.reward[0] && item.reward[0].amount
-                                ? item.reward[0].amount / 10 ** config.COIN_DECIMALS : 0;
+                            let rewards = item.reward && item.reward.length &&
+                                item.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+                            rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
 
                             if (value.operator_address === item.validator_address) {
                                 return <span key={value.operator_address}>
