@@ -30,9 +30,9 @@ const TokenDetails = (props) => {
         return null;
     });
 
-    const rewards = props.rewards && props.rewards.total && props.rewards.total.length &&
-    props.rewards.total[0] && props.rewards.total[0].amount
-        ? props.rewards.total[0].amount / 10 ** config.COIN_DECIMALS : 0;
+    let rewards = props.rewards && props.rewards.total && props.rewards.total.length &&
+        props.rewards.total.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+    rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
 
     return (
         <div className="token_details">
