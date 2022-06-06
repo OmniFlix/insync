@@ -5,7 +5,7 @@ export const config = {
     STAKING_URL: 'https://uni.juno.omniflix.co/stake',
     NETWORK_NAME: 'Juno',
     NETWORK_TYPE: 'testnet',
-    CHAIN_ID: 'uni-2',
+    CHAIN_ID: 'uni-3',
     CHAIN_NAME: 'Juno Uni Testnet',
     COIN_DENOM: 'JUNOX',
     COIN_MINIMAL_DENOM: 'ujunox',
