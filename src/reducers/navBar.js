@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
-import { HIDE_SIDE_BAR_SET, SHOW_SIDE_BAR_SET } from '../constants/navBar';
+import { CONNECT_DIALOG_HIDE, CONNECT_DIALOG_SHOW, HIDE_SIDE_BAR_SET, SHOW_SIDE_BAR_SET } from '../constants/navBar';
+import { PROPOSAL_DIALOG_HIDE, PROPOSAL_DIALOG_SHOW } from '../constants/proposals';
+import { DISCONNECT_SET } from '../constants/accounts';
+import { DELEGATE_SUCCESS_DIALOG_HIDE } from '../constants/stake';
 
 const show = (state = false, action) => {
     switch (action.type) {
@@ -12,6 +15,31 @@ const show = (state = false, action) => {
     }
 };
 
+const connectDialog = (state = {
+    open: false,
+    proposalTab: false,
+    stake: false,
+    value: {},
+}, action) => {
+    switch (action.type) {
+        case CONNECT_DIALOG_SHOW:
+        return {
+            open: true,
+            value: action.value,
+            proposalTab: action.proposalTab,
+            stake: action.stake,
+        };
+    case CONNECT_DIALOG_HIDE:
+        return {
+            ...state,
+            open: false,
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     show,
+    connectDialog,
 });

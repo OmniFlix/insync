@@ -7,7 +7,7 @@ import ExpansionButton from './ExpansionButton';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ClassNames from 'classnames';
-import { hideSideBar } from '../../actions/navBar';
+import { hideSideBar, showConnectDialog } from '../../actions/navBar';
 import Icon from '../../components/Icon';
 import { initializeChain } from '../../helper';
 import { decode, encode } from 'js-base64';
@@ -29,10 +29,12 @@ import {
     getValidators,
 } from '../../actions/stake';
 import { withRouter } from 'react-router-dom';
-import ConnectButton from './ConnectButton';
+import ConnectButton from './ConnectDialog/KeplrConnectButton';
 import CopyButton from '../../components/CopyButton/TextButton';
 import variables from '../../utils/variables';
 import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposals } from '../../actions/proposals';
+import { Button } from '@material-ui/core';
+import ConnectDialog from './ConnectDialog';
 
 class NavBar extends Component {
     constructor (props) {
@@ -245,6 +247,7 @@ class NavBar extends Component {
     }
 
     render () {
+        console.log('asjdgajshdasd', this.props.proposalTab, this.props.stake)
         return (
             <div className={ClassNames('nav_bar padding', localStorage.getItem('of_co_address') || this.props.address
                 ? '' : 'disconnected_nav')}>
@@ -274,8 +277,14 @@ class NavBar extends Component {
                     </div>}
                     {localStorage.getItem('of_co_address') || this.props.address
                         ? <DisconnectButton/>
-                        : <ConnectButton proposalTab={this.props.proposalTab} stake={this.props.stake}/>}
+                        : <Button
+                            className="disconnect_button"
+                            onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
+                            Connect
+                        </Button>}
+                    {/* <ConnectButton proposalTab={this.props.proposalTab} stake={this.props.stake}/>} */}
                 </div>
+                <ConnectDialog />
             </div>
         );
     }
@@ -307,6 +316,7 @@ NavBar.propTypes = {
     proposals: PropTypes.array.isRequired,
     setAccountAddress: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
+    showConnectDialog: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     unBondingDelegationsInProgress: PropTypes.bool.isRequired,
@@ -388,6 +398,7 @@ const actionToProps = {
     fetchVoteDetails,
     fetchProposalTally,
     fetchProposalDetails,
+    showConnectDialog: showConnectDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));

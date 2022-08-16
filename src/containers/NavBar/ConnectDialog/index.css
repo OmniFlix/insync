@@ -1,0 +1,39 @@
+.connect_wallets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.connect_wallets > p {
+    margin: 0 10px;
+}
+
+.connect_wallets button {
+    font-size: 13px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(240, 231, 231, 0.5544) 100%);
+    box-shadow: 0 4px 20px rgb(0 0 0 / 25%);
+    color: #000000;
+    border-radius: 5px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    line-height: 130%;
+    padding: 10px 20px;
+    text-transform: unset;
+}
+
+.connect_wallets button img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.connect_dialog .download_actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.download_actions a {
+    color: #e0e0e0;
+}

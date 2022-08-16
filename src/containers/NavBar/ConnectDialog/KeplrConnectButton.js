@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
-import variables from '../../utils/variables';
-import { initializeChain } from '../../helper';
+import variables from '../../../utils/variables';
+import { initializeChain } from '../../../helper';
 import {
     fetchRewards,
     fetchVestingBalance,
@@ -11,13 +11,14 @@ import {
     getUnBondingDelegations,
     setAccountAddress,
     showSelectAccountDialog,
-} from '../../actions/accounts';
+} from '../../../actions/accounts';
 import { connect } from 'react-redux';
-import { showMessage } from '../../actions/snackbar';
+import { showMessage } from '../../../actions/snackbar';
 import { encode } from 'js-base64';
-import { getDelegatedValidatorsDetails } from '../../actions/stake';
+import { getDelegatedValidatorsDetails } from '../../../actions/stake';
+import keplrIcon from '../../../assets/keplr.png';
 
-const ConnectButton = (props) => {
+const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
     const initKeplr = () => {
@@ -48,18 +49,20 @@ const ConnectButton = (props) => {
         });
     };
 
+    console.log('jashdgjhasgdsad', props.proposalTab, props.stake)
     return (
         <Button
             className="disconnect_button"
             disabled={inProgress}
             variant="contained"
             onClick={initKeplr}>
-            {inProgress ? 'connecting...' : variables[props.lang].connect}
+            <img alt="logo" src={keplrIcon} />
+            {inProgress ? 'connecting...' : 'Connect with Keplr'}
         </Button>
     );
 };
 
-ConnectButton.propTypes = {
+KeplrConnectButton.propTypes = {
     fetchRewards: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
@@ -92,4 +95,4 @@ const actionsToProps = {
     fetchRewards,
 };
 
-export default connect(stateToProps, actionsToProps)(ConnectButton);
+export default connect(stateToProps, actionsToProps)(KeplrConnectButton);
