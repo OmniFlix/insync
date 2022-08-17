@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
-import variables from '../../../utils/variables';
 import { initializeChain } from '../../../helper';
 import {
     fetchRewards,
@@ -17,6 +16,7 @@ import { showMessage } from '../../../actions/snackbar';
 import { encode } from 'js-base64';
 import { getDelegatedValidatorsDetails } from '../../../actions/stake';
 import keplrIcon from '../../../assets/keplr.png';
+import { hideConnectDialog } from '../../../actions/navBar';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -33,6 +33,7 @@ const KeplrConnectButton = (props) => {
             }
 
             props.setAccountAddress(addressList[0] && addressList[0].address);
+            props.hideConnectDialog();
             if (!props.proposalTab && !props.stake) {
                 props.getUnBondingDelegations(addressList[0] && addressList[0].address);
                 props.fetchRewards(addressList[0] && addressList[0].address);
@@ -46,17 +47,17 @@ const KeplrConnectButton = (props) => {
                 props.getDelegatedValidatorsDetails(addressList[0] && addressList[0].address);
             }
             localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
+            localStorage.setItem('of_co_wallet', 'keplr');
         });
     };
 
-    console.log('jashdgjhasgdsad', props.proposalTab, props.stake)
     return (
         <Button
             className="disconnect_button"
             disabled={inProgress}
             variant="contained"
             onClick={initKeplr}>
-            <img alt="logo" src={keplrIcon} />
+            <img alt="logo" src={keplrIcon}/>
             {inProgress ? 'connecting...' : 'Connect with Keplr'}
         </Button>
     );
@@ -69,6 +70,7 @@ KeplrConnectButton.propTypes = {
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
+    hideConnectDialog: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setAccountAddress: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
@@ -90,6 +92,7 @@ const actionsToProps = {
     getDelegations,
     getDelegatedValidatorsDetails,
     fetchVestingBalance,
+    hideConnectDialog,
     getBalance,
     getUnBondingDelegations,
     fetchRewards,

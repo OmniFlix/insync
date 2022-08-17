@@ -3,6 +3,7 @@ import { SigningStargateClient } from '@cosmjs/stargate';
 import { SigningCosmosClient } from '@cosmjs/launchpad';
 import { makeSignDoc } from '@cosmjs/amino';
 import { config } from './config';
+import { cosmos, InstallError } from '@cosmostation/extension-client';
 
 const chainId = config.CHAIN_ID;
 const chainName = config.CHAIN_NAME;
@@ -87,6 +88,26 @@ export const initializeChain = (cb) => {
             cb(null, accounts);
         } else {
             return null;
+        }
+    })();
+};
+
+export const initializeCosmoStation = (cb) => {
+    (async () => {
+        try {
+            const provider = await cosmos();
+            const account = await provider.requestAccount(config.PREFIX);
+            cb(null, account);
+        } catch (error) {
+            if (error instanceof InstallError) {
+                const error = 'not installed';
+                cb(error);
+            }
+
+            if (error.code === 4001) {
+                const error = 'user rejected request';
+                cb(error);
+            }
         }
     })();
 };

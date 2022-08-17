@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
+import React from 'react';
+import { Dialog, DialogContent } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
-import {hideConnectDialog} from "../../../actions/navBar";
-import ConnectButton from "./KeplrConnectButton";
-import CosmostationConnectButton from "./CosmostationConnectButton";
+import { hideConnectDialog } from '../../../actions/navBar';
+import ConnectButton from './KeplrConnectButton';
+import CosmostationConnectButton from './CosmostationConnectButton';
 import './index.css';
 
 const ConnectDialog = (props) => {
@@ -17,32 +17,14 @@ const ConnectDialog = (props) => {
             open={props.open}
             onClose={props.handleClose}>
             <DialogContent className="content">
-                <p className="heading">
+                <h2 className="heading">
                     Connect Wallet
-                </p>
+                </h2>
                 <div className="connect_wallets">
-                    <ConnectButton proposalTab={props.proposalTab} stake={props.stake} />
-                    <p className="heading">OR</p>
-                    <CosmostationConnectButton proposalTab={props.proposalTab} stake={props.stake} />
+                    <ConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
+                    <CosmostationConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
                 </div>
             </DialogContent>
-            <DialogActions className="download_actions">
-                <a
-                    className="keplr_link"
-                    href="https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap?hl=en"
-                    rel="noopener noreferrer"
-                    target="_blank">
-                    Download Keplr
-                </a>
-                <span className="border_break"/>
-                <a
-                    className="keplr_link"
-                    href="https://chrome.google.com/webstore/detail/cosmostation/fpkhgmpbidmiogeglndfbkegfdlnajnf?utm_source=chrome-ntp-icon"
-                    rel="noopener noreferrer"
-                    target="_blank">
-                    Download Cosmostation
-                </a>
-            </DialogActions>
         </Dialog>
     );
 };

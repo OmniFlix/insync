@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import ClassNames from 'classnames';
 import { hideSideBar, showConnectDialog } from '../../actions/navBar';
 import Icon from '../../components/Icon';
-import { initializeChain } from '../../helper';
+import { initializeChain, initializeCosmoStation } from '../../helper';
 import { decode, encode } from 'js-base64';
 import { config } from '../../config';
 import { showMessage } from '../../actions/snackbar';
@@ -29,7 +29,6 @@ import {
     getValidators,
 } from '../../actions/stake';
 import { withRouter } from 'react-router-dom';
-import ConnectButton from './ConnectDialog/KeplrConnectButton';
 import CopyButton from '../../components/CopyButton/TextButton';
 import variables from '../../utils/variables';
 import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposals } from '../../actions/proposals';
@@ -45,11 +44,14 @@ class NavBar extends Component {
         this.handleChain = this.handleChain.bind(this);
         this.getValidatorImage = this.getValidatorImage.bind(this);
         this.getProposalDetails = this.getProposalDetails.bind(this);
+        this.handleCosmoStation = this.handleCosmoStation.bind(this);
     }
 
     componentDidMount () {
-        if (localStorage.getItem('of_co_address')) {
+        if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'keplr')) {
             this.initKeplr();
+        } else if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'cosmostation')) {
+            this.handleCosmoStation();
         }
 
         if (this.props.proposals && !this.props.proposals.length &&
@@ -100,7 +102,7 @@ class NavBar extends Component {
 
     componentDidUpdate (pp, ps, ss) {
         if ((!pp.proposals.length && (pp.proposals !== this.props.proposals) &&
-            this.props.proposals && this.props.proposals.length) ||
+                this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
             this.props.proposals.map((val) => {
                 const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.id &&
@@ -246,8 +248,27 @@ class NavBar extends Component {
         });
     }
 
+    handleCosmoStation () {
+        initializeCosmoStation((error, account) => {
+            if (error) {
+                this.props.showMessage(error);
+                localStorage.removeItem('of_co_address');
+
+                return;
+            }
+
+            const previousAddress = localStorage.getItem('of_co_address') &&
+                decode(localStorage.getItem('of_co_address'));
+            this.props.setAccountAddress(account && account.address);
+            this.handleFetch(account && account.address);
+            if (account && previousAddress !== account.address) {
+                localStorage.setItem('of_co_address', encode(account && account.address));
+                localStorage.setItem('of_co_wallet', 'cosmostation');
+            }
+        });
+    }
+
     render () {
-        console.log('asjdgajshdasd', this.props.proposalTab, this.props.stake)
         return (
             <div className={ClassNames('nav_bar padding', localStorage.getItem('of_co_address') || this.props.address
                 ? '' : 'disconnected_nav')}>
@@ -263,18 +284,18 @@ class NavBar extends Component {
                     </div>
                     <Tabs/>
                     {(localStorage.getItem('of_co_address') || this.props.address) &&
-                    <div className="select_fields">
-                        <p className="token_name">{config.NETWORK_NAME}</p>
-                        <span className="divider"/>
-                        <div className="hash_text" title={this.props.address}>
-                            <p className="name">{this.props.address}</p>
-                            {this.props.address &&
-                            this.props.address.slice(this.props.address.length - 6, this.props.address.length)}
-                        </div>
-                        <CopyButton data={this.props.address}>
-                            {variables[this.props.lang].copy}
-                        </CopyButton>
-                    </div>}
+                        <div className="select_fields">
+                            <p className="token_name">{config.NETWORK_NAME}</p>
+                            <span className="divider"/>
+                            <div className="hash_text" title={this.props.address}>
+                                <p className="name">{this.props.address}</p>
+                                {this.props.address &&
+                                    this.props.address.slice(this.props.address.length - 6, this.props.address.length)}
+                            </div>
+                            <CopyButton data={this.props.address}>
+                                {variables[this.props.lang].copy}
+                            </CopyButton>
+                        </div>}
                     {localStorage.getItem('of_co_address') || this.props.address
                         ? <DisconnectButton/>
                         : <Button
@@ -284,7 +305,7 @@ class NavBar extends Component {
                         </Button>}
                     {/* <ConnectButton proposalTab={this.props.proposalTab} stake={this.props.stake}/>} */}
                 </div>
-                <ConnectDialog />
+                <ConnectDialog/>
             </div>
         );
     }

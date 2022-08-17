@@ -47,7 +47,7 @@ const SuccessDialog = (props) => {
                             onClick={handleRedirect}>
                             <p className="name">{props.hash}</p>
                             {props.hash &&
-                            props.hash.slice(props.hash.length - 6, props.hash.length)}
+                                props.hash.slice(props.hash.length - 6, props.hash.length)}
                         </div>
                     </div>
                     : !props.name
@@ -60,7 +60,7 @@ const SuccessDialog = (props) => {
                                         onClick={handleRedirect}>
                                         <p className="name">{props.hash}</p>
                                         {props.hash &&
-                                        props.hash.slice(props.hash.length - 6, props.hash.length)}
+                                            props.hash.slice(props.hash.length - 6, props.hash.length)}
                                     </div>
                                 </div>
                                 <div className="row">
@@ -78,7 +78,7 @@ const SuccessDialog = (props) => {
                                     onClick={handleRedirect}>
                                     <p className="name">{props.hash}</p>
                                     {props.hash &&
-                                    props.hash.slice(props.hash.length - 6, props.hash.length)}
+                                        props.hash.slice(props.hash.length - 6, props.hash.length)}
                                 </div>
                             </div>
                             <div className="row">
@@ -86,7 +86,7 @@ const SuccessDialog = (props) => {
                                 <div className="hash_text" title={props.address}>
                                     <p className="name">{props.address}</p>
                                     {props.address &&
-                                    props.address.slice(props.address.length - 6, props.address.length)}
+                                        props.address.slice(props.address.length - 6, props.address.length)}
                                 </div>
                             </div>
                             {props.name === 'Redelegate'
@@ -97,7 +97,7 @@ const SuccessDialog = (props) => {
                                             <div className="hash_text" title={props.validator}>
                                                 <p className="name">{props.validator}</p>
                                                 {props.validator &&
-                                                props.validator.slice(props.validator.length - 6, props.validator.length)}
+                                                    props.validator.slice(props.validator.length - 6, props.validator.length)}
                                             </div>
                                             <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
                                                 ? `(${validatorDetails.description.moniker})`
@@ -110,7 +110,7 @@ const SuccessDialog = (props) => {
                                             <div className="hash_text" title={props.toValidator}>
                                                 <p className="name">{props.toValidator}</p>
                                                 {props.toValidator &&
-                                                props.toValidator.slice(props.toValidator.length - 6, props.toValidator.length)}
+                                                    props.toValidator.slice(props.toValidator.length - 6, props.toValidator.length)}
                                             </div>
                                             <p>{toValidatorDetails && toValidatorDetails.description && toValidatorDetails.description.moniker
                                                 ? `(${toValidatorDetails.description.moniker})`
@@ -124,7 +124,7 @@ const SuccessDialog = (props) => {
                                         <div className="hash_text" title={props.validator}>
                                             <p className="name">{props.validator}</p>
                                             {props.validator &&
-                                            props.validator.slice(props.validator.length - 6, props.validator.length)}
+                                                props.validator.slice(props.validator.length - 6, props.validator.length)}
                                         </div>
                                         <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
                                             ? `(${validatorDetails.description.moniker})`

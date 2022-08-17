@@ -1,9 +1,4 @@
-import {
-    CONNECT_DIALOG_HIDE,
-    CONNECT_DIALOG_SHOW,
-    HIDE_SIDE_BAR_SET,
-    SHOW_SIDE_BAR_SET,
-} from '../constants/navBar';
+import { CONNECT_DIALOG_HIDE, CONNECT_DIALOG_SHOW, HIDE_SIDE_BAR_SET, SHOW_SIDE_BAR_SET } from '../constants/navBar';
 
 export const showSideBar = () => {
     return {
