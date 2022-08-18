@@ -97,7 +97,7 @@ class ProposalDialog extends Component {
                     <div className="proposal_dialog_section1">
                         <div
                             className="proposal_dialog_section1_header">{this.props.proposal && this.props.proposal.content &&
-                        this.props.proposal.content.value && this.props.proposal.content.value.title}</div>
+                            this.props.proposal.content.value && this.props.proposal.content.value.title}</div>
                         <div className={ClassNames('proposal_dialog_section1_status', this.props.proposal.status === 2
                             ? 'voting_period'
                             : this.props.proposal.status === 4
@@ -116,7 +116,7 @@ class ProposalDialog extends Component {
                         <pre
                             className={ClassNames('proposal_dialog_section2_content', this.state.show ? 'show_more' : '')}>
                             {this.props.proposal && this.props.proposal.content &&
-                            this.props.proposal.content.value && this.props.proposal.content.value.description}
+                                this.props.proposal.content.value && this.props.proposal.content.value.description}
                         </pre>
                         <div
                             className="proposal_dialog_section2_more"
@@ -133,7 +133,7 @@ class ProposalDialog extends Component {
                                 {proposer && <div className="pds3l_c2 hash_text" title={proposer}>
                                     <p className="name">{proposer}</p>
                                     {proposer &&
-                                    proposer.slice(proposer.length - 6, proposer.length)}
+                                        proposer.slice(proposer.length - 6, proposer.length)}
                                 </div>}
                             </div>
                             <div className="pds3l_c">
@@ -175,7 +175,7 @@ class ProposalDialog extends Component {
                             <div className="pds3l_c">
                                 <p className="pds3l_c1">Type</p>
                                 <p className="pds3l_c2 type">{this.props.proposal && this.props.proposal.content &&
-                                this.props.proposal.content.type}</p>
+                                    this.props.proposal.content.type}</p>
                             </div>
                         </div>
                         {this.props.proposal && this.props.proposal.status === 2 && !this.props.voteDetailsInProgress

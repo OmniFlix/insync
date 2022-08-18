@@ -13,7 +13,7 @@ import {
 import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
 import ToValidatorSelectField from './ToValidatorSelectField';
-import { signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
 import {
     fetchRewards,
     fetchVestingBalance,
@@ -38,6 +38,13 @@ const DelegateDialog = (props) => {
             gasValue = gas.un_delegate;
         }
 
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            gasValue = gas.un_delegate;
+            if (props.name === 'Undelegate' || props.name === 'Redelegate') {
+                gasValue = gas.re_delegate;
+            }
+        }
+
         const updatedTx = {
             msg: {
                 typeUrl: props.name === 'Delegate' || props.name === 'Stake'
@@ -55,22 +62,30 @@ const DelegateDialog = (props) => {
             },
             memo: '',
         };
-        signTxAndBroadcast(updatedTx, props.address, (error, result) => {
-            setInProgress(false);
-            if (error) {
-                if (error.indexOf('not yet found on the chain') > -1) {
-                    props.pendingDialog();
-                    return;
-                }
-                props.failedDialog();
-                props.showMessage(error);
+
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            cosmoStationSign(updatedTx, props.address, handleFetch);
+            return;
+        }
+
+        signTxAndBroadcast(updatedTx, props.address, handleFetch);
+    };
+
+    const handleFetch = (error, result) => {
+        setInProgress(false);
+        if (error) {
+            if (error.indexOf('not yet found on the chain') > -1) {
+                props.pendingDialog();
                 return;
             }
-            if (result) {
-                props.successDialog(result.transactionHash);
-                updateBalance();
-            }
-        });
+            props.failedDialog();
+            props.showMessage(error);
+            return;
+        }
+        if (result) {
+            props.successDialog(result.transactionHash);
+            updateBalance();
+        }
     };
 
     const updateBalance = () => {
