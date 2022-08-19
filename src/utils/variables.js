@@ -5,7 +5,7 @@ const variables = {
         connect_web3: `Connect to your ${config.NETWORK_NAME} ${config.NETWORK_TYPE} account`,
         web3_note: 'web3 power user? Your on-chain data will give you exclusive access',
         select_account: 'Select Account',
-        connect_keplr: 'Connect with Keplr',
+        keplr: 'Keplr',
         welcome: `Welcome to the ${config.NETWORK_NAME} community`,
         participate: 'Know your validators & interact with the community via governance proposals!',
         total_tokens: 'Total Tokens',
@@ -61,6 +61,8 @@ const variables = {
         validator_address: 'Validator Address',
         approval_pending: 'Approval Pending...',
         connect_account: 'Account not connected. Please connect to wallet',
+        connecting: 'connecting',
+        cosmostation: 'Cosmostation',
     },
 };
 

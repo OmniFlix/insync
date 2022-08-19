@@ -9,6 +9,7 @@ import { showProposalDialog } from '../../actions/proposals';
 import moment from 'moment';
 import { tally } from '../../utils/numberFormats';
 import DotsLoading from '../../components/DotsLoading';
+import { withRouter } from 'react-router';
 
 const Cards = (props) => {
     const [page, setPage] = useState(1);
@@ -49,6 +50,11 @@ const Cards = (props) => {
         }
     };
 
+    const handleProposal = (proposal) => {
+        props.history.push(`/proposals/${proposal.id}`);
+        props.handleShow(proposal);
+    };
+
     return (
         <div className="cards_content">
             <div className="cards">
@@ -83,7 +89,7 @@ const Cards = (props) => {
                                 <div
                                     key={index}
                                     className="card"
-                                    onClick={() => props.handleShow(proposal)}>
+                                    onClick={() => handleProposal(proposal)}>
                                     <span className="number">
                                         {proposal.id}
                                     </span>
@@ -199,6 +205,9 @@ const Cards = (props) => {
 
 Cards.propTypes = {
     handleShow: PropTypes.func.isRequired,
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+    }).isRequired,
     proposalDetails: PropTypes.object.isRequired,
     proposalDetailsInProgress: PropTypes.bool.isRequired,
     tallyDetails: PropTypes.object.isRequired,
@@ -223,4 +232,4 @@ const actionToProps = {
     handleShow: showProposalDialog,
 };
 
-export default connect(stateToProps, actionToProps)(Cards);
+export default withRouter(connect(stateToProps, actionToProps)(Cards));

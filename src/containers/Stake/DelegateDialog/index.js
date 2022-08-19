@@ -38,13 +38,6 @@ const DelegateDialog = (props) => {
             gasValue = gas.un_delegate;
         }
 
-        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
-            gasValue = gas.un_delegate;
-            if (props.name === 'Undelegate' || props.name === 'Redelegate') {
-                gasValue = gas.re_delegate;
-            }
-        }
-
         const updatedTx = {
             msg: {
                 typeUrl: props.name === 'Delegate' || props.name === 'Stake'

@@ -2,7 +2,7 @@ import { REST_URL, RPC_URL } from './constants/url';
 import { SigningStargateClient } from '@cosmjs/stargate';
 import { config } from './config';
 import { cosmos, InstallError } from '@cosmostation/extension-client';
-import { getOfflineSigner } from "@cosmostation/cosmos-client";
+import { getOfflineSigner } from '@cosmostation/cosmos-client';
 
 const chainId = config.CHAIN_ID;
 const chainName = config.CHAIN_NAME;
@@ -95,7 +95,7 @@ export const initializeCosmoStation = (cb) => {
     (async () => {
         try {
             const provider = await cosmos();
-            const account = await provider.requestAccount(config.PREFIX);
+            const account = await provider.requestAccount(config.COSMOSTAION);
             cb(null, account);
         } catch (error) {
             if (error instanceof InstallError) {
