@@ -1,0 +1,80 @@
+.connect_wallets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: max-content;
+    margin: 40px auto;
+}
+
+.connect_wallets > p {
+    margin: 0 10px;
+}
+
+.connect_wallets button {
+    background: #222222;
+    border-radius: 10px;
+    width: 100%;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 100%;
+    color: #FFFFFF;
+    padding: 14px;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 25%);
+    text-transform: unset;
+    margin-bottom: 20px;
+    min-width: 240px;
+}
+
+.connect_wallets button:hover {
+    background: #222222;
+}
+
+.connect_wallets button:hover:before {
+    content: "";
+    position: absolute;
+    background: #222222;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    border-radius: 10px;
+}
+
+.connect_wallets button:hover:after {
+    content: "";
+    background: linear-gradient(112.4deg, #2FCDCF 14.6%, #966AFB 82.44%);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -2;
+    border-radius: 10px;
+}
+
+.connect_wallets button > span:first-child {
+    justify-content: flex-start;
+}
+
+.connect_wallets button:last-child {
+    margin-bottom: 0;
+}
+
+.connect_wallets button img {
+    width: 30px;
+    margin-right: 10px;
+}
+
+.connect_dialog .download_actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.download_actions a {
+    color: #e0e0e0;
+}
