@@ -23,8 +23,9 @@ const ValidatorSelectField = (props) => {
     const totalRewards = props.rewards && props.rewards.rewards &&
         props.rewards.rewards.length &&
         props.rewards.rewards.map((value) => {
-            const rewards = value.reward && value.reward[0] && value.reward[0].amount
-                ? value.reward[0].amount / 10 ** config.COIN_DECIMALS : 0;
+            let rewards = value.reward && value.reward.length &&
+                value.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+            rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
             total = rewards + total;
 
             return total;
@@ -41,54 +42,55 @@ const ValidatorSelectField = (props) => {
                 Select the validator
             </MenuItem>
             {props.rewards && props.rewards.rewards &&
-            props.rewards.rewards.length &&
-            props.rewards.rewards.map((item, index) => {
-                const validator = item && item.validator_address && props.validatorList && props.validatorList.length &&
-                        props.validatorList.filter((value) => value.operator_address === item.validator_address);
+                props.rewards.rewards.length &&
+                props.rewards.rewards.map((item, index) => {
+                    const validator = item && item.validator_address && props.validatorList && props.validatorList.length &&
+                            props.validatorList.filter((value) => value.operator_address === item.validator_address);
 
-                const image = validator && validator.length && validator[0] &&
-                        validator[0].description && validator[0].description.identity &&
-                        props.validatorImages && props.validatorImages.length &&
-                        props.validatorImages.filter((value) => value._id === validator[0].description.identity.toString());
+                    const image = validator && validator.length && validator[0] &&
+                            validator[0].description && validator[0].description.identity &&
+                            props.validatorImages && props.validatorImages.length &&
+                            props.validatorImages.filter((value) => value._id === validator[0].description.identity.toString());
 
-                return (
-                    <MenuItem
-                        key={item.validator_address}
-                        value={item.validator_address}>
-                        {image && image.length && image[0] && image[0].them && image[0].them.length &&
-                            image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
-                            image[0].them[0].pictures.primary.url
-                            ? <img
-                                alt={validator && validator.length && validator[0] &&
-                                    validator[0].description && validator[0].description.moniker}
-                                className="image"
-                                src={image[0].them[0].pictures.primary.url}/>
-                            : <span className="image" style={{ background: colors[index % 6] }}/>}
-                        {props.validatorList && props.validatorList.map((value) => {
-                            const rewards = item.reward && item.reward[0] && item.reward[0].amount
-                                ? item.reward[0].amount / 10 ** config.COIN_DECIMALS : 0;
+                    return (
+                        <MenuItem
+                            key={item.validator_address}
+                            value={item.validator_address}>
+                            {image && image.length && image[0] && image[0].them && image[0].them.length &&
+                                image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
+                                image[0].them[0].pictures.primary.url
+                                ? <img
+                                    alt={validator && validator.length && validator[0] &&
+                                            validator[0].description && validator[0].description.moniker}
+                                    className="image"
+                                    src={image[0].them[0].pictures.primary.url}/>
+                                : <span className="image" style={{ background: colors[index % 6] }}/>}
+                            {props.validatorList && props.validatorList.map((value) => {
+                                let rewards = item.reward && item.reward.length &&
+                                        item.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+                                rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
 
-                            if (value.operator_address === item.validator_address) {
-                                return <span key={value.operator_address}>
-                                    {value.description && value.description.moniker}
-                                    {rewards && rewards > 0
-                                        ? <b>&nbsp;({rewards.toFixed(4)})</b>
-                                        : null}
-                                </span>;
-                            }
+                                if (value.operator_address === item.validator_address) {
+                                    return <span key={value.operator_address}>
+                                        {value.description && value.description.moniker}
+                                        {rewards && rewards > 0
+                                            ? <b>&nbsp;({rewards.toFixed(4)})</b>
+                                            : null}
+                                    </span>;
+                                }
 
-                            return null;
-                        })}
-                    </MenuItem>
-                );
-            },
-            )}
+                                return null;
+                            })}
+                        </MenuItem>
+                    );
+                },
+                )}
             {totalRewards && totalRewards.length &&
-            <MenuItem value="all">
-                <span>
+                <MenuItem value="all">
+                    <span>
                     All <b>&nbsp;({total.toFixed(4)})</b>
-                </span>
-            </MenuItem>}
+                    </span>
+                </MenuItem>}
         </SelectField>
     );
 };

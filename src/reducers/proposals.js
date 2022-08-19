@@ -36,7 +36,6 @@ const dialog = (state = {
             ...state,
             open: false,
         };
-    case DISCONNECT_SET:
     case DELEGATE_SUCCESS_DIALOG_HIDE:
         return {
             open: false,

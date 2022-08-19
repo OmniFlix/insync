@@ -250,7 +250,9 @@ export const fetchProposalDetails = (id, cb) => (dispatch) => {
     })
         .then((res) => {
             dispatch(fetchProposalDetailsSuccess(res.data && res.data.txs, id));
-            cb(res);
+            if (cb) {
+                cb(res);
+            }
         })
         .catch((error) => {
             dispatch(fetchProposalDetailsError(
@@ -260,6 +262,8 @@ export const fetchProposalDetails = (id, cb) => (dispatch) => {
                     ? error.response.data.message
                     : 'Failed!',
             ));
-            cb(null);
+            if (cb) {
+                cb(null);
+            }
         });
 };

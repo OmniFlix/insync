@@ -12,6 +12,7 @@ export const config = {
     COIN_DECIMALS: 6,
     PREFIX: 'bcna',
     COIN_TYPE: 118,
+    COSMOSTAION: 'bitcanna',
     COINGECKO_ID: 'bitcanna',
     GAS_PRICE_STEP_LOW: 0.001,
     GAS_PRICE_STEP_AVERAGE: 0.01,
