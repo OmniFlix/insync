@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc.cerberus.zone:26657',
-    REST_URL: 'https://api.cerberus.zone:1317',
+    RPC_URL: 'https://rpc-cerberus-ia.notional.ventures',
+    REST_URL: 'https://api-cerberus-ia.notional.ventures',
     EXPLORER_URL: 'https://www.mintscan.io/cerberus',
     STAKING_URL: 'https://cerberus.omniflix.co/stake',
     NETWORK_NAME: 'Cerberus',
@@ -12,6 +12,7 @@ export const config = {
     COIN_DECIMALS: 6,
     PREFIX: 'cerberus',
     COIN_TYPE: 118,
+    COSMOSTAION: 'cerberus',
     COINGECKO_ID: 'cerberus-2',
     GAS_PRICE_STEP_LOW: 0.0025,
     GAS_PRICE_STEP_AVERAGE: 0.025,

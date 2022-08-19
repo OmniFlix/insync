@@ -4,7 +4,7 @@ import { fetchProposalTally, fetchVoteDetails, hideProposalDialog } from '../../
 import { connect } from 'react-redux';
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import CircularProgress from '../../../components/CircularProgress';
-import { signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import { showMessage } from '../../../actions/snackbar';
@@ -15,6 +15,7 @@ import {
 } from '../../../actions/stake';
 import { fetchVestingBalance, getBalance } from '../../../actions/accounts';
 import { gas } from '../../../defaultGasValues';
+import Long from 'long';
 
 const Voting = (props) => {
     const [value, setValue] = React.useState('');
@@ -48,7 +49,7 @@ const Voting = (props) => {
                 typeUrl: '/cosmos.gov.v1beta1.MsgVote',
                 value: {
                     option: option,
-                    proposalId: props.proposalId,
+                    proposalId: Long.fromString(props.proposalId),
                     voter: props.address,
                 },
             }],
@@ -62,25 +63,32 @@ const Voting = (props) => {
             memo: '',
         };
 
-        signTxAndBroadcast(tx, props.address, (error, result) => {
-            setInProgress(false);
-            if (error) {
-                if (error.indexOf('not yet found on the chain') > -1) {
-                    props.pendingDialog();
-                    return;
-                }
-                props.failedDialog();
-                props.showMessage(error);
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            cosmoStationSign(tx, props.address, handleFetch);
+            return;
+        }
+
+        signTxAndBroadcast(tx, props.address, handleFetch);
+    };
+
+    const handleFetch = (error, result) => {
+        setInProgress(false);
+        if (error) {
+            if (error.indexOf('not yet found on the chain') > -1) {
+                props.pendingDialog();
                 return;
             }
-            if (result) {
-                props.successDialog(result.transactionHash);
-                props.fetchVoteDetails(props.proposalId, props.address);
-                props.fetchProposalTally(props.proposalId);
-                props.getBalance(props.address);
-                props.fetchVestingBalance(props.address);
-            }
-        });
+            props.failedDialog();
+            props.showMessage(error);
+            return;
+        }
+        if (result) {
+            props.successDialog(result.transactionHash);
+            props.fetchVoteDetails(props.proposalId, props.address);
+            props.fetchProposalTally(props.proposalId);
+            props.getBalance(props.address);
+            props.fetchVestingBalance(props.address);
+        }
     };
 
     const disable = value === '';
