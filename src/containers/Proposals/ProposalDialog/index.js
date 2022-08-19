@@ -268,7 +268,7 @@ ProposalDialog.propTypes = {
     address: PropTypes.string,
     match: PropTypes.shape({
         params: PropTypes.shape({
-            proposalID: PropTypes.string.isRequired,
+            proposalID: PropTypes.string,
         }),
     }),
     proposal: PropTypes.object,
