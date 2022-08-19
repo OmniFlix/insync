@@ -23,7 +23,7 @@ const SuccessDialog = (props) => {
         }
 
         props.handleClose();
-    }
+    };
 
     const validatorDetails = props.validatorList && props.validatorList.length &&
         props.validatorList.find((val) => val.operator_address === props.validator);
