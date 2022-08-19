@@ -45,6 +45,13 @@
     padding: 38px;
 }
 
+.proposals .cards_content.loading_card {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .proposals .cards {
     display: flex;
     flex-wrap: wrap;

@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-fetchhub.fetch.ai:443',
-    REST_URL: 'https://rest-fetchhub.fetch.ai:443',
+    RPC_URL: 'https://rpc-fetchhub-ia.notional.ventures',
+    REST_URL: 'https://api-fetchhub-ia.notional.ventures',
     EXPLORER_URL: 'https://explore-fetchhub.fetch.ai',
     STAKING_URL: 'https://fetch.omniflix.co/stake',
     NETWORK_NAME: 'Fetch',
@@ -12,6 +12,7 @@ export const config = {
     COIN_DECIMALS: 18,
     PREFIX: 'fetch',
     COIN_TYPE: 118,
+    COSMOSTAION: 'fetch.ai',
     COINGECKO_ID: 'fetch-ai',
     GAS_PRICE_STEP_LOW: 0.01,
     GAS_PRICE_STEP_AVERAGE: 0.025,

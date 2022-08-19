@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './index.css';
 import Cards from './Cards';
-import ProposalDialog from './ProposalDialog';
 import { fetchProposalTally, fetchVoteDetails, getProposals } from '../../actions/proposals';
 import UnSuccessDialog from '../Stake/DelegateDialog/UnSuccessDialog';
 import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
@@ -32,34 +31,32 @@ const Proposals = (props) => {
     return (
         <div className="proposals">
             <NavBar proposalTab={true}/>
-            {!props.open
-                ? <div className="proposals_content padding">
-                    <div className="heading">
-                        <div className="tabs">
-                            <p className={active === 1 ? 'active' : ''} onClick={() => handleChange(1)}>
-                                {variables[props.lang].all}
-                            </p>
-                            <span/>
-                            <p className={active === 2 ? 'active' : ''} onClick={() => handleChange(2)}>
-                                {variables[props.lang].active}
-                            </p>
-                            <span/>
-                            <p className={active === 3 ? 'active' : ''} onClick={() => handleChange(3)}>
-                                {variables[props.lang].pending}
-                            </p>
-                            <span/>
-                            <p className={active === 4 ? 'active' : ''} onClick={() => handleChange(4)}>
-                                {variables[props.lang].closed}
-                            </p>
-                        </div>
+            <div className="proposals_content padding">
+                <div className="heading">
+                    <div className="tabs">
+                        <p className={active === 1 ? 'active' : ''} onClick={() => handleChange(1)}>
+                            {variables[props.lang].all}
+                        </p>
+                        <span/>
+                        <p className={active === 2 ? 'active' : ''} onClick={() => handleChange(2)}>
+                            {variables[props.lang].active}
+                        </p>
+                        <span/>
+                        <p className={active === 3 ? 'active' : ''} onClick={() => handleChange(3)}>
+                            {variables[props.lang].pending}
+                        </p>
+                        <span/>
+                        <p className={active === 4 ? 'active' : ''} onClick={() => handleChange(4)}>
+                            {variables[props.lang].closed}
+                        </p>
                     </div>
-                    {props.proposalsInProgress || props.voteDetailsInProgress
-                        ? <div className="cards_content">Loading...</div>
-                        : filteredProposals && filteredProposals.length
-                            ? <Cards proposals={filteredProposals}/>
-                            : <div className="cards_content">No data found</div>}
                 </div>
-                : <ProposalDialog/>}
+                {props.proposalsInProgress || props.voteDetailsInProgress
+                    ? <div className="cards_content">Loading...</div>
+                    : filteredProposals && filteredProposals.length
+                        ? <Cards proposals={filteredProposals}/>
+                        : <div className="cards_content">No data found</div>}
+            </div>
             <UnSuccessDialog/>
             <PendingDialog/>
             <SuccessDialog/>
@@ -75,7 +72,6 @@ Proposals.propTypes = {
         push: PropTypes.func.isRequired,
     }).isRequired,
     lang: PropTypes.string.isRequired,
-    open: PropTypes.bool.isRequired,
     proposals: PropTypes.array.isRequired,
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
@@ -89,7 +85,6 @@ const stateToProps = (state) => {
         proposals: state.proposals._.list,
         proposalsInProgress: state.proposals._.inProgress,
         lang: state.language,
-        open: state.proposals.dialog.open,
         voteDetails: state.proposals.voteDetails.value,
         voteDetailsInProgress: state.proposals.voteDetails.inProgress,
     };

@@ -10,7 +10,7 @@ import DelegateButton from './DelegateButton';
 import { formatCount } from '../../utils/numberFormats';
 import ValidatorName from './ValidatorName';
 import { config } from '../../config';
-import ConnectButton from '../NavBar/ConnectButton';
+import ConnectButton from '../NavBar/ConnectDialog/KeplrConnectButton';
 import classNames from 'classnames';
 
 class Table extends Component {
