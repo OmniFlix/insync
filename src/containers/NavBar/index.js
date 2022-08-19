@@ -55,7 +55,8 @@ class NavBar extends Component {
         }
 
         if (this.props.proposals && !this.props.proposals.length &&
-            !this.props.proposalsInProgress && !this.props.stake) {
+            !this.props.proposalsInProgress && !this.props.stake &&
+            this.props.match && this.props.match.params && !this.props.match.params.proposalID) {
             this.props.getProposals((result) => {
                 if (result && result.length) {
                     const array = [];
@@ -78,6 +79,27 @@ class NavBar extends Component {
                     this.getProposalDetails(array && array.reverse());
                 }
             });
+        } else if (this.props.proposals && !this.props.proposalsInProgress && !this.props.stake &&
+            this.props.proposalDetails && Object.keys(this.props.proposalDetails).length === 1 &&
+            this.props.match && this.props.match.params && !this.props.match.params.proposalID) {
+            const array = [];
+            this.props.proposals.map((val) => {
+                const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
+                    Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                if (!filter) {
+                    if (this.props.home && val.status !== 2) {
+                        return null;
+                    }
+
+                    array.push(val.id);
+                }
+                if (val.status === 2) {
+                    this.props.fetchProposalTally(val.id);
+                }
+
+                return null;
+            });
+            this.getProposalDetails(array && array.reverse());
         }
 
         if (this.props.address) {
@@ -361,6 +383,11 @@ NavBar.propTypes = {
         }),
     ),
     home: PropTypes.bool,
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            proposalID: PropTypes.string.isRequired,
+        }),
+    }),
     proposalTab: PropTypes.bool,
     proposalsInProgress: PropTypes.bool,
     stake: PropTypes.bool,

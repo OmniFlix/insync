@@ -17,6 +17,7 @@ import logo from '../../../assets/cosmostation.svg';
 import { encode } from 'js-base64';
 import { hideConnectDialog } from '../../../actions/navBar';
 import { initializeCosmoStation } from '../../../helper';
+import variables from '../../../utils/variables';
 
 const CosmostationConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -57,7 +58,7 @@ const CosmostationConnectButton = (props) => {
             variant="contained"
             onClick={login}>
             <img alt="logo" src={logo}/>
-            {inProgress ? 'connecting...' : 'Connect with Cosmostation'}
+            {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].cosmostation}
         </Button>
     );
 };
@@ -77,6 +78,12 @@ CosmostationConnectButton.propTypes = {
     stake: PropTypes.bool,
 };
 
+const stateToProps = (state) => {
+    return {
+        lang: state.language,
+    };
+};
+
 const actionsToProps = {
     setAccountAddress,
     showMessage,
@@ -89,4 +96,4 @@ const actionsToProps = {
     hideConnectDialog,
 };
 
-export default withRouter(connect(null, actionsToProps)(CosmostationConnectButton));
+export default withRouter(connect(stateToProps, actionsToProps)(CosmostationConnectButton));

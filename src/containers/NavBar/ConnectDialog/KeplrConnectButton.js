@@ -17,6 +17,7 @@ import { encode } from 'js-base64';
 import { getDelegatedValidatorsDetails } from '../../../actions/stake';
 import keplrIcon from '../../../assets/keplr.png';
 import { hideConnectDialog } from '../../../actions/navBar';
+import variables from '../../../utils/variables';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -58,7 +59,7 @@ const KeplrConnectButton = (props) => {
             variant="contained"
             onClick={initKeplr}>
             <img alt="logo" src={keplrIcon}/>
-            {inProgress ? 'connecting...' : 'Connect with Keplr'}
+            {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].keplr}
         </Button>
     );
 };
