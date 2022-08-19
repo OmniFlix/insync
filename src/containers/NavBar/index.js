@@ -349,7 +349,6 @@ class NavBar extends Component {
                             onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
                             Connect
                         </Button>}
-                    {/* <ConnectButton proposalTab={this.props.proposalTab} stake={this.props.stake}/>} */}
                 </div>
                 <ConnectDialog/>
             </div>
@@ -470,7 +469,7 @@ const actionToProps = {
     fetchVoteDetails,
     fetchProposalTally,
     fetchProposalDetails,
-    showConnectDialog: showConnectDialog,
+    showConnectDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));
