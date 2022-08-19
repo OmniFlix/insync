@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc.comdex.one',
-    REST_URL: 'https://rest.comdex.one',
+    RPC_URL: 'https://rpc-comdex-ia.notional.ventures',
+    REST_URL: 'https://api-comdex-ia.notional.ventures',
     EXPLORER_URL: 'https://www.mintscan.io/comdex',
     STAKING_URL: 'https://comdex.omniflix.co/stake',
     NETWORK_NAME: 'Comdex',
@@ -12,6 +12,7 @@ export const config = {
     COIN_DECIMALS: 6,
     PREFIX: 'comdex',
     COIN_TYPE: 118,
+    COSMOSTAION: 'comdex',
     COINGECKO_ID: 'comdex',
     GAS_PRICE_STEP_LOW: 0.025,
     GAS_PRICE_STEP_AVERAGE: 0.03,
