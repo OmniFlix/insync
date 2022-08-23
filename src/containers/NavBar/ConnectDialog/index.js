@@ -1,12 +1,25 @@
 import React from 'react';
-import { Dialog, DialogContent } from '@material-ui/core';
+import { Dialog, DialogContent, IconButton, Tooltip } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
 import { hideConnectDialog } from '../../../actions/navBar';
 import ConnectButton from './KeplrConnectButton';
 import CosmostationConnectButton from './CosmostationConnectButton';
+import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
+import insync from '../../../assets/insync.png';
+import poweredBy from '../../../assets/powered_by.jpeg';
 import './index.css';
+
+const LightTooltip = withStyles((theme) => ({
+    tooltip: {
+        backgroundColor: theme.palette.common.white,
+        color: 'rgba(0, 0, 0, 0.87)',
+        boxShadow: theme.shadows[1],
+        fontSize: 11,
+    },
+}))(Tooltip);
 
 const ConnectDialog = (props) => {
     return (
@@ -18,12 +31,36 @@ const ConnectDialog = (props) => {
             onClose={props.handleClose}>
             <DialogContent className="content">
                 <h2 className="heading">
-                    Connect Wallet
+                    <img alt="insync" src={insync}/>
+                    supported wallets
                 </h2>
                 <div className="connect_wallets">
-                    <ConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
-                    <CosmostationConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
+                    <div className="button_div">
+                        <ConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
+                        <LightTooltip title="Download the Keplr Extension">
+                            <IconButton
+                                className="download_button"
+                                onClick={() => window.open('https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap?hl=en')}>
+                                <GetAppRoundedIcon/>
+                            </IconButton>
+                        </LightTooltip>
+                    </div>
+                    <div className="button_div">
+                        <CosmostationConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
+                        <LightTooltip title="Download the Cosmostation Extension">
+                            <IconButton
+                                className="download_button"
+                                onClick={() => window.open('https://chrome.google.com/webstore/detail/cosmostation/fpkhgmpbidmiogeglndfbkegfdlnajnf')}>
+                                <GetAppRoundedIcon/>
+                            </IconButton>
+                        </LightTooltip>
+                    </div>
                 </div>
+                <a className="powered_by" href="https://linktr.ee/notionaldao">
+                    Powered by
+                    <img alt="notional" src={poweredBy}/>
+                    Notional
+                </a>
             </DialogContent>
         </Dialog>
     );
