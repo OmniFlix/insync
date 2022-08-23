@@ -39,6 +39,10 @@ class NavBar extends Component {
     constructor (props) {
         super(props);
 
+        this.state = {
+            cosmostationEvent: null,
+        };
+
         this.initKeplr = this.initKeplr.bind(this);
         this.handleFetch = this.handleFetch.bind(this);
         this.handleChain = this.handleChain.bind(this);
@@ -48,10 +52,14 @@ class NavBar extends Component {
     }
 
     componentDidMount () {
-        if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'keplr')) {
-            this.initKeplr();
-        } else if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'cosmostation')) {
-            this.handleCosmoStation();
+        if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'cosmostation')) {
+            setTimeout(() => {
+                this.handleCosmoStation(true);
+            }, 600);
+        } else if (localStorage.getItem('of_co_address')) {
+            setTimeout(() => {
+                this.initKeplr();
+            }, 600);
         }
 
         if (this.props.proposals && !this.props.proposals.length &&
@@ -120,6 +128,20 @@ class NavBar extends Component {
                 this.handleChain();
             }
         });
+
+        window.onload = () => {
+            if (window.cosmostation && window.cosmostation.cosmos) {
+                const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
+                    if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                        this.handleCosmoStation();
+                    }
+                });
+
+                this.setState({
+                    cosmostationEvent: cosmostationEvent,
+                });
+            }
+        };
     }
 
     componentDidUpdate (pp, ps, ss) {
@@ -177,6 +199,10 @@ class NavBar extends Component {
 
     componentWillUnmount () {
         window.removeEventListener('keplr_keystorechange', this.handleChain);
+        if (this.state.cosmostationEvent) {
+            window && window.cosmostation && window.cosmostation.cosmos &&
+            window.cosmostation.cosmos.off(this.state.cosmostationEvent);
+        }
     }
 
     getValidatorImage (index, data) {
@@ -246,11 +272,16 @@ class NavBar extends Component {
     }
 
     initKeplr () {
-        window.onload = () => this.handleChain(true);
+        this.handleChain(true);
     }
 
     handleChain (fetch) {
         initializeChain((error, addressList) => {
+            if (addressList === undefined || !addressList) {
+                window.onload = () => this.handleChain(true);
+                return;
+            }
+
             if (error) {
                 this.props.showMessage(error);
                 localStorage.removeItem('of_co_address');
@@ -270,7 +301,7 @@ class NavBar extends Component {
         });
     }
 
-    handleCosmoStation () {
+    handleCosmoStation (fetch) {
         initializeCosmoStation((error, account) => {
             if (error) {
                 this.props.showMessage(error);
@@ -282,7 +313,9 @@ class NavBar extends Component {
             const previousAddress = localStorage.getItem('of_co_address') &&
                 decode(localStorage.getItem('of_co_address'));
             this.props.setAccountAddress(account && account.address);
-            this.handleFetch(account && account.address);
+            if (fetch) {
+                this.handleFetch(account && account.address);
+            }
             if (account && previousAddress !== account.address) {
                 localStorage.setItem('of_co_address', encode(account && account.address));
                 localStorage.setItem('of_co_wallet', 'cosmostation');
@@ -325,7 +358,6 @@ class NavBar extends Component {
                             onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
                             Connect
                         </Button>}
-                    {/* <ConnectButton proposalTab={this.props.proposalTab} stake={this.props.stake}/>} */}
                 </div>
                 <ConnectDialog/>
             </div>
@@ -385,7 +417,7 @@ NavBar.propTypes = {
     home: PropTypes.bool,
     match: PropTypes.shape({
         params: PropTypes.shape({
-            proposalID: PropTypes.string.isRequired,
+            proposalID: PropTypes.string,
         }),
     }),
     proposalTab: PropTypes.bool,
@@ -446,7 +478,7 @@ const actionToProps = {
     fetchVoteDetails,
     fetchProposalTally,
     fetchProposalDetails,
-    showConnectDialog: showConnectDialog,
+    showConnectDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));

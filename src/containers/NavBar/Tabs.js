@@ -103,7 +103,7 @@ Tabs.propTypes = {
     open: PropTypes.bool.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
-            proposalID: PropTypes.string.isRequired,
+            proposalID: PropTypes.string,
         }),
     }),
 };

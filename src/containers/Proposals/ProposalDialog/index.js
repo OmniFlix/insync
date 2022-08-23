@@ -19,6 +19,9 @@ import { tally } from '../../../utils/numberFormats';
 import { withRouter } from 'react-router-dom';
 import NavBar from '../../NavBar';
 import variables from '../../../utils/variables';
+import UnSuccessDialog from '../../Stake/DelegateDialog/UnSuccessDialog';
+import PendingDialog from '../../Stake/DelegateDialog/PendingDialog';
+import SuccessDialog from '../../Stake/DelegateDialog/SuccessDialog';
 
 class ProposalDialog extends Component {
     constructor (props) {
@@ -245,6 +248,9 @@ class ProposalDialog extends Component {
                                 </IconButton>
                             </div>
                         </div>}
+                <UnSuccessDialog/>
+                <PendingDialog/>
+                <SuccessDialog/>
             </div>
         );
     }
@@ -268,7 +274,7 @@ ProposalDialog.propTypes = {
     address: PropTypes.string,
     match: PropTypes.shape({
         params: PropTypes.shape({
-            proposalID: PropTypes.string.isRequired,
+            proposalID: PropTypes.string,
         }),
     }),
     proposal: PropTypes.object,
