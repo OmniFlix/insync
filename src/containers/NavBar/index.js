@@ -52,10 +52,14 @@ class NavBar extends Component {
     }
 
     componentDidMount () {
-        if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'keplr')) {
-            this.initKeplr();
-        } else if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'cosmostation')) {
-            this.handleCosmoStation(true);
+        if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'cosmostation')) {
+            setTimeout(() => {
+                this.handleCosmoStation(true);
+            }, 600);
+        } else if (localStorage.getItem('of_co_address')) {
+            setTimeout(() => {
+                this.initKeplr();
+            }, 600);
         }
 
         if (this.props.proposals && !this.props.proposals.length &&
@@ -268,11 +272,16 @@ class NavBar extends Component {
     }
 
     initKeplr () {
-        window.onload = () => this.handleChain(true);
+        this.handleChain(true);
     }
 
     handleChain (fetch) {
         initializeChain((error, addressList) => {
+            if (addressList === undefined || !addressList) {
+                window.onload = () => this.handleChain(true);
+                return;
+            }
+
             if (error) {
                 this.props.showMessage(error);
                 localStorage.removeItem('of_co_address');

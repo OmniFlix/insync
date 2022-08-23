@@ -63,7 +63,7 @@ const chainConfig = {
 export const initializeChain = (cb) => {
     (async () => {
         if (!window.getOfflineSignerOnlyAmino || !window.keplr) {
-            const error = 'Please install keplr extension';
+            const error = 'Download the Keplr Extension';
             cb(error);
         } else {
             if (window.keplr.experimentalSuggestChain) {
@@ -99,7 +99,7 @@ export const initializeCosmoStation = (cb) => {
             cb(null, account);
         } catch (error) {
             if (error instanceof InstallError) {
-                const error = 'not installed';
+                const error = 'Download the Cosmostation Extension';
                 cb(error);
             } else if (error.code === 4001) {
                 const error = 'user rejected request';
