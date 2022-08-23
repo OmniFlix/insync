@@ -9,6 +9,7 @@ import { disconnectSet } from '../../actions/accounts';
 const DisconnectButton = (props) => {
     const handleClick = () => {
         localStorage.removeItem('of_co_address');
+        localStorage.removeItem('of_co_wallet');
         props.disconnectSet();
     };
 
