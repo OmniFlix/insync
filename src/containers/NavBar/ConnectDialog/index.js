@@ -57,7 +57,7 @@ const ConnectDialog = (props) => {
                     </div>
                 </div>
                 <a className="powered_by" href="https://linktr.ee/notionaldao">
-                    Powered by
+                    API/RPC powered by
                     <img alt="notional" src={poweredBy}/>
                     Notional
                 </a>
