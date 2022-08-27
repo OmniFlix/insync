@@ -19,7 +19,6 @@ import {
     VOTE_DETAILS_FETCH_SUCCESS,
 } from '../constants/proposals';
 import { DISCONNECT_SET } from '../constants/accounts';
-import { DELEGATE_SUCCESS_DIALOG_HIDE } from '../constants/stake';
 
 const dialog = (state = {
     open: false,
@@ -35,12 +34,6 @@ const dialog = (state = {
         return {
             ...state,
             open: false,
-        };
-    case DISCONNECT_SET:
-    case DELEGATE_SUCCESS_DIALOG_HIDE:
-        return {
-            open: false,
-            value: {},
         };
     default:
         return state;
