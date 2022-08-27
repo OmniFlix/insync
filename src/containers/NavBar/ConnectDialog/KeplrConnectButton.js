@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
-import variables from '../../utils/variables';
-import { initializeChain } from '../../helper';
+import { initializeChain } from '../../../helper';
 import {
     fetchRewards,
     fetchVestingBalance,
@@ -11,13 +10,16 @@ import {
     getUnBondingDelegations,
     setAccountAddress,
     showSelectAccountDialog,
-} from '../../actions/accounts';
+} from '../../../actions/accounts';
 import { connect } from 'react-redux';
-import { showMessage } from '../../actions/snackbar';
+import { showMessage } from '../../../actions/snackbar';
 import { encode } from 'js-base64';
-import { getDelegatedValidatorsDetails } from '../../actions/stake';
+import { getDelegatedValidatorsDetails } from '../../../actions/stake';
+import keplrIcon from '../../../assets/keplr.png';
+import { hideConnectDialog } from '../../../actions/navBar';
+import variables from '../../../utils/variables';
 
-const ConnectButton = (props) => {
+const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
     const initKeplr = () => {
@@ -32,6 +34,7 @@ const ConnectButton = (props) => {
             }
 
             props.setAccountAddress(addressList[0] && addressList[0].address);
+            props.hideConnectDialog();
             if (!props.proposalTab && !props.stake) {
                 props.getUnBondingDelegations(addressList[0] && addressList[0].address);
                 props.fetchRewards(addressList[0] && addressList[0].address);
@@ -45,6 +48,7 @@ const ConnectButton = (props) => {
                 props.getDelegatedValidatorsDetails(addressList[0] && addressList[0].address);
             }
             localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
+            localStorage.setItem('of_co_wallet', 'keplr');
         });
     };
 
@@ -54,18 +58,20 @@ const ConnectButton = (props) => {
             disabled={inProgress}
             variant="contained"
             onClick={initKeplr}>
-            {inProgress ? 'connecting...' : variables[props.lang].connect}
+            <img alt="logo" src={keplrIcon}/>
+            {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].keplr}
         </Button>
     );
 };
 
-ConnectButton.propTypes = {
+KeplrConnectButton.propTypes = {
     fetchRewards: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
+    hideConnectDialog: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setAccountAddress: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
@@ -87,9 +93,10 @@ const actionsToProps = {
     getDelegations,
     getDelegatedValidatorsDetails,
     fetchVestingBalance,
+    hideConnectDialog,
     getBalance,
     getUnBondingDelegations,
     fetchRewards,
 };
 
-export default connect(stateToProps, actionsToProps)(ConnectButton);
+export default connect(stateToProps, actionsToProps)(KeplrConnectButton);

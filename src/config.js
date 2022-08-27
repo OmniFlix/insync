@@ -12,9 +12,10 @@ export const config = {
     COIN_DECIMALS: 9,
     PREFIX: 'cheqd',
     COIN_TYPE: 118,
+    COSMOSTAION: null,
     COINGECKO_ID: 'cheqd-network',
     GAS_PRICE_STEP_LOW: 25,
     GAS_PRICE_STEP_AVERAGE: 50,
     GAS_PRICE_STEP_HIGH: 100,
-    FEATURES: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
+    FEATURES: ['ibc-transfer', 'ibc-go'],
 };

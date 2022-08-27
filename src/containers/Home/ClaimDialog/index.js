@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
 import ValidatorsSelectField from './ValidatorsSelectField';
-import { signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
 import { showMessage } from '../../../actions/snackbar';
 import { fetchRewards, fetchVestingBalance, getBalance } from '../../../actions/accounts';
 import { config } from '../../../config';
@@ -56,25 +56,32 @@ const ClaimDialog = (props) => {
             });
         }
 
-        signTxAndBroadcast(updatedTx, props.address, (error, result) => {
-            setInProgress(false);
-            if (error) {
-                if (error.indexOf('not yet found on the chain') > -1) {
-                    props.pendingDialog();
-                    return;
-                }
-                props.failedDialog();
-                props.showMessage(error);
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            cosmoStationSign(updatedTx, props.address, handleFetch);
+            return;
+        }
+
+        signTxAndBroadcast(updatedTx, props.address, handleFetch);
+    };
+
+    const handleFetch = (error, result) => {
+        setInProgress(false);
+        if (error) {
+            if (error.indexOf('not yet found on the chain') > -1) {
+                props.pendingDialog();
                 return;
             }
-            if (result) {
-                props.setTokens(tokens);
-                props.successDialog(result.transactionHash);
-                props.fetchRewards(props.address);
-                props.getBalance(props.address);
-                props.fetchVestingBalance(props.address);
-            }
-        });
+            props.failedDialog();
+            props.showMessage(error);
+            return;
+        }
+        if (result) {
+            props.setTokens(tokens);
+            props.successDialog(result.transactionHash);
+            props.fetchRewards(props.address);
+            props.getBalance(props.address);
+            props.fetchVestingBalance(props.address);
+        }
     };
 
     const handleClaim = () => {
@@ -100,26 +107,12 @@ const ClaimDialog = (props) => {
             memo: '',
         };
 
-        signTxAndBroadcast(updatedTx, props.address, (error, result) => {
-            setInProgress(false);
-            if (error) {
-                if (error.indexOf('not yet found on the chain') > -1) {
-                    props.pendingDialog();
-                    return;
-                }
-                props.failedDialog();
-                props.showMessage(error);
-                return;
-            }
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            cosmoStationSign(updatedTx, props.address, handleFetch);
+            return;
+        }
 
-            if (result) {
-                props.setTokens(tokens);
-                props.successDialog(result.transactionHash);
-                props.fetchRewards(props.address);
-                props.getBalance(props.address);
-                props.fetchVestingBalance(props.address);
-            }
-        });
+        signTxAndBroadcast(updatedTx, props.address, handleFetch);
     };
 
     const rewards = props.rewards && props.rewards.rewards &&
@@ -127,16 +120,17 @@ const ClaimDialog = (props) => {
         props.rewards.rewards.filter((value) => value.validator_address === props.value);
 
     let tokens = rewards && rewards.length && rewards[0] && rewards[0].reward &&
-    rewards[0].reward.length && rewards[0].reward[0] && rewards[0].reward[0].amount
-        ? rewards[0].reward[0].amount / 10 ** config.COIN_DECIMALS : 0;
+        rewards[0].reward.length && rewards[0].reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+    tokens = tokens && tokens.amount ? tokens.amount / 10 ** config.COIN_DECIMALS : 0;
 
     if (props.value === 'all' && props.rewards && props.rewards.rewards &&
         props.rewards.rewards.length) {
         let total = 0;
 
         props.rewards.rewards.map((value) => {
-            const rewards = value.reward && value.reward[0] && value.reward[0].amount
-                ? value.reward[0].amount / 10 ** config.COIN_DECIMALS : 0;
+            let rewards = value.reward && value.reward.length &&
+                value.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+            rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
             total = rewards + total;
 
             return total;
