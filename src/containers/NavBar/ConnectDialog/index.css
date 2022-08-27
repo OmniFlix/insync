@@ -1,0 +1,143 @@
+.dialog.connect_dialog div[role='dialog'] {
+    width: 700px;
+    min-width: 700px;
+}
+
+.connect_wallets {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: max-content;
+    margin: 40px auto 60px;
+}
+
+.connect_dialog h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-weight: 500;
+}
+
+.connect_dialog h2 img {
+    width: 160px;
+    margin: 0 10px -5px 0;
+}
+
+.connect_wallets > p {
+    margin: 0 10px;
+}
+
+.connect_wallets > div > button:first-child {
+    background: #222222;
+    border-radius: 10px;
+    width: 100%;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 100%;
+    color: #FFFFFF;
+    padding: 14px;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 25%);
+    text-transform: unset;
+    min-width: 240px;
+}
+
+.connect_wallets > div > button:first-child:hover {
+    background: #222222;
+}
+
+.connect_wallets > div > button:first-child:hover:before {
+    content: "";
+    position: absolute;
+    background: #222222;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    border-radius: 10px;
+}
+
+.connect_wallets > div > button:first-child:hover:after {
+    content: "";
+    background: linear-gradient(112.4deg, #2FCDCF 14.6%, #966AFB 82.44%);
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -2;
+    border-radius: 10px;
+}
+
+.connect_wallets > div > button:first-child > span:first-child {
+    justify-content: flex-start;
+}
+
+.connect_wallets > div > button:first-child img {
+    width: 30px;
+    margin-right: 10px;
+}
+
+.connect_dialog .download_actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.download_actions a {
+    color: #e0e0e0;
+}
+
+.connect_wallets .button_div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.connect_wallets .download_button {
+    background: #FFFFFF;
+    margin-left: 20px;
+    color: #222222;
+    width: 30px;
+    height: 30px;
+}
+
+.connect_wallets .download_button:hover {
+    background: #FFFFFF;
+}
+
+.connect_wallets .download_button svg {
+    width: 20px;
+}
+
+.connect_dialog .powered_by {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 130%;
+    text-decoration: unset;
+    color: #FFFFFF;
+}
+
+.connect_dialog .powered_by > img {
+    width: 50px;
+    margin: 0 10px;
+    border-radius: 50px;
+}
+
+@media (max-width: 375px) {
+    .connect_wallets .button_div {
+        width: 100%;
+    }
+
+    .connect_wallets > div > button:first-child {
+        min-width: auto;
+    }
+}

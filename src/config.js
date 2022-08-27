@@ -12,9 +12,10 @@ export const config = {
     COIN_DECIMALS: 9,
     PREFIX: 'like',
     COIN_TYPE: 118,
+    COSMOSTAION: null,
     COINGECKO_ID: 'likecoin',
     GAS_PRICE_STEP_LOW: 0.01,
     GAS_PRICE_STEP_AVERAGE: 0.025,
     GAS_PRICE_STEP_HIGH: 0.04,
-    FEATURES: ['stargate', 'ibc-transfer', 'no-legacy-stdTx', 'ibc-go'],
+    FEATURES: ['ibc-transfer', 'ibc-go'],
 };
