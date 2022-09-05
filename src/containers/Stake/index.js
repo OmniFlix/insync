@@ -29,14 +29,23 @@ const Stake = (props) => {
                     <div className="tabs">
                         <p className={active === 1 ? 'active' : ''} onClick={() => handleChange(1)}>
                             {variables[props.lang]['active_validators']}
+                            {' ('}{props.validatorList &&
+                            props.validatorList.length &&
+                            props.validatorList.length}{')'}
                         </p>
                         <span/>
                         <p className={active === 3 ? 'active' : ''} onClick={() => handleChange(3)}>
                             {variables[props.lang]['inactive_validators']}
+                            {' ('}{props.inActiveValidators &&
+                            props.inActiveValidators.length &&
+                            props.inActiveValidators.length}{')'}
                         </p>
                         <span/>
                         <p className={active === 2 ? 'active' : ''} onClick={() => handleChange(2)}>
                             {variables[props.lang]['staked_validators']}
+                            {' ('}{props.delegatedValidatorList &&
+                            props.delegatedValidatorList.length &&
+                            props.delegatedValidatorList.length}{')'}
                         </p>
                     </div>
                 </div>
@@ -51,12 +60,19 @@ const Stake = (props) => {
 };
 
 Stake.propTypes = {
+    delegatedValidatorList: PropTypes.array.isRequired,
+    inActiveValidators: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
+    validatorList: PropTypes.array.isRequired,
 };
 
 const stateToProps = (state) => {
     return {
         lang: state.language,
+
+        delegatedValidatorList: state.stake.delegatedValidators.list,
+        inActiveValidators: state.stake.inActiveValidators.list,
+        validatorList: state.stake.validators.list,
     };
 };
 
