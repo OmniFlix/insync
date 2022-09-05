@@ -13,6 +13,9 @@ import {
     DELEGATED_VALIDATORS_FETCH_ERROR,
     DELEGATED_VALIDATORS_FETCH_IN_PROGRESS,
     DELEGATED_VALIDATORS_FETCH_SUCCESS,
+    INACTIVE_VALIDATORS_FETCH_ERROR,
+    INACTIVE_VALIDATORS_FETCH_IN_PROGRESS,
+    INACTIVE_VALIDATORS_FETCH_SUCCESS,
     SEARCH_LIST_SET,
     TO_VALIDATOR_SET,
     TOKENS_SET,
@@ -28,7 +31,13 @@ import {
     VALIDATORS_FETCH_SUCCESS,
 } from '../constants/stake';
 import Axios from 'axios';
-import { getDelegatedValidatorsURL, getValidatorURL, validatorImageURL, VALIDATORS_LIST_URL } from '../constants/url';
+import {
+    getDelegatedValidatorsURL,
+    getValidatorURL,
+    INACTIVE_VALIDATORS_URL,
+    validatorImageURL,
+    VALIDATORS_LIST_URL,
+} from '../constants/url';
 import { config } from '../config';
 
 const fetchValidatorsInProgress = () => {
@@ -309,5 +318,49 @@ export const fetchValidatorImage = (id) => (dispatch) => {
                     ? error.response.data.message
                     : 'Failed!',
             ));
+        });
+};
+
+const fetchInActiveValidatorsInProgress = () => {
+    return {
+        type: INACTIVE_VALIDATORS_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchInActiveValidatorsSuccess = (list) => {
+    return {
+        type: INACTIVE_VALIDATORS_FETCH_SUCCESS,
+        list,
+    };
+};
+
+const fetchInActiveValidatorsError = (message) => {
+    return {
+        type: INACTIVE_VALIDATORS_FETCH_ERROR,
+        message,
+    };
+};
+
+export const getInActiveValidators = (cb) => (dispatch) => {
+    dispatch(fetchInActiveValidatorsInProgress());
+    Axios.get(INACTIVE_VALIDATORS_URL, {
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+            Connection: 'keep-alive',
+        },
+    })
+        .then((res) => {
+            dispatch(fetchInActiveValidatorsSuccess(res.data && res.data.result));
+            cb(res.data && res.data.result);
+        })
+        .catch((error) => {
+            dispatch(fetchInActiveValidatorsError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+            cb(null);
         });
 };

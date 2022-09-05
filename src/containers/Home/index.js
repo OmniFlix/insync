@@ -87,10 +87,26 @@ class Home extends Component {
                             <div className="tabs">
                                 <p className={active === 2 ? 'active' : ''} onClick={() => this.handleChange(2)}>
                                     {variables[this.props.lang]['staked_validators']}
+                                    {this.props.delegatedValidatorList &&
+                                    this.props.delegatedValidatorList.length
+                                        ? ' (' + this.props.delegatedValidatorList.length + ')'
+                                        : null}
                                 </p>
                                 <span/>
                                 <p className={active === 1 ? 'active' : ''} onClick={() => this.handleChange(1)}>
-                                    {variables[this.props.lang]['all_validators']}
+                                    {variables[this.props.lang]['active_validators']}
+                                    {this.props.validatorList &&
+                                    this.props.validatorList.length
+                                        ? ' (' + this.props.validatorList.length + ')'
+                                        : null}
+                                </p>
+                                <span/>
+                                <p className={active === 3 ? 'active' : ''} onClick={() => this.handleChange(3)}>
+                                    {variables[this.props.lang]['inactive_validators']}
+                                    {this.props.inActiveValidators &&
+                                    this.props.inActiveValidators.length
+                                        ? ' (' + this.props.inActiveValidators.length + ')'
+                                        : null}
                                 </p>
                             </div>
                             <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>
@@ -132,12 +148,15 @@ class Home extends Component {
 }
 
 Home.propTypes = {
+    delegatedValidatorList: PropTypes.array.isRequired,
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
     }).isRequired,
+    inActiveValidators: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     proposals: PropTypes.array.isRequired,
+    validatorList: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
     address: PropTypes.string,
     proposalsInProgress: PropTypes.bool,
@@ -151,6 +170,9 @@ const stateToProps = (state) => {
         proposals: state.proposals._.list,
         proposalsInProgress: state.proposals._.inProgress,
         voteDetailsInProgress: state.proposals.voteDetails.inProgress,
+        delegatedValidatorList: state.stake.delegatedValidators.list,
+        inActiveValidators: state.stake.inActiveValidators.list,
+        validatorList: state.stake.validators.list,
     };
 };
 
