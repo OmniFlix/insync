@@ -28,9 +28,9 @@ const SelectField = (props) => {
             value={props.value}
             onChange={onChange}>
             {props.placeholder &&
-            <MenuItem disabled value="none">
-                {props.placeholder}
-            </MenuItem>}
+                <MenuItem disabled value="none">
+                    {props.placeholder}
+                </MenuItem>}
             {props.items.map((item) => (
                 <MenuItem
                     key={item.key || item.value || item.name || item.type}

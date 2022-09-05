@@ -85,16 +85,17 @@ class Home extends Component {
                     <div className="stake_content padding">
                         <div className="heading">
                             <div className="tabs">
-                                <p className={active === 2 ? 'active' : ''} onClick={() => this.handleChange(2)}>
-                                    {variables[this.props.lang]['staked_validators']}
-                                </p>
-                                <span/>
+
                                 <p className={active === 1 ? 'active' : ''} onClick={() => this.handleChange(1)}>
-                                    {variables[this.props.lang]['all_validators']}
+                                    {variables[this.props.lang]['active_validators']}
                                 </p>
                                 <span/>
                                 <p className={active === 3 ? 'active' : ''} onClick={() => this.handleChange(3)}>
                                     {variables[this.props.lang]['inactive_validators']}
+                                </p>
+                                <span/>
+                                <p className={active === 2 ? 'active' : ''} onClick={() => this.handleChange(2)}>
+                                    {variables[this.props.lang]['staked_validators']}
                                 </p>
                             </div>
                             <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>

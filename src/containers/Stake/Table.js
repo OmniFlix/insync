@@ -10,8 +10,9 @@ import DelegateButton from './DelegateButton';
 import { formatCount } from '../../utils/numberFormats';
 import ValidatorName from './ValidatorName';
 import { config } from '../../config';
-import ConnectButton from '../NavBar/ConnectButton';
 import classNames from 'classnames';
+import { Button } from '@material-ui/core';
+import { showConnectDialog } from '../../actions/navBar';
 
 class Table extends Component {
     render () {
@@ -31,7 +32,11 @@ class Table extends Component {
                     noMatch: this.props.inProgress
                         ? <CircularProgress/>
                         : !this.props.address
-                            ? <ConnectButton/>
+                            ? <Button
+                                className="disconnect_button"
+                                onClick={() => this.props.showConnectDialog()}>
+                                Connect
+                            </Button>
                             : <div className="no_data_table"> No data found </div>,
                     toolTip: 'Sort',
                 },
@@ -167,6 +172,7 @@ Table.propTypes = {
     active: PropTypes.number.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    showConnectDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
     delegatedValidatorList: PropTypes.arrayOf(
         PropTypes.shape({
@@ -240,4 +246,8 @@ const stateToProps = (state) => {
     };
 };
 
-export default connect(stateToProps)(Table);
+const actionToProps = {
+    showConnectDialog,
+};
+
+export default connect(stateToProps, actionToProps)(Table);

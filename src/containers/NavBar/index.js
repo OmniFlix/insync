@@ -7,9 +7,9 @@ import ExpansionButton from './ExpansionButton';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ClassNames from 'classnames';
-import { hideSideBar } from '../../actions/navBar';
+import { hideSideBar, showConnectDialog } from '../../actions/navBar';
 import Icon from '../../components/Icon';
-import { initializeChain } from '../../helper';
+import { initializeChain, initializeCosmoStation } from '../../helper';
 import { decode, encode } from 'js-base64';
 import { config } from '../../config';
 import { showMessage } from '../../actions/snackbar';
@@ -30,29 +30,42 @@ import {
     getValidators,
 } from '../../actions/stake';
 import { withRouter } from 'react-router-dom';
-import ConnectButton from './ConnectButton';
 import CopyButton from '../../components/CopyButton/TextButton';
 import variables from '../../utils/variables';
 import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposals } from '../../actions/proposals';
+import { Button } from '@material-ui/core';
+import ConnectDialog from './ConnectDialog';
 
 class NavBar extends Component {
     constructor (props) {
         super(props);
+
+        this.state = {
+            cosmostationEvent: null,
+        };
 
         this.initKeplr = this.initKeplr.bind(this);
         this.handleFetch = this.handleFetch.bind(this);
         this.handleChain = this.handleChain.bind(this);
         this.getValidatorImage = this.getValidatorImage.bind(this);
         this.getProposalDetails = this.getProposalDetails.bind(this);
+        this.handleCosmoStation = this.handleCosmoStation.bind(this);
     }
 
     componentDidMount () {
-        if (localStorage.getItem('of_co_address')) {
-            this.initKeplr();
+        if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'cosmostation')) {
+            setTimeout(() => {
+                this.handleCosmoStation(true);
+            }, 600);
+        } else if (localStorage.getItem('of_co_address')) {
+            setTimeout(() => {
+                this.initKeplr();
+            }, 600);
         }
 
         if (this.props.proposals && !this.props.proposals.length &&
-            !this.props.proposalsInProgress && !this.props.stake) {
+            !this.props.proposalsInProgress && !this.props.stake &&
+            this.props.match && this.props.match.params && !this.props.match.params.proposalID) {
             this.props.getProposals((result) => {
                 if (result && result.length) {
                     const array = [];
@@ -75,6 +88,27 @@ class NavBar extends Component {
                     this.getProposalDetails(array && array.reverse());
                 }
             });
+        } else if (this.props.proposals && !this.props.proposalsInProgress && !this.props.stake &&
+            this.props.proposalDetails && Object.keys(this.props.proposalDetails).length === 1 &&
+            this.props.match && this.props.match.params && !this.props.match.params.proposalID) {
+            const array = [];
+            this.props.proposals.map((val) => {
+                const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
+                    Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                if (!filter) {
+                    if (this.props.home && val.status !== 2) {
+                        return null;
+                    }
+
+                    array.push(val.id);
+                }
+                if (val.status === 2) {
+                    this.props.fetchProposalTally(val.id);
+                }
+
+                return null;
+            });
+            this.getProposalDetails(array && array.reverse());
         }
 
         if (this.props.address) {
@@ -104,11 +138,25 @@ class NavBar extends Component {
                 this.handleChain();
             }
         });
+
+        window.onload = () => {
+            if (window.cosmostation && window.cosmostation.cosmos) {
+                const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
+                    if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                        this.handleCosmoStation();
+                    }
+                });
+
+                this.setState({
+                    cosmostationEvent: cosmostationEvent,
+                });
+            }
+        };
     }
 
     componentDidUpdate (pp, ps, ss) {
         if ((!pp.proposals.length && (pp.proposals !== this.props.proposals) &&
-            this.props.proposals && this.props.proposals.length) ||
+                this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
             this.props.proposals.map((val) => {
                 const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.id &&
@@ -161,6 +209,10 @@ class NavBar extends Component {
 
     componentWillUnmount () {
         window.removeEventListener('keplr_keystorechange', this.handleChain);
+        if (this.state.cosmostationEvent) {
+            window && window.cosmostation && window.cosmostation.cosmos &&
+            window.cosmostation.cosmos.off(this.state.cosmostationEvent);
+        }
     }
 
     getValidatorImage (index, data) {
@@ -230,11 +282,16 @@ class NavBar extends Component {
     }
 
     initKeplr () {
-        window.onload = () => this.handleChain(true);
+        this.handleChain(true);
     }
 
     handleChain (fetch) {
         initializeChain((error, addressList) => {
+            if (addressList === undefined || !addressList) {
+                window.onload = () => this.handleChain(true);
+                return;
+            }
+
             if (error) {
                 this.props.showMessage(error);
                 localStorage.removeItem('of_co_address');
@@ -250,6 +307,28 @@ class NavBar extends Component {
             }
             if (addressList[0] && previousAddress !== addressList[0].address) {
                 localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
+            }
+        });
+    }
+
+    handleCosmoStation (fetch) {
+        initializeCosmoStation((error, account) => {
+            if (error) {
+                this.props.showMessage(error);
+                localStorage.removeItem('of_co_address');
+
+                return;
+            }
+
+            const previousAddress = localStorage.getItem('of_co_address') &&
+                decode(localStorage.getItem('of_co_address'));
+            this.props.setAccountAddress(account && account.address);
+            if (fetch) {
+                this.handleFetch(account && account.address);
+            }
+            if (account && previousAddress !== account.address) {
+                localStorage.setItem('of_co_address', encode(account && account.address));
+                localStorage.setItem('of_co_wallet', 'cosmostation');
             }
         });
     }
@@ -270,22 +349,27 @@ class NavBar extends Component {
                     </div>
                     <Tabs/>
                     {(localStorage.getItem('of_co_address') || this.props.address) &&
-                    <div className="select_fields">
-                        <p className="token_name">{config.NETWORK_NAME}</p>
-                        <span className="divider"/>
-                        <div className="hash_text" title={this.props.address}>
-                            <p className="name">{this.props.address}</p>
-                            {this.props.address &&
-                            this.props.address.slice(this.props.address.length - 6, this.props.address.length)}
-                        </div>
-                        <CopyButton data={this.props.address}>
-                            {variables[this.props.lang].copy}
-                        </CopyButton>
-                    </div>}
+                        <div className="select_fields">
+                            <p className="token_name">{config.NETWORK_NAME}</p>
+                            <span className="divider"/>
+                            <div className="hash_text" title={this.props.address}>
+                                <p className="name">{this.props.address}</p>
+                                {this.props.address &&
+                                    this.props.address.slice(this.props.address.length - 6, this.props.address.length)}
+                            </div>
+                            <CopyButton data={this.props.address}>
+                                {variables[this.props.lang].copy}
+                            </CopyButton>
+                        </div>}
                     {localStorage.getItem('of_co_address') || this.props.address
                         ? <DisconnectButton/>
-                        : <ConnectButton proposalTab={this.props.proposalTab} stake={this.props.stake}/>}
+                        : <Button
+                            className="disconnect_button"
+                            onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
+                            Connect
+                        </Button>}
                 </div>
+                <ConnectDialog/>
             </div>
         );
     }
@@ -320,6 +404,7 @@ NavBar.propTypes = {
     proposals: PropTypes.array.isRequired,
     setAccountAddress: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
+    showConnectDialog: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     unBondingDelegationsInProgress: PropTypes.bool.isRequired,
@@ -343,6 +428,11 @@ NavBar.propTypes = {
         }),
     ),
     home: PropTypes.bool,
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            proposalID: PropTypes.string,
+        }),
+    }),
     proposalTab: PropTypes.bool,
     proposalsInProgress: PropTypes.bool,
     stake: PropTypes.bool,
@@ -404,6 +494,7 @@ const actionToProps = {
     fetchProposalTally,
     fetchProposalDetails,
     getInActiveValidators,
+    showConnectDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));
