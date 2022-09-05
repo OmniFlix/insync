@@ -160,7 +160,7 @@ class ProposalDialog extends Component {
                                     <pre
                                         className={ClassNames('proposal_dialog_section2_content', this.state.show ? 'show_more' : '')}>
                                         {this.props.proposal && this.props.proposal.content &&
-                                this.props.proposal.content.value && this.props.proposal.content.value.description}
+                                            this.props.proposal.content.value && this.props.proposal.content.value.description}
                                     </pre>
                                     <div
                                         className="proposal_dialog_section2_more"

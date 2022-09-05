@@ -85,7 +85,14 @@ class Home extends Component {
                     <div className="stake_content padding">
                         <div className="heading">
                             <div className="tabs">
-
+                                <p className={active === 2 ? 'active' : ''} onClick={() => this.handleChange(2)}>
+                                    {variables[this.props.lang]['staked_validators']}
+                                    {this.props.delegatedValidatorList &&
+                                    this.props.delegatedValidatorList.length
+                                        ? ' (' + this.props.delegatedValidatorList.length + ')'
+                                        : null}
+                                </p>
+                                <span/>
                                 <p className={active === 1 ? 'active' : ''} onClick={() => this.handleChange(1)}>
                                     {variables[this.props.lang]['active_validators']}
                                     {this.props.validatorList &&
@@ -99,14 +106,6 @@ class Home extends Component {
                                     {this.props.inActiveValidators &&
                                     this.props.inActiveValidators.length
                                         ? ' (' + this.props.inActiveValidators.length + ')'
-                                        : null}
-                                </p>
-                                <span/>
-                                <p className={active === 2 ? 'active' : ''} onClick={() => this.handleChange(2)}>
-                                    {variables[this.props.lang]['staked_validators']}
-                                    {this.props.delegatedValidatorList &&
-                                    this.props.delegatedValidatorList.length
-                                        ? ' (' + this.props.delegatedValidatorList.length + ')'
                                         : null}
                                 </p>
                             </div>

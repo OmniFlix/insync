@@ -319,17 +319,6 @@ const inActiveValidators = (state = {
             ...state,
             inProgress: false,
         };
-        // case VALIDATOR_IMAGE_FETCH_SUCCESS: {
-        //     const array = [...state.images];
-        //     if (action.value && array.indexOf(action.value) === -1) {
-        //         array.push(action.value);
-        //     }
-        //
-        //     return {
-        //         ...state,
-        //         images: [...array],
-        //     };
-        // }
     default:
         return state;
     }
