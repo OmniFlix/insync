@@ -10,8 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     container: node:15-alpine
     steps:
-      name: Lint Test
-      run: |    
-        apk add g++ make python
-        yarn
-        $(pwd)/node_modules/.bin/eslint $(pwd)
+      - name: Lint Test
+        run: |    
+          apk add g++ make python
+          yarn
+          $(pwd)/node_modules/.bin/eslint $(pwd)
