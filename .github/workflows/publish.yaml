@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 env:
-  - GITHUB_REPOSITORY: ${{ GITHUB_REPOSITORY }}
-  - DEPLOY_DIR: /var/www/insync/html
+  GITHUB_REPOSITORY: ${{ GITHUB_REPOSITORY }}
+  DEPLOY_DIR: /var/www/insync/html
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
