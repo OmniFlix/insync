@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  DEPLOY_DIR: /var/www/insync/html
+  DEPLOY_DIR: /var/www/insync
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -32,10 +32,13 @@ jobs:
             git clone https://github.com/$GITHUB_REPOSITORY "$HOME/$GITHUB_REPOSITORY"
             cd "$HOME/$GITHUB_REPOSITORY"
             export NODE_OPTIONS=--openssl-legacy-provider
+            rm package-lock.json
             yarn
             yarn build
-            for i in ./build/*;do 
-              sudo cp -r $i $DEPLOY_DIR;
+            sudo rm -rf $DEPLOY_DIR
+            sudo mkdir -p $DEPLOY_DIR/html
+            for i in ./build/*; do 
+              sudo cp -r $i $DEPLOY_DIR/html;
             done
             sudo chmod 755 -R $DEPLOY_DIR
             sudo systemctl restart nginx
