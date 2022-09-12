@@ -25,7 +25,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GITHUB_REPOSITORY,DEPLOY_DIR
+          envs: GITHUB_REPOSITORY,DEPLOY_DIR,NODE_OPTIONS
           script: |
             [ -d "$HOME/$GITHUB_REPOSITORY" ] && rm -rf "$HOME/$GITHUB_REPOSITORY"
             mkdir -p "$HOME/$GITHUB_REPOSITORY"
