@@ -8,7 +8,7 @@ on:
 
 env:
   DEPLOY_DIR: /var/www/insync/html
-  NODE_OPTIONS: --openssl-legacy-provider
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,12 +25,13 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: GITHUB_REPOSITORY,DEPLOY_DIR,NODE_OPTIONS
+          envs: GITHUB_REPOSITORY,DEPLOY_DIR
           script: |
             [ -d "$HOME/$GITHUB_REPOSITORY" ] && rm -rf "$HOME/$GITHUB_REPOSITORY"
             mkdir -p "$HOME/$GITHUB_REPOSITORY"
             git clone https://github.com/$GITHUB_REPOSITORY "$HOME/$GITHUB_REPOSITORY"
             cd "$HOME/$GITHUB_REPOSITORY"
+            export NODE_OPTIONS=--openssl-legacy-provider
             yarn
             yarn build
             for i in ./build/*;do 
