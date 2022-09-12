@@ -32,9 +32,9 @@ jobs:
             git clone https://github.com/$GITHUB_REPOSITORY "$HOME/$GITHUB_REPOSITORY"
             cd "$HOME/$GITHUB_REPOSITORY"
             export NODE_OPTIONS=--openssl-legacy-provider
-            rm package-lock.json
+            [ -f "./package-lock.json" ] && rm package-lock.json
             yarn
-            yarn build
+            yarn build || exit 1
             sudo rm -rf $DEPLOY_DIR
             sudo mkdir -p $DEPLOY_DIR/html
             for i in ./build/*; do 
