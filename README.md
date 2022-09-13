@@ -18,7 +18,7 @@ yarn
 1. clone repository and install packages
 
   ```sh
-  git clone https://github.dev/OmniFlix/insync.git
+  git clone https://github.com/OmniFlix/insync.git
   cd insync
   yarn
   ```
