@@ -56,7 +56,7 @@ const ConnectDialog = (props) => {
                         </LightTooltip>
                     </div>
                 </div>
-                <a className="powered_by" href="https://linktr.ee/notionaldao">
+                <a className="powered_by" href="https://linktr.ee/notionaldao" rel="noopener noreferrer" target="_blank">
                     API/RPC powered by
                     <img alt="notional" src={poweredBy}/>
                     Notional
