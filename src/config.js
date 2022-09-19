@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-comdex-ia.notional.ventures',
-    REST_URL: 'https://api-comdex-ia.notional.ventures',
+    RPC_URL: 'https://rpc-comdex-ia.cosmosia.notional.ventures',
+    REST_URL: 'https://api-comdex-ia.cosmosia.notional.ventures',
     EXPLORER_URL: 'https://www.mintscan.io/comdex',
     STAKING_URL: 'https://comdex.omniflix.co/stake',
     NETWORK_NAME: 'Comdex',
