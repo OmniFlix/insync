@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-sentinel-ia.notional.ventures',
-    REST_URL: 'https://api-sentinel-ia.notional.ventures',
+    RPC_URL: 'https://rpc-sentinel-ia.cosmosia.notional.ventures',
+    REST_URL: 'https://api-sentinel-ia.cosmosia.notional.ventures',
     EXPLORER_URL: 'https://www.mintscan.io/sentinel',
     STAKING_URL: 'https://sentinel.omniflix.co/stake',
     NETWORK_NAME: 'Sentinel',
