@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-cosmoshub-ia.notional.ventures',
-    REST_URL: 'https://api-cosmoshub-ia.notional.ventures',
+    RPC_URL: 'https://rpc-cosmoshub-ia.cosmosia.notional.ventures',
+    REST_URL: 'https://api-cosmoshub-ia.cosmosia.notional.ventures',
     EXPLORER_URL: 'https://www.mintscan.io/cosmos',
     STAKING_URL: 'https://cosmos.omniflix.co/stake',
     NETWORK_NAME: 'Cosmos',
