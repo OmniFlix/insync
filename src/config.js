@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-osmosis-ia.notional.ventures',
-    REST_URL: 'https://api-osmosis-ia.notional.ventures',
+    RPC_URL: 'https://rpc-osmosis-ia.cosmosia.notional.ventures',
+    REST_URL: 'https://api-osmosis-ia.cosmosia.notional.ventures',
     EXPLORER_URL: 'https://www.mintscan.io/osmosis',
     STAKING_URL: 'https://osmosis.omniflix.co/stake',
     NETWORK_NAME: 'Osmosis',
