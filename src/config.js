@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-persistent-ia.notional.ventures',
-    REST_URL: 'https://api-persistent-ia.notional.ventures',
+    RPC_URL: 'https://rpc-persistent-ia.cosmosia.notional.ventures',
+    REST_URL: 'https://api-persistent-ia.cosmosia.notional.ventures',
     EXPLORER_URL: 'https://www.mintscan.io/persistence',
     STAKING_URL: 'https://persistence.omniflix.co/stake',
     NETWORK_NAME: 'Persistence',
