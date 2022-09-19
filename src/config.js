@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-cerberus-ia.notional.ventures',
-    REST_URL: 'https://api-cerberus-ia.notional.ventures',
+    RPC_URL: 'https://rpc-cerberus-ia.cosmosia.notional.ventures',
+    REST_URL: 'https://api-cerberus-ia.cosmosia.notional.ventures',
     EXPLORER_URL: 'https://www.mintscan.io/cerberus',
     STAKING_URL: 'https://cerberus.omniflix.co/stake',
     NETWORK_NAME: 'Cerberus',
