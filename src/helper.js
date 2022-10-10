@@ -22,6 +22,7 @@ const chainConfig = {
         coinMinimalDenom,
         coinDecimals,
         coinGeckoId,
+        coinImageUrl: config.COIN_IMAGE_URL,
     },
     bip44: {
         coinType: 118,
@@ -40,6 +41,7 @@ const chainConfig = {
             coinMinimalDenom,
             coinDecimals,
             coinGeckoId,
+            coinImageUrl: config.COIN_IMAGE_URL,
         },
     ],
     feeCurrencies: [
@@ -48,16 +50,22 @@ const chainConfig = {
             coinMinimalDenom,
             coinDecimals,
             coinGeckoId,
+            coinImageUrl: config.COIN_IMAGE_URL,
+            gasPriceStep: {
+                low: config.GAS_PRICE_STEP_LOW,
+                average: config.GAS_PRICE_STEP_AVERAGE,
+                high: config.GAS_PRICE_STEP_HIGH,
+            },
         },
     ],
     coinType: config.COIN_TYPE,
-    gasPriceStep: {
-        low: config.GAS_PRICE_STEP_LOW,
-        average: config.GAS_PRICE_STEP_AVERAGE,
-        high: config.GAS_PRICE_STEP_HIGH,
-    },
     features: config.FEATURES,
+    walletUrl: config.WALLET_URL,
     walletUrlForStaking: config.STAKING_URL,
+    txExplorer: {
+        name: 'Mintscan',
+        txUrl: `${config.EXPLORER_URL}/txs/{txHash}`,
+    },
 };
 
 export const initializeChain = (cb) => {
