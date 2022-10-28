@@ -64,7 +64,7 @@ const chainConfig = {
     walletUrlForStaking: config.STAKING_URL,
     txExplorer: {
         name: 'Mintscan',
-        txUrl: `${config.EXPLORER_URL}/txs/{txHash}`,
+        txUrl: `${config.EXPLORER_URL}/tx/{txHash}`,
     },
 };
 

@@ -12,7 +12,7 @@ import { withRouter } from 'react-router-dom';
 const SuccessDialog = (props) => {
     const handleRedirect = () => {
         if (config.EXPLORER_URL) {
-            const link = `${config.EXPLORER_URL}/txs/${props.hash}`;
+            const link = `${config.EXPLORER_URL}/tx/${props.hash}`;
             window.open(link, '_blank');
         }
     };
