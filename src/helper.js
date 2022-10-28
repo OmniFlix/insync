@@ -50,7 +50,6 @@ const chainConfig = {
             coinMinimalDenom,
             coinDecimals,
             coinGeckoId,
-            coinImageUrl: config.COIN_IMAGE_URL,
             gasPriceStep: {
                 low: config.GAS_PRICE_STEP_LOW,
                 average: config.GAS_PRICE_STEP_AVERAGE,
