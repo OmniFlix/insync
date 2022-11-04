@@ -33,7 +33,7 @@ jobs:
             mkdir -p "$HOME/$GITHUB_REPOSITORY"
             git clone https://github.com/$GITHUB_REPOSITORY "$HOME/$GITHUB_REPOSITORY"
             cd "$HOME/$GITHUB_REPOSITORY"
-            git checkout secret &&
+            git checkout osmosis &&
               git pull origin osmosis &&
               yarn &&
               yarn build &&
