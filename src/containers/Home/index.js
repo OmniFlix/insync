@@ -67,7 +67,8 @@ class Home extends Component {
 
     render () {
         const { active } = this.state;
-        const filteredProposals = this.props.proposals && this.props.proposals.filter((item) => item.status === 2);
+        const filteredProposals = this.props.proposals && this.props.proposals.filter((item) => item.status === 2 ||
+        item.status === 'PROPOSAL_STATUS_VOTING_PERIOD');
 
         return (
             <>
