@@ -48,14 +48,14 @@ const chainConfig = {
             coinMinimalDenom,
             coinDecimals,
             coinGeckoId,
+            gasPriceStep: {
+                low: config.GAS_PRICE_STEP_LOW,
+                average: config.GAS_PRICE_STEP_AVERAGE,
+                high: config.GAS_PRICE_STEP_HIGH,
+            },
         },
     ],
     coinType: config.COIN_TYPE,
-    gasPriceStep: {
-        low: config.GAS_PRICE_STEP_LOW,
-        average: config.GAS_PRICE_STEP_AVERAGE,
-        high: config.GAS_PRICE_STEP_HIGH,
-    },
     features: config.FEATURES,
     walletUrlForStaking: config.STAKING_URL,
 };
