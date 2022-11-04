@@ -70,16 +70,16 @@ class NavBar extends Component {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
                         if (!filter) {
-                            if (this.props.home && val.status !== 2) {
+                            if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
                             }
 
-                            array.push(val.id);
+                            array.push(val.proposal_id);
                         }
-                        if (val.status === 2) {
-                            this.props.fetchProposalTally(val.id);
+                        if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                            this.props.fetchProposalTally(val.proposal_id);
                         }
 
                         return null;
@@ -93,16 +93,16 @@ class NavBar extends Component {
             const array = [];
             this.props.proposals.map((val) => {
                 const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                    Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                    Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
                 if (!filter) {
-                    if (this.props.home && val.status !== 2) {
+                    if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                         return null;
                     }
 
-                    array.push(val.id);
+                    array.push(val.proposal_id);
                 }
-                if (val.status === 2) {
-                    this.props.fetchProposalTally(val.id);
+                if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                    this.props.fetchProposalTally(val.proposal_id);
                 }
 
                 return null;
@@ -149,11 +149,12 @@ class NavBar extends Component {
                 this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
             this.props.proposals.map((val) => {
-                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.id &&
-                    this.props.voteDetails.filter((vote) => vote.proposal_id === val.id)[0];
+                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.proposal_id &&
+                    this.props.voteDetails.filter((vote) => vote.proposal_id === val.proposal_id)[0];
 
-                if (val.status === 2 && !votedOption && this.props.address) {
-                    this.props.fetchVoteDetails(val.id, this.props.address);
+                if ((val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
+                    !votedOption && this.props.address) {
+                    this.props.fetchVoteDetails(val.proposal_id, this.props.address);
                 }
 
                 return null;
@@ -167,17 +168,17 @@ class NavBar extends Component {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
                         if (!filter) {
-                            if (this.props.home && val.status !== 2) {
+                            if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
                             }
 
-                            array.push(val.id);
+                            array.push(val.proposal_id);
                         }
-                        if (val.status === 2) {
-                            this.props.fetchProposalTally(val.id);
-                            this.props.fetchVoteDetails(val.id, this.props.address);
+                        if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                            this.props.fetchProposalTally(val.proposal_id);
+                            this.props.fetchVoteDetails(val.proposal_id, this.props.address);
                         }
 
                         return null;
