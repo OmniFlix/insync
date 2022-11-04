@@ -52,7 +52,6 @@ export const getProposals = (cb) => (dispatch) => {
     Axios.get(PROPOSALS_LIST_URL, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
@@ -98,7 +97,6 @@ export const getProposalVotes = (id) => (dispatch) => {
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
@@ -155,7 +153,6 @@ export const fetchVoteDetails = (id, address) => (dispatch) => {
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
@@ -200,7 +197,6 @@ export const fetchProposalTally = (id) => (dispatch) => {
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
@@ -245,7 +241,6 @@ export const fetchProposalDetails = (id, cb) => (dispatch) => {
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
