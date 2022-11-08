@@ -30,13 +30,13 @@ const Cards = (props) => {
         }).reverse();
 
     const VoteCalculation = (proposal, val) => {
-        if (proposal.status === 2) {
-            const value = props.tallyDetails && props.tallyDetails[proposal.id];
+        if (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+            const value = props.tallyDetails && props.tallyDetails[proposal.proposal_id];
             const sum = value && value.yes && value.no && value.no_with_veto && value.abstain &&
                 (parseInt(value.yes) + parseInt(value.no) + parseInt(value.no_with_veto) + parseInt(value.abstain));
 
-            return (props.tallyDetails && props.tallyDetails[proposal.id] && props.tallyDetails[proposal.id][val]
-                ? tally(props.tallyDetails[proposal.id][val], sum) : '0%');
+            return (props.tallyDetails && props.tallyDetails[proposal.proposal_id] && props.tallyDetails[proposal.proposal_id][val]
+                ? tally(props.tallyDetails[proposal.proposal_id][val], sum) : '0%');
         } else {
             const sum = proposal.final_tally_result && proposal.final_tally_result.yes &&
                 proposal.final_tally_result.no && proposal.final_tally_result.no_with_veto &&
@@ -51,7 +51,7 @@ const Cards = (props) => {
     };
 
     const handleProposal = (proposal) => {
-        props.history.push(`/proposals/${proposal.id}`);
+        props.history.push(`/proposals/${proposal.proposal_id}`);
         props.handleShow(proposal);
     };
 
@@ -62,12 +62,12 @@ const Cards = (props) => {
                     reversedItems.map((proposal, index) => {
                         if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
                             const votedOption = props.voteDetails && props.voteDetails.length &&
-                                proposal && proposal.id &&
-                                props.voteDetails.filter((vote) => vote.proposal_id === proposal.id)[0];
+                                proposal && proposal.proposal_id &&
+                                props.voteDetails.filter((vote) => vote.proposal_id === proposal.proposal_id)[0];
                             let proposer = proposal.proposer;
                             props.proposalDetails && Object.keys(props.proposalDetails).length &&
                             Object.keys(props.proposalDetails).filter((key) => {
-                                if (key === proposal.id) {
+                                if (key === proposal.proposal_id) {
                                     if (props.proposalDetails[key] &&
                                         props.proposalDetails[key][0] &&
                                         props.proposalDetails[key][0].tx &&
@@ -82,7 +82,7 @@ const Cards = (props) => {
                                 return null;
                             });
                             let inProgress = props.proposalDetails && Object.keys(props.proposalDetails).length &&
-                                Object.keys(props.proposalDetails).find((key) => key === proposal.id);
+                                Object.keys(props.proposalDetails).find((key) => key === proposal.proposal_id);
                             inProgress = !inProgress && props.proposalDetailsInProgress;
                             return (
                                 <div
@@ -90,16 +90,16 @@ const Cards = (props) => {
                                     className="card"
                                     onClick={() => handleProposal(proposal)}>
                                     <span className="number">
-                                        {proposal.id}
+                                        {proposal.proposal_id}
                                     </span>
                                     <div className="card_heading">
                                         <h2 onClick={() => props.handleShow(proposal)}> {
-                                            proposal.content && proposal.content.value &&
-                                            proposal.content.value.title
+                                            proposal.content && proposal.content.title
                                         }</h2>
-                                        {proposal.status === 3
+                                        {proposal.status === 3 || proposal.status === 'PROPOSAL_STATUS_PASSED'
                                             ? <Icon className="success" icon="success"/>
-                                            : proposal.status === 2 && votedOption
+                                            : (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
+                                            votedOption
                                                 ? <div className="details">
                                                     <p>your vote is taken: <b>
                                                         {votedOption && votedOption.option === 1 ? 'Yes'
@@ -114,7 +114,7 @@ const Cards = (props) => {
                                                         Details
                                                     </Button>
                                                 </div>
-                                                : proposal.status === 2
+                                                : proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'
                                                     ? <Button
                                                         className="vote_button"
                                                         variant="contained"
@@ -123,8 +123,7 @@ const Cards = (props) => {
                                                     </Button>
                                                     : null}
                                     </div>
-                                    <p className="description">{proposal.content && proposal.content.value &&
-                                        proposal.content.value.description}</p>
+                                    <p className="description">{proposal.content && proposal.content.description}</p>
                                     <div className="row">
                                         <div className="icon_info">
                                             <Icon className="person" icon="person"/>
@@ -153,18 +152,26 @@ const Cards = (props) => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className={ClassNames('status', proposal.status === 2
+                                    <div className={ClassNames('status', (proposal.status === 2 ||
+                                        proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')
                                         ? 'voting_period'
-                                        : proposal.status === 4
+                                        : (proposal.status === 4 ||
+                                        proposal.status === 'PROPOSAL_STATUS_REJECTED')
                                             ? 'rejected'
                                             : null)}>
                                         <p>Proposal Status: {
-                                            proposal.status === 0 ? 'Nil'
-                                                : proposal.status === 1 ? 'DepositPeriod'
-                                                    : proposal.status === 2 ? 'VotingPeriod'
-                                                        : proposal.status === 3 ? 'Passed'
-                                                            : proposal.status === 4 ? 'Rejected'
-                                                                : proposal.status === 5 ? 'Failed' : ''
+                                            proposal.status === 0 ||
+                                            proposal.status === 'PROPOSAL_STATUS_UNSPECIFIED' ? 'Nil'
+                                                : proposal.status === 1 ||
+                                                proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? 'DepositPeriod'
+                                                    : proposal.status === 2 ||
+                                                    proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? 'VotingPeriod'
+                                                        : proposal.status === 3 ||
+                                                            proposal.status === 'PROPOSAL_STATUS_PASSED' ? 'Passed'
+                                                            : proposal.status === 4 ||
+                                                            proposal.status === 'PROPOSAL_STATUS_REJECTED' ? 'Rejected'
+                                                                : proposal.status === 5 ||
+                                                                proposal.status === 'PROPOSAL_STATUS_FAILED' ? 'Failed' : ''
                                         }</p>
                                     </div>
                                     <div className="vote_details">
