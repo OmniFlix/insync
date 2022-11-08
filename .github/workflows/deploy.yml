@@ -1,7 +1,7 @@
 name: deploy
 on:
   push:
-    branches: [ "cheqd" ]
+    branches: [ "cheq" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -33,8 +33,8 @@ jobs:
             mkdir -p "$HOME/$GITHUB_REPOSITORY"
             git clone https://github.com/$GITHUB_REPOSITORY "$HOME/$GITHUB_REPOSITORY"
             cd "$HOME/$GITHUB_REPOSITORY"
-            git checkout cheqd &&
-              git pull origin cheqd &&
+            git checkout cheq &&
+              git pull origin cheq &&
               yarn &&
               yarn build &&
               sudo rm -rf "${DEPLOY_DIR}" &&
