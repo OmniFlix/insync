@@ -13,7 +13,7 @@ export const urlFetchVoteDetails = (proposalId, address) => `${REST_URL}/gov/pro
 
 export const VALIDATORS_LIST_URL = `${REST_URL}/staking/validators`;
 export const getValidatorURL = (address) => `${REST_URL}/staking/validators/${address}`;
-export const PROPOSALS_LIST_URL = `${REST_URL}/gov/proposals`;
+export const PROPOSALS_LIST_URL = `${REST_URL}/cosmos/gov/v1beta1/proposals?pagination.limit=1000`;
 export const getDelegatedValidatorsURL = (address) => `${REST_URL}/staking/delegators/${address}/validators`;
 export const urlFetchProposalVotes = (id) => `${REST_URL}/gov/proposals/${id}/votes`;
 export const urlFetchTallyDetails = (id) => `${REST_URL}/gov/proposals/${id}/tally`;
