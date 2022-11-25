@@ -19,5 +19,5 @@ export const config = {
     GAS_PRICE_STEP_LOW: 1,
     GAS_PRICE_STEP_AVERAGE: 5,
     GAS_PRICE_STEP_HIGH: 10,
-    FEATURES: ['ibc-transfer'],
+    FEATURES: ['cosmwasm', 'ibc-transfer', 'ibc-go'],
 };
