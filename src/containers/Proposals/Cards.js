@@ -70,12 +70,11 @@ const Cards = (props) => {
                                 if (key === proposal.proposal_id) {
                                     if (props.proposalDetails[key] &&
                                         props.proposalDetails[key][0] &&
-                                        props.proposalDetails[key][0].tx &&
-                                        props.proposalDetails[key][0].tx.value &&
-                                        props.proposalDetails[key][0].tx.value.msg[0] &&
-                                        props.proposalDetails[key][0].tx.value.msg[0].value &&
-                                        props.proposalDetails[key][0].tx.value.msg[0].value.proposer) {
-                                        proposer = props.proposalDetails[key][0].tx.value.msg[0].value.proposer;
+                                        props.proposalDetails[key][0].body &&
+                                        props.proposalDetails[key][0].body.messages &&
+                                        props.proposalDetails[key][0].body.messages.length &&
+                                        props.proposalDetails[key][0].body.messages[0].proposer) {
+                                        proposer = props.proposalDetails[key][0].body.messages[0].proposer;
                                     }
                                 }
 
