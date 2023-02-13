@@ -233,10 +233,11 @@ class ProposalDialog extends Component {
                                                     ? this.props.proposal.content['@type'] : null}</p>
                                         </div>
                                     </div>
-                                    {this.props.proposal && (this.props.proposal.status === 2 ||
-                                        this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') && !this.props.voteDetailsInProgress
-                                        ? <Voting proposalId={this.props.proposal && this.props.proposal.proposal_id}/>
-                                        : null}
+                                    {/* {this.props.proposal && (this.props.proposal.status === 2 || */}
+                                    {/*     this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') && !this.props.voteDetailsInProgress */}
+                                    {/*     ? <Voting proposalId={this.props.proposal && this.props.proposal.proposal_id}/> */}
+                                    {/*     : null} */}
+                                    <Voting proposalId={this.props.proposal && this.props.proposal.proposal_id}/>
                                 </div>
                                 {votedOption
                                     ? <div className="already_voted">

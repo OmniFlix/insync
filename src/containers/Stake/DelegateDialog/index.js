@@ -13,7 +13,7 @@ import {
 import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
 import ToValidatorSelectField from './ToValidatorSelectField';
-import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, protoBufSigning, txSignAndBroadCast } from '../../../helper';
 import {
     fetchRewards,
     fetchVestingBalance,
@@ -39,19 +39,19 @@ const DelegateDialog = (props) => {
         }
 
         const updatedTx = {
-            msg: {
+            msgs: [{
                 typeUrl: props.name === 'Delegate' || props.name === 'Stake'
-                    ? '/cosmos.staking.v1beta1.MsgDelegate' : props.name === 'Undelegate'
-                        ? '/cosmos.staking.v1beta1.MsgUndelegate' : props.name === 'Redelegate'
-                            ? '/cosmos.staking.v1beta1.MsgBeginRedelegate' : '',
+                    ? '/liquidstaking.staking.v1beta1.MsgDelegate' : props.name === 'Undelegate'
+                        ? '/liquidstaking.staking.v1beta1.MsgUndelegate' : props.name === 'Redelegate'
+                            ? '/liquidstaking.staking.v1beta1.MsgBeginRedelegate' : '',
                 value: getValueObject(props.name),
-            },
+            }],
             fee: {
                 amount: [{
                     amount: String(gasValue * config.GAS_PRICE_STEP_HIGH),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(gasValue),
+                gasLimit: String(gasValue),
             },
             memo: '',
         };
@@ -61,7 +61,20 @@ const DelegateDialog = (props) => {
             return;
         }
 
-        signTxAndBroadcast(updatedTx, props.address, handleFetch);
+        // eslint-disable-next-line handle-callback-err
+        protoBufSigning(updatedTx, props.address, (error, result) => {
+            if (result) {
+                const data = {
+                    tx_bytes: result,
+                    mode: 'BROADCAST_MODE_BLOCK',
+                };
+                txSignAndBroadCast(data, handleFetch);
+
+                return null;
+            }
+
+            setInProgress(false);
+        });
     };
 
     const handleFetch = (error, result) => {
@@ -76,7 +89,7 @@ const DelegateDialog = (props) => {
             return;
         }
         if (result) {
-            props.successDialog(result.transactionHash);
+            props.successDialog(result.txhash);
             updateBalance();
         }
     };
@@ -96,8 +109,8 @@ const DelegateDialog = (props) => {
         case 'Delegate':
         case 'Undelegate':
             return {
-                delegatorAddress: props.address,
-                validatorAddress: props.validator,
+                delegator_address: props.address,
+                validator_address: props.validator,
                 amount: {
                     amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
                     denom: config.COIN_MINIMAL_DENOM,

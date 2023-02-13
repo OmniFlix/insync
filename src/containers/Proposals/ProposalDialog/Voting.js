@@ -4,7 +4,7 @@ import { fetchProposalTally, fetchVoteDetails, hideProposalDialog } from '../../
 import { connect } from 'react-redux';
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import CircularProgress from '../../../components/CircularProgress';
-import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, protoBufSigning, txSignAndBroadCast } from '../../../helper';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import { showMessage } from '../../../actions/snackbar';
@@ -58,7 +58,7 @@ const Voting = (props) => {
                     amount: String(gas.vote * config.GAS_PRICE_STEP_HIGH),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(gas.vote),
+                gasLimit: String(gas.vote),
             },
             memo: '',
         };
@@ -68,7 +68,20 @@ const Voting = (props) => {
             return;
         }
 
-        signTxAndBroadcast(tx, props.address, handleFetch);
+        // eslint-disable-next-line handle-callback-err
+        protoBufSigning(tx, props.address, (error, result) => {
+            if (result) {
+                const data = {
+                    tx_bytes: result,
+                    mode: 'BROADCAST_MODE_BLOCK',
+                };
+                txSignAndBroadCast(data, handleFetch);
+
+                return null;
+            }
+
+            setInProgress(false);
+        });
     };
 
     const handleFetch = (error, result) => {
@@ -83,7 +96,7 @@ const Voting = (props) => {
             return;
         }
         if (result) {
-            props.successDialog(result.transactionHash);
+            props.successDialog(result.txhash);
             props.fetchVoteDetails(props.proposalId, props.address);
             props.fetchProposalTally(props.proposalId);
             props.getBalance(props.address);

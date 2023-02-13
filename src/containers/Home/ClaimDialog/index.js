@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
 import ValidatorsSelectField from './ValidatorsSelectField';
-import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, protoBufSigning, txSignAndBroadCast } from '../../../helper';
 import { showMessage } from '../../../actions/snackbar';
 import { fetchRewards, fetchVestingBalance, getBalance } from '../../../actions/accounts';
 import { config } from '../../../config';
@@ -36,7 +36,7 @@ const ClaimDialog = (props) => {
                     amount: String(gasValue * config.GAS_PRICE_STEP_HIGH),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(gasValue),
+                gasLimit: String(gasValue),
             },
             memo: '',
         };
@@ -45,7 +45,7 @@ const ClaimDialog = (props) => {
             props.rewards.rewards.length) {
             props.rewards.rewards.map((item) => {
                 updatedTx.msgs.push({
-                    typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
+                    typeUrl: '/liquidstaking.staking.v1beta1.MsgExemptDelegation',
                     value: {
                         delegatorAddress: props.address,
                         validatorAddress: item.validator_address,
@@ -61,7 +61,20 @@ const ClaimDialog = (props) => {
             return;
         }
 
-        signTxAndBroadcast(updatedTx, props.address, handleFetch);
+        // eslint-disable-next-line handle-callback-err
+        protoBufSigning(updatedTx, props.address, (error, result) => {
+            if (result) {
+                const data = {
+                    tx_bytes: result,
+                    mode: 'BROADCAST_MODE_BLOCK',
+                };
+                txSignAndBroadCast(data, handleFetch);
+
+                return null;
+            }
+
+            setInProgress(false);
+        });
     };
 
     const handleFetch = (error, result) => {
@@ -77,7 +90,7 @@ const ClaimDialog = (props) => {
         }
         if (result) {
             props.setTokens(tokens);
-            props.successDialog(result.transactionHash);
+            props.successDialog(result.txhash);
             props.fetchRewards(props.address);
             props.getBalance(props.address);
             props.fetchVestingBalance(props.address);
@@ -87,8 +100,8 @@ const ClaimDialog = (props) => {
     const handleClaim = () => {
         setInProgress(true);
         const updatedTx = {
-            msg: {
-                typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
+            msgs: [{
+                typeUrl: '/liquidstaking.staking.v1beta1.MsgExemptDelegation',
                 value: {
                     delegatorAddress: props.address,
                     validatorAddress: props.value,
@@ -96,13 +109,13 @@ const ClaimDialog = (props) => {
                         denom: config.COIN_MINIMAL_DENOM,
                     },
                 },
-            },
+            }],
             fee: {
                 amount: [{
                     amount: String(gas.claim_reward * config.GAS_PRICE_STEP_HIGH),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(gas.claim_reward),
+                gasLimit: String(gas.claim_reward),
             },
             memo: '',
         };
@@ -112,7 +125,20 @@ const ClaimDialog = (props) => {
             return;
         }
 
-        signTxAndBroadcast(updatedTx, props.address, handleFetch);
+        // eslint-disable-next-line handle-callback-err
+        protoBufSigning(updatedTx, props.address, (error, result) => {
+            if (result) {
+                const data = {
+                    tx_bytes: result,
+                    mode: 'BROADCAST_MODE_BLOCK',
+                };
+                txSignAndBroadCast(data, handleFetch);
+
+                return null;
+            }
+
+            setInProgress(false);
+        });
     };
 
     const rewards = props.rewards && props.rewards.rewards &&
