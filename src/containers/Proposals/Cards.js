@@ -63,19 +63,18 @@ const Cards = (props) => {
                         if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
                             const votedOption = props.voteDetails && props.voteDetails.length &&
                                 proposal && proposal.proposal_id &&
-                                props.voteDetails.filter((vote) => vote.proposal_id === proposal.proposal_id)[0];
+                                props.voteDetails.filter((vote) => vote && (vote.proposal_id === proposal.proposal_id))[0];
                             let proposer = proposal.proposer;
                             props.proposalDetails && Object.keys(props.proposalDetails).length &&
                             Object.keys(props.proposalDetails).filter((key) => {
                                 if (key === proposal.proposal_id) {
                                     if (props.proposalDetails[key] &&
                                         props.proposalDetails[key][0] &&
-                                        props.proposalDetails[key][0].tx &&
-                                        props.proposalDetails[key][0].tx.value &&
-                                        props.proposalDetails[key][0].tx.value.msg[0] &&
-                                        props.proposalDetails[key][0].tx.value.msg[0].value &&
-                                        props.proposalDetails[key][0].tx.value.msg[0].value.proposer) {
-                                        proposer = props.proposalDetails[key][0].tx.value.msg[0].value.proposer;
+                                        props.proposalDetails[key][0].body &&
+                                        props.proposalDetails[key][0].body.messages &&
+                                        props.proposalDetails[key][0].body.messages.length &&
+                                        props.proposalDetails[key][0].body.messages[0].proposer) {
+                                        proposer = props.proposalDetails[key][0].body.messages[0].proposer;
                                     }
                                 }
 
