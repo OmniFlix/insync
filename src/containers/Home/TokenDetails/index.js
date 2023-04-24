@@ -124,7 +124,7 @@ TokenDetails.propTypes = {
 
 const stateToProps = (state) => {
     return {
-        actualAPR: state.stake.apr.actualAPR,
+        actualAPR: state.stake.apr.nominalAPR,
         delegations: state.accounts.delegations.result,
         delegationsInProgress: state.accounts.delegations.inProgress,
         balance: state.accounts.balance.result,

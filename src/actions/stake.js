@@ -37,6 +37,7 @@ import Axios from 'axios';
 import {
     getDelegatedValidatorsURL,
     getValidatorURL,
+    INACTIVE_VALIDATORS_UNBONDING_URL,
     INACTIVE_VALIDATORS_URL,
     validatorImageURL,
     VALIDATORS_LIST_URL,
@@ -344,17 +345,24 @@ const fetchInActiveValidatorsError = (message) => {
 
 export const getInActiveValidators = (cb) => (dispatch) => {
     dispatch(fetchInActiveValidatorsInProgress());
-    Axios.get(INACTIVE_VALIDATORS_URL, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
-        },
-    })
-        .then((res) => {
-            dispatch(fetchInActiveValidatorsSuccess(res.data && res.data.result));
-            cb(res.data && res.data.result);
-        })
-        .catch((error) => {
+    (async () => {
+        try {
+            const result = await Axios.get(INACTIVE_VALIDATORS_URL, {
+                headers: {
+                    Accept: 'application/json, text/plain, */*',
+                    Connection: 'keep-alive',
+                },
+            });
+            const unBondingResult = await Axios.get(INACTIVE_VALIDATORS_UNBONDING_URL, {
+                headers: {
+                    Accept: 'application/json, text/plain, */*',
+                    Connection: 'keep-alive',
+                },
+            });
+            const updatedResult = [...result.data && result.data.result, ...unBondingResult.data && unBondingResult.data.result];
+            dispatch(fetchInActiveValidatorsSuccess(updatedResult));
+            cb(updatedResult);
+        } catch (error) {
             dispatch(fetchInActiveValidatorsError(
                 error.response &&
                 error.response.data &&
@@ -363,7 +371,8 @@ export const getInActiveValidators = (cb) => (dispatch) => {
                     : 'Failed!',
             ));
             cb(null);
-        });
+        }
+    })();
 };
 
 const fetchAPRInProgress = () => {
