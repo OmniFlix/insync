@@ -74,13 +74,13 @@ const TokenDetails = (props) => {
                     <p>{unStaked / (10 ** config.COIN_DECIMALS)}</p>
                 </div>
             </div>
-            {props.actualAPR && <div className="chip_info">
-                <p>{variables[props.lang]['staking_apr']}</p>
-                <div className="chip">
-                    {/* <img alt="unstaked tokens" src={unStake}/> */}
-                    <p>{props.actualAPR.toFixed(2) + ' %'}</p>
-                </div>
-            </div>}
+            {props.actualAPR
+                ? <div className="chip_info">
+                    <p>{variables[props.lang]['staking_apr']}</p>
+                    <div className="chip">
+                        <p>{props.actualAPR.toFixed(2) + ' %'}</p>
+                    </div>
+                </div> : null}
         </div>
     );
 };

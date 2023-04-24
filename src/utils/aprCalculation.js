@@ -1,6 +1,3 @@
-const { config } = require('../config');
-const axios = require('axios').default;
-
 export const getParams = async (lcdApi) => {
     let response = await lcdApi.get('/cosmos/mint/v1beta1/annual_provisions');
 
@@ -50,29 +47,4 @@ export const calculateRealAPR = (params, nominalAPR, blocksYearReal) => {
     const blockProvision = params.annualProvisions / params.blocksPerYear;
     const realProvision = blockProvision * blocksYearReal;
     return nominalAPR * (realProvision / params.annualProvisions);
-};
-
-export const start = async () => {
-    try {
-        const apiUrl = config.REST_URL;
-        const lcdApi = axios.create({
-            baseURL: apiUrl,
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                Accept: 'application/json',
-            },
-            timeout: 10000,
-        });
-
-        const params = await getParams(lcdApi);
-        const blocksYearReal = await getBlocksPerYearReal(lcdApi);
-        const nominalAPR = calculateNominalAPR(params);
-        const actualAPR = calculateRealAPR(params, nominalAPR, blocksYearReal);
-
-        console.log(`Nominal APR: ${nominalAPR * 100} %`);
-        console.log(`RealTime APR: ${actualAPR * 100} %`);
-    } catch (error) {
-        console.log(error);
-        return process.exit(-1);
-    }
 };
