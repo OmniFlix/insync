@@ -70,7 +70,7 @@
     margin: 0 10px;
 }
 
-@media (max-width: 1441px) {
+@media (max-width: 2000px) {
     .token_details {
         margin: 40px 0 0;
         width: 100%;

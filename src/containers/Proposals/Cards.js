@@ -157,7 +157,7 @@ const Cards = (props) => {
                                         proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')
                                         ? 'voting_period'
                                         : (proposal.status === 4 ||
-                                        proposal.status === 'PROPOSAL_STATUS_REJECTED')
+                                            proposal.status === 'PROPOSAL_STATUS_REJECTED')
                                             ? 'rejected'
                                             : null)}>
                                         <p>Proposal Status: {
@@ -168,7 +168,7 @@ const Cards = (props) => {
                                                     : proposal.status === 2 ||
                                                     proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? 'VotingPeriod'
                                                         : proposal.status === 3 ||
-                                                            proposal.status === 'PROPOSAL_STATUS_PASSED' ? 'Passed'
+                                                        proposal.status === 'PROPOSAL_STATUS_PASSED' ? 'Passed'
                                                             : proposal.status === 4 ||
                                                             proposal.status === 'PROPOSAL_STATUS_REJECTED' ? 'Rejected'
                                                                 : proposal.status === 5 ||

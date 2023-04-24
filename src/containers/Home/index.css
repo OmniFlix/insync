@@ -172,7 +172,7 @@
     background: #FFFFFF;
 }
 
-@media (max-width: 1441px) {
+@media (max-width: 2000px) {
     .home .card {
         flex-direction: column;
         text-align: center;

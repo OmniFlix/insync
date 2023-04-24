@@ -74,6 +74,13 @@ const TokenDetails = (props) => {
                     <p>{unStaked / (10 ** config.COIN_DECIMALS)}</p>
                 </div>
             </div>
+            {props.actualAPR
+                ? <div className="chip_info">
+                    <p>{variables[props.lang]['staking_apr']}</p>
+                    <div className="chip">
+                        <p>{props.actualAPR.toFixed(2) + ' %'}</p>
+                    </div>
+                </div> : null}
         </div>
     );
 };
@@ -88,6 +95,7 @@ TokenDetails.propTypes = {
     }).isRequired,
     rewardsInProgress: PropTypes.bool.isRequired,
     unBondingDelegationsInProgress: PropTypes.bool.isRequired,
+    actualAPR: PropTypes.number,
     balance: PropTypes.arrayOf(
         PropTypes.shape({
             amount: PropTypes.any,
@@ -116,6 +124,7 @@ TokenDetails.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        actualAPR: state.stake.apr.actualAPR,
         delegations: state.accounts.delegations.result,
         delegationsInProgress: state.accounts.delegations.inProgress,
         balance: state.accounts.balance.result,

@@ -86,8 +86,18 @@ class Table extends Component {
                     </div>
                 ),
             },
-        },
-        {
+        }, {
+            name: 'apr',
+            label: 'APR %',
+            options: {
+                sort: true,
+                customBodyRender: (value) => {
+                    let apr = Number(this.props.actualAPR) * Number(value);
+                    apr = Number(this.props.actualAPR) - apr;
+                    return apr ? apr.toFixed(2) : '--';
+                },
+            },
+        }, {
             name: 'commission',
             label: 'Commission',
             options: {
@@ -136,8 +146,11 @@ class Table extends Component {
         }]
         ;
 
-        const dataToMap = this.props.active === 2 ? this.props.delegatedValidatorList
-            : this.props.validatorList;
+        const dataToMap = this.props.active === 2
+            ? this.props.delegatedValidatorList
+            : this.props.active === 3
+                ? this.props.inActiveValidators
+                : this.props.validatorList;
 
         const tableData = dataToMap && dataToMap.length
             ? dataToMap.map((item) =>
@@ -145,6 +158,8 @@ class Table extends Component {
                     item.description && item.description.moniker,
                     item,
                     parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
+                    item.commission && item.commission.commission_rates &&
+                    item.commission.commission_rates.rate,
                     item.commission && item.commission.commission_rates &&
                     item.commission.commission_rates.rate
                         ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,
@@ -170,6 +185,7 @@ Table.propTypes = {
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
+    actualAPR: PropTypes.number,
     address: PropTypes.string,
     delegatedValidatorList: PropTypes.arrayOf(
         PropTypes.shape({
@@ -197,6 +213,22 @@ Table.propTypes = {
         }),
     ),
     home: PropTypes.bool,
+    inActiveValidators: PropTypes.arrayOf(
+        PropTypes.shape({
+            operator_address: PropTypes.string,
+            status: PropTypes.number,
+            tokens: PropTypes.string,
+            commission: PropTypes.shape({
+                commission_rates: PropTypes.shape({
+                    rate: PropTypes.string,
+                }),
+            }),
+            delegator_shares: PropTypes.string,
+            description: PropTypes.shape({
+                moniker: PropTypes.string,
+            }),
+        }),
+    ),
     validatorList: PropTypes.arrayOf(
         PropTypes.shape({
             operator_address: PropTypes.string,
@@ -217,12 +249,14 @@ Table.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        actualAPR: state.stake.apr.actualAPR,
         address: state.accounts.address.value,
         lang: state.language,
         validatorList: state.stake.validators.list,
         inProgress: state.stake.validators.inProgress,
         delegations: state.accounts.delegations.result,
         delegatedValidatorList: state.stake.delegatedValidators.list,
+        inActiveValidators: state.stake.inActiveValidators.list,
     };
 };
 

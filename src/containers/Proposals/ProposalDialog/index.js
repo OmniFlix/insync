@@ -205,7 +205,7 @@ class ProposalDialog extends Component {
                                             <p className="pds3l_c1">Voting Status</p>
                                             <div className={ClassNames('pds3l_c2 vote_details',
                                                 this.props.proposal && (this.props.proposal.status === 2 ||
-                                                this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') ? 'vote_in_progress' : '')}>
+                                                    this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') ? 'vote_in_progress' : '')}>
                                                 <div className="yes">
                                                     <span/>
                                                     <p>YES ({this.VoteCalculation('yes')})</p>

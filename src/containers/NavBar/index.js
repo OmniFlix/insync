@@ -23,9 +23,11 @@ import {
     showSelectAccountDialog,
 } from '../../actions/accounts';
 import {
+    fetchAPR,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
     getDelegatedValidatorsDetails,
+    getInActiveValidators,
     getValidators,
 } from '../../actions/stake';
 import { withRouter } from 'react-router-dom';
@@ -123,30 +125,47 @@ class NavBar extends Component {
             });
         }
 
-        window.addEventListener('keplr_keystorechange', () => {
-            if (localStorage.getItem('of_co_address') || this.props.address !== '') {
-                this.handleChain();
-            }
-        });
+        if (!this.props.actualAPR && !this.props.aprInProgress) {
+            this.props.fetchAPR();
+        }
 
-        window.onload = () => {
-            if (window.cosmostation && window.cosmostation.cosmos) {
-                const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
-                    if (localStorage.getItem('of_co_address') || this.props.address !== '') {
-                        this.handleCosmoStation();
-                    }
-                });
+        if (!this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
+            this.props.getInActiveValidators((data) => {
+                if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
+                    const array = data.filter((val) => val && val.description && val.description.identity);
+                    this.getValidatorImage(0, array);
+                }
+            });
+        }
 
-                this.setState({
-                    cosmostationEvent: cosmostationEvent,
-                });
-            }
-        };
+        if (localStorage.getItem('of_co_wallet') === 'keplr') {
+            window.addEventListener('keplr_keystorechange', () => {
+                if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                    this.handleChain();
+                }
+            });
+        }
+
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            window.onload = () => {
+                if (window.cosmostation && window.cosmostation.cosmos) {
+                    const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
+                        if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                            this.handleCosmoStation();
+                        }
+                    });
+
+                    this.setState({
+                        cosmostationEvent: cosmostationEvent,
+                    });
+                }
+            };
+        }
     }
 
     componentDidUpdate (pp, ps, ss) {
         if ((pp.proposals && !pp.proposals.length && (pp.proposals !== this.props.proposals) &&
-            this.props.proposals && this.props.proposals.length) ||
+                this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
             this.props.proposals && this.props.proposals.length &&
             this.props.proposals.map((val) => {
@@ -368,9 +387,11 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
+    aprInProgress: PropTypes.bool.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
     delegatedValidatorListInProgress: PropTypes.bool.isRequired,
     delegationsInProgress: PropTypes.bool.isRequired,
+    fetchAPR: PropTypes.func.isRequired,
     fetchProposalDetails: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
@@ -381,6 +402,7 @@ NavBar.propTypes = {
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
+    getInActiveValidators: PropTypes.func.isRequired,
     getProposals: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     getValidators: PropTypes.func.isRequired,
@@ -388,6 +410,8 @@ NavBar.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
     }).isRequired,
+    inActiveValidatorsInProgress: PropTypes.bool.isRequired,
+    inActiveValidatorsList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     proposalDetails: PropTypes.object.isRequired,
     proposals: PropTypes.array.isRequired,
@@ -404,6 +428,7 @@ NavBar.propTypes = {
     vestingBalanceInProgress: PropTypes.bool.isRequired,
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
+    actualAPR: PropTypes.number,
     address: PropTypes.string,
     balance: PropTypes.array,
     delegatedValidatorList: PropTypes.array,
@@ -439,6 +464,8 @@ NavBar.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
+        aprInProgress: state.stake.apr.inProgress,
+        actualAPR: state.stake.apr.actualAPR,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,
         delegations: state.accounts.delegations.result,
@@ -459,6 +486,8 @@ const stateToProps = (state) => {
         vestingBalanceInProgress: state.accounts.vestingBalance.inProgress,
         voteDetails: state.proposals.voteDetails.value,
         voteDetailsInProgress: state.proposals.voteDetails.inProgress,
+        inActiveValidatorsList: state.stake.inActiveValidators.list,
+        inActiveValidatorsInProgress: state.stake.inActiveValidators.inProgress,
     };
 };
 
@@ -472,6 +501,7 @@ const actionToProps = {
     showDialog: showSelectAccountDialog,
     getUnBondingDelegations,
     getValidators,
+    fetchAPR,
     fetchRewards,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
@@ -480,6 +510,7 @@ const actionToProps = {
     fetchVoteDetails,
     fetchProposalTally,
     fetchProposalDetails,
+    getInActiveValidators,
     showConnectDialog,
 };
 

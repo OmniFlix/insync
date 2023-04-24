@@ -50,6 +50,7 @@ const Proposals = (props) => {
                             {variables[props.lang].closed}
                         </p>
                     </div>
+                    <p>Voting Period: 8 Days</p>
                 </div>
                 {props.proposalsInProgress || props.voteDetailsInProgress
                     ? <div className="cards_content">Loading...</div>

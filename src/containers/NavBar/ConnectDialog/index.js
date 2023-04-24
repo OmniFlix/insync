@@ -10,6 +10,7 @@ import CosmostationConnectButton from './CosmostationConnectButton';
 import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
 import insync from '../../../assets/insync.png';
 import './index.css';
+import { config } from '../../../config';
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -44,7 +45,7 @@ const ConnectDialog = (props) => {
                             </IconButton>
                         </LightTooltip>
                     </div>
-                    <div className="button_div">
+                    {config.COSMOSTAION && <div className="button_div">
                         <CosmostationConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
                         <LightTooltip title="Download the Cosmostation Extension">
                             <IconButton
@@ -53,7 +54,7 @@ const ConnectDialog = (props) => {
                                 <GetAppRoundedIcon/>
                             </IconButton>
                         </LightTooltip>
-                    </div>
+                    </div>}
                 </div>
             </DialogContent>
         </Dialog>
