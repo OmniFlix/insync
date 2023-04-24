@@ -1,4 +1,7 @@
 import {
+    APR_FETCH_ERROR,
+    APR_FETCH_IN_PROGRESS,
+    APR_FETCH_SUCCESS,
     CLAIM_REWARDS_DIALOG_HIDE,
     CLAIM_REWARDS_DIALOG_SHOW,
     CLAIM_REWARDS_VALIDATOR_SET,
@@ -39,6 +42,9 @@ import {
     VALIDATORS_LIST_URL,
 } from '../constants/url';
 import { config } from '../config';
+import { calculateNominalAPR, calculateRealAPR, getBlocksPerYearReal, getParams } from '../utils/aprCalculation';
+
+const axios = require('axios').default;
 
 const fetchValidatorsInProgress = () => {
     return {
@@ -65,7 +71,6 @@ export const getValidators = (cb) => (dispatch) => {
     Axios.get(VALIDATORS_LIST_URL, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
@@ -189,7 +194,6 @@ export const getValidatorDetails = (address, cb) => (dispatch) => {
     Axios.get(URL, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
@@ -234,7 +238,6 @@ export const getDelegatedValidatorsDetails = (address) => (dispatch) => {
     Axios.get(URL, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
@@ -296,7 +299,6 @@ export const fetchValidatorImage = (id) => (dispatch) => {
     return Axios.get(URL, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
@@ -337,7 +339,6 @@ const fetchInActiveValidatorsSuccess = (list) => {
 const fetchInActiveValidatorsError = (message) => {
     return {
         type: INACTIVE_VALIDATORS_FETCH_ERROR,
-        message,
     };
 };
 
@@ -363,4 +364,58 @@ export const getInActiveValidators = (cb) => (dispatch) => {
             ));
             cb(null);
         });
+};
+
+const fetchAPRInProgress = () => {
+    return {
+        type: APR_FETCH_IN_PROGRESS,
+    };
+};
+
+export const fetchAPRSuccess = (nominalAPR, actualAPR) => {
+    return {
+        type: APR_FETCH_SUCCESS,
+        nominalAPR,
+        actualAPR,
+    };
+};
+
+const fetchAPRError = (message) => {
+    return {
+        type: APR_FETCH_ERROR,
+        message,
+    };
+};
+
+export const fetchAPR = () => (dispatch) => {
+    dispatch(fetchAPRInProgress());
+    (async () => {
+        try {
+            const apiUrl = config.REST_URL;
+            const lcdApi = axios.create({
+                baseURL: apiUrl,
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    Accept: 'application/json',
+                },
+                timeout: 10000,
+            });
+
+            const params = await getParams(lcdApi);
+            const blocksYearReal = await getBlocksPerYearReal(lcdApi);
+            const nominalAPR = calculateNominalAPR(params);
+            const actualAPR = calculateRealAPR(params, nominalAPR, blocksYearReal);
+
+            dispatch(fetchAPRSuccess((nominalAPR * 100), (actualAPR * 100)));
+        } catch (error) {
+            dispatch(fetchAPRError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : error,
+            ));
+            return process.exit(-1);
+        }
+    })();
 };

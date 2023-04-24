@@ -23,6 +23,7 @@ import {
     showSelectAccountDialog,
 } from '../../actions/accounts';
 import {
+    fetchAPR,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
     getDelegatedValidatorsDetails,
@@ -71,16 +72,16 @@ class NavBar extends Component {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
                         if (!filter) {
-                            if (this.props.home && val.status !== 2) {
+                            if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
                             }
 
-                            array.push(val.id);
+                            array.push(val.proposal_id);
                         }
-                        if (val.status === 2) {
-                            this.props.fetchProposalTally(val.id);
+                        if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                            this.props.fetchProposalTally(val.proposal_id);
                         }
 
                         return null;
@@ -94,16 +95,16 @@ class NavBar extends Component {
             const array = [];
             this.props.proposals.map((val) => {
                 const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                    Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                    Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
                 if (!filter) {
-                    if (this.props.home && val.status !== 2) {
+                    if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                         return null;
                     }
 
-                    array.push(val.id);
+                    array.push(val.proposal_id);
                 }
-                if (val.status === 2) {
-                    this.props.fetchProposalTally(val.id);
+                if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                    this.props.fetchProposalTally(val.proposal_id);
                 }
 
                 return null;
@@ -115,13 +116,17 @@ class NavBar extends Component {
             this.handleFetch(this.props.address);
         }
 
-        if (!this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
+        if (this.props.validatorList && !this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
             this.props.getValidators((data) => {
                 if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
                     const array = data.filter((val) => val && val.description && val.description.identity);
                     this.getValidatorImage(0, array);
                 }
             });
+        }
+
+        if (!this.props.actualAPR && !this.props.aprInProgress) {
+            this.props.fetchAPR();
         }
 
         if (!this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
@@ -133,37 +138,43 @@ class NavBar extends Component {
             });
         }
 
-        window.addEventListener('keplr_keystorechange', () => {
-            if (localStorage.getItem('of_co_address') || this.props.address !== '') {
-                this.handleChain();
-            }
-        });
+        if (localStorage.getItem('of_co_wallet') === 'keplr') {
+            window.addEventListener('keplr_keystorechange', () => {
+                if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                    this.handleChain();
+                }
+            });
+        }
 
-        window.onload = () => {
-            if (window.cosmostation && window.cosmostation.cosmos) {
-                const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
-                    if (localStorage.getItem('of_co_address') || this.props.address !== '') {
-                        this.handleCosmoStation();
-                    }
-                });
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            window.onload = () => {
+                if (window.cosmostation && window.cosmostation.cosmos) {
+                    const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
+                        if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                            this.handleCosmoStation();
+                        }
+                    });
 
-                this.setState({
-                    cosmostationEvent: cosmostationEvent,
-                });
-            }
-        };
+                    this.setState({
+                        cosmostationEvent: cosmostationEvent,
+                    });
+                }
+            };
+        }
     }
 
     componentDidUpdate (pp, ps, ss) {
-        if ((!pp.proposals.length && (pp.proposals !== this.props.proposals) &&
+        if ((pp.proposals && !pp.proposals.length && (pp.proposals !== this.props.proposals) &&
                 this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
+            this.props.proposals && this.props.proposals.length &&
             this.props.proposals.map((val) => {
-                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.id &&
-                    this.props.voteDetails.filter((vote) => vote.proposal_id === val.id)[0];
+                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.proposal_id &&
+                    this.props.voteDetails.filter((vote) => vote.proposal_id === val.proposal_id)[0];
 
-                if (val.status === 2 && !votedOption && this.props.address) {
-                    this.props.fetchVoteDetails(val.id, this.props.address);
+                if ((val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
+                    !votedOption && this.props.address) {
+                    this.props.fetchVoteDetails(val.proposal_id, this.props.address);
                 }
 
                 return null;
@@ -177,17 +188,17 @@ class NavBar extends Component {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
                         if (!filter) {
-                            if (this.props.home && val.status !== 2) {
+                            if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
                             }
 
-                            array.push(val.id);
+                            array.push(val.proposal_id);
                         }
-                        if (val.status === 2) {
-                            this.props.fetchProposalTally(val.id);
-                            this.props.fetchVoteDetails(val.id, this.props.address);
+                        if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                            this.props.fetchProposalTally(val.proposal_id);
+                            this.props.fetchVoteDetails(val.proposal_id, this.props.address);
                         }
 
                         return null;
@@ -376,9 +387,11 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
+    aprInProgress: PropTypes.bool.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
     delegatedValidatorListInProgress: PropTypes.bool.isRequired,
     delegationsInProgress: PropTypes.bool.isRequired,
+    fetchAPR: PropTypes.func.isRequired,
     fetchProposalDetails: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
@@ -415,6 +428,7 @@ NavBar.propTypes = {
     vestingBalanceInProgress: PropTypes.bool.isRequired,
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
+    actualAPR: PropTypes.number,
     address: PropTypes.string,
     balance: PropTypes.array,
     delegatedValidatorList: PropTypes.array,
@@ -450,6 +464,8 @@ NavBar.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
+        aprInProgress: state.stake.apr.inProgress,
+        actualAPR: state.stake.apr.actualAPR,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,
         delegations: state.accounts.delegations.result,
@@ -485,6 +501,7 @@ const actionToProps = {
     showDialog: showSelectAccountDialog,
     getUnBondingDelegations,
     getValidators,
+    fetchAPR,
     fetchRewards,
     fetchValidatorImage,
     fetchValidatorImageSuccess,

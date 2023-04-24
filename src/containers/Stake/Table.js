@@ -86,8 +86,18 @@ class Table extends Component {
                     </div>
                 ),
             },
-        },
-        {
+        }, {
+            name: 'apr',
+            label: 'APR %',
+            options: {
+                sort: true,
+                customBodyRender: (value) => {
+                    let apr = Number(this.props.actualAPR) * Number(value);
+                    apr = Number(this.props.actualAPR) - apr;
+                    return apr ? apr.toFixed(2) : '--';
+                },
+            },
+        }, {
             name: 'commission',
             label: 'Commission',
             options: {
@@ -149,6 +159,8 @@ class Table extends Component {
                     item,
                     parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
                     item.commission && item.commission.commission_rates &&
+                    item.commission.commission_rates.rate,
+                    item.commission && item.commission.commission_rates &&
                     item.commission.commission_rates.rate
                         ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,
                     item,
@@ -173,6 +185,7 @@ Table.propTypes = {
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
+    actualAPR: PropTypes.number,
     address: PropTypes.string,
     delegatedValidatorList: PropTypes.arrayOf(
         PropTypes.shape({
@@ -236,6 +249,7 @@ Table.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        actualAPR: state.stake.apr.actualAPR,
         address: state.accounts.address.value,
         lang: state.language,
         validatorList: state.stake.validators.list,

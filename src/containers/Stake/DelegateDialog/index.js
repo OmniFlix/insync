@@ -118,7 +118,7 @@ const DelegateDialog = (props) => {
         }
     };
 
-    let staked = props.delegations.reduce((accumulator, currentValue) => {
+    let staked = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
         return accumulator + Number(currentValue.balance.amount);
     }, 0);
     const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);

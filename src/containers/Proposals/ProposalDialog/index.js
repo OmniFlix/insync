@@ -37,21 +37,21 @@ class ProposalDialog extends Component {
     }
 
     componentDidMount () {
-        const votedOption = this.props.voteDetails && this.props.voteDetails.length && this.props.proposal && this.props.proposal.id &&
-            this.props.voteDetails.filter((vote) => vote.proposal_id === this.props.proposal.id)[0];
+        const votedOption = this.props.voteDetails && this.props.voteDetails.length && this.props.proposal && this.props.proposal.proposal_id &&
+            this.props.voteDetails.filter((vote) => vote.proposal_id === this.props.proposal.proposal_id)[0];
 
-        if (!votedOption && this.props.proposal && this.props.proposal.id && this.props.address) {
-            this.props.fetchVoteDetails(this.props.proposal.id, this.props.address);
+        if (!votedOption && this.props.proposal && this.props.proposal.proposal_id && this.props.address) {
+            this.props.fetchVoteDetails(this.props.proposal.proposal_id, this.props.address);
         }
 
         if (this.props.match && this.props.match.params && this.props.match.params.proposalID) {
-            if (this.props.proposal && !this.props.proposal.id) {
+            if (this.props.proposal && !this.props.proposal.proposal_id) {
                 this.props.getProposals((result) => {
                     if (result && result.length) {
-                        const proposal = result.find((val) => val.id === this.props.match.params.proposalID);
+                        const proposal = result.find((val) => val.proposal_id === this.props.match.params.proposalID);
                         this.props.showProposalDialog(proposal);
-                        if (proposal && proposal.status === 2) {
-                            this.props.fetchProposalTally(proposal.id);
+                        if (proposal && (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')) {
+                            this.props.fetchProposalTally(proposal.proposal_id);
                         }
                     }
                 });
@@ -72,13 +72,13 @@ class ProposalDialog extends Component {
     VoteCalculation (val) {
         const { proposal } = this.props;
 
-        if (proposal && proposal.status === 2) {
-            const value = this.props.tallyDetails && this.props.tallyDetails[proposal.id];
+        if (proposal && (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')) {
+            const value = this.props.tallyDetails && this.props.tallyDetails[proposal.proposal_id];
             const sum = value && value.yes && value.no && value.no_with_veto && value.abstain &&
                 (parseInt(value.yes) + parseInt(value.no) + parseInt(value.no_with_veto) + parseInt(value.abstain));
 
-            return (this.props.tallyDetails && this.props.tallyDetails[proposal.id] && this.props.tallyDetails[proposal.id][val]
-                ? tally(this.props.tallyDetails[proposal.id][val], sum) : '0%');
+            return (this.props.tallyDetails && this.props.tallyDetails[proposal.proposal_id] && this.props.tallyDetails[proposal.proposal_id][val]
+                ? tally(this.props.tallyDetails[proposal.proposal_id][val], sum) : '0%');
         } else {
             const sum = proposal && proposal.final_tally_result && proposal.final_tally_result.yes &&
                 proposal.final_tally_result.no && proposal.final_tally_result.no_with_veto &&
@@ -99,13 +99,13 @@ class ProposalDialog extends Component {
 
     render () {
         let votedOption = this.props.voteDetails && this.props.voteDetails.length &&
-            this.props.proposal && this.props.proposal.id &&
-            this.props.voteDetails.filter((vote) => vote.proposal_id === this.props.proposal.id)[0];
+            this.props.proposal && this.props.proposal.proposal_id &&
+            this.props.voteDetails.filter((vote) => vote.proposal_id === this.props.proposal.proposal_id)[0];
         let proposer = this.props.proposal && this.props.proposal.proposer;
 
         this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
         Object.keys(this.props.proposalDetails).filter((key) => {
-            if (this.props.proposal && key === this.props.proposal.id) {
+            if (this.props.proposal && key === this.props.proposal.proposal_id) {
                 if (this.props.proposalDetails[key] &&
                     this.props.proposalDetails[key][0] &&
                     this.props.proposalDetails[key][0].tx &&
@@ -131,7 +131,7 @@ class ProposalDialog extends Component {
                     ? <div className="proposals_content padding">
                         <div className="cards_content loading_card">Loading...</div>
                     </div>
-                    : this.props.proposal && this.props.proposal.id
+                    : this.props.proposal && this.props.proposal.proposal_id
                         ? <div className="proposal_dialog padding">
                             <div className="content">
                                 <IconButton className="close_button" onClick={this.handleClose}>
@@ -140,27 +140,34 @@ class ProposalDialog extends Component {
                                 <div className="proposal_dialog_section1">
                                     <div
                                         className="proposal_dialog_section1_header">{this.props.proposal && this.props.proposal.content &&
-                                        this.props.proposal.content.value && this.props.proposal.content.value.title}</div>
+                                        this.props.proposal.content.title}</div>
                                     <div
-                                        className={ClassNames('proposal_dialog_section1_status', this.props.proposal && this.props.proposal.status === 2
+                                        className={ClassNames('proposal_dialog_section1_status', this.props.proposal &&
+                                        (this.props.proposal.status === 2 || this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')
                                             ? 'voting_period'
-                                            : this.props.proposal && this.props.proposal.status === 4
+                                            : this.props.proposal && (this.props.proposal.status === 4 ||
+                                                this.props.proposal.status === 'PROPOSAL_STATUS_REJECTED')
                                                 ? 'rejected'
                                                 : null)}> Proposal
                                         Status: &nbsp;{this.props.proposal && this.props.proposal.status
-                                            ? this.props.proposal.status === 0 ? 'Nil'
-                                                : this.props.proposal.status === 1 ? 'DepositPeriod'
-                                                    : this.props.proposal.status === 2 ? 'VotingPeriod'
-                                                        : this.props.proposal.status === 3 ? 'Passed'
-                                                            : this.props.proposal.status === 4 ? 'Rejected'
-                                                                : this.props.proposal.status === 5 ? 'Failed' : ''
+                                            ? this.props.proposal.status === 0 ||
+                                            this.props.proposal.status === 'PROPOSAL_STATUS_UNSPECIFIED' ? 'Nil'
+                                                : this.props.proposal.status === 1 ||
+                                                this.props.proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? 'DepositPeriod'
+                                                    : this.props.proposal.status === 2 ||
+                                                    this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? 'VotingPeriod'
+                                                        : this.props.proposal.status === 3 ||
+                                                        this.props.proposal.status === 'PROPOSAL_STATUS_PASSED' ? 'Passed'
+                                                            : this.props.proposal.status === 4 ||
+                                                            this.props.proposal.status === 'PROPOSAL_STATUS_REJECTED' ? 'Rejected'
+                                                                : this.props.proposal.status === 5 ||
+                                                                this.props.proposal.status === 'PROPOSAL_STATUS_FAILED' ? 'Failed' : ''
                                             : ''}</div>
                                 </div>
                                 <div className="proposal_dialog_section2">
                                     <pre
                                         className={ClassNames('proposal_dialog_section2_content', this.state.show ? 'show_more' : '')}>
-                                        {this.props.proposal && this.props.proposal.content &&
-                                            this.props.proposal.content.value && this.props.proposal.content.value.description}
+                                        {this.props.proposal && this.props.proposal.content && this.props.proposal.content.description}
                                     </pre>
                                     <div
                                         className="proposal_dialog_section2_more"
@@ -197,7 +204,8 @@ class ProposalDialog extends Component {
                                         <div className="pds3l_c">
                                             <p className="pds3l_c1">Voting Status</p>
                                             <div className={ClassNames('pds3l_c2 vote_details',
-                                                this.props.proposal && this.props.proposal.status === 2 ? 'vote_in_progress' : '')}>
+                                                this.props.proposal && (this.props.proposal.status === 2 ||
+                                                    this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') ? 'vote_in_progress' : '')}>
                                                 <div className="yes">
                                                     <span/>
                                                     <p>YES ({this.VoteCalculation('yes')})</p>
@@ -222,8 +230,9 @@ class ProposalDialog extends Component {
                                                 this.props.proposal.content.type}</p>
                                         </div>
                                     </div>
-                                    {this.props.proposal && this.props.proposal.status === 2 && !this.props.voteDetailsInProgress
-                                        ? <Voting proposalId={this.props.proposal && this.props.proposal.id}/>
+                                    {this.props.proposal && (this.props.proposal.status === 2 ||
+                                        this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') && !this.props.voteDetailsInProgress
+                                        ? <Voting proposalId={this.props.proposal && this.props.proposal.proposal_id}/>
                                         : null}
                                 </div>
                                 {votedOption
