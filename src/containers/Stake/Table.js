@@ -146,8 +146,11 @@ class Table extends Component {
         }]
         ;
 
-        const dataToMap = this.props.active === 2 ? this.props.delegatedValidatorList
-            : this.props.validatorList;
+        const dataToMap = this.props.active === 2
+            ? this.props.delegatedValidatorList
+            : this.props.active === 3
+                ? this.props.inActiveValidators
+                : this.props.validatorList;
 
         const tableData = dataToMap && dataToMap.length
             ? dataToMap.map((item) =>
@@ -210,6 +213,22 @@ Table.propTypes = {
         }),
     ),
     home: PropTypes.bool,
+    inActiveValidators: PropTypes.arrayOf(
+        PropTypes.shape({
+            operator_address: PropTypes.string,
+            status: PropTypes.number,
+            tokens: PropTypes.string,
+            commission: PropTypes.shape({
+                commission_rates: PropTypes.shape({
+                    rate: PropTypes.string,
+                }),
+            }),
+            delegator_shares: PropTypes.string,
+            description: PropTypes.shape({
+                moniker: PropTypes.string,
+            }),
+        }),
+    ),
     validatorList: PropTypes.arrayOf(
         PropTypes.shape({
             operator_address: PropTypes.string,
@@ -237,6 +256,7 @@ const stateToProps = (state) => {
         inProgress: state.stake.validators.inProgress,
         delegations: state.accounts.delegations.result,
         delegatedValidatorList: state.stake.delegatedValidators.list,
+        inActiveValidators: state.stake.inActiveValidators.list,
     };
 };
 

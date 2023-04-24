@@ -1,0 +1,42 @@
+name: deploy
+on:
+  push:
+    branches: [ "development" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  DEPLOY_DIR: /var/www/insync-dev
+  
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-and-deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: login to remote instance and build app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.INSYNC_DEV_SSH_SERVER }}
+          username: ${{ secrets.INSYNC_DEV_SSH_USER }}
+          key: ${{ secrets.INSYNC_DEV_SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          envs: GITHUB_REPOSITORY,DEPLOY_DIR
+          script: |
+            [ -d "$HOME/$GITHUB_REPOSITORY" ] && rm -rf "$HOME/$GITHUB_REPOSITORY"
+            mkdir -p "$HOME/$GITHUB_REPOSITORY"
+            git clone https://github.com/$GITHUB_REPOSITORY "$HOME/$GITHUB_REPOSITORY"
+            cd "$HOME/$GITHUB_REPOSITORY"
+            git checkout development &&
+              git pull origin development &&
+              yarn &&
+              yarn build &&
+              sudo rm -rf "${DEPLOY_DIR}" &&
+              sudo mkdir -p "${DEPLOY_DIR}" &&
+              sudo mv ./build/ "${DEPLOY_DIR}"
