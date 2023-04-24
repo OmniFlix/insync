@@ -12,6 +12,8 @@ const variables = {
         available_tokens: 'Available Tokens',
         staked_tokens: 'Staked Tokens',
         un_staked_tokens: 'Unstaked Tokens',
+        apr: 'APR %',
+        staking_apr: 'Staking APR',
         eligible_groups: 'Eligible Groups',
         connect_telegram: 'Connect your Telegram account',
         telegram_communities: 'Participate in exclusive Telegram communities, only for on-chain pros!',

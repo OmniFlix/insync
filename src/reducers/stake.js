@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
 import {
+    APR_FETCH_ERROR,
+    APR_FETCH_IN_PROGRESS,
+    APR_FETCH_SUCCESS,
     CLAIM_REWARDS_DIALOG_HIDE,
     CLAIM_REWARDS_DIALOG_SHOW,
     CLAIM_REWARDS_VALIDATOR_SET,
@@ -294,6 +297,34 @@ const claimDialog = (state = {
     }
 };
 
+const apr = (state = {
+    inProgress: false,
+    nominalAPR: null,
+    actualAPR: null,
+}, action) => {
+    switch (action.type) {
+    case APR_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case APR_FETCH_SUCCESS:
+        return {
+            ...state,
+            inProgress: false,
+            nominalAPR: action.nominalAPR,
+            actualAPR: action.actualAPR,
+        };
+    case APR_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     search,
     delegateDialog,
@@ -307,4 +338,5 @@ export default combineReducers({
     validatorDetails,
     delegatedValidators,
     claimDialog,
+    apr,
 });

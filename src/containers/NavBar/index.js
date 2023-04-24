@@ -23,6 +23,7 @@ import {
     showSelectAccountDialog,
 } from '../../actions/accounts';
 import {
+    fetchAPR,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
     getDelegatedValidatorsDetails,
@@ -123,30 +124,38 @@ class NavBar extends Component {
             });
         }
 
-        window.addEventListener('keplr_keystorechange', () => {
-            if (localStorage.getItem('of_co_address') || this.props.address !== '') {
-                this.handleChain();
-            }
-        });
+        if (!this.props.actualAPR && !this.props.aprInProgress) {
+            this.props.fetchAPR();
+        }
 
-        window.onload = () => {
-            if (window.cosmostation && window.cosmostation.cosmos) {
-                const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
-                    if (localStorage.getItem('of_co_address') || this.props.address !== '') {
-                        this.handleCosmoStation();
-                    }
-                });
+        if (localStorage.getItem('of_co_wallet') === 'keplr') {
+            window.addEventListener('keplr_keystorechange', () => {
+                if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                    this.handleChain();
+                }
+            });
+        }
 
-                this.setState({
-                    cosmostationEvent: cosmostationEvent,
-                });
-            }
-        };
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            window.onload = () => {
+                if (window.cosmostation && window.cosmostation.cosmos) {
+                    const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
+                        if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                            this.handleCosmoStation();
+                        }
+                    });
+
+                    this.setState({
+                        cosmostationEvent: cosmostationEvent,
+                    });
+                }
+            };
+        }
     }
 
     componentDidUpdate (pp, ps, ss) {
         if ((pp.proposals && !pp.proposals.length && (pp.proposals !== this.props.proposals) &&
-            this.props.proposals && this.props.proposals.length) ||
+                this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
             this.props.proposals && this.props.proposals.length &&
             this.props.proposals.map((val) => {
@@ -368,9 +377,11 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
+    aprInProgress: PropTypes.bool.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
     delegatedValidatorListInProgress: PropTypes.bool.isRequired,
     delegationsInProgress: PropTypes.bool.isRequired,
+    fetchAPR: PropTypes.func.isRequired,
     fetchProposalDetails: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
@@ -404,6 +415,7 @@ NavBar.propTypes = {
     vestingBalanceInProgress: PropTypes.bool.isRequired,
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
+    actualAPR: PropTypes.number,
     address: PropTypes.string,
     balance: PropTypes.array,
     delegatedValidatorList: PropTypes.array,
@@ -439,6 +451,8 @@ NavBar.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
+        aprInProgress: state.stake.apr.inProgress,
+        actualAPR: state.stake.apr.actualAPR,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,
         delegations: state.accounts.delegations.result,
@@ -472,6 +486,7 @@ const actionToProps = {
     showDialog: showSelectAccountDialog,
     getUnBondingDelegations,
     getValidators,
+    fetchAPR,
     fetchRewards,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
