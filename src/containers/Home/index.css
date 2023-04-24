@@ -172,15 +172,6 @@
     background: #FFFFFF;
 }
 
-.content_div .view_all_div {
-    display: flex;
-    flex-direction: column-reverse;
-}
-
-.content_div .view_all_div > button {
-    margin-bottom: 5px;
-}
-
 @media (max-width: 2000px) {
     .home .card {
         flex-direction: column;

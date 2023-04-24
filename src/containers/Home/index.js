@@ -110,12 +110,9 @@ class Home extends Component {
                                         : null}
                                 </p>
                             </div>
-                            <div className="view_all_div">
-                                Unbonding Period: 21 days&nbsp;
-                                <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>
-                                    {variables[this.props.lang]['view_all']}
-                                </Button>
-                            </div>
+                            <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>
+                                {variables[this.props.lang]['view_all']}
+                            </Button>
                         </div>
                         <Table active={active} home={true}/>
                     </div>
@@ -129,12 +126,9 @@ class Home extends Component {
                                         {variables[this.props.lang]['top_active_proposals']}
                                     </p>
                                 </div>
-                                <div className="view_all_div">
-                                    Voting Period: 8 days&nbsp;
-                                    <Button className="view_all" onClick={() => this.handleRedirect('/proposals')}>
-                                        {variables[this.props.lang]['view_all']}
-                                    </Button>
-                                </div>
+                                <Button className="view_all" onClick={() => this.handleRedirect('/proposals')}>
+                                    {variables[this.props.lang]['view_all']}
+                                </Button>
                             </div>
                             {this.props.proposalsInProgress || this.props.voteDetailsInProgress
                                 ? <div className="cards_content">Loading...</div>
