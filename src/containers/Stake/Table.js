@@ -249,7 +249,7 @@ Table.propTypes = {
 
 const stateToProps = (state) => {
     return {
-        actualAPR: state.stake.apr.actualAPR,
+        actualAPR: state.stake.apr.nominalAPR,
         address: state.accounts.address.value,
         lang: state.language,
         validatorList: state.stake.validators.list,

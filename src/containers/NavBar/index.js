@@ -131,7 +131,7 @@ class NavBar extends Component {
 
         if (!this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
             this.props.getInActiveValidators((data) => {
-                if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
+                if (data && data.length) {
                     const array = data.filter((val) => val && val.description && val.description.identity);
                     this.getValidatorImage(0, array);
                 }
@@ -465,7 +465,7 @@ const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         aprInProgress: state.stake.apr.inProgress,
-        actualAPR: state.stake.apr.actualAPR,
+        actualAPR: state.stake.apr.nominalAPR,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,
         delegations: state.accounts.delegations.result,
