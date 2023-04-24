@@ -465,7 +465,7 @@ const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         aprInProgress: state.stake.apr.inProgress,
-        actualAPR: state.stake.apr.nominalAPR,
+        actualAPR: state.stake.apr.actualAPR,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,
         delegations: state.accounts.delegations.result,

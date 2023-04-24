@@ -94,7 +94,7 @@ class Table extends Component {
                 customBodyRender: (value) => {
                     let apr = Number(this.props.actualAPR) * Number(value);
                     apr = Number(this.props.actualAPR) - apr;
-                    return apr ? apr.toFixed(2) : '--';
+                    return apr ? apr.toFixed(2) + ' %' : '--';
                 },
             },
         }, {
@@ -249,7 +249,7 @@ Table.propTypes = {
 
 const stateToProps = (state) => {
     return {
-        actualAPR: state.stake.apr.nominalAPR,
+        actualAPR: state.stake.apr.actualAPR,
         address: state.accounts.address.value,
         lang: state.language,
         validatorList: state.stake.validators.list,
