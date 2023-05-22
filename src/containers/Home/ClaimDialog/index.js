@@ -26,7 +26,7 @@ const ClaimDialog = (props) => {
         setInProgress(true);
         let gasValue = gas.claim_reward;
         if (props.rewards && props.rewards.rewards && props.rewards.rewards.length > 1) {
-            gasValue = (props.rewards.rewards.length - 1) / 2 * gas.claim_reward + gas.claim_reward;
+            gasValue = props.rewards.rewards.length * gas.claim_reward/2 + gas.claim_reward;
         }
 
         const updatedTx = {
