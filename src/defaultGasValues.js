@@ -4,5 +4,5 @@ export const gas = {
     delegate: 350000,
     un_delegate: 400000,
     re_delegate: 400000,
-    claim_reward: 200000,
+    claim_reward: 250000,
 };
