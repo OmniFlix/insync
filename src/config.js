@@ -14,8 +14,8 @@ export const config = {
     COIN_TYPE: 118,
     COSMOSTAION: null,
     COINGECKO_ID: 'cheqd-network',
-    GAS_PRICE_STEP_LOW: 25,
-    GAS_PRICE_STEP_AVERAGE: 50,
+    GAS_PRICE_STEP_LOW: 50,
+    GAS_PRICE_STEP_AVERAGE: 75,
     GAS_PRICE_STEP_HIGH: 100,
     FEATURES: ['ibc-transfer', 'ibc-go'],
 };
