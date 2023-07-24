@@ -305,31 +305,31 @@ const claimDelegateDialog = (state = {
     validator: 'all',
 }, action) => {
     switch (action.type) {
-        case CLAIM_DELEGATE_DIALOG_SHOW:
-            return {
-                ...state,
-                open: true,
-            };
-        case CLAIM_DELEGATE_DIALOG_HIDE:
-            return {
-                ...state,
-                open: false,
-                validator: 'all',
-            };
-        case DELEGATE_SUCCESS_DIALOG_HIDE:
-        case DELEGATE_FAILED_DIALOG_HIDE:
-            return {
-                ...state,
-                open: false,
-                validator: 'all',
-            };
-        case CLAIM_DELEGATE_VALIDATOR_SET:
-            return {
-                ...state,
-                validator: action.value,
-            };
-        default:
-            return state;
+    case CLAIM_DELEGATE_DIALOG_SHOW:
+        return {
+            ...state,
+            open: true,
+        };
+    case CLAIM_DELEGATE_DIALOG_HIDE:
+        return {
+            ...state,
+            open: false,
+            validator: 'all',
+        };
+    case DELEGATE_SUCCESS_DIALOG_HIDE:
+    case DELEGATE_FAILED_DIALOG_HIDE:
+        return {
+            ...state,
+            open: false,
+            validator: 'all',
+        };
+    case CLAIM_DELEGATE_VALIDATOR_SET:
+        return {
+            ...state,
+            validator: action.value,
+        };
+    default:
+        return state;
     }
 };
 
