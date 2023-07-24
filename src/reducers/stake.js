@@ -3,6 +3,9 @@ import {
     CLAIM_REWARDS_DIALOG_HIDE,
     CLAIM_REWARDS_DIALOG_SHOW,
     CLAIM_REWARDS_VALIDATOR_SET,
+    CLAIM_DELEGATE_DIALOG_SHOW,
+    CLAIM_DELEGATE_DIALOG_HIDE,
+    CLAIM_DELEGATE_VALIDATOR_SET,
     DELEGATE_DIALOG_HIDE,
     DELEGATE_DIALOG_SHOW,
     DELEGATE_FAILED_DIALOG_HIDE,
@@ -297,6 +300,39 @@ const claimDialog = (state = {
     }
 };
 
+const claimDelegateDialog = (state = {
+    open: false,
+    validator: 'all',
+}, action) => {
+    switch (action.type) {
+        case CLAIM_DELEGATE_DIALOG_SHOW:
+            return {
+                ...state,
+                open: true,
+            };
+        case CLAIM_DELEGATE_DIALOG_HIDE:
+            return {
+                ...state,
+                open: false,
+                validator: 'all',
+            };
+        case DELEGATE_SUCCESS_DIALOG_HIDE:
+        case DELEGATE_FAILED_DIALOG_HIDE:
+            return {
+                ...state,
+                open: false,
+                validator: 'all',
+            };
+        case CLAIM_DELEGATE_VALIDATOR_SET:
+            return {
+                ...state,
+                validator: action.value,
+            };
+        default:
+            return state;
+    }
+};
+
 const inActiveValidators = (state = {
     inProgress: false,
     list: [],
@@ -337,5 +373,6 @@ export default combineReducers({
     validatorDetails,
     delegatedValidators,
     claimDialog,
+    claimDelegateDialog,
     inActiveValidators,
 });

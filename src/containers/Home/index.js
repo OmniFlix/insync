@@ -8,6 +8,7 @@ import DelegateDialog from '../Stake/DelegateDialog';
 import SuccessDialog from '../Stake/DelegateDialog/SuccessDialog';
 import UnSuccessDialog from '../Stake/DelegateDialog/UnSuccessDialog';
 import ClaimDialog from './ClaimDialog';
+import ClaimDelegateDialog from './ClaimDialog/ClaimDelegateDialog';
 import Table from '../Stake/Table';
 import { Button } from '@material-ui/core';
 import Cards from '../Proposals/Cards';
@@ -142,6 +143,7 @@ class Home extends Component {
                 <UnSuccessDialog/>
                 <PendingDialog/>
                 <ClaimDialog/>
+                <ClaimDelegateDialog/>
             </>
         );
     }
