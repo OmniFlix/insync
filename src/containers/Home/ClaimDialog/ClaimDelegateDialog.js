@@ -36,7 +36,7 @@ const ClaimDelegateDialog = (props) => {
                     amount: String((gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(props.rewards.rewards.length * (gas.claim_reward + gas.delegate)),
+                gas: String(gasValue),
             },
             memo: '',
         };
@@ -47,8 +47,7 @@ const ClaimDelegateDialog = (props) => {
                 let tokens = item && item.reward && item.reward.length &&
                     item.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
                 tokens = tokens && tokens.amount;
-
-                if (tokens && tokens > 0) {
+                if (tokens && tokens > 1) {
                     updatedTx.msgs.push({
                         typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
                         value: {
