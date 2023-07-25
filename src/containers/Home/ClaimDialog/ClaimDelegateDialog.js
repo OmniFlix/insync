@@ -25,22 +25,29 @@ const ClaimDelegateDialog = (props) => {
     const handleClaimAll = () => {
         setInProgress(true);
         let gasValue = gas.claim_reward + gas.delegate;
+        let count = 0;
         if (props.rewards && props.rewards.rewards && props.rewards.rewards.length > 1) {
-            gasValue = props.rewards.rewards.length * (gas.claim_reward + gas.delegate) / (1.1 + gas.claim_reward + gas.delegate);
+            props.rewards.rewards.map((item) => {
+                const tokens = item && item.reward && item.reward.length &&
+                    item.reward.filter((val) => val.amount > 1);
+                if (tokens) {
+                    count += tokens.length;
+                }
+                return null;
+            });
+            gasValue = count * gasValue / 1.1 + gasValue;
         }
-
         const updatedTx = {
             msgs: [],
             fee: {
                 amount: [{
-                    amount: String((gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE),
+                    amount: String(gasValue * config.GAS_PRICE_STEP_AVERAGE),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
                 gas: String(gasValue),
             },
             memo: '',
         };
-
         if (props.rewards && props.rewards.rewards &&
             props.rewards.rewards.length) {
             props.rewards.rewards.map((item) => {
@@ -66,7 +73,6 @@ const ClaimDelegateDialog = (props) => {
                         },
                     });
                 }
-
                 return null;
             });
         }
