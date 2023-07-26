@@ -67,7 +67,7 @@ const ClaimDelegateDialog = (props) => {
                             delegatorAddress: props.address,
                             validatorAddress: item.validator_address,
                             amount: {
-                                amount: (String(Math.floor(Number(tokens))) * (10 ** config.COIN_DECIMALS)),
+                                amount: String((Math.floor(Number(tokens))) * (10 ** config.COIN_DECIMALS)),
                                 denom: config.COIN_MINIMAL_DENOM,
                             },
                         },
