@@ -151,6 +151,7 @@ const ClaimDelegateDialog = (props) => {
         rewards[0].reward.length && rewards[0].reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
     const delegateableTokesn = tokens && tokens.amount;
     tokens = tokens && tokens.amount ? tokens.amount / 10 ** config.COIN_DECIMALS : 0;
+
     if (props.value === 'all' && props.rewards && props.rewards.rewards &&
         props.rewards.rewards.length) {
         const gasValue = (gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE;
