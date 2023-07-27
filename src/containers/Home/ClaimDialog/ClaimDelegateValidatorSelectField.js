@@ -28,9 +28,11 @@ const ClaimDelegateValidatorSelectField = (props) => {
             let rewards = value.reward && value.reward.length &&
                 value.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
             rewards = rewards && rewards.amount && rewards.amount > gasValue ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
-            total = rewards + total;
-
-            return total;
+            if (rewards) {
+                total = rewards + total;
+                return total;
+            }
+            return null;
         });
 
     return (
@@ -57,8 +59,9 @@ const ClaimDelegateValidatorSelectField = (props) => {
                     let rewards = item.reward && item.reward.length &&
                             item.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
                     rewards = rewards && rewards.amount && rewards.amount > gasValue ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
+
                     return (
-                        rewards && rewards > 0.000001
+                        rewards && rewards > 0.00001
                             ? <MenuItem
                                 key={item.validator_address}
                                 value={item.validator_address}>
@@ -75,7 +78,9 @@ const ClaimDelegateValidatorSelectField = (props) => {
                                     if (value.operator_address === item.validator_address) {
                                         return <span key={value.operator_address}>
                                             {value.description && value.description.moniker}
-                                            {<b>&nbsp;({rewards.toFixed(4)})</b>}
+                                            {rewards && rewards > 0
+                                                ? <b>&nbsp;({rewards.toFixed(4)})</b>
+                                                : null}
                                         </span>;
                                     }
 
