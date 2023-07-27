@@ -5,11 +5,13 @@ import SelectField from '../../../components/SelectField/WithChildren';
 import { setClaimDelegateValidator } from '../../../actions/stake';
 import { MenuItem } from '@material-ui/core';
 import { config } from '../../../config';
+import { gas } from '../../../defaultGasValues';
 
 const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
     '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
 
 const ClaimDelegateValidatorSelectField = (props) => {
+    const gasValue = (gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE;
     const handleChange = (value) => {
         if (props.value === value) {
             return;
@@ -25,7 +27,7 @@ const ClaimDelegateValidatorSelectField = (props) => {
         props.rewards.rewards.map((value) => {
             let rewards = value.reward && value.reward.length &&
                 value.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-            rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
+            rewards = rewards && rewards.amount && rewards.amount > gasValue ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
             total = rewards + total;
 
             return total;
@@ -54,8 +56,7 @@ const ClaimDelegateValidatorSelectField = (props) => {
 
                     let rewards = item.reward && item.reward.length &&
                             item.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-                    rewards = rewards && rewards.amount && rewards.amount > 0 ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
-
+                    rewards = rewards && rewards.amount && rewards.amount > gasValue ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
                     return (
                         rewards && rewards > 0.000001
                             ? <MenuItem

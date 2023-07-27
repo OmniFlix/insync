@@ -29,7 +29,7 @@ const ClaimDelegateDialog = (props) => {
         if (props.rewards && props.rewards.rewards && props.rewards.rewards.length > 1) {
             props.rewards.rewards.map((item) => {
                 const tokens = item && item.reward && item.reward.length &&
-                    item.reward.filter((val) => val.amount > 1);
+                    item.reward.filter((val) => val.amount > gasValue * config.GAS_PRICE_STEP_AVERAGE);
                 if (tokens) {
                     count += tokens.length;
                 }
@@ -54,7 +54,7 @@ const ClaimDelegateDialog = (props) => {
                 let tokens = item && item.reward && item.reward.length &&
                     item.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
                 tokens = tokens && tokens.amount;
-                if (tokens && tokens > 1) {
+                if (tokens && tokens > gasValue * config.GAS_PRICE_STEP_AVERAGE) {
                     updatedTx.msgs.push({
                         typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
                         value: {
@@ -67,7 +67,7 @@ const ClaimDelegateDialog = (props) => {
                             delegatorAddress: props.address,
                             validatorAddress: item.validator_address,
                             amount: {
-                                amount: String((Math.floor(Number(tokens))) * (10 ** config.COIN_DECIMALS)),
+                                amount: String(Math.floor(Number(tokens))),
                                 denom: config.COIN_MINIMAL_DENOM,
                             },
                         },
@@ -120,7 +120,7 @@ const ClaimDelegateDialog = (props) => {
                     delegatorAddress: props.address,
                     validatorAddress: props.value,
                     amount: {
-                        amount: String((Math.floor(Number(delegateableTokesn))) * (10 ** config.COIN_DECIMALS)),
+                        amount: String(Math.floor(Number(delegateableTokesn))),
                         denom: config.COIN_MINIMAL_DENOM,
                     },
                 },
