@@ -46,8 +46,10 @@ const TokensTextField = (props) => {
                     ? props.value > parseFloat(availableTokens + vestingTokens)
                     : props.name === 'Delegate' || props.name === 'Stake'
                         ? props.value > parseFloat(availableTokens)
-                        : props.name === 'Undelegate' || props.name === 'Redelegate'
-                            ? props.value > parseFloat(stakedTokens) : false}
+                        : props.name === 'Multi-Delegate'
+                            ? props.value > parseFloat(availableTokens)
+                            : props.name === 'Undelegate' || props.name === 'Redelegate'
+                                ? props.value > parseFloat(stakedTokens) : false}
                 errorText="Invalid Amount"
                 id="tokens-text-field"
                 name="tokens"
@@ -66,7 +68,10 @@ const TokensTextField = (props) => {
                         ? <p className="value" onClick={() => props.onChange(stakedTokens)}>
                             {stakedTokens}
                         </p>
-                        : null}
+                        : props.name === 'Multi-Delegate'
+                            ? <p className="value" onClick={() => props.onChange(availableTokens)}>
+                                {availableTokens}
+                            </p> : null}
             </div>
             {vestingTokens && (props.name === 'Delegate' || props.name === 'Stake')
                 ? <div className="available_tokens">
