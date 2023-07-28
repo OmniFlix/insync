@@ -28,6 +28,7 @@ import {
     VALIDATORS_FETCH_ERROR,
     VALIDATORS_FETCH_IN_PROGRESS,
     VALIDATORS_FETCH_SUCCESS,
+    SELECTED_MULTI_VALIDATORS,
 } from '../constants/stake';
 import { DISCONNECT_SET } from '../constants/accounts';
 
@@ -324,6 +325,27 @@ const inActiveValidators = (state = {
     }
 };
 
+const selectMultiValidators = (state = {
+    list: [],
+}, action) => {
+    switch (action.type) {
+    case SELECTED_MULTI_VALIDATORS:
+        return {
+            ...state,
+            list: action.value,
+        };
+    case DELEGATE_DIALOG_HIDE:
+    case DELEGATE_SUCCESS_DIALOG_HIDE:
+    case DELEGATE_PROCESSING_DIALOG_HIDE:
+    case DELEGATE_FAILED_DIALOG_HIDE:
+        return {
+            list: [],
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     search,
     delegateDialog,
@@ -338,4 +360,5 @@ export default combineReducers({
     delegatedValidators,
     claimDialog,
     inActiveValidators,
+    selectMultiValidators,
 });
