@@ -59,7 +59,7 @@ const ClaimDelegateValidatorSelectField = (props) => {
                     rewards = rewards && rewards.amount && rewards.amount > gasValue ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
 
                     return (
-                        rewards && rewards > 0.00001
+                        rewards && rewards > 0.000001
                             ? <MenuItem
                                 key={item.validator_address}
                                 value={item.validator_address}>
