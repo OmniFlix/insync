@@ -2,6 +2,9 @@ import {
     CLAIM_REWARDS_DIALOG_HIDE,
     CLAIM_REWARDS_DIALOG_SHOW,
     CLAIM_REWARDS_VALIDATOR_SET,
+    CLAIM_DELEGATE_DIALOG_SHOW,
+    CLAIM_DELEGATE_DIALOG_HIDE,
+    CLAIM_DELEGATE_VALIDATOR_SET,
     DELEGATE_DIALOG_HIDE,
     DELEGATE_DIALOG_SHOW,
     DELEGATE_FAILED_DIALOG_HIDE,
@@ -266,6 +269,25 @@ export const hideClaimRewardsDialog = () => {
 export const setClaimRewardsValidator = (value) => {
     return {
         type: CLAIM_REWARDS_VALIDATOR_SET,
+        value,
+    };
+};
+
+export const showClaimDelegateDialog = () => {
+    return {
+        type: CLAIM_DELEGATE_DIALOG_SHOW,
+    };
+};
+
+export const hideClaimDelegateDialog = () => {
+    return {
+        type: CLAIM_DELEGATE_DIALOG_HIDE,
+    };
+};
+
+export const setClaimDelegateValidator = (value) => {
+    return {
+        type: CLAIM_DELEGATE_VALIDATOR_SET,
         value,
     };
 };

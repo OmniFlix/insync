@@ -48,6 +48,7 @@ const variables = {
         closed: 'Rejected',
         rewards: 'Rewards',
         claim: 'Claim',
+        compound: 'Compound',
         vesting_tokens: 'Vesting tokens',
         select_validator: 'Select the validator',
         view_all: 'View All',
