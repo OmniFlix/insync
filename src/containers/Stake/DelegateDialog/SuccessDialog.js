@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, Popover } from '@material-ui/core';
 import './index.css';
 import variables from '../../../utils/variables';
 import { hideDelegateSuccessDialog } from '../../../actions/stake';
@@ -10,6 +10,15 @@ import { config } from '../../../config';
 import { withRouter } from 'react-router-dom';
 
 const SuccessDialog = (props) => {
+    const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+    const buttonRef = React.useRef(null);
+    const handlePopoverOpen = () => {
+        setIsPopoverOpen(true);
+    };
+    const handlePopoverClose = () => {
+        setIsPopoverOpen(false);
+    };
+
     const handleRedirect = () => {
         if (config.EXPLORER_URL) {
             const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
@@ -127,19 +136,73 @@ const SuccessDialog = (props) => {
                                         </div>
                                     </div>
                                 </>
-                                : <div className="row">
-                                    <p>{variables[props.lang]['validator_address']}</p>
-                                    <div className="validator">
-                                        <div className="hash_text" title={props.validator}>
-                                            <p className="name">{props.validator}</p>
-                                            {props.validator &&
-                                                props.validator.slice(props.validator.length - 6, props.validator.length)}
+                                : props.name === 'Multi-Delegate'
+                                    ? <>
+                                        <div className="row">
+                                            <p>{variables[props.lang]['number_of_validators']}</p>
+                                            <div className="validator">
+                                                <div className="hash_text">
+                                                    <p className="name">{props.selectedMultiValidatorArray.length + ' '}</p>
+                                                    <Button
+                                                        ref={buttonRef}
+                                                        className={'popover_button'}
+                                                        onClick={handlePopoverOpen}
+                                                    >
+                                                            ?
+                                                    </Button>
+                                                    <Popover
+                                                        PaperProps={{
+                                                            style: {
+                                                                maxHeight: 150,
+                                                                overflowY: 'auto',
+                                                                backgroundColor: '#171616',
+                                                            },
+                                                        }}
+                                                        anchorEl={buttonRef.current}
+                                                        anchorOrigin={{
+                                                            vertical: 'bottom',
+                                                            horizontal: 'center',
+                                                        }}
+                                                        open={isPopoverOpen}
+                                                        transformOrigin={{
+                                                            vertical: 'top',
+                                                            horizontal: 'center',
+                                                        }}
+                                                        onClose={handlePopoverClose}
+                                                    >
+                                                        <div className = {'validator_popover'} style={{ padding: 10 }}>
+                                                            <ol>
+                                                                {props.selectedMultiValidatorArray.map((item, index) => (
+                                                                    <li key={index}>{item}</li>
+                                                                ))}
+                                                            </ol>
+                                                        </div>
+                                                    </Popover>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
-                                            ? `(${validatorDetails.description.moniker})`
-                                            : null}</p>
-                                    </div>
-                                </div>}
+                                        <div className="row">
+                                            <p>{variables[props.lang]['tokens_to_each']}</p>
+                                            <div className="validator">
+                                                <div className="hash_text" title={String(props.tokens / props.selectedMultiValidatorArray.length)}>
+                                                    <p className="name">{Number(props.tokens / props.selectedMultiValidatorArray.length).toFixed(4) + ' ' + config.COIN_DENOM}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                    : <div className="row">
+                                        <p>{variables[props.lang]['validator_address']}</p>
+                                        <div className="validator">
+                                            <div className="hash_text" title={props.validator}>
+                                                <p className="name">{props.validator}</p>
+                                                {props.validator &&
+                                                props.validator.slice(props.validator.length - 6, props.validator.length)}
+                                            </div>
+                                            <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
+                                                ? `(${validatorDetails.description.moniker})`
+                                                : null}</p>
+                                        </div>
+                                    </div>}
                             <div className="row">
                                 <p>{variables[props.lang].tokens}</p>
                                 <p>{props.tokens
@@ -167,15 +230,18 @@ SuccessDialog.propTypes = {
     lang: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    selectedMultiValidatorArray: PropTypes.array.isRequired,
     toValidator: PropTypes.string.isRequired,
     validator: PropTypes.string.isRequired,
+    tokens: PropTypes.any,
+    // eslint-disable-next-line react/sort-prop-types
     address: PropTypes.string,
+    // eslint-disable-next-line react/sort-prop-types
     match: PropTypes.shape({
         params: PropTypes.shape({
             proposalID: PropTypes.string,
         }),
     }),
-    tokens: PropTypes.any,
     validatorList: PropTypes.arrayOf(
         PropTypes.shape({
             operator_address: PropTypes.string,
@@ -199,6 +265,7 @@ const stateToProps = (state) => {
         toValidator: state.stake.toValidator.value,
         validatorList: state.stake.validators.list,
         claimValidator: state.stake.claimDialog.validator,
+        selectedMultiValidatorArray: state.stake.selectMultiValidators.list,
     };
 };
 
