@@ -35,8 +35,11 @@ const ClaimDelegateDialog = (props) => {
                 }
                 return null;
             });
+        }
+        if (count) {
             gasValue = count * gasValue / 1.1 + gasValue;
         }
+
         const updatedTx = {
             msgs: [],
             fee: {
@@ -54,7 +57,7 @@ const ClaimDelegateDialog = (props) => {
                 let tokens = item && item.reward && item.reward.length &&
                     item.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
                 tokens = tokens && tokens.amount;
-                if (tokens && tokens > gasValue * config.GAS_PRICE_STEP_AVERAGE) {
+                if (tokens && tokens > ((gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE)) {
                     updatedTx.msgs.push({
                         typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
                         value: {
@@ -154,17 +157,17 @@ const ClaimDelegateDialog = (props) => {
 
     if (props.value === 'all' && props.rewards && props.rewards.rewards &&
         props.rewards.rewards.length) {
+        const gasValue = (gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE;
         let total = 0;
 
         props.rewards.rewards.map((value) => {
             let rewards = value.reward && value.reward.length &&
                 value.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-            rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
+            rewards = rewards && rewards.amount && rewards.amount > gasValue ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
             total = rewards + total;
 
             return total;
         });
-
         tokens = total;
     }
 
