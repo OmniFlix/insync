@@ -6,27 +6,27 @@ import variables from '../../utils/variables';
 import { showDelegateDialog } from '../../actions/stake';
 import { showMessage } from '../../actions/snackbar';
 
-const DelegateButton = (props) => {
+const MultiDelegateButton = (props) => {
     const handleClick = () => {
         if (!props.address) {
             props.showMessage(variables[props.lang]['connect_account']);
             return;
         }
 
-        props.handleOpen('Delegate', props.valAddress);
+        props.handleOpen('Multi-Delegate', props.valAddress);
     };
 
     return (
         <Button
-            className="delegate_button"
+            className="multi_delegate_button"
             variant="outlined"
             onClick={handleClick}>
-            {variables[props.lang].delegate}
+            {variables[props.lang].multi_delegate}
         </Button>
     );
 };
 
-DelegateButton.propTypes = {
+MultiDelegateButton.propTypes = {
     handleOpen: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     showMessage: PropTypes.func.isRequired,
@@ -46,4 +46,4 @@ const actionToProps = {
     showMessage,
 };
 
-export default connect(stateToProps, actionToProps)(DelegateButton);
+export default connect(stateToProps, actionToProps)(MultiDelegateButton);
