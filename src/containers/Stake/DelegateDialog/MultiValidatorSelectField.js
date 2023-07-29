@@ -13,7 +13,7 @@ const MultiValidatorSelectField = (props) => {
     const handleChange = (event) => {
         const value = event.target.value;
 
-        if (String(value) === 'all') {
+        if (value[value.length - 1] === 'all') {
             props.selectMultiValidators(props.selectedMultiValidatorArray.length === validatorList.length ? [] : (validatorList.map((item) => item.operator_address)));
         } else {
             props.selectMultiValidators(typeof value === 'string' ? value.split(',') : value);
