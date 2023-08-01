@@ -2,14 +2,13 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setValidator, selectMultiValidators } from '../../../actions/stake';
-import { MenuItem, Checkbox, FormControl, Select, OutlinedInput, ListItemText, Divider, ListItemIcon } from '@material-ui/core';
+import { MenuItem, Checkbox, FormControl, Select, OutlinedInput, Divider, ListItemIcon } from '@material-ui/core';
 
 const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
     '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
 
 const MultiValidatorSelectField = (props) => {
     const validatorList = [...props.validatorList];
-    validatorList.push(...props.inActiveValidators);
     const handleChange = (event) => {
         const value = event.target.value;
 
@@ -62,7 +61,7 @@ const MultiValidatorSelectField = (props) => {
                         <ListItemIcon>
                             <Checkbox checked={isAllSelected} className={'checkbox'}/>
                         </ListItemIcon>
-                        <ListItemText primary={'Select All'} />
+                        Select All
                     </MenuItem>
                     <Divider className={'divider'} />
                     {validatorList && validatorList.length > 0 &&

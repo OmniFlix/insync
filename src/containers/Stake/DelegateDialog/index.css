@@ -208,8 +208,7 @@ div[role=presentation] .mv_menuItem {
     font-size: 18px;
     line-height: 130%;
     color: #FFFFFF;
-    padding-left:40px;
-    padding-right:40px;
+    padding: 8px 40px;
 }
 
 div[role=presentation] .mv_menuItem:hover{
