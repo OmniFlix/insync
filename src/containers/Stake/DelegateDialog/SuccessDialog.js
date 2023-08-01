@@ -146,8 +146,7 @@ const SuccessDialog = (props) => {
                                                     <Button
                                                         ref={buttonRef}
                                                         className={'popover_button'}
-                                                        onClick={handlePopoverOpen}
-                                                    >
+                                                        onClick={handlePopoverOpen}>
                                                             ?
                                                     </Button>
                                                     <Popover
@@ -168,8 +167,7 @@ const SuccessDialog = (props) => {
                                                             vertical: 'top',
                                                             horizontal: 'center',
                                                         }}
-                                                        onClose={handlePopoverClose}
-                                                    >
+                                                        onClose={handlePopoverClose}>
                                                         <div className = {'validator_popover'} style={{ padding: 10 }}>
                                                             <ol>
                                                                 {props.selectedMultiValidatorArray.map((item, index) => (
@@ -233,15 +231,13 @@ SuccessDialog.propTypes = {
     selectedMultiValidatorArray: PropTypes.array.isRequired,
     toValidator: PropTypes.string.isRequired,
     validator: PropTypes.string.isRequired,
-    tokens: PropTypes.any,
-    // eslint-disable-next-line react/sort-prop-types
     address: PropTypes.string,
-    // eslint-disable-next-line react/sort-prop-types
     match: PropTypes.shape({
         params: PropTypes.shape({
             proposalID: PropTypes.string,
         }),
     }),
+    tokens: PropTypes.any,
     validatorList: PropTypes.arrayOf(
         PropTypes.shape({
             operator_address: PropTypes.string,

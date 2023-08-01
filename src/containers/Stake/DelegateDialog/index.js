@@ -159,7 +159,7 @@ const DelegateDialog = (props) => {
                     denom: config.COIN_MINIMAL_DENOM,
                 },
             };
-        default :
+        default:
             return {};
         }
     };
@@ -233,7 +233,7 @@ const DelegateDialog = (props) => {
                 <Button
                     disabled={disable}
                     variant="contained"
-                    onClick={props.name === 'Multi-Delegate' ? handleMultiDelegate : handleDelegateType }>
+                    onClick={props.name === 'Multi-Delegate' ? handleMultiDelegate : handleDelegateType}>
                     {inProgress
                         ? variables[props.lang]['approval_pending']
                         : props.name}
@@ -244,6 +244,22 @@ const DelegateDialog = (props) => {
 };
 
 DelegateDialog.propTypes = {
+    failedDialog: PropTypes.func.isRequired,
+    fetchRewards: PropTypes.func.isRequired,
+    fetchVestingBalance: PropTypes.func.isRequired,
+    getBalance: PropTypes.func.isRequired,
+    getDelegatedValidatorsDetails: PropTypes.func.isRequired,
+    getDelegations: PropTypes.func.isRequired,
+    getUnBondingDelegations: PropTypes.func.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    lang: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    open: PropTypes.bool.isRequired,
+    pendingDialog: PropTypes.func.isRequired,
+    selectedMultiValidatorArray: PropTypes.array.isRequired,
+    showMessage: PropTypes.func.isRequired,
+    successDialog: PropTypes.func.isRequired,
+    vestingBalance: PropTypes.object.isRequired,
     address: PropTypes.string,
     amount: PropTypes.any,
     balance: PropTypes.arrayOf(
@@ -261,26 +277,8 @@ DelegateDialog.propTypes = {
             }),
         }),
     ),
-    // eslint-disable-next-line react/sort-prop-types
-    failedDialog: PropTypes.func.isRequired,
-    fetchRewards: PropTypes.func.isRequired,
-    fetchVestingBalance: PropTypes.func.isRequired,
-    getBalance: PropTypes.func.isRequired,
-    getDelegatedValidatorsDetails: PropTypes.func.isRequired,
-    getDelegations: PropTypes.func.isRequired,
-    getUnBondingDelegations: PropTypes.func.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    lang: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    open: PropTypes.bool.isRequired,
-    pendingDialog: PropTypes.func.isRequired,
-    selectedMultiValidatorArray: PropTypes.array.isRequired,
-    showMessage: PropTypes.func.isRequired,
-    successDialog: PropTypes.func.isRequired,
     toValidator: PropTypes.string,
     validator: PropTypes.string,
-    // eslint-disable-next-line react/sort-prop-types
-    vestingBalance: PropTypes.object.isRequired,
 };
 
 const stateToProps = (state) => {

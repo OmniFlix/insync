@@ -57,8 +57,7 @@ const MultiValidatorSelectField = (props) => {
                         return <em>{selected.length} out of {validatorList.length} Selected</em>;
                     } }
                     value={props.selectedMultiValidatorArray}
-                    onChange={handleChange}
-                >
+                    onChange={handleChange}>
                     <MenuItem className={'mv_menuItem'} value={'all'}>
                         <ListItemIcon>
                             <Checkbox checked={isAllSelected} className={'checkbox'}/>
@@ -78,8 +77,7 @@ const MultiValidatorSelectField = (props) => {
                                             item.operator_address}
                                     className={'mv_menuItem'}
                                     value={item.value || item.name || item.type ||
-                                            (item.operator_address)}
-                                >
+                                            (item.operator_address)}>
                                     <Checkbox
                                         checked={props.selectedMultiValidatorArray.indexOf(item.key || item.value || item.name || item.type ||
                                         item.operator_address) > -1} className={'checkbox'}/>
@@ -118,16 +116,6 @@ MultiValidatorSelectField.propTypes = {
     selectedMultiValidatorArray: PropTypes.array.isRequired,
     validatorImages: PropTypes.array.isRequired,
     value: PropTypes.string.isRequired,
-    validatorList: PropTypes.arrayOf(
-        PropTypes.shape({
-            operator_address: PropTypes.string,
-            status: PropTypes.number,
-            description: PropTypes.shape({
-                moniker: PropTypes.string,
-            }),
-        }),
-    ),
-    // eslint-disable-next-line react/sort-prop-types
     onChange: PropTypes.func.isRequired,
     delegatedValidatorList: PropTypes.arrayOf(
         PropTypes.shape({
@@ -147,6 +135,15 @@ MultiValidatorSelectField.propTypes = {
     ),
     dialogValidatorAddress: PropTypes.string,
     inProgress: PropTypes.bool,
+    validatorList: PropTypes.arrayOf(
+        PropTypes.shape({
+            operator_address: PropTypes.string,
+            status: PropTypes.number,
+            description: PropTypes.shape({
+                moniker: PropTypes.string,
+            }),
+        }),
+    ),
 };
 
 const stateToProps = (state) => {
