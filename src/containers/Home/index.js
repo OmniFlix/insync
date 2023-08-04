@@ -15,7 +15,7 @@ import ProposalDialog from '../Proposals/ProposalDialog';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
-import MultiDelegateButton from "../Stake/MultiDelegateButton";
+import MultiDelegateButton from '../Stake/MultiDelegateButton';
 
 class Home extends Component {
     constructor (props) {
@@ -110,10 +110,12 @@ class Home extends Component {
                                         : null}
                                 </p>
                             </div>
-                            <MultiDelegateButton/>
-                            <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>
-                                {variables[this.props.lang]['view_all']}
-                            </Button>
+                            <div className="buttons">
+                                <MultiDelegateButton/>
+                                <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>
+                                    {variables[this.props.lang]['view_all']}
+                                </Button>
+                            </div>
                         </div>
                         <Table active={active} home={true}/>
                     </div>

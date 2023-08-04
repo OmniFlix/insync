@@ -34,6 +34,7 @@ const MultiValidatorSelectField = (props) => {
                     fullWidth
                     multiple
                     MenuProps={{
+                        variant: 'menu',
                         getContentAnchorEl: () => null,
                         PaperProps: {
                             style: {

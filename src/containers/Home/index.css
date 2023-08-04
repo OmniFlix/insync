@@ -159,17 +159,22 @@
 
 .content_div .view_all {
     background: #FFFFFF;
-    border-radius: 50px;
+    border-radius: 30px;
     font-family: 'Blinker', sans-serif;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 130%;
     color: #000000;
-    padding: 8px 20px;
+    padding: 9px 20px;
+    margin-left: 5px;
 }
 
 .content_div .view_all:hover {
     background: #FFFFFF;
+}
+
+.stake .stake_content .heading .buttons {
+    display: flex;
 }
 
 @media (max-width: 1441px) {
@@ -180,7 +185,7 @@
     }
 }
 
-@media (max-width: 769px) {
+@media (max-width: 770px) {
     .home .card {
         padding: 50px 20px;
     }

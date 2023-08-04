@@ -146,16 +146,17 @@
     border-bottom: unset;
 }
 
-.stake .heading .multi_delegate_button{
+.stake .heading .multi_delegate_button {
     background-color: white;
     color:black;
     border-radius: 30px;
-    padding: 10px 20px;
+    padding: 9px 20px;
     font-family: 'Blinker', sans-serif;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 18px;
     text-transform: uppercase;
     line-height: 130%;
+    margin-left: 5px;
 }
 
 @media (max-width: 1025px) {
@@ -191,7 +192,7 @@
     }
 }
 
-@media (max-width: 769px) {
+@media (max-width: 770px) {
     .stake .table {
         background: unset;
         padding: 0;
@@ -202,9 +203,13 @@
     .stake .tabs > p {
         font-size: 30px;
     }
+
+    .stake .heading .multi_delegate_button {
+        font-size: 16px;
+    }
 }
 
-@media (max-width: 634px) {
+@media (max-width: 680px) {
     .stake .heading {
         overflow: auto;
     }
