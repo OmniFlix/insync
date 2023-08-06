@@ -49,13 +49,15 @@ const SuccessDialog = (props) => {
             <DialogContent className="content">
                 <div className="heading">
                     <img alt="success" src={success}/>
-                    {props.name
+                    {props.name && props.name !== 'Multi-Delegate'
                         ? <h1>{props.name + 'd Successfully'}</h1>
-                        : props.match && props.match.params && props.match.params.proposalID
-                            ? <h1>{variables[props.lang].vote_success}</h1>
-                            : props.claimValidator && props.claimValidator !== 'none'
-                                ? <h1>{variables[props.lang].claimed_success}</h1>
-                                : <h1>{variables[props.lang].success}</h1>}
+                        : props.name
+                            ? <h1>{variables[props.lang].delegate + 'd Successfully'}</h1>
+                            : props.match && props.match.params && props.match.params.proposalID
+                                ? <h1>{variables[props.lang].vote_success}</h1>
+                                : props.claimValidator && props.claimValidator !== 'none'
+                                    ? <h1>{variables[props.lang].claimed_success}</h1>
+                                    : <h1>{variables[props.lang].success}</h1>}
                 </div>
                 {props.match && props.match.params && props.match.params.proposalID && props.hash
                     ? <div className="row">
