@@ -202,7 +202,7 @@ const SuccessDialog = (props) => {
                                                                                     ? item.name : item.description && item.description.moniker}
                                                                             </div>
                                                                             <div className="hash_text hash_text_small" title={item.operator_address}>
-                                                                                (<p className="name name_small">{item.operator_address}</p>
+                                                                                (<p className="name name_small name_cut">{item.operator_address}</p>
                                                                                 {item.operator_address &&
                                                                                     item.operator_address.slice(item.operator_address.length - 6, item.operator_address.length)})
                                                                             </div>
