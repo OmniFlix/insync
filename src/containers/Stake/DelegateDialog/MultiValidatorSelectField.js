@@ -108,10 +108,6 @@ const MultiValidatorSelectField = (props) => {
 };
 
 MultiValidatorSelectField.propTypes = {
-    inActiveValidators: PropTypes.array.isRequired,
-    items: PropTypes.array.isRequired,
-    lang: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
     selectMultiValidators: PropTypes.func.isRequired,
     selectedMultiValidatorArray: PropTypes.array.isRequired,
     validatorImages: PropTypes.array.isRequired,
@@ -133,8 +129,6 @@ MultiValidatorSelectField.propTypes = {
             }),
         }),
     ),
-    dialogValidatorAddress: PropTypes.string,
-    inProgress: PropTypes.bool,
     validatorList: PropTypes.arrayOf(
         PropTypes.shape({
             operator_address: PropTypes.string,
@@ -148,16 +142,10 @@ MultiValidatorSelectField.propTypes = {
 
 const stateToProps = (state) => {
     return {
-        lang: state.language,
-        items: state.stake.validator.options,
         value: state.stake.validator.value,
         validatorList: state.stake.validators.list,
-        inProgress: state.stake.validators.inProgress,
-        dialogValidatorAddress: state.stake.delegateDialog.address,
-        name: state.stake.delegateDialog.name,
         validatorImages: state.stake.validators.images,
         delegatedValidatorList: state.stake.delegatedValidators.list,
-        inActiveValidators: state.stake.inActiveValidators.list,
         selectedMultiValidatorArray: state.stake.selectMultiValidators.list,
     };
 };
