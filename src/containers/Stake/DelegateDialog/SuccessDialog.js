@@ -22,7 +22,6 @@ const SuccessDialog = (props) => {
         setIsPopoverOpen(false);
     };
 
-    const delegatedList = props.validatorList.filter((item) => props.selectedMultiValidatorArray.includes(item.operator_address));
     const handleRedirect = () => {
         if (config.EXPLORER_URL) {
             const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
@@ -42,6 +41,7 @@ const SuccessDialog = (props) => {
         props.validatorList.find((val) => val.operator_address === props.validator);
     const toValidatorDetails = props.validatorList && props.validatorList.length &&
         props.validatorList.find((val) => val.operator_address === props.toValidator);
+    const delegatedList = props.validatorList.filter((item) => props.selectedMultiValidatorArray.includes(item.operator_address));
 
     return (
         <Dialog
@@ -174,7 +174,7 @@ const SuccessDialog = (props) => {
                                                             horizontal: 'center',
                                                         }}
                                                         onClose={handlePopoverClose}>
-                                                        <div className = {'validator_popover'} style={{ padding: 10 }}>
+                                                        <div className = {'validator_popover'} style={{ padding: 5 }}>
                                                             {delegatedList && delegatedList.length > 0 &&
                                                                 delegatedList.map((item, index) => {
                                                                     const image = item && item.description && item.description.identity &&

@@ -46,10 +46,7 @@ const MultiValidatorSelectField = (props) => {
                         },
                     }}
                     className={'mv_select select_field'}
-                    id="demo-multiple-checkbox"
                     input={<OutlinedInput />}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                    labelId="multiple-select-label"
                     renderValue={(selected) => {
                         if (selected.length === 0) {
                             return <em>Nothing Selected</em>;
@@ -73,14 +70,11 @@ const MultiValidatorSelectField = (props) => {
 
                             return (
                                 <MenuItem
-                                    key={item.key || item.value || item.name || item.type ||
-                                            item.operator_address}
+                                    key={item.key}
                                     className={'mv_menuItem'}
-                                    value={item.value || item.name || item.type ||
-                                            (item.operator_address)}>
+                                    value={(item.operator_address)}>
                                     <Checkbox
-                                        checked={props.selectedMultiValidatorArray.indexOf(item.key || item.value || item.name || item.type ||
-                                        item.operator_address) > -1} className={'checkbox'}/>
+                                        checked={props.selectedMultiValidatorArray.indexOf(item.operator_address) > -1} className={'checkbox'}/>
                                     {image && image.length && image[0] && image[0].them && image[0].them.length &&
                                         image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
                                         image[0].them[0].pictures.primary.url
