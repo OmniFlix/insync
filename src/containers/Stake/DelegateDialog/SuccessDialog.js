@@ -1,13 +1,16 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Dialog, DialogActions, DialogContent, Popover } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, ListItem, Popover } from '@material-ui/core';
 import './index.css';
 import variables from '../../../utils/variables';
 import { hideDelegateSuccessDialog } from '../../../actions/stake';
 import success from '../../../assets/stake/success.svg';
 import { config } from '../../../config';
 import { withRouter } from 'react-router-dom';
+
+const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
+    '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
 
 const SuccessDialog = (props) => {
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
@@ -19,6 +22,7 @@ const SuccessDialog = (props) => {
         setIsPopoverOpen(false);
     };
 
+    const delegatedList = props.validatorList.filter((item) => props.selectedMultiValidatorArray.includes(item.operator_address));
     const handleRedirect = () => {
         if (config.EXPLORER_URL) {
             const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
@@ -171,11 +175,41 @@ const SuccessDialog = (props) => {
                                                         }}
                                                         onClose={handlePopoverClose}>
                                                         <div className = {'validator_popover'} style={{ padding: 10 }}>
-                                                            <ol>
-                                                                {props.selectedMultiValidatorArray.map((item, index) => (
-                                                                    <li key={index}>{item}</li>
-                                                                ))}
-                                                            </ol>
+                                                            {delegatedList && delegatedList.length > 0 &&
+                                                                delegatedList.map((item, index) => {
+                                                                    const image = item && item.description && item.description.identity &&
+                                                                            props.validatorImages && props.validatorImages.length &&
+                                                                            props.validatorImages.filter((value) => value._id === item.description.identity.toString());
+
+                                                                    return (
+                                                                        <ListItem key={item.key} className={'mv_menuItem_small'}>
+                                                                            {image && image.length && image[0] && image[0].them && image[0].them.length &&
+                                                                                image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
+                                                                                image[0].them[0].pictures.primary.url
+                                                                                ? <img
+                                                                                    alt={item.description && item.description.moniker}
+                                                                                    className="image_small"
+                                                                                    src={image[0].them[0].pictures.primary.url}/>
+                                                                                : item.description && item.description.moniker
+                                                                                    ? <span
+                                                                                        className="image_small"
+                                                                                        style={{ background: colors[index % 6] }}>
+                                                                                        {item.description.moniker[0]}
+                                                                                    </span>
+                                                                                    : <span className="image_small" style={{ background: colors[index % 6] }}/>}
+                                                                            <div className={'name name_cut'}>
+                                                                                {item.name ? item.name : item.type
+                                                                                    ? item.name : item.description && item.description.moniker}
+                                                                            </div>
+                                                                            <div className="hash_text hash_text_small" title={item.operator_address}>
+                                                                                (<p className="name name_small">{item.operator_address}</p>
+                                                                                {item.operator_address &&
+                                                                                    item.operator_address.slice(item.operator_address.length - 6, item.operator_address.length)})
+                                                                            </div>
+                                                                        </ListItem>
+                                                                    );
+                                                                },
+                                                                )}
                                                         </div>
                                                     </Popover>
                                                 </div>
@@ -233,6 +267,7 @@ SuccessDialog.propTypes = {
     selectedMultiValidatorArray: PropTypes.array.isRequired,
     toValidator: PropTypes.string.isRequired,
     validator: PropTypes.string.isRequired,
+    validatorImages: PropTypes.array.isRequired,
     address: PropTypes.string,
     match: PropTypes.shape({
         params: PropTypes.shape({
@@ -262,6 +297,7 @@ const stateToProps = (state) => {
         validator: state.stake.validator.value,
         toValidator: state.stake.toValidator.value,
         validatorList: state.stake.validators.list,
+        validatorImages: state.stake.validators.images,
         claimValidator: state.stake.claimDialog.validator,
         selectedMultiValidatorArray: state.stake.selectMultiValidators.list,
     };
