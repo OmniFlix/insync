@@ -12,7 +12,7 @@ import { withRouter } from 'react-router-dom';
 const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
     '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
 
-const CustomTooltip = withStyles((theme) => ({
+const CustomTooltip = withStyles(() => ({
     tooltip: {
         maxWidth: '650px',
         maxHeight: '180px',
@@ -172,9 +172,7 @@ const SuccessDialog = (props) => {
 
                                                                             return (
                                                                                 <ListItem key={item.key} className={'mv_menuItem_small'}>
-                                                                                    {image && image.length && image[0] && image[0].them && image[0].them.length &&
-                                                                                        image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
-                                                                                        image[0].them[0].pictures.primary.url
+                                                                                    {image
                                                                                         ? <img
                                                                                             alt={item.description && item.description.moniker}
                                                                                             className="image_small"
@@ -201,10 +199,7 @@ const SuccessDialog = (props) => {
                                                                         )}
                                                             </div>
                                                         }>
-                                                        <Button
-                                                            className={'popover_button'}>
-                                                                ?
-                                                        </Button>
+                                                        <div className={'popover_button'}> ? </div>
                                                     </CustomTooltip>
                                                 </div>
                                             </div>
