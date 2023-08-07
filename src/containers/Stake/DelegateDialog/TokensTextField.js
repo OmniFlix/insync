@@ -44,12 +44,10 @@ const TokensTextField = (props) => {
             <TextField
                 error={(props.name === 'Delegate' || props.name === 'Stake') && vestingTokens
                     ? props.value > parseFloat(availableTokens + vestingTokens)
-                    : props.name === 'Delegate' || props.name === 'Stake'
+                    : props.name === 'Delegate' || props.name === 'Stake' || props.name === 'Multi-Delegate'
                         ? props.value > parseFloat(availableTokens)
-                        : props.name === 'Multi-Delegate'
-                            ? props.value > parseFloat(availableTokens)
-                            : props.name === 'Undelegate' || props.name === 'Redelegate'
-                                ? props.value > parseFloat(stakedTokens) : false}
+                        : props.name === 'Undelegate' || props.name === 'Redelegate'
+                            ? props.value > parseFloat(stakedTokens) : false}
                 errorText="Invalid Amount"
                 id="tokens-text-field"
                 name="tokens"
