@@ -13,14 +13,19 @@ const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
     '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
 
 const SuccessDialog = (props) => {
-    const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-    const buttonRef = React.useRef(null);
-    const handlePopoverOpen = () => {
-        setIsPopoverOpen(true);
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const handlePopoverOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+        console.log(event.currentTarget);
     };
+
     const handlePopoverClose = () => {
-        setIsPopoverOpen(false);
+        setAnchorEl(null);
     };
+
+    const open = Boolean(anchorEl);
+    console.log(open);
 
     const handleRedirect = () => {
         if (config.EXPLORER_URL) {
@@ -150,12 +155,13 @@ const SuccessDialog = (props) => {
                                                 <div className="hash_text">
                                                     <p className="name">{props.selectedMultiValidatorArray.length + ' '}</p>
                                                     <Button
-                                                        ref={buttonRef}
+                                                        aria-haspopup="true"
                                                         className={'popover_button'}
-                                                        onClick={handlePopoverOpen}>
+                                                        onMouseEnter={handlePopoverOpen}>
                                                             ?
                                                     </Button>
                                                     <Popover
+                                                        disableRestoreFocus
                                                         PaperProps={{
                                                             style: {
                                                                 maxHeight: 150,
@@ -163,12 +169,15 @@ const SuccessDialog = (props) => {
                                                                 backgroundColor: '#171616',
                                                             },
                                                         }}
-                                                        anchorEl={buttonRef.current}
+                                                        anchorEl={anchorEl}
                                                         anchorOrigin={{
                                                             vertical: 'bottom',
                                                             horizontal: 'center',
                                                         }}
-                                                        open={isPopoverOpen}
+                                                        open={open}
+                                                        sx={{
+                                                            pointerEvents: 'none',
+                                                        }}
                                                         transformOrigin={{
                                                             vertical: 'top',
                                                             horizontal: 'center',
