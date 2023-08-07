@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button, Dialog, DialogActions, DialogContent, ListItem, Popover } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, ListItem, Tooltip, withStyles } from '@material-ui/core';
 import './index.css';
 import variables from '../../../utils/variables';
 import { hideDelegateSuccessDialog } from '../../../actions/stake';
@@ -12,21 +12,28 @@ import { withRouter } from 'react-router-dom';
 const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
     '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
 
+const CustomTooltip = withStyles((theme) => ({
+    tooltip: {
+        maxWidth: '650px',
+        maxHeight: '180px',
+        background: '#1E1E1E',
+        color: '#ffffff',
+        overflow: 'auto',
+        scrollbarWidth: 'thin',
+        '&::-webkit-scrollbar': {
+            width: '4px',
+        },
+        '&::-webkit-scrollbar-track': {
+            backgroundColor: '#1E1E1E',
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#ffffff',
+            borderRadius: '1px',
+        },
+    },
+}))(Tooltip);
+
 const SuccessDialog = (props) => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handlePopoverOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-        console.log(event.currentTarget);
-    };
-
-    const handlePopoverClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    console.log(open);
-
     const handleRedirect = () => {
         if (config.EXPLORER_URL) {
             const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
@@ -154,73 +161,51 @@ const SuccessDialog = (props) => {
                                             <div className="validator">
                                                 <div className="hash_text">
                                                     <p className="name">{props.selectedMultiValidatorArray.length + ' '}</p>
-                                                    <Button
-                                                        aria-haspopup="true"
-                                                        className={'popover_button'}
-                                                        onMouseEnter={handlePopoverOpen}>
-                                                            ?
-                                                    </Button>
-                                                    <Popover
-                                                        disableRestoreFocus
-                                                        PaperProps={{
-                                                            style: {
-                                                                maxHeight: 150,
-                                                                overflowY: 'auto',
-                                                                backgroundColor: '#171616',
-                                                            },
-                                                        }}
-                                                        anchorEl={anchorEl}
-                                                        anchorOrigin={{
-                                                            vertical: 'bottom',
-                                                            horizontal: 'center',
-                                                        }}
-                                                        open={open}
-                                                        sx={{
-                                                            pointerEvents: 'none',
-                                                        }}
-                                                        transformOrigin={{
-                                                            vertical: 'top',
-                                                            horizontal: 'center',
-                                                        }}
-                                                        onClose={handlePopoverClose}>
-                                                        <div className = {'validator_popover'} style={{ padding: 5 }}>
-                                                            {delegatedList && delegatedList.length > 0 &&
-                                                                delegatedList.map((item, index) => {
-                                                                    const image = item && item.description && item.description.identity &&
-                                                                            props.validatorImages && props.validatorImages.length &&
-                                                                            props.validatorImages.filter((value) => value._id === item.description.identity.toString());
+                                                    <CustomTooltip
+                                                        interactive={true} title={
+                                                            <div className = {'validator_popover'} style={{ padding: 5 }}>
+                                                                {delegatedList && delegatedList.length > 0 &&
+                                                                        delegatedList.map((item, index) => {
+                                                                            const image = item && item.description && item.description.identity &&
+                                                                                    props.validatorImages && props.validatorImages.length &&
+                                                                                    props.validatorImages.filter((value) => value._id === item.description.identity.toString());
 
-                                                                    return (
-                                                                        <ListItem key={item.key} className={'mv_menuItem_small'}>
-                                                                            {image && image.length && image[0] && image[0].them && image[0].them.length &&
-                                                                                image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
-                                                                                image[0].them[0].pictures.primary.url
-                                                                                ? <img
-                                                                                    alt={item.description && item.description.moniker}
-                                                                                    className="image_small"
-                                                                                    src={image[0].them[0].pictures.primary.url}/>
-                                                                                : item.description && item.description.moniker
-                                                                                    ? <span
-                                                                                        className="image_small"
-                                                                                        style={{ background: colors[index % 6] }}>
-                                                                                        {item.description.moniker[0]}
-                                                                                    </span>
-                                                                                    : <span className="image_small" style={{ background: colors[index % 6] }}/>}
-                                                                            <div className={'name name_cut'}>
-                                                                                {item.name ? item.name : item.type
-                                                                                    ? item.name : item.description && item.description.moniker}
-                                                                            </div>
-                                                                            <div className="hash_text hash_text_small" title={item.operator_address}>
-                                                                                (<p className="name name_small name_cut">{item.operator_address}</p>
-                                                                                {item.operator_address &&
-                                                                                    item.operator_address.slice(item.operator_address.length - 6, item.operator_address.length)})
-                                                                            </div>
-                                                                        </ListItem>
-                                                                    );
-                                                                },
-                                                                )}
-                                                        </div>
-                                                    </Popover>
+                                                                            return (
+                                                                                <ListItem key={item.key} className={'mv_menuItem_small'}>
+                                                                                    {image && image.length && image[0] && image[0].them && image[0].them.length &&
+                                                                                        image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
+                                                                                        image[0].them[0].pictures.primary.url
+                                                                                        ? <img
+                                                                                            alt={item.description && item.description.moniker}
+                                                                                            className="image_small"
+                                                                                            src={image[0].them[0].pictures.primary.url}/>
+                                                                                        : item.description && item.description.moniker
+                                                                                            ? <span
+                                                                                                className="image_small"
+                                                                                                style={{ background: colors[index % 6] }}>
+                                                                                                {item.description.moniker[0]}
+                                                                                            </span>
+                                                                                            : <span className="image_small" style={{ background: colors[index % 6] }}/>}
+                                                                                    <div className={'name name_cut'}>
+                                                                                        {item.name ? item.name : item.type
+                                                                                            ? item.name : item.description && item.description.moniker}
+                                                                                    </div>
+                                                                                    <div className="hash_text hash_text_small" title={item.operator_address}>
+                                                                                        (<p className="name name_small name_cut">{item.operator_address}</p>
+                                                                                        {item.operator_address &&
+                                                                                            item.operator_address.slice(item.operator_address.length - 6, item.operator_address.length)})
+                                                                                    </div>
+                                                                                </ListItem>
+                                                                            );
+                                                                        },
+                                                                        )}
+                                                            </div>
+                                                        }>
+                                                        <Button
+                                                            className={'popover_button'}>
+                                                                ?
+                                                        </Button>
+                                                    </CustomTooltip>
                                                 </div>
                                             </div>
                                         </div>

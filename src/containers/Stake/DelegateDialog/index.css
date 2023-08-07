@@ -202,7 +202,7 @@
     color: #fff;
 }
 
-.image_small {
+div[role=tooltip] .image_small {
     background: #696969;
     width: 25px;
     height: 25px;
@@ -223,7 +223,7 @@ div[role=presentation] .mv_menuItem {
     padding: 8px 40px;
 }
 
-div[role=presentation] .mv_menuItem_small {
+div[role=tooltip] .mv_menuItem_small {
     font-family: 'Blinker', sans-serif;
     font-weight: 600;
     font-size: 16px;
@@ -231,19 +231,19 @@ div[role=presentation] .mv_menuItem_small {
     color: #FFFFFF;
     padding: 8px 0 8px 4px;
 }
-.name_small,
-.hash_text_small {
+div[role=tooltip] .name_small,
+div[role=tooltip] .hash_text_small {
     font-size: 16px;
     font-weight: 400;
 }
 
-.name_cut {
+div[role=tooltip] .name_cut {
     max-width: 130px;
     overflow: hidden;
     white-space: nowrap;
 }
 
-.hash_text_small {
+div[role=tooltip] .hash_text_small {
     margin-left: 10px;
 }
 
@@ -269,6 +269,7 @@ div[role=presentation] .divider {
     color: white;
 }
 
+div[role=tooltip] .validator_popover,
 div[role=presentation] .validator_popover {
     color: white;
     text-align: start;
