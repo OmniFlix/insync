@@ -107,22 +107,6 @@ MultiValidatorSelectField.propTypes = {
     validatorImages: PropTypes.array.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    delegatedValidatorList: PropTypes.arrayOf(
-        PropTypes.shape({
-            operator_address: PropTypes.string,
-            status: PropTypes.number,
-            tokens: PropTypes.string,
-            commission: PropTypes.shape({
-                commission_rates: PropTypes.shape({
-                    rate: PropTypes.string,
-                }),
-            }),
-            delegator_shares: PropTypes.string,
-            description: PropTypes.shape({
-                moniker: PropTypes.string,
-            }),
-        }),
-    ),
     validatorList: PropTypes.arrayOf(
         PropTypes.shape({
             operator_address: PropTypes.string,
@@ -139,7 +123,6 @@ const stateToProps = (state) => {
         value: state.stake.validator.value,
         validatorList: state.stake.validators.list,
         validatorImages: state.stake.validators.images,
-        delegatedValidatorList: state.stake.delegatedValidators.list,
         selectedMultiValidatorArray: state.stake.selectMultiValidators.list,
     };
 };
