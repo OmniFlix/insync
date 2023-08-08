@@ -146,6 +146,19 @@
     border-bottom: unset;
 }
 
+.stake .heading .multi_delegate_button {
+    background-color: white;
+    color:black;
+    border-radius: 30px;
+    padding: 9px 20px;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    text-transform: uppercase;
+    line-height: 130%;
+    margin-left: 5px;
+}
+
 @media (max-width: 1025px) {
     .stake .table {
         padding: 20px 30px;
@@ -179,7 +192,7 @@
     }
 }
 
-@media (max-width: 769px) {
+@media (max-width: 770px) {
     .stake .table {
         background: unset;
         padding: 0;
@@ -190,9 +203,13 @@
     .stake .tabs > p {
         font-size: 30px;
     }
+
+    .stake .heading .multi_delegate_button {
+        font-size: 16px;
+    }
 }
 
-@media (max-width: 426px) {
+@media (max-width: 680px) {
     .stake .heading {
         overflow: auto;
     }
@@ -200,7 +217,9 @@
     .stake .tabs > p {
         width: max-content;
     }
+}
 
+@media (max-width: 426px) {
     .table .actions > span {
         display: none;
     }

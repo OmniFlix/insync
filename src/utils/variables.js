@@ -66,6 +66,9 @@ const variables = {
         connect_account: 'Account not connected. Please connect to wallet',
         connecting: 'connecting',
         cosmostation: 'Cosmostation',
+        multi_delegate: 'Multi Delegate',
+        number_of_validators: 'Number of Validators',
+        tokens_to_each: 'Tokens to each',
     },
 };
 

@@ -32,6 +32,7 @@ import {
     VALIDATORS_FETCH_ERROR,
     VALIDATORS_FETCH_IN_PROGRESS,
     VALIDATORS_FETCH_SUCCESS,
+    SELECTED_MULTI_VALIDATORS,
 } from '../constants/stake';
 import Axios from 'axios';
 import {
@@ -385,4 +386,11 @@ export const getInActiveValidators = (cb) => (dispatch) => {
             ));
             cb(null);
         });
+};
+
+export const selectMultiValidators = (value) => {
+    return {
+        type: SELECTED_MULTI_VALIDATORS,
+        value,
+    };
 };
