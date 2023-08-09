@@ -11,7 +11,9 @@ import StakeTokensButton from './StakeTokensButton';
 import UnDelegateButton from './UnDelegateButton';
 import ReDelegateButton from './ReDelegateButton';
 import ClaimButton from './ClaimButton';
+// import Compound from './Compound';
 import { config } from '../../../config';
+import { gas } from '../../../defaultGasValues';
 
 const TokenDetails = (props) => {
     const staked = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
@@ -31,9 +33,13 @@ const TokenDetails = (props) => {
         return null;
     });
 
+    const gasValue = (gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE;
     let rewards = props.rewards && props.rewards.total && props.rewards.total.length &&
         props.rewards.total.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
     rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
+    let tokens = props.rewards && props.rewards.total && props.rewards.total.length &&
+        props.rewards.total.find((val) => val.amount > gasValue);
+    tokens = tokens && tokens.amount ? tokens.amount / 10 ** config.COIN_DECIMALS : 0;
 
     return (
         <div className="token_details">
@@ -65,6 +71,8 @@ const TokenDetails = (props) => {
                 </div>
                 <div className="buttons_div">
                     <ClaimButton disable={rewards <= 0}/>
+                    {/* <span/> */}
+                    {/* <Compound disable={tokens <= 0}/> */}
                 </div>
             </div>
             <div className="chip_info">

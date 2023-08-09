@@ -6,6 +6,9 @@ import {
     CLAIM_REWARDS_DIALOG_HIDE,
     CLAIM_REWARDS_DIALOG_SHOW,
     CLAIM_REWARDS_VALIDATOR_SET,
+    CLAIM_DELEGATE_DIALOG_SHOW,
+    CLAIM_DELEGATE_DIALOG_HIDE,
+    CLAIM_DELEGATE_VALIDATOR_SET,
     DELEGATE_DIALOG_HIDE,
     DELEGATE_DIALOG_SHOW,
     DELEGATE_FAILED_DIALOG_HIDE,
@@ -31,6 +34,7 @@ import {
     VALIDATORS_FETCH_ERROR,
     VALIDATORS_FETCH_IN_PROGRESS,
     VALIDATORS_FETCH_SUCCESS,
+    SELECTED_MULTI_VALIDATORS,
 } from '../constants/stake';
 import { DISCONNECT_SET } from '../constants/accounts';
 
@@ -300,6 +304,39 @@ const claimDialog = (state = {
     }
 };
 
+const claimDelegateDialog = (state = {
+    open: false,
+    validator: 'all',
+}, action) => {
+    switch (action.type) {
+    case CLAIM_DELEGATE_DIALOG_SHOW:
+        return {
+            ...state,
+            open: true,
+        };
+    case CLAIM_DELEGATE_DIALOG_HIDE:
+        return {
+            ...state,
+            open: false,
+            validator: 'all',
+        };
+    case DELEGATE_SUCCESS_DIALOG_HIDE:
+    case DELEGATE_FAILED_DIALOG_HIDE:
+        return {
+            ...state,
+            open: false,
+            validator: 'all',
+        };
+    case CLAIM_DELEGATE_VALIDATOR_SET:
+        return {
+            ...state,
+            validator: action.value,
+        };
+    default:
+        return state;
+    }
+};
+
 const inActiveValidators = (state = {
     inProgress: false,
     list: [],
@@ -355,6 +392,27 @@ const apr = (state = {
     }
 };
 
+const selectMultiValidators = (state = {
+    list: [],
+}, action) => {
+    switch (action.type) {
+    case SELECTED_MULTI_VALIDATORS:
+        return {
+            ...state,
+            list: action.value,
+        };
+    case DELEGATE_DIALOG_HIDE:
+    case DELEGATE_SUCCESS_DIALOG_HIDE:
+    case DELEGATE_PROCESSING_DIALOG_HIDE:
+    case DELEGATE_FAILED_DIALOG_HIDE:
+        return {
+            list: [],
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     search,
     delegateDialog,
@@ -368,6 +426,8 @@ export default combineReducers({
     validatorDetails,
     delegatedValidators,
     claimDialog,
+    claimDelegateDialog,
     inActiveValidators,
     apr,
+    selectMultiValidators,
 });

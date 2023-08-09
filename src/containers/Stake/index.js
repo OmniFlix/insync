@@ -9,6 +9,7 @@ import DelegateDialog from './DelegateDialog';
 import SuccessDialog from './DelegateDialog/SuccessDialog';
 import UnSuccessDialog from './DelegateDialog/UnSuccessDialog';
 import PendingDialog from './DelegateDialog/PendingDialog';
+import MultiDelegateButton from './MultiDelegateButton';
 
 const Stake = (props) => {
     const [active, setActive] = useState(1);
@@ -50,6 +51,8 @@ const Stake = (props) => {
                                 ? ' (' + props.delegatedValidatorList.length + ')'
                                 : null}
                         </p>
+                        <span/>
+                        <MultiDelegateButton/>
                     </div>
                     <p>Unbonding Period: 21 Days</p>
                 </div>

@@ -5,6 +5,9 @@ import {
     CLAIM_REWARDS_DIALOG_HIDE,
     CLAIM_REWARDS_DIALOG_SHOW,
     CLAIM_REWARDS_VALIDATOR_SET,
+    CLAIM_DELEGATE_DIALOG_SHOW,
+    CLAIM_DELEGATE_DIALOG_HIDE,
+    CLAIM_DELEGATE_VALIDATOR_SET,
     DELEGATE_DIALOG_HIDE,
     DELEGATE_DIALOG_SHOW,
     DELEGATE_FAILED_DIALOG_HIDE,
@@ -32,6 +35,7 @@ import {
     VALIDATORS_FETCH_ERROR,
     VALIDATORS_FETCH_IN_PROGRESS,
     VALIDATORS_FETCH_SUCCESS,
+    SELECTED_MULTI_VALIDATORS,
 } from '../constants/stake';
 import Axios from 'axios';
 import {
@@ -274,6 +278,25 @@ export const setClaimRewardsValidator = (value) => {
     };
 };
 
+export const showClaimDelegateDialog = () => {
+    return {
+        type: CLAIM_DELEGATE_DIALOG_SHOW,
+    };
+};
+
+export const hideClaimDelegateDialog = () => {
+    return {
+        type: CLAIM_DELEGATE_DIALOG_HIDE,
+    };
+};
+
+export const setClaimDelegateValidator = (value) => {
+    return {
+        type: CLAIM_DELEGATE_VALIDATOR_SET,
+        value,
+    };
+};
+
 const fetchValidatorImageInProgress = () => {
     return {
         type: VALIDATOR_IMAGE_FETCH_IN_PROGRESS,
@@ -427,4 +450,11 @@ export const fetchAPR = () => (dispatch) => {
             return process.exit(-1);
         }
     })();
+};
+
+export const selectMultiValidators = (value) => {
+    return {
+        type: SELECTED_MULTI_VALIDATORS,
+        value,
+    };
 };
