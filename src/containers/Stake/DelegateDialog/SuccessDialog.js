@@ -172,7 +172,9 @@ const SuccessDialog = (props) => {
 
                                                                             return (
                                                                                 <ListItem key={item.key} className={'mv_menuItem_small'}>
-                                                                                    {image
+                                                                                    {image && image.length && image[0] && image[0].them && image[0].them.length &&
+                                                                                    image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
+                                                                                    image[0].them[0].pictures.primary.url
                                                                                         ? <img
                                                                                             alt={item.description && item.description.moniker}
                                                                                             className="image_small"
