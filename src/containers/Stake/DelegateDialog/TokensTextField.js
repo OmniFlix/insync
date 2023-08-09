@@ -44,7 +44,7 @@ const TokensTextField = (props) => {
             <TextField
                 error={(props.name === 'Delegate' || props.name === 'Stake') && vestingTokens
                     ? props.value > parseFloat(availableTokens + vestingTokens)
-                    : props.name === 'Delegate' || props.name === 'Stake'
+                    : props.name === 'Delegate' || props.name === 'Stake' || props.name === 'Multi-Delegate'
                         ? props.value > parseFloat(availableTokens)
                         : props.name === 'Undelegate' || props.name === 'Redelegate'
                             ? props.value > parseFloat(stakedTokens) : false}
@@ -66,7 +66,10 @@ const TokensTextField = (props) => {
                         ? <p className="value" onClick={() => props.onChange(stakedTokens)}>
                             {stakedTokens}
                         </p>
-                        : null}
+                        : props.name === 'Multi-Delegate'
+                            ? <p className="value" onClick={() => props.onChange(availableTokens)}>
+                                {availableTokens}
+                            </p> : null}
             </div>
             {vestingTokens && (props.name === 'Delegate' || props.name === 'Stake')
                 ? <div className="available_tokens">

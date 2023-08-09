@@ -9,10 +9,12 @@ import {
     showDelegateFailedDialog,
     showDelegateProcessingDialog,
     showDelegateSuccessDialog,
+    selectMultiValidators,
 } from '../../../actions/stake';
 import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
 import ToValidatorSelectField from './ToValidatorSelectField';
+import MultiValidatorSelectField from './MultiValidatorSelectField';
 import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
 import {
     fetchRewards,
@@ -55,6 +57,50 @@ const DelegateDialog = (props) => {
             },
             memo: '',
         };
+
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            cosmoStationSign(updatedTx, props.address, handleFetch);
+            return;
+        }
+
+        signTxAndBroadcast(updatedTx, props.address, handleFetch);
+    };
+
+    const handleMultiDelegate = () => {
+        setInProgress(true);
+        let gasValue = gas.delegate;
+        if (props.selectedMultiValidatorArray && props.selectedMultiValidatorArray.length > 1) {
+            gasValue = ((gas.delegate * props.selectedMultiValidatorArray.length) / 1.1) + gas.delegate;
+        }
+
+        const updatedTx = {
+            msgs: [],
+            fee: {
+                amount: [{
+                    amount: String(gasValue * config.GAS_PRICE_STEP_AVERAGE),
+                    denom: config.COIN_MINIMAL_DENOM,
+                }],
+                gas: String(gasValue),
+            },
+            memo: '',
+        };
+
+        if (props.selectedMultiValidatorArray.length) {
+            props.selectedMultiValidatorArray.map((item) => {
+                updatedTx.msgs.push({
+                    typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+                    value: {
+                        delegatorAddress: props.address,
+                        validatorAddress: item,
+                        amount: {
+                            amount: String(Math.floor((props.amount * (10 ** config.COIN_DECIMALS)) / (props.selectedMultiValidatorArray.length))),
+                            denom: config.COIN_MINIMAL_DENOM,
+                        },
+                    },
+                });
+                return null;
+            });
+        }
 
         if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
             cosmoStationSign(updatedTx, props.address, handleFetch);
@@ -146,9 +192,9 @@ const DelegateDialog = (props) => {
     }
 
     const disable = !props.validator || !props.amount || inProgress ||
-        ((props.name === 'Delegate' || props.name === 'Stake') && vestingTokens
+        ((props.name === 'Delegate' || props.name === 'Stake' || props.name === 'Multi-Delegate') && vestingTokens
             ? props.amount > parseFloat((available + vestingTokens) / (10 ** config.COIN_DECIMALS))
-            : props.name === 'Delegate' || props.name === 'Stake'
+            : props.name === 'Delegate' || props.name === 'Stake' || props.name === 'Multi-Delegate'
                 ? props.amount > parseFloat(available / (10 ** config.COIN_DECIMALS))
                 : props.name === 'Undelegate' || props.name === 'Redelegate'
                     ? props.amount > parseFloat(staked / (10 ** config.COIN_DECIMALS)) : false);
@@ -170,10 +216,16 @@ const DelegateDialog = (props) => {
                         <p>To validator</p>
                         <ToValidatorSelectField/>
                     </>
-                    : <>
-                        <p>Choose the validator</p>
-                        <ValidatorSelectField/>
-                    </>}
+                    : props.name === 'Multi-Delegate'
+                        ? <>
+                            <p>Select Multi Validators</p>
+                            <MultiValidatorSelectField />
+                        </>
+                        : <>
+                            <p>Choose the validator</p>
+                            <ValidatorSelectField/>
+                        </>
+                }
                 <p>Enter tokens to {props.name || 'Delegate'}</p>
                 <TokensTextField/>
             </DialogContent>
@@ -181,7 +233,7 @@ const DelegateDialog = (props) => {
                 <Button
                     disabled={disable}
                     variant="contained"
-                    onClick={handleDelegateType}>
+                    onClick={props.name === 'Multi-Delegate' ? handleMultiDelegate : handleDelegateType}>
                     {inProgress
                         ? variables[props.lang]['approval_pending']
                         : props.name}
@@ -204,6 +256,7 @@ DelegateDialog.propTypes = {
     name: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     pendingDialog: PropTypes.func.isRequired,
+    selectedMultiValidatorArray: PropTypes.array.isRequired,
     showMessage: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
     vestingBalance: PropTypes.object.isRequired,
@@ -240,6 +293,7 @@ const stateToProps = (state) => {
         validator: state.stake.validator.value,
         vestingBalance: state.accounts.vestingBalance.result,
         toValidator: state.stake.toValidator.value,
+        selectedMultiValidatorArray: state.stake.selectMultiValidators.list,
     };
 };
 
@@ -255,6 +309,7 @@ const actionToProps = {
     getDelegatedValidatorsDetails,
     getUnBondingDelegations,
     showMessage,
+    selectMultiValidators,
 };
 
 export default connect(stateToProps, actionToProps)(DelegateDialog);
