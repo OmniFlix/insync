@@ -183,6 +183,7 @@ html::-webkit-scrollbar-thumb,
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -196,8 +197,9 @@ html::-webkit-scrollbar-thumb,
 
 @keyframes dialogOpen {
     from {
-        transform: scale(0);
+        transform: scale(0.5);
     }
+
     to {
         transform: scale(1);
     }
