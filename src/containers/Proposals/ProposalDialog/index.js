@@ -108,12 +108,12 @@ class ProposalDialog extends Component {
             if (this.props.proposal && key === this.props.proposal.proposal_id) {
                 if (this.props.proposalDetails[key] &&
                     this.props.proposalDetails[key][0] &&
-                    this.props.proposalDetails[key][0].tx &&
-                    this.props.proposalDetails[key][0].tx.value &&
-                    this.props.proposalDetails[key][0].tx.value.msg[0] &&
-                    this.props.proposalDetails[key][0].tx.value.msg[0].value &&
-                    this.props.proposalDetails[key][0].tx.value.msg[0].value.proposer) {
-                    proposer = this.props.proposalDetails[key][0].tx.value.msg[0].value.proposer;
+                    this.props.proposalDetails[key][0].body &&
+                    this.props.proposalDetails[key][0].body.messages &&
+                    this.props.proposalDetails[key][0].body.messages.length &&
+                    this.props.proposalDetails[key][0].body.messages[0] &&
+                    this.props.proposalDetails[key][0].body.messages[0].proposer) {
+                    proposer = this.props.proposalDetails[key][0].body.messages[0].proposer;
                 }
             }
 
@@ -227,7 +227,10 @@ class ProposalDialog extends Component {
                                         <div className="pds3l_c">
                                             <p className="pds3l_c1">Type</p>
                                             <p className="pds3l_c2 type">{this.props.proposal && this.props.proposal.content &&
-                                                this.props.proposal.content.type}</p>
+                                            this.props.proposal.content.type
+                                                ? this.props.proposal.content.type
+                                                : this.props.proposal && this.props.proposal.content && this.props.proposal.content['@type']
+                                                    ? this.props.proposal.content['@type'] : null}</p>
                                         </div>
                                     </div>
                                     {this.props.proposal && (this.props.proposal.status === 2 ||
