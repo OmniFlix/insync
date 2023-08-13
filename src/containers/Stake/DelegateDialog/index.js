@@ -44,9 +44,9 @@ const DelegateDialog = (props) => {
             msg: {
                 typeUrl: props.name === 'Delegate'
                     ? '/cosmos.staking.v1beta1.MsgDelegate'
-                    :props.name === 'Undelegate'
-                    ? '/cosmos.staking.v1beta1.MsgUndelegate' : props.name === 'Redelegate'
-                        ? '/cosmos.staking.v1beta1.MsgBeginRedelegate' : '',
+                    : props.name === 'Undelegate'
+                        ? '/cosmos.staking.v1beta1.MsgUndelegate' : props.name === 'Redelegate'
+                            ? '/cosmos.staking.v1beta1.MsgBeginRedelegate' : '',
                 value: getValueObject(props.name),
             },
             fee: {
