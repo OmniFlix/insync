@@ -154,7 +154,7 @@ const SuccessDialog = (props) => {
                                         </div>
                                     </div>
                                 </>
-                                : props.name === 'Multi-Delegate'
+                                : (props.name === 'Multi-Delegate' || props.name === 'Stake' || props.name === 'Delegate') && props.selectedMultiValidatorArray.length > 1
                                     ? <>
                                         <div className="row">
                                             <p>{variables[props.lang]['number_of_validators']}</p>
@@ -218,10 +218,10 @@ const SuccessDialog = (props) => {
                                     : <div className="row">
                                         <p>{variables[props.lang]['validator_address']}</p>
                                         <div className="validator">
-                                            <div className="hash_text" title={props.validator}>
-                                                <p className="name">{props.validator}</p>
-                                                {props.validator &&
-                                                props.validator.slice(props.validator.length - 6, props.validator.length)}
+                                            <div className="hash_text" title={props.selectedMultiValidatorArray[0]}>
+                                                <p className="name">{props.selectedMultiValidatorArray[0]}</p>
+                                                {props.selectedMultiValidatorArray[0] &&
+                                                props.selectedMultiValidatorArray[0].slice(props.selectedMultiValidatorArray[0].length - 6, props.selectedMultiValidatorArray[0].length)}
                                             </div>
                                             <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
                                                 ? `(${validatorDetails.description.moniker})`

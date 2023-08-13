@@ -42,10 +42,11 @@ const DelegateDialog = (props) => {
 
         const updatedTx = {
             msg: {
-                typeUrl: props.name === 'Delegate' || props.name === 'Stake'
-                    ? '/cosmos.staking.v1beta1.MsgDelegate' : props.name === 'Undelegate'
-                        ? '/cosmos.staking.v1beta1.MsgUndelegate' : props.name === 'Redelegate'
-                            ? '/cosmos.staking.v1beta1.MsgBeginRedelegate' : '',
+                typeUrl: props.name === 'Delegate'
+                    ? '/cosmos.staking.v1beta1.MsgDelegate'
+                    :props.name === 'Undelegate'
+                    ? '/cosmos.staking.v1beta1.MsgUndelegate' : props.name === 'Redelegate'
+                        ? '/cosmos.staking.v1beta1.MsgBeginRedelegate' : '',
                 value: getValueObject(props.name),
             },
             fee: {
@@ -138,7 +139,6 @@ const DelegateDialog = (props) => {
 
     const getValueObject = (type) => {
         switch (type) {
-        case 'Stake':
         case 'Delegate':
         case 'Undelegate':
             return {
@@ -216,14 +216,14 @@ const DelegateDialog = (props) => {
                         <p>To validator</p>
                         <ToValidatorSelectField/>
                     </>
-                    : props.name === 'Multi-Delegate'
+                    : props.name === 'Undelegate' || props.name === 'Delegate'
                         ? <>
-                            <p>Select Multi Validators</p>
-                            <MultiValidatorSelectField />
+                            <p>Choose the validator</p>
+                            <ValidatorSelectField />
                         </>
                         : <>
                             <p>Choose the validator</p>
-                            <ValidatorSelectField/>
+                            <MultiValidatorSelectField/>
                         </>
                 }
                 <p>Enter tokens to {props.name || 'Delegate'}</p>
@@ -233,7 +233,7 @@ const DelegateDialog = (props) => {
                 <Button
                     disabled={disable}
                     variant="contained"
-                    onClick={props.name === 'Multi-Delegate' ? handleMultiDelegate : handleDelegateType}>
+                    onClick={props.name === 'Multi-Delegate' || props.name === 'Delegate' || props.name === 'Stake' ? handleMultiDelegate : handleDelegateType}>
                     {inProgress
                         ? variables[props.lang]['approval_pending']
                         : props.name}
