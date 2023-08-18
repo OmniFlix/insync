@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc.chihuahua.wtf:443',
-    REST_URL: 'https://api.chihuahua.wtf:443',
+    RPC_URL: 'https://rpc-chihuahua-ia.cosmosia.notional.ventures',
+    REST_URL: 'https://api-chihuahua-ia.cosmosia.notional.ventures',
     EXPLORER_URL: 'https://www.mintscan.io/chihuahua',
     STAKING_URL: 'https://chihuahua.omniflix.co/stake',
     WALLET_URL: 'https://chihuahua.omniflix.co',
