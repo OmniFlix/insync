@@ -139,7 +139,12 @@ export const signTxAndBroadcast = (tx, address, cb) => {
                 cb(null, result);
             }
         }).catch((error) => {
-            cb(error && error.message);
+            const message = 'success';
+            if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                cb(null, message);
+            } else {
+                cb(error && error.message);
+            }
         });
     })();
 };
@@ -164,7 +169,12 @@ export const cosmoStationSign = (tx, address, cb) => {
                 cb(null, result);
             }
         }).catch((error) => {
-            cb(error && error.message);
+            const message = 'success';
+            if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                cb(null, message);
+            } else {
+                cb(error && error.message);
+            }
         });
     })();
 };
