@@ -13,10 +13,10 @@ export const urlFetchVoteDetails = (proposalId, address) => `${REST_URL}/cosmos/
 
 export const VALIDATORS_LIST_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000`;
 export const getValidatorURL = (address) => `${REST_URL}/cosmos/staking/v1beta1/validators/${address}`;
-export const PROPOSALS_LIST_URL = `${REST_URL}/cosmos/gov/v1beta1/proposals?pagination.limit=1000`;
+export const PROPOSALS_LIST_URL = `${REST_URL}/cosmos/gov/v1/proposals?pagination.limit=1000`;
 export const getDelegatedValidatorsURL = (address) => `${REST_URL}/cosmos/staking/v1beta1/delegators/${address}/validators`;
 export const urlFetchProposalVotes = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/votes`;
 export const urlFetchTallyDetails = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/tally`;
-export const urlFetchProposalDetails = (id) => `${REST_URL}/cosmos/tx/v1beta1/txs?events=submit_proposal.proposal_id=${id}`;
+export const urlFetchProposalDetails = (id) => `${REST_URL}/cosmos/gov/v1/proposals/${id}`;
 
 export const validatorImageURL = (id) => `https://keybase.io/_/api/1.0/user/lookup.json?fields=pictures&key_suffix=${id}`;

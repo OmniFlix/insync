@@ -244,7 +244,7 @@ export const fetchProposalDetails = (id, cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchProposalDetailsSuccess(res.data && res.data.txs, id));
+            dispatch(fetchProposalDetailsSuccess(res.data && res.data.proposal, id));
             if (cb) {
                 cb(res);
             }
