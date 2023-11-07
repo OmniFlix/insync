@@ -9,7 +9,7 @@ import ConnectButton from './KeplrConnectButton';
 import CosmostationConnectButton from './CosmostationConnectButton';
 import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
 import insync from '../../../assets/insync.png';
-import poweredBy from '../../../assets/powered_by.jpeg';
+// import poweredBy from '../../../assets/powered_by.jpeg';
 import './index.css';
 import { config } from '../../../config';
 
@@ -57,11 +57,11 @@ const ConnectDialog = (props) => {
                         </LightTooltip>
                     </div>}
                 </div>
-                <a className="powered_by" href="https://linktr.ee/notionaldao" rel="noopener noreferrer" target="_blank">
-                    API/RPC powered by
-                    <img alt="notional" src={poweredBy}/>
-                    Notional
-                </a>
+                {/* <a className="powered_by" href="https://linktr.ee/notionaldao" rel="noopener noreferrer" target="_blank"> */}
+                {/*     API/RPC powered by */}
+                {/*     <img alt="notional" src={poweredBy}/> */}
+                {/*     Notional */}
+                {/* </a> */}
             </DialogContent>
         </Dialog>
     );
