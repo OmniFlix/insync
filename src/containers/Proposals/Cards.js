@@ -31,18 +31,18 @@ const Cards = (props) => {
 
     const VoteCalculation = (proposal, val) => {
         if (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-            const value = props.tallyDetails && props.tallyDetails[proposal.proposal_id];
-            const sum = value && value.yes && value.no && value.no_with_veto && value.abstain &&
-                (parseInt(value.yes) + parseInt(value.no) + parseInt(value.no_with_veto) + parseInt(value.abstain));
+            const value = props.tallyDetails && props.tallyDetails[proposal.id];
+            const sum = value && value.yes_count && value.no_count && value.no_with_veto_count && value.abstain_count &&
+                (parseInt(value.yes_count) + parseInt(value.no_count) + parseInt(value.no_with_veto_count) + parseInt(value.abstain_count));
 
-            return (props.tallyDetails && props.tallyDetails[proposal.proposal_id] && props.tallyDetails[proposal.proposal_id][val]
-                ? tally(props.tallyDetails[proposal.proposal_id][val], sum) : '0%');
+            return (props.tallyDetails && props.tallyDetails[proposal.id] && props.tallyDetails[proposal.id][val]
+                ? tally(props.tallyDetails[proposal.id][val], sum) : '0%');
         } else {
-            const sum = proposal.final_tally_result && proposal.final_tally_result.yes &&
-                proposal.final_tally_result.no && proposal.final_tally_result.no_with_veto &&
-                proposal.final_tally_result.abstain &&
-                (parseInt(proposal.final_tally_result.yes) + parseInt(proposal.final_tally_result.no) +
-                    parseInt(proposal.final_tally_result.no_with_veto) + parseInt(proposal.final_tally_result.abstain));
+            const sum = proposal.final_tally_result && proposal.final_tally_result.yes_count &&
+                proposal.final_tally_result.no_count && proposal.final_tally_result.no_with_veto_count &&
+                proposal.final_tally_result.abstain_count &&
+                (parseInt(proposal.final_tally_result.yes_count) + parseInt(proposal.final_tally_result.no_count) +
+                    parseInt(proposal.final_tally_result.no_with_veto_count) + parseInt(proposal.final_tally_result.abstain_count));
 
             return (proposal && proposal.final_tally_result &&
             proposal.final_tally_result[val]
@@ -51,7 +51,7 @@ const Cards = (props) => {
     };
 
     const handleProposal = (proposal) => {
-        props.history.push(`/proposals/${proposal.proposal_id}`);
+        props.history.push(`/proposals/${proposal.id}`);
         props.handleShow(proposal);
     };
 
@@ -62,27 +62,26 @@ const Cards = (props) => {
                     reversedItems.map((proposal, index) => {
                         if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
                             const votedOption = props.voteDetails && props.voteDetails.length &&
-                                proposal && proposal.proposal_id &&
-                                props.voteDetails.filter((vote) => vote.proposal_id === proposal.proposal_id)[0];
+                                proposal && proposal.id &&
+                                props.voteDetails.filter((vote) => vote.id === proposal.id)[0];
                             let proposer = proposal.proposer;
                             props.proposalDetails && Object.keys(props.proposalDetails).length &&
                             Object.keys(props.proposalDetails).filter((key) => {
-                                if (key === proposal.proposal_id) {
+                                if (key === proposal.id) {
                                     if (props.proposalDetails[key] &&
                                         props.proposalDetails[key][0] &&
-                                        props.proposalDetails[key][0].tx &&
-                                        props.proposalDetails[key][0].tx.value &&
-                                        props.proposalDetails[key][0].tx.value.msg[0] &&
-                                        props.proposalDetails[key][0].tx.value.msg[0].value &&
-                                        props.proposalDetails[key][0].tx.value.msg[0].value.proposer) {
-                                        proposer = props.proposalDetails[key][0].tx.value.msg[0].value.proposer;
+                                        props.proposalDetails[key][0].body &&
+                                        props.proposalDetails[key][0].body.messages &&
+                                        props.proposalDetails[key][0].body.messages.length &&
+                                        props.proposalDetails[key][0].body.messages[0].proposer) {
+                                        proposer = props.proposalDetails[key][0].body.messages[0].proposer;
                                     }
                                 }
 
                                 return null;
                             });
                             let inProgress = props.proposalDetails && Object.keys(props.proposalDetails).length &&
-                                Object.keys(props.proposalDetails).find((key) => key === proposal.proposal_id);
+                                Object.keys(props.proposalDetails).find((key) => key === proposal.id);
                             inProgress = !inProgress && props.proposalDetailsInProgress;
 
                             return (
@@ -91,7 +90,7 @@ const Cards = (props) => {
                                     className="card"
                                     onClick={() => handleProposal(proposal)}>
                                     <span className="number">
-                                        {proposal.proposal_id}
+                                        {proposal.id}
                                     </span>
                                     <div className="card_heading">
                                         <h2 onClick={() => props.handleShow(proposal)}> {
@@ -124,7 +123,7 @@ const Cards = (props) => {
                                                     </Button>
                                                     : null}
                                     </div>
-                                    <p className="description">{proposal.content && proposal.content.description}</p>
+                                    <p className="description">{proposal.summary}</p>
                                     <div className="row">
                                         <div className="icon_info">
                                             <Icon className="person" icon="person"/>
@@ -178,19 +177,19 @@ const Cards = (props) => {
                                     <div className="vote_details">
                                         <div className="yes">
                                             <span/>
-                                            <p>YES ({VoteCalculation(proposal, 'yes')})</p>
+                                            <p>YES ({VoteCalculation(proposal, 'yes_count')})</p>
                                         </div>
                                         <div className="no">
                                             <span/>
-                                            <p>NO ({VoteCalculation(proposal, 'no')})</p>
+                                            <p>NO ({VoteCalculation(proposal, 'no_count')})</p>
                                         </div>
                                         <div className="option3">
                                             <span/>
-                                            <p>NoWithVeto ({VoteCalculation(proposal, 'no_with_veto')})</p>
+                                            <p>NoWithVeto ({VoteCalculation(proposal, 'no_with_veto_count')})</p>
                                         </div>
                                         <div className="option4">
                                             <span/>
-                                            <p>Abstain ({VoteCalculation(proposal, 'abstain')})</p>
+                                            <p>Abstain ({VoteCalculation(proposal, 'abstain_count')})</p>
                                         </div>
                                     </div>
                                 </div>
