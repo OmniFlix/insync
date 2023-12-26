@@ -31,12 +31,12 @@ const Cards = (props) => {
 
     const VoteCalculation = (proposal, val) => {
         if (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-            const value = props.tallyDetails && props.tallyDetails[proposal.proposal_id];
+            const value = props.tallyDetails && props.tallyDetails[proposal.id];
             const sum = value && value.yes_count && value.no_count && value.no_with_veto_count && value.abstain_count &&
                 (parseInt(value.yes_count) + parseInt(value.no_count) + parseInt(value.no_with_veto_count) + parseInt(value.abstain_count));
 
-            return (props.tallyDetails && props.tallyDetails[proposal.proposal_id] && props.tallyDetails[proposal.proposal_id][val]
-                ? tally(props.tallyDetails[proposal.proposal_id][val], sum) : '0%');
+            return (props.tallyDetails && props.tallyDetails[proposal.id] && props.tallyDetails[proposal.id][val]
+                ? tally(props.tallyDetails[proposal.id][val], sum) : '0%');
         } else {
             const sum = proposal.final_tally_result && proposal.final_tally_result.yes_count &&
                 proposal.final_tally_result.no_count && proposal.final_tally_result.no_with_veto_count &&
@@ -51,7 +51,7 @@ const Cards = (props) => {
     };
 
     const handleProposal = (proposal) => {
-        props.history.push(`/proposals/${proposal.proposal_id}`);
+        props.history.push(`/proposals/${proposal.id}`);
         props.handleShow(proposal);
     };
 
@@ -62,12 +62,12 @@ const Cards = (props) => {
                     reversedItems.map((proposal, index) => {
                         if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
                             const votedOption = props.voteDetails && props.voteDetails.length &&
-                                proposal && proposal.proposal_id &&
-                                props.voteDetails.filter((vote) => vote.id === proposal.proposal_id)[0];
+                                proposal && proposal.id &&
+                                props.voteDetails.filter((vote) => vote.id === proposal.id)[0];
                             let proposer = proposal.proposer;
                             props.proposalDetails && Object.keys(props.proposalDetails).length &&
                             Object.keys(props.proposalDetails).filter((key) => {
-                                if (key === proposal.proposal_id) {
+                                if (key === proposal.id) {
                                     if (props.proposalDetails[key] &&
                                         props.proposalDetails[key][0] &&
                                         props.proposalDetails[key][0].body &&
@@ -81,7 +81,7 @@ const Cards = (props) => {
                                 return null;
                             });
                             let inProgress = props.proposalDetails && Object.keys(props.proposalDetails).length &&
-                                Object.keys(props.proposalDetails).find((key) => key === proposal.proposal_id);
+                                Object.keys(props.proposalDetails).find((key) => key === proposal.id);
                             inProgress = !inProgress && props.proposalDetailsInProgress;
 
                             return (
@@ -90,7 +90,7 @@ const Cards = (props) => {
                                     className="card"
                                     onClick={() => handleProposal(proposal)}>
                                     <span className="number">
-                                        {proposal.proposal_id}
+                                        {proposal.id}
                                     </span>
                                     <div className="card_heading">
                                         <h2 onClick={() => props.handleShow(proposal)}> {

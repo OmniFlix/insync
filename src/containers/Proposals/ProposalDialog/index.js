@@ -37,21 +37,21 @@ class ProposalDialog extends Component {
     }
 
     componentDidMount () {
-        const votedOption = this.props.voteDetails && this.props.voteDetails.length && this.props.proposal && this.props.proposal.proposal_id &&
-            this.props.voteDetails.filter((vote) => vote.id === this.props.proposal.proposal_id)[0];
+        const votedOption = this.props.voteDetails && this.props.voteDetails.length && this.props.proposal && this.props.proposal.id &&
+            this.props.voteDetails.filter((vote) => vote.id === this.props.proposal.id)[0];
 
-        if (!votedOption && this.props.proposal && this.props.proposal.proposal_id && this.props.address) {
-            this.props.fetchVoteDetails(this.props.proposal.proposal_id, this.props.address);
+        if (!votedOption && this.props.proposal && this.props.proposal.id && this.props.address) {
+            this.props.fetchVoteDetails(this.props.proposal.id, this.props.address);
         }
 
         if (this.props.match && this.props.match.params && this.props.match.params.proposalID) {
-            if (this.props.proposal && !this.props.proposal.proposal_id) {
+            if (this.props.proposal && !this.props.proposal.id) {
                 this.props.getProposals((result) => {
                     if (result && result.length) {
                         const proposal = result.find((val) => val.proposal_id === this.props.match.params.proposalID);
                         this.props.showProposalDialog(proposal);
                         if (proposal && (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')) {
-                            this.props.fetchProposalTally(proposal.proposal_id);
+                            this.props.fetchProposalTally(proposal.id);
                         }
                     }
                 });
@@ -73,12 +73,12 @@ class ProposalDialog extends Component {
         const { proposal } = this.props;
 
         if (proposal && (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')) {
-            const value = this.props.tallyDetails && this.props.tallyDetails[proposal.proposal_id];
+            const value = this.props.tallyDetails && this.props.tallyDetails[proposal.id];
             const sum = value && value.yes_count && value.no_count && value.no_with_veto_count && value.abstain_count &&
                 (parseInt(value.yes_count) + parseInt(value.no_count) + parseInt(value.no_with_veto_count) + parseInt(value.abstain_count));
 
-            return (this.props.tallyDetails && this.props.tallyDetails[proposal.proposal_id] && this.props.tallyDetails[proposal.proposal_id][val]
-                ? tally(this.props.tallyDetails[proposal.proposal_id][val], sum) : '0%');
+            return (this.props.tallyDetails && this.props.tallyDetails[proposal.id] && this.props.tallyDetails[proposal.id][val]
+                ? tally(this.props.tallyDetails[proposal.id][val], sum) : '0%');
         } else {
             const sum = proposal && proposal.final_tally_result && proposal.final_tally_result.yes_count &&
                 proposal.final_tally_result.no_count && proposal.final_tally_result.no_with_veto_count &&
@@ -99,13 +99,13 @@ class ProposalDialog extends Component {
 
     render () {
         let votedOption = this.props.voteDetails && this.props.voteDetails.length &&
-            this.props.proposal && this.props.proposal.proposal_id &&
-            this.props.voteDetails.filter((vote) => vote.id === this.props.proposal.proposal_id)[0];
+            this.props.proposal && this.props.proposal.id &&
+            this.props.voteDetails.filter((vote) => vote.id === this.props.proposal.id)[0];
         let proposer = this.props.proposal && this.props.proposal.proposer;
 
         this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
         Object.keys(this.props.proposalDetails).filter((key) => {
-            if (this.props.proposal && key === this.props.proposal.proposal_id) {
+            if (this.props.proposal && key === this.props.proposal.id) {
                 if (this.props.proposalDetails[key] &&
                     this.props.proposalDetails[key][0] &&
                     this.props.proposalDetails[key][0].body &&
@@ -134,7 +134,7 @@ class ProposalDialog extends Component {
                     ? <div className="proposals_content padding">
                         <div className="cards_content loading_card">Loading...</div>
                     </div>
-                    : this.props.proposal && this.props.proposal.proposal_id
+                    : this.props.proposal && this.props.proposal.id
                         ? <div className="proposal_dialog padding">
                             <div className="content">
                                 <IconButton className="close_button" onClick={this.handleClose}>
@@ -236,7 +236,7 @@ class ProposalDialog extends Component {
                                     </div>
                                     {this.props.proposal && (this.props.proposal.status === 2 ||
                                         this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') && !this.props.voteDetailsInProgress
-                                        ? <Voting proposalId={this.props.proposal && this.props.proposal.proposal_id}/>
+                                        ? <Voting proposalId={this.props.proposal && this.props.proposal.id}/>
                                         : null}
                                 </div>
                                 {votedOption
