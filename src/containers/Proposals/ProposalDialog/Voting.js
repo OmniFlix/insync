@@ -4,7 +4,7 @@ import { fetchProposalTally, fetchVoteDetails, hideProposalDialog } from '../../
 import { connect } from 'react-redux';
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import CircularProgress from '../../../components/CircularProgress';
-import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, metaMaskSign, signTxAndBroadcast } from '../../../helper';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import { showMessage } from '../../../actions/snackbar';
@@ -65,6 +65,11 @@ const Voting = (props) => {
 
         if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
             cosmoStationSign(tx, props.address, handleFetch);
+            return;
+        }
+
+        if (localStorage.getItem('of_co_wallet') === 'metamask') {
+            metaMaskSign(tx, props.address, handleFetch);
             return;
         }
 

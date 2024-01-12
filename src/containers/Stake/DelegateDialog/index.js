@@ -13,7 +13,7 @@ import {
 import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
 import ToValidatorSelectField from './ToValidatorSelectField';
-import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, metaMaskSign, signTxAndBroadcast } from '../../../helper';
 import {
     fetchRewards,
     fetchVestingBalance,
@@ -58,6 +58,11 @@ const DelegateDialog = (props) => {
 
         if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
             cosmoStationSign(updatedTx, props.address, handleFetch);
+            return;
+        }
+
+        if (localStorage.getItem('of_co_wallet') === 'metamask') {
+            metaMaskSign(updatedTx, props.address, handleFetch);
             return;
         }
 

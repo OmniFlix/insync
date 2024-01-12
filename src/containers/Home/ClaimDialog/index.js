@@ -11,7 +11,7 @@ import {
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
 import ValidatorsSelectField from './ValidatorsSelectField';
-import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, metaMaskSign, signTxAndBroadcast } from '../../../helper';
 import { showMessage } from '../../../actions/snackbar';
 import { fetchRewards, fetchVestingBalance, getBalance } from '../../../actions/accounts';
 import { config } from '../../../config';
@@ -58,6 +58,11 @@ const ClaimDialog = (props) => {
 
         if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
             cosmoStationSign(updatedTx, props.address, handleFetch);
+            return;
+        }
+
+        if (localStorage.getItem('of_co_wallet') === 'metamask') {
+            metaMaskSign(updatedTx, props.address, handleFetch);
             return;
         }
 
@@ -109,6 +114,11 @@ const ClaimDialog = (props) => {
 
         if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
             cosmoStationSign(updatedTx, props.address, handleFetch);
+            return;
+        }
+
+        if (localStorage.getItem('of_co_wallet') === 'metamask') {
+            metaMaskSign(updatedTx, props.address, handleFetch);
             return;
         }
 

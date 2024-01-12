@@ -38,7 +38,7 @@ class ProposalDialog extends Component {
 
     componentDidMount () {
         const votedOption = this.props.voteDetails && this.props.voteDetails.length && this.props.proposal && this.props.proposal.id &&
-            this.props.voteDetails.filter((vote) => vote.id === this.props.proposal.id)[0];
+            this.props.voteDetails.filter((vote) => vote && vote.id === this.props.proposal.id)[0];
 
         if (!votedOption && this.props.proposal && this.props.proposal.id && this.props.address) {
             this.props.fetchVoteDetails(this.props.proposal.id, this.props.address);
@@ -74,8 +74,8 @@ class ProposalDialog extends Component {
 
         if (proposal && (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')) {
             const value = this.props.tallyDetails && this.props.tallyDetails[proposal.id];
-            const sum = value && value.yes_count && value.no_count && value.no_with_veto_count && value.abstain_count &&
-                (parseInt(value.yes_count) + parseInt(value.no_count) + parseInt(value.no_with_veto_count) + parseInt(value.abstain_count));
+            const sum = value && value.yes && value.no && value.no_with_veto && value.abstain &&
+                (parseInt(value.yes) + parseInt(value.no) + parseInt(value.no_with_veto) + parseInt(value.abstain));
 
             return (this.props.tallyDetails && this.props.tallyDetails[proposal.id] && this.props.tallyDetails[proposal.id][val]
                 ? tally(this.props.tallyDetails[proposal.id][val], sum) : '0%');
@@ -100,7 +100,7 @@ class ProposalDialog extends Component {
     render () {
         let votedOption = this.props.voteDetails && this.props.voteDetails.length &&
             this.props.proposal && this.props.proposal.id &&
-            this.props.voteDetails.filter((vote) => vote.id === this.props.proposal.id)[0];
+            this.props.voteDetails.filter((vote) => vote && vote.id === this.props.proposal.id)[0];
         let proposer = this.props.proposal && this.props.proposal.proposer;
 
         this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
