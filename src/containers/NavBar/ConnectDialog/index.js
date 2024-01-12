@@ -12,6 +12,7 @@ import insync from '../../../assets/insync.png';
 // import poweredBy from '../../../assets/powered_by.jpeg';
 import './index.css';
 import { config } from '../../../config';
+import MetaMaskConnectButton from './MetaMaskConnectButton';
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -36,6 +37,16 @@ const ConnectDialog = (props) => {
                     supported wallets
                 </h2>
                 <div className="connect_wallets">
+                    <div className="button_div">
+                        <MetaMaskConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
+                        <LightTooltip title="Download the MetaMask Extension">
+                            <IconButton
+                                className="download_button"
+                                onClick={() => window.open('https://chromewebstore.google.com/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn')}>
+                                <GetAppRoundedIcon/>
+                            </IconButton>
+                        </LightTooltip>
+                    </div>
                     <div className="button_div">
                         <ConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
                         <LightTooltip title="Download the Keplr Extension">

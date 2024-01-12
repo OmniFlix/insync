@@ -63,6 +63,7 @@ const variables = {
         connect_account: 'Account not connected. Please connect to wallet',
         connecting: 'connecting',
         cosmostation: 'Cosmostation',
+        metamask: 'MetaMask',
     },
 };
 

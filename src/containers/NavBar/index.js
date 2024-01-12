@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import ClassNames from 'classnames';
 import { hideSideBar, showConnectDialog } from '../../actions/navBar';
 import Icon from '../../components/Icon';
-import { initializeChain, initializeCosmoStation } from '../../helper';
+import { initializeChain, initializeCosmoStation, initializeMetaMask } from '../../helper';
 import { decode, encode } from 'js-base64';
 import { config } from '../../config';
 import { showMessage } from '../../actions/snackbar';
@@ -49,12 +49,17 @@ class NavBar extends Component {
         this.getValidatorImage = this.getValidatorImage.bind(this);
         this.getProposalDetails = this.getProposalDetails.bind(this);
         this.handleCosmoStation = this.handleCosmoStation.bind(this);
+        this.handleMetaMask = this.handleMetaMask.bind(this);
     }
 
     componentDidMount () {
         if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'cosmostation')) {
             setTimeout(() => {
                 this.handleCosmoStation(true);
+            }, 600);
+        } else if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'metamask')) {
+            setTimeout(() => {
+                this.handleMetaMask(true);
             }, 600);
         } else if (localStorage.getItem('of_co_address')) {
             setTimeout(() => {
@@ -70,7 +75,7 @@ class NavBar extends Component {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
                         if (!filter) {
                             if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
@@ -79,7 +84,7 @@ class NavBar extends Component {
                             array.push(val.proposal_id);
                         }
                         if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                            this.props.fetchProposalTally(val.proposal_id);
+                            this.props.fetchProposalTally(val.id);
                         }
 
                         return null;
@@ -93,7 +98,7 @@ class NavBar extends Component {
             const array = [];
             this.props.proposals.map((val) => {
                 const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                    Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+                    Object.keys(this.props.proposalDetails).find((key) => key === val.id);
                 if (!filter) {
                     if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                         return null;
@@ -102,7 +107,7 @@ class NavBar extends Component {
                     array.push(val.proposal_id);
                 }
                 if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                    this.props.fetchProposalTally(val.proposal_id);
+                    this.props.fetchProposalTally(val.id);
                 }
 
                 return null;
@@ -142,6 +147,17 @@ class NavBar extends Component {
                 });
             }
         };
+
+        if (window.ethereum) {
+            window.ethereum && window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    showMessage('Please connect to MetaMask.');
+                    return;
+                }
+
+                this.handleMetaMask();
+            });
+        }
     }
 
     componentDidUpdate (pp, ps, ss) {
@@ -149,12 +165,12 @@ class NavBar extends Component {
                 this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
             this.props.proposals.map((val) => {
-                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.proposal_id &&
-                    this.props.voteDetails.filter((vote) => vote.proposal_id === val.proposal_id)[0];
+                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.id &&
+                    this.props.voteDetails.filter((vote) => vote && vote.id === val.id)[0];
 
                 if ((val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
                     !votedOption && this.props.address) {
-                    this.props.fetchVoteDetails(val.proposal_id, this.props.address);
+                    this.props.fetchVoteDetails(val.id, this.props.address);
                 }
 
                 return null;
@@ -168,7 +184,7 @@ class NavBar extends Component {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
                         if (!filter) {
                             if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
@@ -177,8 +193,8 @@ class NavBar extends Component {
                             array.push(val.proposal_id);
                         }
                         if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                            this.props.fetchProposalTally(val.proposal_id);
-                            this.props.fetchVoteDetails(val.proposal_id, this.props.address);
+                            this.props.fetchProposalTally(val.id);
+                            this.props.fetchVoteDetails(val.id, this.props.address);
                         }
 
                         return null;
@@ -321,6 +337,24 @@ class NavBar extends Component {
                 localStorage.setItem('of_co_address', encode(account && account.address));
                 localStorage.setItem('of_co_wallet', 'cosmostation');
             }
+        });
+    }
+
+    handleMetaMask (fetch) {
+        initializeMetaMask((error, account) => {
+            if (error) {
+                this.props.showMessage(error);
+                localStorage.removeItem('of_co_address');
+
+                return;
+            }
+
+            this.props.setAccountAddress(account && account.address && account.address.address);
+            if (fetch) {
+                this.handleFetch(account && account.address && account.address.address);
+            }
+            localStorage.setItem('of_co_address', encode(account && account.address && account.address.address));
+            localStorage.setItem('of_co_wallet', 'metamask');
         });
     }
 

@@ -119,6 +119,93 @@ export const initializeCosmoStation = (cb) => {
     })();
 };
 
+export const initializeMetaMask = (cb) => {
+    (async () => {
+        if (!window.ethereum) {
+            const error = 'Download the MetaMask Extension';
+            cb(error);
+        }
+
+        if (window.ethereum) {
+            const result = await window.ethereum.request({ method: 'wallet_getSnaps' });
+            const installed = Object.keys(result).includes('npm:@cosmsnap/snap');
+
+            // Install Snap
+            if (!installed) {
+                window.ethereum.request({
+                    method: 'wallet_requestSnaps',
+                    params: {
+                        'npm:@cosmsnap/snap': {
+                            version: '^0.1.0',
+                        },
+                    },
+                }).then((result) => {
+                    metamaskInitialize(cb);
+                }).catch((error) => {
+                    cb((error && error.message) || error);
+                });
+            }
+
+            metamaskInitialize(cb);
+        } else {
+            return null;
+        }
+    })();
+};
+
+const metamaskInitialize = (cb) => {
+    (async () => {
+        try {
+            const initialized = await window.ethereum.request({
+                method: 'wallet_invokeSnap',
+                params: {
+                    snapId: 'npm:@cosmsnap/snap',
+                    request: {
+                        method: 'initialized',
+                    },
+                },
+            });
+
+            if (!initialized) {
+                // Initialize the Snap with default chains
+                window.ethereum.request({
+                    method: 'wallet_invokeSnap',
+                    params: {
+                        snapId: 'npm:@cosmsnap/snap',
+                        request: {
+                            method: 'initialize',
+                        },
+                    },
+                }).then((result) => {
+                }).catch((error) => {
+                    cb((error && error.message) || error);
+                });
+            }
+
+            window.ethereum.request({
+                method: 'wallet_invokeSnap',
+                params: {
+                    snapId: 'npm:@cosmsnap/snap',
+                    request: {
+                        method: 'getChainAddress',
+                        params: {
+                            chain_id: chainId,
+                        },
+                    },
+                },
+            }).then((result) => {
+                if (result && result.data) {
+                    cb(null, result && result.data);
+                }
+            }).catch((error) => {
+                cb((error && error.message) || error);
+            });
+        } catch (error) {
+            cb((error && error.message) || error);
+        }
+    })();
+};
+
 export const signTxAndBroadcast = (tx, address, cb) => {
     (async () => {
         await window.keplr && window.keplr.enable(chainId);
@@ -167,6 +254,60 @@ export const cosmoStationSign = (tx, address, cb) => {
                 cb(result.log || result.rawLog);
             } else {
                 cb(null, result);
+            }
+        }).catch((error) => {
+            const message = 'success';
+            if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                cb(null, message);
+            } else {
+                cb(error && error.message);
+            }
+        });
+    })();
+};
+
+export const metaMaskSign = (tx, address, cb) => {
+    (async () => {
+        const msgs = tx.msgs ? tx.msgs : [tx.msg];
+        const fees = tx.fee;
+        if (fees && fees.amount && fees.amount.length) {
+            const array = [];
+            fees.amount.map((val) => {
+                let obj = {};
+                if (val && val.amount) {
+                    obj = {
+                        amount: String(Number(val.amount) * 100),
+                        denom: config.COIN_MINIMAL_DENOM,
+                    };
+                }
+
+                array.push(obj);
+            });
+
+            fees.amount = array;
+        }
+
+        window.ethereum.request({
+            method: 'wallet_invokeSnap',
+            params: {
+                snapId: 'npm:@cosmsnap/snap',
+                request: {
+                    method: 'transact',
+                    params: {
+                        chain_id: chainId,
+                        msgs: JSON.stringify(msgs),
+                        fees: JSON.stringify(fees),
+                    },
+                },
+            },
+        }).then((result) => {
+            if (result && result.data && result.data.code !== undefined && result.data.code !== 0) {
+                cb(result.data.log || result.data.rawLog);
+            } else if (result && !result.success) {
+                const message = 'unsuccess';
+                cb(message);
+            } else {
+                cb(null, result && result.data);
             }
         }).catch((error) => {
             const message = 'success';
