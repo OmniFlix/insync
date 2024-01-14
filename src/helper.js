@@ -166,7 +166,7 @@ const metamaskInitialize = (cb) => {
                 },
             });
 
-            if (!initialized) {
+            if (initialized && initialized.data && !initialized.data.initialized) {
                 // Initialize the Snap with default chains
                 window.ethereum.request({
                     method: 'wallet_invokeSnap',
@@ -177,9 +177,29 @@ const metamaskInitialize = (cb) => {
                         },
                     },
                 }).then((result) => {
+                    window.ethereum.request({
+                        method: 'wallet_invokeSnap',
+                        params: {
+                            snapId: 'npm:@cosmsnap/snap',
+                            request: {
+                                method: 'getChainAddress',
+                                params: {
+                                    chain_id: chainId,
+                                },
+                            },
+                        },
+                    }).then((result) => {
+                        if (result && result.data) {
+                            cb(null, result && result.data);
+                        }
+                    }).catch((error) => {
+                        cb((error && error.message) || error);
+                    });
                 }).catch((error) => {
                     cb((error && error.message) || error);
                 });
+
+                return;
             }
 
             window.ethereum.request({
