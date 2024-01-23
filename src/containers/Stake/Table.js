@@ -66,12 +66,16 @@ class Table extends Component {
                 customBodyRender: (value) => (
                     <div
                         className={classNames('status', value.jailed ? 'red_status' : '')}
-                        title={value.status === 1 ? 'unbonded'
-                            : value.status === 2 ? 'unbonding'
-                                : value.status === 3 ? 'active' : ''}>
-                        {value.status === 1 ? 'unbonded'
-                            : value.status === 2 ? 'unbonding'
-                                : value.status === 3 ? 'active' : ''}
+                        title={value.status === 'BOND_STATUS_UNBONDED' ? 'unbonded'
+                            : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
+                                : value.status === 'BOND_STATUS_BONDED' ? 'active'
+                                    : value.status === 'BOND_STATUS_UNSPECIFIED' ? 'invalid'
+                                        : ''}>
+                        {value.status === 'BOND_STATUS_UNBONDED' ? 'unbonded'
+                            : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
+                                : value.status === 'BOND_STATUS_BONDED' ? 'active'
+                                    : value.status === 'BOND_STATUS_UNSPECIFIED' ? 'invalid'
+                                        : ''}
                     </div>
                 ),
             },

@@ -79,8 +79,8 @@ export const getValidators = (cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchValidatorsSuccess(res.data && res.data.result));
-            cb(res.data && res.data.result);
+            dispatch(fetchValidatorsSuccess(res.data && res.data.validators));
+            cb(res.data && res.data.validators);
         })
         .catch((error) => {
             dispatch(fetchValidatorsError(
@@ -202,8 +202,8 @@ export const getValidatorDetails = (address, cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchValidatorSuccess(res.data && res.data.result));
-            cb(res.data && res.data.result);
+            dispatch(fetchValidatorSuccess(res.data && res.data.validators));
+            cb(res.data && res.data.validators);
         })
         .catch((error) => {
             dispatch(fetchValidatorError(
@@ -246,7 +246,7 @@ export const getDelegatedValidatorsDetails = (address) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchDelegatedValidatorsSuccess(res.data && res.data.result));
+            dispatch(fetchDelegatedValidatorsSuccess(res.data && res.data.validators));
         })
         .catch((error) => {
             dispatch(fetchDelegatedValidatorsError(
