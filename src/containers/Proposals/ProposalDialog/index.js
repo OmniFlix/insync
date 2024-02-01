@@ -74,11 +74,21 @@ class ProposalDialog extends Component {
 
         if (proposal && (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')) {
             const value = this.props.tallyDetails && this.props.tallyDetails[proposal.id];
-            const sum = value && value.yes_count && value.no_count && value.no_with_veto_count && value.abstain_count &&
-                (parseInt(value.yes_count) + parseInt(value.no_count) + parseInt(value.no_with_veto_count) + parseInt(value.abstain_count));
+            const sum = value && value.yes && value.no && value.no_with_veto && value.abstain &&
+                (parseInt(value.yes) + parseInt(value.no) + parseInt(value.no_with_veto) + parseInt(value.abstain));
+            let val1 = null;
+            if (val === 'yes_count') {
+                val1 = 'yes';
+            } else if (val === 'no_count') {
+                val1 = 'no';
+            } else if (val === 'no_with_veto_count') {
+                val1 = 'no_with_veto';
+            } else if (val === 'abstain_count') {
+                val1 = 'abstain';
+            }
 
-            return (this.props.tallyDetails && this.props.tallyDetails[proposal.id] && this.props.tallyDetails[proposal.id][val]
-                ? tally(this.props.tallyDetails[proposal.id][val], sum) : '0%');
+            return (this.props.tallyDetails && this.props.tallyDetails[proposal.id] && this.props.tallyDetails[proposal.id][val1]
+                ? tally(this.props.tallyDetails[proposal.id][val1], sum) : '0%');
         } else {
             const sum = proposal && proposal.final_tally_result && proposal.final_tally_result.yes_count &&
                 proposal.final_tally_result.no_count && proposal.final_tally_result.no_with_veto_count &&
