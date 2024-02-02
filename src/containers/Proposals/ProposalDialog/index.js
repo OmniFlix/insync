@@ -110,7 +110,7 @@ class ProposalDialog extends Component {
     render () {
         let votedOption = this.props.voteDetails && this.props.voteDetails.length &&
             this.props.proposal && this.props.proposal.id &&
-            this.props.voteDetails.filter((vote) => vote.id === this.props.proposal.id)[0];
+            this.props.voteDetails.filter((vote) => vote && vote.id === this.props.proposal.id)[0];
         let proposer = this.props.proposal && this.props.proposal.proposer;
 
         this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&

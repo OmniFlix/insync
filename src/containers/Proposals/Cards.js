@@ -73,7 +73,7 @@ const Cards = (props) => {
                         if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
                             const votedOption = props.voteDetails && props.voteDetails.length &&
                                 proposal && proposal.id &&
-                                props.voteDetails.filter((vote) => vote.id === proposal.id)[0];
+                                props.voteDetails.filter((vote) => vote && vote.id === proposal.id)[0];
                             let proposer = proposal.proposer;
                             props.proposalDetails && Object.keys(props.proposalDetails).length &&
                             Object.keys(props.proposalDetails).filter((key) => {
