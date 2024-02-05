@@ -71,9 +71,12 @@ const Cards = (props) => {
                 {reversedItems.length &&
                     reversedItems.map((proposal, index) => {
                         if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
-                            const votedOption = props.voteDetails && props.voteDetails.length &&
+                            let votedOption = props.voteDetails && props.voteDetails.length &&
                                 proposal && proposal.id &&
-                                props.voteDetails.filter((vote) => vote && vote.id === proposal.id)[0];
+                                props.voteDetails.filter((vote) => vote && vote.proposal_id === proposal.id)[0];
+                            if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
+                                votedOption = votedOption.options[0];
+                            }
                             let proposer = proposal.proposer;
                             props.proposalDetails && Object.keys(props.proposalDetails).length &&
                             Object.keys(props.proposalDetails).filter((key) => {
@@ -113,10 +116,10 @@ const Cards = (props) => {
                                             votedOption
                                                 ? <div className="details">
                                                     <p>your vote is taken: <b>
-                                                        {votedOption && votedOption.option === 1 ? 'Yes'
-                                                            : votedOption && votedOption.option === 2 ? 'Abstain'
-                                                                : votedOption && votedOption.option === 3 ? 'No'
-                                                                    : votedOption && votedOption.option === 4 ? 'NoWithVeto'
+                                                        {votedOption && (votedOption.option === 1 || votedOption.option === 'VOTE_OPTION_YES') ? 'Yes'
+                                                            : votedOption && (votedOption.option === 2 || votedOption.option === 'VOTE_OPTION_ABSTAIN') ? 'Abstain'
+                                                                : votedOption && (votedOption.option === 3 || votedOption.option === 'VOTE_OPTION_NO') ? 'No'
+                                                                    : votedOption && (votedOption.option === 4 || votedOption.option === 'VOTE_OPTION_NO_WITH_VETO') ? 'NoWithVeto'
                                                                         : votedOption && votedOption.option}
                                                     </b></p>
                                                     <Button

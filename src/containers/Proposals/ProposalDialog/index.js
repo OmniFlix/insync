@@ -37,9 +37,11 @@ class ProposalDialog extends Component {
     }
 
     componentDidMount () {
-        const votedOption = this.props.voteDetails && this.props.voteDetails.length && this.props.proposal && this.props.proposal.id &&
-            this.props.voteDetails.filter((vote) => vote.id === this.props.proposal.id)[0];
-
+        let votedOption = this.props.voteDetails && this.props.voteDetails.length && this.props.proposal && this.props.proposal.id &&
+            this.props.voteDetails.filter((vote) => vote.proposal_id === this.props.proposal.id)[0];
+        if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
+            votedOption = votedOption.options[0];
+        }
         if (!votedOption && this.props.proposal && this.props.proposal.id && this.props.address) {
             this.props.fetchVoteDetails(this.props.proposal.id, this.props.address);
         }
@@ -110,7 +112,10 @@ class ProposalDialog extends Component {
     render () {
         let votedOption = this.props.voteDetails && this.props.voteDetails.length &&
             this.props.proposal && this.props.proposal.id &&
-            this.props.voteDetails.filter((vote) => vote && vote.id === this.props.proposal.id)[0];
+            this.props.voteDetails.filter((vote) => vote && vote.proposal_id === this.props.proposal.id)[0];
+        if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
+            votedOption = votedOption.options[0];
+        }
         let proposer = this.props.proposal && this.props.proposal.proposer;
 
         this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
@@ -129,10 +134,6 @@ class ProposalDialog extends Component {
 
             return null;
         });
-
-        if (votedOption && votedOption.options && votedOption.options.length) {
-            votedOption = votedOption.options[0];
-        }
 
         const content = this.props.proposal && this.props.proposal.messages && this.props.proposal.messages[0] && this.props.proposal.messages[0].content;
 
