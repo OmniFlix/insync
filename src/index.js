@@ -6,7 +6,7 @@ import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import './index.css';
 import reducer from './reducers';
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+import { composeWithDevTools } from '@redux-devtools/extension';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
