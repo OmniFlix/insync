@@ -7,7 +7,7 @@ import variables from '../../../utils/variables';
 import { hideDelegateSuccessDialog } from '../../../actions/stake';
 import success from '../../../assets/stake/success.svg';
 import { config } from '../../../config';
-import { withRouter } from 'react-router-dom';
+import withRouter from '../../../components/WithRouter';
 
 const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
     '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
@@ -42,8 +42,8 @@ const SuccessDialog = (props) => {
     };
 
     const handleClose = () => {
-        if (props.match && props.match.params && props.match.params.proposalID) {
-            props.history.push('/proposals');
+        if (props.router && props.router.params && props.router.params.proposalID) {
+            props.router.navigate('/proposals');
         }
 
         props.handleClose();
@@ -69,13 +69,13 @@ const SuccessDialog = (props) => {
                         ? <h1>{props.name + 'd Successfully'}</h1>
                         : props.name
                             ? <h1>{variables[props.lang].delegate + 'd Successfully'}</h1>
-                            : props.match && props.match.params && props.match.params.proposalID
+                            : props.router && props.router.params && props.router.params.proposalID
                                 ? <h1>{variables[props.lang].vote_success}</h1>
                                 : props.claimValidator && props.claimValidator !== 'none'
                                     ? <h1>{variables[props.lang].claimed_success}</h1>
                                     : <h1>{variables[props.lang].success}</h1>}
                 </div>
-                {props.match && props.match.params && props.match.params.proposalID && props.hash
+                {props.router && props.router.params && props.router.params.proposalID && props.hash
                     ? <div className="row">
                         <p>{variables[props.lang]['transaction_hash']}</p>
                         <div
@@ -249,9 +249,6 @@ SuccessDialog.propTypes = {
     claimValidator: PropTypes.string.isRequired,
     handleClose: PropTypes.func.isRequired,
     hash: PropTypes.string.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     lang: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
@@ -260,10 +257,11 @@ SuccessDialog.propTypes = {
     validator: PropTypes.string.isRequired,
     validatorImages: PropTypes.array.isRequired,
     address: PropTypes.string,
-    match: PropTypes.shape({
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
         params: PropTypes.shape({
             proposalID: PropTypes.string,
-        }),
+        }).isRequired,
     }),
     tokens: PropTypes.any,
     validatorList: PropTypes.arrayOf(

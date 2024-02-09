@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as PropTypes from 'prop-types';
 import { hideSnackbar } from '../actions/snackbar';
 import Snackbar from '../components/Snackbar';
-import { withRouter } from 'react-router';
+import withRouter from '../components/WithRouter';
 
 class SnackbarMessage extends Component {
     componentDidUpdate (pp, ps, ss) {
@@ -15,7 +15,7 @@ class SnackbarMessage extends Component {
                 this.props.onClose();
 
                 localStorage.removeItem('of_co_address');
-                this.props.history.push('/');
+                this.props.router.navigate('/');
 
                 break;
             default:
@@ -35,12 +35,12 @@ class SnackbarMessage extends Component {
 }
 
 SnackbarMessage.propTypes = {
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     message: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {

@@ -13,10 +13,10 @@ import Table from '../Stake/Table';
 import { Button } from '@material-ui/core';
 import Cards from '../Proposals/Cards';
 import ProposalDialog from '../Proposals/ProposalDialog';
-import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
 import MultiDelegateButton from '../Stake/MultiDelegateButton';
+import withRouter from '../../components/WithRouter';
 
 class Home extends Component {
     constructor (props) {
@@ -64,7 +64,7 @@ class Home extends Component {
     }
 
     handleRedirect (value) {
-        this.props.history.push(value);
+        this.props.router.navigate(value);
     }
 
     render () {
@@ -156,9 +156,6 @@ class Home extends Component {
 
 Home.propTypes = {
     delegatedValidatorList: PropTypes.array.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     inActiveValidators: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
@@ -167,6 +164,9 @@ Home.propTypes = {
     voteDetailsInProgress: PropTypes.bool.isRequired,
     address: PropTypes.string,
     proposalsInProgress: PropTypes.bool,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {

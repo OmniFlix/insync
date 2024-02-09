@@ -30,12 +30,12 @@ import {
     getInActiveValidators,
     getValidators,
 } from '../../actions/stake';
-import { withRouter } from 'react-router-dom';
 import CopyButton from '../../components/CopyButton/TextButton';
 import variables from '../../utils/variables';
 import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposals } from '../../actions/proposals';
 import { Button } from '@material-ui/core';
 import ConnectDialog from './ConnectDialog';
+import withRouter from '../../components/WithRouter';
 
 class NavBar extends Component {
     constructor (props) {
@@ -66,7 +66,7 @@ class NavBar extends Component {
 
         if (this.props.proposals && !this.props.proposals.length &&
             !this.props.proposalsInProgress && !this.props.stake &&
-            this.props.match && this.props.match.params && !this.props.match.params.proposalID) {
+            this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
             this.props.getProposals((result) => {
                 if (result && result.length) {
                     const array = [];
@@ -91,7 +91,7 @@ class NavBar extends Component {
             });
         } else if (this.props.proposals && !this.props.proposalsInProgress && !this.props.stake &&
             this.props.proposalDetails && Object.keys(this.props.proposalDetails).length === 1 &&
-            this.props.match && this.props.match.params && !this.props.match.params.proposalID) {
+            this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
             const array = [];
             this.props.proposals.map((val) => {
                 const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
@@ -407,9 +407,6 @@ NavBar.propTypes = {
     getUnBondingDelegations: PropTypes.func.isRequired,
     getValidators: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     inActiveValidatorsInProgress: PropTypes.bool.isRequired,
     inActiveValidatorsList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
@@ -442,13 +439,14 @@ NavBar.propTypes = {
         }),
     ),
     home: PropTypes.bool,
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            proposalID: PropTypes.string,
-        }),
-    }),
     proposalTab: PropTypes.bool,
     proposalsInProgress: PropTypes.bool,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        params: PropTypes.shape({
+            proposalID: PropTypes.string,
+        }).isRequired,
+    }),
     stake: PropTypes.bool,
     unBondingDelegations: PropTypes.arrayOf(
         PropTypes.shape({

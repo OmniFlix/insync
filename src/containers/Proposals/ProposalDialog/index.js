@@ -16,12 +16,12 @@ import Voting from './Voting';
 import moment from 'moment';
 import ClassNames from 'classnames';
 import { tally } from '../../../utils/numberFormats';
-import { withRouter } from 'react-router-dom';
 import NavBar from '../../NavBar';
 import variables from '../../../utils/variables';
 import UnSuccessDialog from '../../Stake/DelegateDialog/UnSuccessDialog';
 import PendingDialog from '../../Stake/DelegateDialog/PendingDialog';
 import SuccessDialog from '../../Stake/DelegateDialog/SuccessDialog';
+import withRouter from '../../../components/WithRouter';
 
 class ProposalDialog extends Component {
     constructor (props) {
@@ -46,11 +46,11 @@ class ProposalDialog extends Component {
             this.props.fetchVoteDetails(this.props.proposal.id, this.props.address);
         }
 
-        if (this.props.match && this.props.match.params && this.props.match.params.proposalID) {
+        if (this.props.router && this.props.router.params && this.props.router.params.proposalID) {
             if (this.props.proposal && !this.props.proposal.id) {
                 this.props.getProposals((result) => {
                     if (result && result.length) {
-                        const proposal = result.find((val) => val.id === this.props.match.params.proposalID);
+                        const proposal = result.find((val) => val.id === this.props.router.params.proposalID);
                         this.props.showProposalDialog(proposal);
                         if (proposal && (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                             this.props.fetchProposalTally(proposal.id);
@@ -59,8 +59,8 @@ class ProposalDialog extends Component {
                 });
             }
 
-            if (this.props.proposalDetails && !this.props.proposalDetails[this.props.match.params.proposalID]) {
-                this.props.fetchProposalDetails(this.props.match.params.proposalID);
+            if (this.props.proposalDetails && !this.props.proposalDetails[this.props.router.params.proposalID]) {
+                this.props.fetchProposalDetails(this.props.router.params.proposalID);
             }
         }
     }
@@ -105,7 +105,7 @@ class ProposalDialog extends Component {
     }
 
     handleClose () {
-        this.props.history.push('/proposals');
+        this.props.router.navigate('/proposals');
         this.props.handleClose();
     }
 
@@ -285,9 +285,6 @@ ProposalDialog.propTypes = {
     fetchVoteDetails: PropTypes.func.isRequired,
     getProposals: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     lang: PropTypes.string.isRequired,
     proposalDetails: PropTypes.object.isRequired,
     showProposalDialog: PropTypes.func.isRequired,
@@ -295,13 +292,14 @@ ProposalDialog.propTypes = {
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
     address: PropTypes.string,
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            proposalID: PropTypes.string,
-        }),
-    }),
     proposal: PropTypes.object,
     proposalsInProgress: PropTypes.bool,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        params: PropTypes.shape({
+            proposalID: PropTypes.string,
+        }).isRequired,
+    }),
     votes: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.string.isRequired,
