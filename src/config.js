@@ -1,7 +1,7 @@
 export const config = {
     RPC_URL: 'https://rpc.omniflix.network',
     REST_URL: 'https://rest.omniflix.network',
-    EXPLORER_URL: 'https://explorer.omniflix.network',
+    EXPLORER_URL: 'https://www.mintscan.io/omniflix',
     STAKING_URL: 'https://flix.omniflix.co/stake',
     NETWORK_NAME: 'OmniFlix',
     NETWORK_TYPE: 'mainnet',

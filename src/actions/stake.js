@@ -447,7 +447,7 @@ export const fetchAPR = () => (dispatch) => {
                     ? error.response.data.message
                     : error,
             ));
-            return process.exit(-1);
+            return null;
         }
     })();
 };

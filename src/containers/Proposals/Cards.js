@@ -9,7 +9,7 @@ import { showProposalDialog } from '../../actions/proposals';
 import moment from 'moment';
 import { tally } from '../../utils/numberFormats';
 import DotsLoading from '../../components/DotsLoading';
-import { withRouter } from 'react-router';
+import withRouter from '../../components/WithRouter';
 
 const Cards = (props) => {
     const [page, setPage] = useState(1);
@@ -61,7 +61,7 @@ const Cards = (props) => {
     };
 
     const handleProposal = (proposal) => {
-        props.history.push(`/proposals/${proposal.id}`);
+        props.router.navigate(`/proposals/${proposal.id}`);
         props.handleShow(proposal);
     };
 
@@ -225,9 +225,6 @@ const Cards = (props) => {
 
 Cards.propTypes = {
     handleShow: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     proposalDetails: PropTypes.object.isRequired,
     proposalDetailsInProgress: PropTypes.bool.isRequired,
     tallyDetails: PropTypes.object.isRequired,
@@ -236,6 +233,9 @@ Cards.propTypes = {
     home: PropTypes.bool,
     proposals: PropTypes.array,
     proposalsInProgress: PropTypes.bool,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {

@@ -2,7 +2,6 @@ import { Button } from '@material-ui/core';
 import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import {
     fetchRewards,
     fetchVestingBalance,
@@ -18,6 +17,7 @@ import { encode } from 'js-base64';
 import { hideConnectDialog } from '../../../actions/navBar';
 import { initializeCosmoStation } from '../../../helper';
 import variables from '../../../utils/variables';
+import withRouter from '../../../components/WithRouter';
 
 const CosmostationConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);

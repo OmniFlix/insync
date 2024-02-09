@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import NavBar from '../NavBar';
 import variables from '../../utils/variables';
 import * as PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './index.css';
 import Cards from './Cards';
@@ -10,6 +9,7 @@ import { fetchProposalTally, fetchVoteDetails, getProposals } from '../../action
 import UnSuccessDialog from '../Stake/DelegateDialog/UnSuccessDialog';
 import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
 import SuccessDialog from '../Stake/DelegateDialog/SuccessDialog';
+import withRouter from '../../components/WithRouter';
 
 const Proposals = (props) => {
     const [active, setActive] = useState(1);
@@ -69,15 +69,15 @@ Proposals.propTypes = {
     fetchProposalTally: PropTypes.func.isRequired,
     fetchVoteDetails: PropTypes.func.isRequired,
     getProposals: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     lang: PropTypes.string.isRequired,
     proposals: PropTypes.array.isRequired,
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
     address: PropTypes.string,
     proposalsInProgress: PropTypes.bool,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
