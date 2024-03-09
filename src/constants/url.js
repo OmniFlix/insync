@@ -11,7 +11,7 @@ export const urlFetchUnBondingDelegations = (address) => `${REST_URL}/cosmos/sta
 export const urlFetchRewards = (address) => `${REST_URL}/cosmos/distribution/v1beta1/delegators/${address}/rewards`;
 export const urlFetchVoteDetails = (proposalId, address) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${proposalId}/votes/${address}`;
 
-export const VALIDATORS_LIST_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000`;
+export const VALIDATORS_LIST_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000&status=BOND_STATUS_BONDED`;
 export const INACTIVE_VALIDATORS_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000&status=BOND_STATUS_UNBONDED`;
 export const INACTIVE_VALIDATORS_UNBONDING_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000&status=BOND_STATUS_UNBONDING`;
 export const getValidatorURL = (address) => `${REST_URL}/cosmos/staking/v1beta1/validators/${address}`;
