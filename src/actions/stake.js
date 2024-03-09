@@ -382,7 +382,7 @@ export const getInActiveValidators = (cb) => (dispatch) => {
                     Connection: 'keep-alive',
                 },
             });
-            const updatedResult = [...result.data && result.data.result, ...unBondingResult.data && unBondingResult.data.result];
+            const updatedResult = [...result.data && result.data.validators, ...unBondingResult.data && unBondingResult.data.validators];
             dispatch(fetchInActiveValidatorsSuccess(updatedResult));
             cb(updatedResult);
         } catch (error) {
