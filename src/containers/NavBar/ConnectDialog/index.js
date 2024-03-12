@@ -5,12 +5,10 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
 import { hideConnectDialog } from '../../../actions/navBar';
-import ConnectButton from './KeplrConnectButton';
-import CosmostationConnectButton from './CosmostationConnectButton';
+import NamadaConnectButton from './NamadaConnectButton';
 import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
 import insync from '../../../assets/insync.png';
 import './index.css';
-import { config } from '../../../config';
 
 const LightTooltip = withStyles((theme) => ({
     tooltip: {
@@ -36,7 +34,7 @@ const ConnectDialog = (props) => {
                 </h2>
                 <div className="connect_wallets">
                     <div className="button_div">
-                        <ConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
+                        <NamadaConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
                         <LightTooltip title="Download the Keplr Extension">
                             <IconButton
                                 className="download_button"
@@ -45,16 +43,6 @@ const ConnectDialog = (props) => {
                             </IconButton>
                         </LightTooltip>
                     </div>
-                    {config.COSMOSTAION && <div className="button_div">
-                        <CosmostationConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
-                        <LightTooltip title="Download the Cosmostation Extension">
-                            <IconButton
-                                className="download_button"
-                                onClick={() => window.open('https://chrome.google.com/webstore/detail/cosmostation/fpkhgmpbidmiogeglndfbkegfdlnajnf')}>
-                                <GetAppRoundedIcon/>
-                            </IconButton>
-                        </LightTooltip>
-                    </div>}
                 </div>
             </DialogContent>
         </Dialog>

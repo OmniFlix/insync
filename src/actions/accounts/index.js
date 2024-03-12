@@ -1,5 +1,5 @@
 import {
-    ACCOUNT_ADDRESS_SET,
+    ACCOUNT_ADDRESS_SET, ACCOUNT_DETAILS_SET,
     BALANCE_FETCH_ERROR,
     BALANCE_FETCH_IN_PROGRESS,
     BALANCE_FETCH_SUCCESS,
@@ -22,16 +22,26 @@ import {
 } from '../../constants/accounts';
 import Axios from 'axios';
 import {
-    urlFetchBalance,
     urlFetchDelegations,
     urlFetchRewards,
     urlFetchUnBondingDelegations,
     urlFetchVestingBalance,
 } from '../../constants/url';
+import { init as initShared } from '@namada/shared/dist/init-inline';
+import { Query } from '@namada/shared';
+import { config } from '../../config';
+// import { Tokens } from '@namada/types';
 
 export const setAccountAddress = (value) => {
     return {
         type: ACCOUNT_ADDRESS_SET,
+        value,
+    };
+};
+
+export const setAccountDetails = (value) => {
+    return {
+        type: ACCOUNT_DETAILS_SET,
         value,
     };
 };
@@ -100,24 +110,35 @@ const fetchBalanceError = (message) => {
 
 export const getBalance = (address) => (dispatch) => {
     dispatch(fetchBalanceInProgress());
-    const url = urlFetchBalance(address);
-    Axios.get(url, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-        },
-    })
-        .then((res) => {
-            dispatch(fetchBalanceSuccess(res.data && res.data.balances));
-        })
-        .catch((error) => {
-            dispatch(fetchBalanceError(
-                error.response &&
-                error.response.data &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : 'Failed!',
-            ));
-        });
+    (async () => {
+        await initShared();
+
+        const query = new Query(config.RPC_URL);
+        // console.log('5555', Tokens);
+        const array = [config.TOKEN_ADDRESS];
+        // if (Tokens && Object.keys(Tokens).length) {
+        //     Object.keys(Tokens).map((key) => {
+        //         if (key && Tokens[key] && Tokens[key].address) {
+        //             array.push(Tokens[key].address);
+        //         }
+        //
+        //         return null;
+        //     });
+        // }
+        query.query_balance(address, array)
+            .then((res) => {
+                dispatch(fetchBalanceSuccess(res));
+            })
+            .catch((error) => {
+                dispatch(fetchBalanceError(
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.message
+                        ? error.response.data.message
+                        : 'Failed!',
+                ));
+            });
+    })();
 };
 
 const fetchVestingBalanceInProgress = () => {

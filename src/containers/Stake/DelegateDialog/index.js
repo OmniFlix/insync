@@ -15,7 +15,7 @@ import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
 import ToValidatorSelectField from './ToValidatorSelectField';
 import MultiValidatorSelectField from './MultiValidatorSelectField';
-import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, delegateTransaction, signTxAndBroadcast } from '../../../helper';
 import {
     fetchRewards,
     fetchVestingBalance,
@@ -28,42 +28,64 @@ import { config } from '../../../config';
 import CircularProgress from '../../../components/CircularProgress';
 import { connect } from 'react-redux';
 import { gas } from '../../../defaultGasValues';
+import BigNumber from 'bignumber.js';
 
 const DelegateDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
     const handleDelegateType = () => {
         setInProgress(true);
-        let gasValue = gas.delegate;
-        if (props.name === 'Redelegate') {
-            gasValue = gas.re_delegate;
-        } else if (props.name === 'Undelegate') {
-            gasValue = gas.un_delegate;
+        // let gasValue = gas.delegate;
+        // if (props.name === 'Redelegate') {
+        //     gasValue = gas.re_delegate;
+        // } else if (props.name === 'Undelegate') {
+        //     gasValue = gas.un_delegate;
+        // }
+
+        // const updatedTx = {
+        //     msg: {
+        //         typeUrl: props.name === 'Delegate' || props.name === 'Stake'
+        //             ? '/cosmos.staking.v1beta1.MsgDelegate' : props.name === 'Undelegate'
+        //                 ? '/cosmos.staking.v1beta1.MsgUndelegate' : props.name === 'Redelegate'
+        //                     ? '/cosmos.staking.v1beta1.MsgBeginRedelegate' : '',
+        //         value: getValueObject(props.name),
+        //     },
+        //     fee: {
+        //         amount: [{
+        //             amount: String(gasValue * config.GAS_PRICE_STEP_AVERAGE),
+        //             denom: config.COIN_MINIMAL_DENOM,
+        //         }],
+        //         gas: String(gasValue),
+        //     },
+        //     memo: '',
+        // };
+
+        let value = null;
+        if (props.genesisValidatorList && props.genesisValidatorList[props.validator]) {
+            value = props.genesisValidatorList[props.validator];
         }
 
-        const updatedTx = {
-            msg: {
-                typeUrl: props.name === 'Delegate' || props.name === 'Stake'
-                    ? '/cosmos.staking.v1beta1.MsgDelegate' : props.name === 'Undelegate'
-                        ? '/cosmos.staking.v1beta1.MsgUndelegate' : props.name === 'Redelegate'
-                            ? '/cosmos.staking.v1beta1.MsgBeginRedelegate' : '',
-                value: getValueObject(props.name),
-            },
-            fee: {
-                amount: [{
-                    amount: String(gasValue * config.GAS_PRICE_STEP_AVERAGE),
-                    denom: config.COIN_MINIMAL_DENOM,
-                }],
-                gas: String(gasValue),
-            },
-            memo: '',
+        const tx = {
+            source: props.address,
+            validator: value && value.nam_address,
+            amount: new BigNumber(0.1),
+            nativeToken: 'NAAN',
         };
 
-        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
-            cosmoStationSign(updatedTx, props.address, handleFetch);
-            return;
-        }
+        const txs = {
+            token: config.TOKEN_ADDRESS,
+            feeAmount: new BigNumber(0.000100),
+            gasLimit: new BigNumber(200),
+            chainId: config.CHAIN_ID,
+            publicKey: props.details && props.details.publicKey,
+        };
 
-        signTxAndBroadcast(updatedTx, props.address, handleFetch);
+        // if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+        //     cosmoStationSign(updatedTx, props.address, handleFetch);
+        //     return;
+        // }
+
+        console.log('555555', tx, txs, props.details, props.validator, value);
+        delegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
     };
 
     const handleMultiDelegate = () => {
@@ -111,6 +133,7 @@ const DelegateDialog = (props) => {
     };
 
     const handleFetch = (error, result) => {
+        console.log('ddddd', error, result);
         setInProgress(false);
         if (error) {
             if (error.indexOf('not yet found on the chain') > -1) {
@@ -136,33 +159,33 @@ const DelegateDialog = (props) => {
         props.fetchRewards(props.address);
     };
 
-    const getValueObject = (type) => {
-        switch (type) {
-        case 'Stake':
-        case 'Delegate':
-        case 'Undelegate':
-            return {
-                delegatorAddress: props.address,
-                validatorAddress: props.validator,
-                amount: {
-                    amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
-                    denom: config.COIN_MINIMAL_DENOM,
-                },
-            };
-        case 'Redelegate':
-            return {
-                delegatorAddress: props.address,
-                validatorSrcAddress: props.validator,
-                validatorDstAddress: props.toValidator,
-                amount: {
-                    amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
-                    denom: config.COIN_MINIMAL_DENOM,
-                },
-            };
-        default:
-            return {};
-        }
-    };
+    // const getValueObject = (type) => {
+    //     switch (type) {
+    //     case 'Stake':
+    //     case 'Delegate':
+    //     case 'Undelegate':
+    //         return {
+    //             delegatorAddress: props.address,
+    //             validatorAddress: props.validator,
+    //             amount: {
+    //                 amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
+    //                 denom: config.COIN_MINIMAL_DENOM,
+    //             },
+    //         };
+    //     case 'Redelegate':
+    //         return {
+    //             delegatorAddress: props.address,
+    //             validatorSrcAddress: props.validator,
+    //             validatorDstAddress: props.toValidator,
+    //             amount: {
+    //                 amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
+    //                 denom: config.COIN_MINIMAL_DENOM,
+    //             },
+    //         };
+    //     default:
+    //         return {};
+    //     }
+    // };
 
     let staked = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
         return accumulator + Number(currentValue.balance.amount);
@@ -244,9 +267,11 @@ const DelegateDialog = (props) => {
 };
 
 DelegateDialog.propTypes = {
+    details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
+    genesisValidatorList: PropTypes.object.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
@@ -294,6 +319,8 @@ const stateToProps = (state) => {
         vestingBalance: state.accounts.vestingBalance.result,
         toValidator: state.stake.toValidator.value,
         selectedMultiValidatorArray: state.stake.selectMultiValidators.list,
+        details: state.accounts.address.details,
+        genesisValidatorList: state.stake.genesisValidators.list,
     };
 };
 

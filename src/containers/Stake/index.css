@@ -61,6 +61,17 @@
     justify-content: center;
 }
 
+.stake .table .validator .name_section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.stake .table .validator .name_section .hash_text {
+    color: unset;
+    max-width: 140px;
+}
+
 /*.stake .table tbody tr td {*/
 /*    cursor: pointer;*/
 /*}*/

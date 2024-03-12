@@ -9,9 +9,9 @@ import { connect } from 'react-redux';
 import ClassNames from 'classnames';
 import { hideSideBar, showConnectDialog } from '../../actions/navBar';
 import Icon from '../../components/Icon';
-import { initializeChain, initializeCosmoStation } from '../../helper';
+import { initializeChain, initializeCosmoStation, initializeNamadaChain } from '../../helper';
 import { decode, encode } from 'js-base64';
-import { config } from '../../config';
+import { config, DEFAULT_PAGE } from '../../config';
 import { showMessage } from '../../actions/snackbar';
 import {
     fetchRewards,
@@ -19,11 +19,11 @@ import {
     getBalance,
     getDelegations,
     getUnBondingDelegations,
-    setAccountAddress,
+    setAccountAddress, setAccountDetails,
     showSelectAccountDialog,
 } from '../../actions/accounts';
 import {
-    fetchAPR,
+    fetchAPR, fetchGenesisValidators,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
     getDelegatedValidatorsDetails,
@@ -47,7 +47,9 @@ class NavBar extends Component {
 
         this.initKeplr = this.initKeplr.bind(this);
         this.handleFetch = this.handleFetch.bind(this);
+        this.handleFetchValidators = this.handleFetchValidators.bind(this);
         this.handleChain = this.handleChain.bind(this);
+        this.handleNamada = this.handleNamada.bind(this);
         this.getValidatorImage = this.getValidatorImage.bind(this);
         this.getProposalDetails = this.getProposalDetails.bind(this);
         this.handleCosmoStation = this.handleCosmoStation.bind(this);
@@ -58,85 +60,85 @@ class NavBar extends Component {
             setTimeout(() => {
                 this.handleCosmoStation(true);
             }, 600);
+        } else if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'namada')) {
+            setTimeout(() => {
+                this.handleNamada(true);
+            }, 600);
         } else if (localStorage.getItem('of_co_address')) {
             setTimeout(() => {
                 this.initKeplr();
             }, 600);
         }
 
-        if (this.props.proposals && !this.props.proposals.length &&
-            !this.props.proposalsInProgress && !this.props.stake &&
-            this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
-            this.props.getProposals((result) => {
-                if (result && result.length) {
-                    const array = [];
-                    result.map((val) => {
-                        const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
-                        if (!filter) {
-                            if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
-                                return null;
-                            }
-
-                            array.push(val.proposal_id);
-                        }
-                        if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                            this.props.fetchProposalTally(val.id);
-                        }
-
-                        return null;
-                    });
-                    this.getProposalDetails(array && array.reverse());
-                }
-            });
-        } else if (this.props.proposals && !this.props.proposalsInProgress && !this.props.stake &&
-            this.props.proposalDetails && Object.keys(this.props.proposalDetails).length === 1 &&
-            this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
-            const array = [];
-            this.props.proposals.map((val) => {
-                const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                    Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
-                if (!filter) {
-                    if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
-                        return null;
-                    }
-
-                    array.push(val.proposal_id);
-                }
-                if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                    this.props.fetchProposalTally(val.id);
-                }
-
-                return null;
-            });
-            this.getProposalDetails(array && array.reverse());
-        }
+        // if (this.props.proposals && !this.props.proposals.length &&
+        //     !this.props.proposalsInProgress && !this.props.stake &&
+        //     this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
+        //     this.props.getProposals((result) => {
+        //         if (result && result.length) {
+        //             const array = [];
+        //             result.map((val) => {
+        //                 const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
+        //                     Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+        //                 if (!filter) {
+        //                     if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
+        //                         return null;
+        //                     }
+        //
+        //                     array.push(val.proposal_id);
+        //                 }
+        //                 if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+        //                     this.props.fetchProposalTally(val.id);
+        //                 }
+        //
+        //                 return null;
+        //             });
+        //             this.getProposalDetails(array && array.reverse());
+        //         }
+        //     });
+        // } else if (this.props.proposals && !this.props.proposalsInProgress && !this.props.stake &&
+        //     this.props.proposalDetails && Object.keys(this.props.proposalDetails).length === 1 &&
+        //     this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
+        //     const array = [];
+        //     this.props.proposals.map((val) => {
+        //         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
+        //             Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+        //         if (!filter) {
+        //             if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
+        //                 return null;
+        //             }
+        //
+        //             array.push(val.proposal_id);
+        //         }
+        //         if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+        //             this.props.fetchProposalTally(val.id);
+        //         }
+        //
+        //         return null;
+        //     });
+        //     this.getProposalDetails(array && array.reverse());
+        // }
 
         if (this.props.address) {
             this.handleFetch(this.props.address);
         }
 
         if (this.props.validatorList && !this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
-            this.props.getValidators((data) => {
-                if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
-                    const array = data.filter((val) => val && val.description && val.description.identity);
-                    this.getValidatorImage(0, array);
-                }
-            });
+            this.props.fetchGenesisValidators();
+            this.handleFetchValidators(DEFAULT_PAGE, 0);
         }
 
-        if (!this.props.actualAPR && !this.props.aprInProgress) {
-            this.props.fetchAPR();
-        }
+        // if (!this.props.actualAPR && !this.props.aprInProgress) {
+        //     this.props.fetchAPR();
+        // }
 
-        if (!this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
-            this.props.getInActiveValidators((data) => {
-                if (data && data.length) {
-                    const array = data.filter((val) => val && val.description && val.description.identity);
-                    this.getValidatorImage(0, array);
-                }
-            });
-        }
+        // if (!this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
+        //     this.props.getInActiveValidators((data) => {
+        //         if (data && data.length) {
+        //             const array = data.filter((val) => val && val.description && val.description.identity);
+        //             this.getValidatorImage(0, array);
+        //         }
+        //     });
+        // }
 
         if (localStorage.getItem('of_co_wallet') === 'keplr') {
             window.addEventListener('keplr_keystorechange', () => {
@@ -226,6 +228,19 @@ class NavBar extends Component {
         }
     }
 
+    handleFetchValidators (page, oldCount) {
+        this.props.getValidators(page, (data, total, pageCount, count) => {
+            const newCount = Number(count) + Number(oldCount);
+            if (newCount && total > newCount) {
+                this.handleFetchValidators(page + 1, newCount);
+            }
+            // if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
+            //     const array = data.filter((val) => val && val.description && val.description.identity);
+            //     this.getValidatorImage(0, array);
+            // }
+        });
+    }
+
     getValidatorImage (index, data) {
         const array = [];
         for (let i = 0; i < 3; i++) {
@@ -269,27 +284,27 @@ class NavBar extends Component {
             !this.props.balanceInProgress) {
             this.props.getBalance(address);
         }
-        if (this.props.vestingBalance && !this.props.vestingBalance.value &&
-            !this.props.vestingBalanceInProgress) {
-            this.props.fetchVestingBalance(address);
-        }
-
-        if (!this.props.proposalTab && !this.props.stake) {
-            this.props.fetchRewards(address);
-        }
-
-        if (this.props.unBondingDelegations && !this.props.unBondingDelegations.length &&
-            !this.props.unBondingDelegationsInProgress && !this.props.proposalTab && !this.props.stake) {
-            this.props.getUnBondingDelegations(address);
-        }
-        if (this.props.delegations && !this.props.delegations.length &&
-            !this.props.delegationsInProgress && !this.props.proposalTab) {
-            this.props.getDelegations(address);
-        }
-        if (this.props.delegatedValidatorList && !this.props.delegatedValidatorList.length &&
-            !this.props.delegatedValidatorListInProgress && !this.props.proposalTab) {
-            this.props.getDelegatedValidatorsDetails(address);
-        }
+        // if (this.props.vestingBalance && !this.props.vestingBalance.value &&
+        //     !this.props.vestingBalanceInProgress) {
+        //     this.props.fetchVestingBalance(address);
+        // }
+        //
+        // if (!this.props.proposalTab && !this.props.stake) {
+        //     this.props.fetchRewards(address);
+        // }
+        //
+        // if (this.props.unBondingDelegations && !this.props.unBondingDelegations.length &&
+        //     !this.props.unBondingDelegationsInProgress && !this.props.proposalTab && !this.props.stake) {
+        //     this.props.getUnBondingDelegations(address);
+        // }
+        // if (this.props.delegations && !this.props.delegations.length &&
+        //     !this.props.delegationsInProgress && !this.props.proposalTab) {
+        //     this.props.getDelegations(address);
+        // }
+        // if (this.props.delegatedValidatorList && !this.props.delegatedValidatorList.length &&
+        //     !this.props.delegatedValidatorListInProgress && !this.props.proposalTab) {
+        //     this.props.getDelegatedValidatorsDetails(address);
+        // }
     }
 
     initKeplr () {
@@ -313,6 +328,33 @@ class NavBar extends Component {
             const previousAddress = localStorage.getItem('of_co_address') &&
                 decode(localStorage.getItem('of_co_address'));
             this.props.setAccountAddress(addressList[0] && addressList[0].address);
+            if (fetch) {
+                this.handleFetch(addressList[0] && addressList[0].address);
+            }
+            if (addressList[0] && previousAddress !== addressList[0].address) {
+                localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
+            }
+        });
+    }
+
+    handleNamada (fetch) {
+        initializeNamadaChain((error, addressList) => {
+            if (addressList === undefined || !addressList) {
+                window.onload = () => this.handleNamada(true);
+                return;
+            }
+
+            if (error) {
+                this.props.showMessage(error);
+                localStorage.removeItem('of_co_address');
+
+                return;
+            }
+
+            const previousAddress = localStorage.getItem('of_co_address') &&
+                decode(localStorage.getItem('of_co_address'));
+            this.props.setAccountAddress(addressList[0] && addressList[0].address);
+            this.props.setAccountDetails(addressList[0]);
             if (fetch) {
                 this.handleFetch(addressList[0] && addressList[0].address);
             }
@@ -392,6 +434,7 @@ NavBar.propTypes = {
     delegatedValidatorListInProgress: PropTypes.bool.isRequired,
     delegationsInProgress: PropTypes.bool.isRequired,
     fetchAPR: PropTypes.func.isRequired,
+    fetchGenesisValidators: PropTypes.func.isRequired,
     fetchProposalDetails: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
@@ -413,6 +456,7 @@ NavBar.propTypes = {
     proposalDetails: PropTypes.object.isRequired,
     proposals: PropTypes.array.isRequired,
     setAccountAddress: PropTypes.func.isRequired,
+    setAccountDetails: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
@@ -504,12 +548,14 @@ const actionToProps = {
     fetchValidatorImage,
     fetchValidatorImageSuccess,
     fetchVestingBalance,
+    fetchGenesisValidators,
     getProposals,
     fetchVoteDetails,
     fetchProposalTally,
     fetchProposalDetails,
     getInActiveValidators,
     showConnectDialog,
+    setAccountDetails,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));

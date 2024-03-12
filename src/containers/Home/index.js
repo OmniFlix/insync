@@ -15,8 +15,9 @@ import Cards from '../Proposals/Cards';
 import ProposalDialog from '../Proposals/ProposalDialog';
 import { connect } from 'react-redux';
 import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
-import MultiDelegateButton from '../Stake/MultiDelegateButton';
+// import MultiDelegateButton from '../Stake/MultiDelegateButton';
 import withRouter from '../../components/WithRouter';
+import SendButton from './SendButton';
 
 class Home extends Component {
     constructor (props) {
@@ -36,6 +37,10 @@ class Home extends Component {
                 active: 2,
             });
         }
+
+        window.addEventListener('namada-tx-started', (event) => console.log('started', event));
+        window.addEventListener('namada-tx-completed', (event) => console.log('completed', event));
+        window.addEventListener('namada-updated-balances', (event) => console.log('balance', event));
     }
 
     componentDidUpdate (pp, ps, ss) {
@@ -82,6 +87,7 @@ class Home extends Component {
                             <p className="info">{variables[this.props.lang].participate}</p>
                         </div>
                         <TokenDetails lang={this.props.lang}/>
+                        <SendButton/>
                     </div>
                 </div>
                 <div className="stake">
@@ -103,17 +109,17 @@ class Home extends Component {
                                         ? ' (' + this.props.validatorList.length + ')'
                                         : null}
                                 </p>
-                                <span/>
-                                <p className={active === 3 ? 'active' : ''} onClick={() => this.handleChange(3)}>
-                                    {variables[this.props.lang]['inactive_validators']}
-                                    {this.props.inActiveValidators &&
-                                    this.props.inActiveValidators.length
-                                        ? ' (' + this.props.inActiveValidators.length + ')'
-                                        : null}
-                                </p>
+                                {/* <span/> */}
+                                {/* <p className={active === 3 ? 'active' : ''} onClick={() => this.handleChange(3)}> */}
+                                {/*     {variables[this.props.lang]['inactive_validators']} */}
+                                {/*     {this.props.inActiveValidators && */}
+                                {/*     this.props.inActiveValidators.length */}
+                                {/*         ? ' (' + this.props.inActiveValidators.length + ')' */}
+                                {/*         : null} */}
+                                {/* </p> */}
                             </div>
                             <div className="buttons">
-                                <MultiDelegateButton/>
+                                {/* <MultiDelegateButton/> */}
                                 <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>
                                     {variables[this.props.lang]['view_all']}
                                 </Button>

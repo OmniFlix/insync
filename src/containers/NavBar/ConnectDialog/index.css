@@ -62,7 +62,7 @@
 
 .connect_wallets > div > button:first-child:hover:after {
     content: "";
-    background: linear-gradient(112.4deg, #2FCDCF 14.6%, #966AFB 82.44%);
+    background: #ff0;
     position: absolute;
     top: -2px;
     left: -2px;
@@ -130,6 +130,14 @@
     width: 50px;
     margin: 0 10px;
     border-radius: 50px;
+}
+
+.connect_dialog .disconnect_button svg {
+    background: #ff0;
+    border-radius: 100px;
+    padding: 2px;
+    margin-right: 10px;
+    width: 30px;
 }
 
 @media (max-width: 375px) {

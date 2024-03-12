@@ -35,8 +35,12 @@ import {
     VALIDATORS_FETCH_IN_PROGRESS,
     VALIDATORS_FETCH_SUCCESS,
     SELECTED_MULTI_VALIDATORS,
+    GENESIS_VALIDATORS_FETCH_IN_PROGRESS,
+    GENESIS_VALIDATORS_FETCH_SUCCESS,
+    GENESIS_VALIDATORS_FETCH_ERROR,
 } from '../constants/stake';
 import { DISCONNECT_SET } from '../constants/accounts';
+import { DEFAULT_PAGE } from '../config';
 
 const search = (state = '', action) => {
     if (action.type === SEARCH_LIST_SET) {
@@ -49,6 +53,8 @@ const search = (state = '', action) => {
 const validators = (state = {
     inProgress: false,
     list: [],
+    page: DEFAULT_PAGE,
+    total: null,
     images: [],
 }, action) => {
     switch (action.type) {
@@ -58,11 +64,23 @@ const validators = (state = {
             inProgress: true,
         };
     case VALIDATORS_FETCH_SUCCESS:
-        return {
-            ...state,
-            list: action.list,
-            inProgress: false,
-        };
+        if (action.page === DEFAULT_PAGE) {
+            return {
+                ...state,
+                list: action.list,
+                total: action.total,
+                page: action.page,
+                inProgress: false,
+            };
+        } else {
+            return {
+                ...state,
+                inProgress: false,
+                list: [...state.list, ...action.list],
+                page: action.page,
+                total: action.total,
+            };
+        }
     case VALIDATORS_FETCH_ERROR:
         return {
             ...state,
@@ -79,6 +97,32 @@ const validators = (state = {
             images: [...array],
         };
     }
+    default:
+        return state;
+    }
+};
+
+const genesisValidators = (state = {
+    inProgress: false,
+    list: {},
+}, action) => {
+    switch (action.type) {
+    case GENESIS_VALIDATORS_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case GENESIS_VALIDATORS_FETCH_SUCCESS:
+        return {
+            ...state,
+            list: action.list,
+            inProgress: false,
+        };
+    case GENESIS_VALIDATORS_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
     default:
         return state;
     }
@@ -415,6 +459,7 @@ const selectMultiValidators = (state = {
 
 export default combineReducers({
     search,
+    genesisValidators,
     delegateDialog,
     successDialog,
     processingDialog,

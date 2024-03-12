@@ -25,6 +25,7 @@ const ValidatorSelectField = (props) => {
         validatorList = [...props.delegatedValidatorList];
     }
 
+    console.log('11111', props.dialogValidatorAddress, props.value);
     return (
         <SelectField
             id="validator_select_field"
@@ -41,12 +42,16 @@ const ValidatorSelectField = (props) => {
                     const image = item && item.description && item.description.identity &&
                             props.validatorImages && props.validatorImages.length &&
                             props.validatorImages.filter((value) => value._id === item.description.identity.toString());
+                    let value = null;
+                    if (props.genesisValidatorList && props.genesisValidatorList[item.address]) {
+                        value = props.genesisValidatorList[item.address];
+                    }
 
                     return (
-                        <MenuItem
+                        value && <MenuItem
                             key={item.key || item.value || item.name || item.type ||
                                     item.operator_address}
-                            value={item.value || item.name || item.type ||
+                            value={item.address || item.name || item.type ||
                                     (item.operator_address)}>
                             {image && image.length && image[0] && image[0].them && image[0].them.length &&
                                 image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
@@ -62,8 +67,10 @@ const ValidatorSelectField = (props) => {
                                         {item.description.moniker[0]}
                                     </span>
                                     : <span className="image" style={{ background: colors[index % 6] }}/>}
-                            {item.name ? item.name : item.type
-                                ? item.name : item.description && item.description.moniker}
+                            {value && value.alias
+                                ? value.alias
+                                : item.name ? item.name : item.type
+                                    ? item.name : item.description && item.description.moniker}
                         </MenuItem>
                     );
                 },
@@ -73,6 +80,7 @@ const ValidatorSelectField = (props) => {
 };
 
 ValidatorSelectField.propTypes = {
+    genesisValidatorList: PropTypes.object.isRequired,
     inActiveValidators: PropTypes.array.isRequired,
     items: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
@@ -121,6 +129,7 @@ const stateToProps = (state) => {
         validatorImages: state.stake.validators.images,
         delegatedValidatorList: state.stake.delegatedValidators.list,
         inActiveValidators: state.stake.inActiveValidators.list,
+        genesisValidatorList: state.stake.genesisValidators.list,
     };
 };
 

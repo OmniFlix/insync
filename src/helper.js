@@ -3,6 +3,12 @@ import { SigningStargateClient } from '@cosmjs/stargate';
 import { config } from './config';
 import { cosmos, InstallError } from '@cosmostation/extension-client';
 import { getOfflineSigner } from '@cosmostation/cosmos-client';
+// import { Sdk } from '@namada/shared';
+// import { init as initShared } from '@namada/shared/dist/init-inline';
+// import { AccountType, TransferProps, TxProps } from "@namada/types";
+// import {
+//     SubmitBondMsgValue,
+// } from '@namada/types';
 
 const chainId = config.CHAIN_ID;
 const chainName = config.CHAIN_NAME;
@@ -168,5 +174,155 @@ export const cosmoStationSign = (tx, address, cb) => {
                 cb(error && error.message);
             }
         });
+    })();
+};
+
+// Namada
+export const initializeNamadaChain = (cb) => {
+    (async () => {
+        const isExtensionInstalled = typeof window.namada === 'object';
+        if (!isExtensionInstalled || !window.namada) {
+            const error = 'Download the Namada Extension';
+            cb(error);
+        }
+
+        if (window.namada) {
+            const namada = window.namada;
+            await namada.connect(chainId);
+
+            const offlineSigner = namada.getSigner(chainId);
+            const accounts = await offlineSigner.accounts();
+            cb(null, accounts);
+        } else {
+            return null;
+        }
+    })();
+};
+
+export const sentTransaction = (tx, txs, type, cb) => {
+    (async () => {
+        const isExtensionInstalled = typeof window.namada === 'object';
+        if (!isExtensionInstalled || !window.namada) {
+            const error = 'Download the Namada Extension';
+            cb(error);
+        }
+
+        // if (window.namada) {
+        //     await initShared();
+        //
+        //     const sdk = new Sdk(config.RPC_URL);
+        //     console.log('1', sdk);
+        //     sdk.build_transfer(tx, ['tnam1qxvg64psvhwumv3mwrrjfcz0h3t3274hwggyzcee'])
+        //         .then((result) => {
+        //             console.log('11111', result);
+        //             cb(null, result);
+        //         })
+        //         .catch((error) => {
+        //             console.log('4444', error);
+        //             const message = 'success';
+        //             if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+        //                 cb(null, message);
+        //             } else {
+        //                 cb(error && error.message);
+        //             }
+        //         });
+        // } else {
+        //     return null;
+        // }
+
+        if (window.namada) {
+            const namada = window.namada;
+            const client = namada && namada.getSigner();
+
+            console.log('000', client, tx, txs, type);
+            await client.submitTransfer(tx, txs, type)
+                .then(() => {
+                    console.log('Transaction was approved by user and submitted via the SDK');
+                    // console.log('11111', result);
+                    // cb(null, result);
+                })
+                .catch((error) => {
+                    console.error(`Transaction was rejected: ${error}`);
+                    // console.log('4444', error);
+                    // const message = 'success';
+                    // if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                    //     cb(null, message);
+                    // } else {
+                    //     cb(error && error.message);
+                    // }
+                });
+        } else {
+            return null;
+        }
+    })();
+};
+
+export const delegateTransaction = (tx, txs, type, cb) => {
+    (async () => {
+        const isExtensionInstalled = typeof window.namada === 'object';
+        if (!isExtensionInstalled || !window.namada) {
+            const error = 'Download the Namada Extension';
+            cb(error);
+        }
+
+        // if (window.namada) {
+        //     await initShared();
+        //
+        //     const sdk = new Sdk(config.RPC_URL);
+        //     console.log('1', sdk);
+        //     const bondMsgValue = new SubmitBondMsgValue({
+        //         source: tx.source,
+        //         validator: tx.validator,
+        //         amount: tx.amount,
+        //         nativeToken: tx.nativeToken,
+        //     });
+        //
+        //     // const params = ApprovalsService.getParamsBond(
+        //     //     new Uint8Array([]),
+        //     //     txs,
+        //     // );
+        //
+        //     // const bond = sdk.encode(bondMsgValue);
+        //     // console.log('3333', bondMsgValue, bond);
+        //     sdk.build_bond(bondMsgValue, new Uint8Array([]))
+        //         .then((result) => {
+        //             console.log('11111', result);
+        //             cb(null, result);
+        //         })
+        //         .catch((error) => {
+        //             console.log('4444', error);
+        //             const message = 'success';
+        //             if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+        //                 cb(null, message);
+        //             } else {
+        //                 cb(error && error.message);
+        //             }
+        //         });
+        // } else {
+        //     return null;
+        // }
+
+        if (window.namada) {
+            const namada = window.namada;
+            const client = namada.getSigner();
+
+            console.log('000', client, tx, txs, type);
+            client.submitBond(tx, txs, type).then((result) => {
+                console.log('Transaction was approved by user and submitted via the SDK');
+                // console.log('11111', result);
+                // cb(null, result);
+            }).catch((error) => {
+                console.error(`Transaction was rejected: ${error}`);
+                // console.log('4444', error);
+                // const message = 'success';
+                // if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                //     cb(null, message);
+                // } else {
+                //     cb(error && error.message);
+                // }
+            });
+        } else {
+            return null;
+        }
     })();
 };

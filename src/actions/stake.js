@@ -2,12 +2,12 @@ import {
     APR_FETCH_ERROR,
     APR_FETCH_IN_PROGRESS,
     APR_FETCH_SUCCESS,
+    CLAIM_DELEGATE_DIALOG_HIDE,
+    CLAIM_DELEGATE_DIALOG_SHOW,
+    CLAIM_DELEGATE_VALIDATOR_SET,
     CLAIM_REWARDS_DIALOG_HIDE,
     CLAIM_REWARDS_DIALOG_SHOW,
     CLAIM_REWARDS_VALIDATOR_SET,
-    CLAIM_DELEGATE_DIALOG_SHOW,
-    CLAIM_DELEGATE_DIALOG_HIDE,
-    CLAIM_DELEGATE_VALIDATOR_SET,
     DELEGATE_DIALOG_HIDE,
     DELEGATE_DIALOG_SHOW,
     DELEGATE_FAILED_DIALOG_HIDE,
@@ -19,10 +19,14 @@ import {
     DELEGATED_VALIDATORS_FETCH_ERROR,
     DELEGATED_VALIDATORS_FETCH_IN_PROGRESS,
     DELEGATED_VALIDATORS_FETCH_SUCCESS,
+    GENESIS_VALIDATORS_FETCH_ERROR,
+    GENESIS_VALIDATORS_FETCH_IN_PROGRESS,
+    GENESIS_VALIDATORS_FETCH_SUCCESS,
     INACTIVE_VALIDATORS_FETCH_ERROR,
     INACTIVE_VALIDATORS_FETCH_IN_PROGRESS,
     INACTIVE_VALIDATORS_FETCH_SUCCESS,
     SEARCH_LIST_SET,
+    SELECTED_MULTI_VALIDATORS,
     TO_VALIDATOR_SET,
     TOKENS_SET,
     VALIDATOR_FETCH_ERROR,
@@ -35,19 +39,20 @@ import {
     VALIDATORS_FETCH_ERROR,
     VALIDATORS_FETCH_IN_PROGRESS,
     VALIDATORS_FETCH_SUCCESS,
-    SELECTED_MULTI_VALIDATORS,
 } from '../constants/stake';
 import Axios from 'axios';
 import {
+    GENESIS_VALIDATORS_LIST_URL,
     getDelegatedValidatorsURL,
     getValidatorURL,
     INACTIVE_VALIDATORS_UNBONDING_URL,
     INACTIVE_VALIDATORS_URL,
-    validatorImageURL,
-    VALIDATORS_LIST_URL,
+    validatorImageURL, VALIDATORS_LIST_URL,
 } from '../constants/url';
 import { config } from '../config';
 import { calculateNominalAPR, calculateRealAPR, getBlocksPerYearReal, getParams } from '../utils/aprCalculation';
+// import { Query, Sdk } from '@namada/shared';
+// import { init as initShared } from '@namada/shared/dist/init-inline';
 
 const axios = require('axios').default;
 
@@ -57,10 +62,12 @@ const fetchValidatorsInProgress = () => {
     };
 };
 
-const fetchValidatorsSuccess = (list) => {
+const fetchValidatorsSuccess = (list, total, page) => {
     return {
         type: VALIDATORS_FETCH_SUCCESS,
         list,
+        total,
+        page,
     };
 };
 
@@ -71,16 +78,16 @@ const fetchValidatorsError = (message) => {
     };
 };
 
-export const getValidators = (cb) => (dispatch) => {
+export const getValidators = (page, cb) => (dispatch) => {
     dispatch(fetchValidatorsInProgress());
-    Axios.get(VALIDATORS_LIST_URL, {
+    Axios.get(VALIDATORS_LIST_URL(page), {
         headers: {
             Accept: 'application/json, text/plain, */*',
         },
     })
         .then((res) => {
-            dispatch(fetchValidatorsSuccess(res.data && res.data.validators));
-            cb(res.data && res.data.validators);
+            dispatch(fetchValidatorsSuccess(res.data && res.data.result && res.data.result.validators, res.data && res.data.result && res.data.result.total, page));
+            cb(res.data && res.data.result && res.data.result.validators, res.data && res.data.result && res.data.result.total, page, res.data && res.data.result && res.data.result.count);
         })
         .catch((error) => {
             dispatch(fetchValidatorsError(
@@ -91,6 +98,79 @@ export const getValidators = (cb) => (dispatch) => {
                     : 'Failed!',
             ));
             cb(null);
+        });
+
+    // (async () => {
+    //     console.log('888');
+    //     await initShared();
+    //
+    //     console.log('0');
+    //     const query = new Query(config.RPC_URL);
+    //     console.log('1', query);
+    //     query.query_balance('tnam1qptfnvqmzht2kvcd839g3zk68qags8jutyss5vu6', ['tnam1qxvg64psvhwumv3mwrrjfcz0h3t3274hwggyzcee'])
+    //         .then((res) => {
+    //             console.log('2', res);
+    //             // dispatch(fetchValidatorsSuccess(res.data && res.data.validators));
+    //             // cb(res.data && res.data.validators);
+    //         })
+    //         .catch((error) => {
+    //             console.log('3', error);
+    //             dispatch(fetchValidatorsError(
+    //                 error.response &&
+    //                 error.response.data &&
+    //                 error.response.data.message
+    //                     ? error.response.data.message
+    //                     : 'Failed!',
+    //             ));
+    //             cb(null);
+    //         });
+    // })();
+};
+
+const fetchGenesisValidatorsInProgress = () => {
+    return {
+        type: GENESIS_VALIDATORS_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchGenesisValidatorsSuccess = (list) => {
+    return {
+        type: GENESIS_VALIDATORS_FETCH_SUCCESS,
+        list,
+    };
+};
+
+const fetchGenesisValidatorsError = (message) => {
+    return {
+        type: GENESIS_VALIDATORS_FETCH_ERROR,
+        message,
+    };
+};
+
+export const fetchGenesisValidators = (cb) => (dispatch) => {
+    dispatch(fetchGenesisValidatorsInProgress());
+    Axios.get(GENESIS_VALIDATORS_LIST_URL, {
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+        },
+    })
+        .then((res) => {
+            dispatch(fetchGenesisValidatorsSuccess(res.data));
+            if (cb) {
+                cb(res.data);
+            }
+        })
+        .catch((error) => {
+            dispatch(fetchGenesisValidatorsError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+            if (cb) {
+                cb(null);
+            }
         });
 };
 

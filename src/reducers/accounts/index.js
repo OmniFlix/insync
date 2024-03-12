@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import {
     ACCOUNT_ADDRESS_SET,
+    ACCOUNT_DETAILS_SET,
     BALANCE_FETCH_ERROR,
     BALANCE_FETCH_IN_PROGRESS,
     BALANCE_FETCH_SUCCESS,
@@ -24,12 +25,18 @@ import {
 
 const address = (state = {
     value: '',
+    details: {},
 }, action) => {
     switch (action.type) {
     case ACCOUNT_ADDRESS_SET:
         return {
             ...state,
             value: action.value,
+        };
+    case ACCOUNT_DETAILS_SET:
+        return {
+            ...state,
+            details: action.value,
         };
     case DISCONNECT_SET:
         return {

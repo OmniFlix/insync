@@ -10,7 +10,6 @@ import DelegateButton from './DelegateButton';
 import { formatCount } from '../../utils/numberFormats';
 import ValidatorName from './ValidatorName';
 import { config } from '../../config';
-import classNames from 'classnames';
 import { Button } from '@material-ui/core';
 import { showConnectDialog } from '../../actions/navBar';
 
@@ -24,8 +23,8 @@ class Table extends Component {
             selectableRows: 'none',
             selectToolbarPlacement: 'none',
             sortOrder: {
-                name: 'validator',
-                direction: 'asc',
+                name: 'voting_power',
+                direction: 'desc',
             },
             textLabels: {
                 body: {
@@ -58,28 +57,30 @@ class Table extends Component {
                         value={index.rowData && index.rowData.length && index.rowData[1]}/>
                 ),
             },
-        }, {
-            name: 'status',
-            label: 'Status',
-            options: {
-                sort: false,
-                customBodyRender: (value) => (
-                    <div
-                        className={classNames('status', (value.jailed || value.status === 'BOND_STATUS_UNBONDED') ? 'red_status' : '')}
-                        title={value.status === 'BOND_STATUS_UNBONDED' ? 'jailed'
-                            : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
-                                : value.status === 'BOND_STATUS_BONDED' ? 'active'
-                                    : value.status === 'BOND_STATUS_UNSPECIFIED' ? 'invalid'
-                                        : ''}>
-                        {value.status === 'BOND_STATUS_UNBONDED' ? 'jailed'
-                            : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
-                                : value.status === 'BOND_STATUS_BONDED' ? 'active'
-                                    : value.status === 'BOND_STATUS_UNSPECIFIED' ? 'invalid'
-                                        : ''}
-                    </div>
-                ),
-            },
-        }, {
+        },
+        //         {
+        //     name: 'status',
+        //     label: 'Status',
+        //     options: {
+        //         sort: false,
+        //         customBodyRender: (value) => (
+        //             <div
+        //                 className={classNames('status', (value.jailed || value.status === 'BOND_STATUS_UNBONDED') ? 'red_status' : '')}
+        //                 title={value.status === 'BOND_STATUS_UNBONDED' ? 'jailed'
+        //                     : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
+        //                         : value.status === 'BOND_STATUS_BONDED' ? 'active'
+        //                             : value.status === 'BOND_STATUS_UNSPECIFIED' ? 'invalid'
+        //                                 : ''}>
+        //                 {value.status === 'BOND_STATUS_UNBONDED' ? 'jailed'
+        //                     : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
+        //                         : value.status === 'BOND_STATUS_BONDED' ? 'active'
+        //                             : value.status === 'BOND_STATUS_UNSPECIFIED' ? 'invalid'
+        //                                 : ''}
+        //             </div>
+        //         ),
+        //     },
+        // },
+        {
             name: 'voting_power',
             label: 'Voting Power',
             options: {
@@ -90,27 +91,30 @@ class Table extends Component {
                     </div>
                 ),
             },
-        }, {
-            name: 'apr',
-            label: 'APR %',
-            options: {
-                sort: true,
-                customBodyRender: (value) => {
-                    let apr = Number(this.props.actualAPR) * Number(value);
-                    apr = Number(this.props.actualAPR) - apr;
-                    return apr ? apr.toFixed(2) + ' %' : '--';
-                },
-            },
-        }, {
-            name: 'commission',
-            label: 'Commission',
-            options: {
-                sort: true,
-                customBodyRender: (value) => (
-                    value ? value + '%' : '0%'
-                ),
-            },
-        }, {
+        },
+        //         {
+        //     name: 'apr',
+        //     label: 'APR %',
+        //     options: {
+        //         sort: true,
+        //         customBodyRender: (value) => {
+        //             let apr = Number(this.props.actualAPR) * Number(value);
+        //             apr = Number(this.props.actualAPR) - apr;
+        //             return apr ? apr.toFixed(2) + ' %' : '--';
+        //         },
+        //     },
+        // },
+        //         {
+        //     name: 'commission',
+        //     label: 'Commission',
+        //     options: {
+        //         sort: true,
+        //         customBodyRender: (value) => (
+        //             value ? value + '%' : '0%'
+        //         ),
+        //     },
+        // },
+        {
             name: 'tokens_staked',
             label: 'Tokens Staked',
             options: {
@@ -132,20 +136,28 @@ class Table extends Component {
             label: 'Action',
             options: {
                 sort: false,
-                customBodyRender: (validatorAddress) => (
-                    this.props.delegations.find((item) =>
-                        (item.delegation && item.delegation.validator_address) === validatorAddress)
-                        ? <div className="actions">
-                            <ReDelegateButton valAddress={validatorAddress}/>
-                            <span/>
-                            <UnDelegateButton valAddress={validatorAddress}/>
-                            <span/>
-                            <DelegateButton valAddress={validatorAddress}/>
-                        </div>
-                        : <div className="actions">
-                            <DelegateButton valAddress={validatorAddress}/>
-                        </div>
-                ),
+                customBodyRender: (validatorAddress) => {
+                    let value = null;
+                    if (this.props.genesisValidatorList && this.props.genesisValidatorList[validatorAddress]) {
+                        value = this.props.genesisValidatorList[validatorAddress];
+                    }
+
+                    return (
+                        this.props.delegations.find((item) =>
+                            (item.delegation && item.delegation.validator_address) === validatorAddress)
+                            ? <div className="actions">
+                                <ReDelegateButton valAddress={validatorAddress}/>
+                                <span/>
+                                <UnDelegateButton valAddress={validatorAddress}/>
+                                <span/>
+                                <DelegateButton valAddress={validatorAddress}/>
+                            </div>
+                            : value && value.nam_address
+                                ? <div className="actions">
+                                    <DelegateButton valAddress={validatorAddress}/>
+                                </div> : null
+                    );
+                },
             },
         }]
         ;
@@ -159,16 +171,18 @@ class Table extends Component {
         const tableData = dataToMap && dataToMap.length
             ? dataToMap.map((item) =>
                 [
-                    item.description && item.description.moniker,
+                    // item.description && item.description.moniker,
+                    item.address,
+                    // item,
+                    // parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
+                    parseFloat((Number(item.voting_power) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
+                    // item.commission && item.commission.commission_rates &&
+                    // item.commission.commission_rates.rate,
+                    // item.commission && item.commission.commission_rates &&
+                    // item.commission.commission_rates.rate
+                    //     ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,
                     item,
-                    parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
-                    item.commission && item.commission.commission_rates &&
-                    item.commission.commission_rates.rate,
-                    item.commission && item.commission.commission_rates &&
-                    item.commission.commission_rates.rate
-                        ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,
-                    item,
-                    item.operator_address,
+                    item.address,
                 ])
             : [];
 
@@ -186,6 +200,7 @@ class Table extends Component {
 
 Table.propTypes = {
     active: PropTypes.number.isRequired,
+    genesisValidatorList: PropTypes.object.isRequired,
     inProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
@@ -257,6 +272,7 @@ const stateToProps = (state) => {
         address: state.accounts.address.value,
         lang: state.language,
         validatorList: state.stake.validators.list,
+        genesisValidatorList: state.stake.genesisValidators.list,
         inProgress: state.stake.validators.inProgress,
         delegations: state.accounts.delegations.result,
         delegatedValidatorList: state.stake.delegatedValidators.list,

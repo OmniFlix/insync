@@ -9,7 +9,7 @@ import DelegateDialog from './DelegateDialog';
 import SuccessDialog from './DelegateDialog/SuccessDialog';
 import UnSuccessDialog from './DelegateDialog/UnSuccessDialog';
 import PendingDialog from './DelegateDialog/PendingDialog';
-import MultiDelegateButton from './MultiDelegateButton';
+// import MultiDelegateButton from './MultiDelegateButton';
 
 const Stake = (props) => {
     const [active, setActive] = useState(1);
@@ -36,14 +36,14 @@ const Stake = (props) => {
                                 : null}
                         </p>
                         <span/>
-                        <p className={active === 3 ? 'active' : ''} onClick={() => handleChange(3)}>
-                            {variables[props.lang]['inactive_validators']}
-                            {props.inActiveValidators &&
-                            props.inActiveValidators.length
-                                ? ' (' + props.inActiveValidators.length + ')'
-                                : null}
-                        </p>
-                        <span/>
+                        {/* <p className={active === 3 ? 'active' : ''} onClick={() => handleChange(3)}> */}
+                        {/*     {variables[props.lang]['inactive_validators']} */}
+                        {/*     {props.inActiveValidators && */}
+                        {/*     props.inActiveValidators.length */}
+                        {/*         ? ' (' + props.inActiveValidators.length + ')' */}
+                        {/*         : null} */}
+                        {/* </p> */}
+                        {/* <span/> */}
                         <p className={active === 2 ? 'active' : ''} onClick={() => handleChange(2)}>
                             {variables[props.lang]['staked_validators']}
                             {props.delegatedValidatorList &&
@@ -51,10 +51,10 @@ const Stake = (props) => {
                                 ? ' (' + props.delegatedValidatorList.length + ')'
                                 : null}
                         </p>
-                        <span/>
-                        <MultiDelegateButton/>
+                        {/* <span/> */}
+                        {/* <MultiDelegateButton/> */}
                     </div>
-                    <p>Unbonding Period: 21 Days</p>
+                    {/* <p>Unbonding Period: 21 Days</p> */}
                 </div>
                 <Table active={active}/>
             </div>
