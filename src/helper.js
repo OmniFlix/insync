@@ -5,9 +5,13 @@ import { cosmos, InstallError } from '@cosmostation/extension-client';
 import { getOfflineSigner } from '@cosmostation/cosmos-client';
 // import { Sdk } from '@namada/shared';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
-// import { AccountType, TransferProps, TxProps } from "@namada/types";
+// // import { AccountType, TransferProps, TxProps } from "@namada/types";
 // import {
-//     SubmitBondMsgValue,
+//     // SubmitBondMsgValue,
+//     Message,
+//     // TransferMsgSchema,
+//     TransferMsgValue,
+//     TxMsgValue,
 // } from '@namada/types';
 
 const chainId = config.CHAIN_ID;
@@ -199,7 +203,7 @@ export const initializeNamadaChain = (cb) => {
     })();
 };
 
-export const sentTransaction = (tx, txs, type, cb) => {
+export const sentTransaction = (tx, txs, address, type, cb) => {
     (async () => {
         const isExtensionInstalled = typeof window.namada === 'object';
         if (!isExtensionInstalled || !window.namada) {
@@ -210,9 +214,28 @@ export const sentTransaction = (tx, txs, type, cb) => {
         // if (window.namada) {
         //     await initShared();
         //
+        //     const transferMsgValue = new TransferMsgValue({
+        //         source: tx.source,
+        //         target: tx.target,
+        //         token: tx.token,
+        //         amount: tx.amount,
+        //         nativeToken: tx.nativeToken,
+        //     });
+        //
+        //     const txMessageValue = new TxMsgValue({
+        //         token: txs.token,
+        //         feeAmount: txs.feeAmount,
+        //         gasLimit: txs.gasLimit,
+        //         chainId: txs.chainId,
+        //     });
+        //
         //     const sdk = new Sdk(config.RPC_URL);
-        //     console.log('1', sdk);
-        //     sdk.build_transfer(tx, ['tnam1qxvg64psvhwumv3mwrrjfcz0h3t3274hwggyzcee'])
+        //     const message = new Message();
+        //     const txEncode = message.encode(transferMsgValue);
+        //     // console.log('111', txEncode, tx, txs, address);
+        //     const txsEncode = message.encode(txMessageValue);
+        //     // console.log('55555', txEncode, message, txsEncode);
+        //     sdk.build_transfer(txEncode, txsEncode, address, address)
         //         .then((result) => {
         //             console.log('11111', result);
         //             cb(null, result);
