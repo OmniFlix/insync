@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
 // import MultiDelegateButton from '../Stake/MultiDelegateButton';
 import withRouter from '../../components/WithRouter';
-import SendButton from './SendButton';
+// import SendButton from './SendButton';
 
 class Home extends Component {
     constructor (props) {
@@ -87,7 +87,7 @@ class Home extends Component {
                             <p className="info">{variables[this.props.lang].participate}</p>
                         </div>
                         <TokenDetails lang={this.props.lang}/>
-                        <SendButton/>
+                        {/* <SendButton/> */}
                     </div>
                 </div>
                 <div className="stake">

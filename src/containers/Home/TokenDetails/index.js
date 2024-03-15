@@ -9,7 +9,7 @@ import rewardsIcon from '../../../assets/userDetails/rewards.svg';
 import { connect } from 'react-redux';
 import StakeTokensButton from './StakeTokensButton';
 import UnDelegateButton from './UnDelegateButton';
-import ReDelegateButton from './ReDelegateButton';
+// import ReDelegateButton from './ReDelegateButton';
 import ClaimButton from './ClaimButton';
 // import Compound from './Compound';
 import { config } from '../../../config';
@@ -71,8 +71,8 @@ const TokenDetails = (props) => {
                 </div>
                 <div className="buttons_div">
                     <UnDelegateButton/>
-                    <span/>
-                    <ReDelegateButton/>
+                    {/* <span/> */}
+                    {/* <ReDelegateButton/> */}
                 </div>
             </div>
             <div className="chip_info">

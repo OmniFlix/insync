@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../../assets/OmniFlix.svg';
+import logo from '../../assets/logo.png';
 import './index.css';
 import DisconnectButton from './DisconnectButton';
 import Tabs from './Tabs';
@@ -394,7 +394,7 @@ class NavBar extends Component {
                     alt="OmniFlix"
                     src={logo}
                     style={{ cursor: 'pointer' }}
-                    onClick={() => window.open('https://omniflix.co', '_self')}/>
+                    onClick={() => window.open('https://namada-insync.cosmicvalidator.com', '_self')}/>
                 <ExpansionButton/>
                 <div className={ClassNames('right_content', this.props.show ? 'show' : '')}>
                     <div className="back_button" onClick={this.props.handleClose}>

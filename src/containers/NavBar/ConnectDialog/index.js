@@ -7,7 +7,7 @@ import '../../Stake/DelegateDialog/index.css';
 import { hideConnectDialog } from '../../../actions/navBar';
 import NamadaConnectButton from './NamadaConnectButton';
 import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
-import insync from '../../../assets/insync.png';
+// import insync from '../../../assets/insync.png';
 import './index.css';
 
 const LightTooltip = withStyles((theme) => ({
@@ -29,7 +29,7 @@ const ConnectDialog = (props) => {
             onClose={props.handleClose}>
             <DialogContent className="content">
                 <h2 className="heading">
-                    <img alt="insync" src={insync}/>
+                    {/* <img alt="insync" src={insync}/> */}
                     supported wallets
                 </h2>
                 <div className="connect_wallets">
