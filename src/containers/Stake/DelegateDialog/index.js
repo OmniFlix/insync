@@ -84,7 +84,6 @@ const DelegateDialog = (props) => {
         //     return;
         // }
 
-        console.log('555555', tx, txs, props.details, props.validator, value);
         delegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
     };
 
@@ -132,31 +131,78 @@ const DelegateDialog = (props) => {
         signTxAndBroadcast(updatedTx, props.address, handleFetch);
     };
 
-    const handleFetch = (error, result) => {
-        console.log('ddddd', error, result);
-        setInProgress(false);
-        if (error) {
-            if (error.indexOf('not yet found on the chain') > -1) {
-                props.pendingDialog();
-                return;
+    const handleFetch = () => {
+        let balance = null;
+        props.balance && props.balance.length && props.balance.map((val) => {
+            if (val && val.length) {
+                val.map((value) => {
+                    if (value === config.TOKEN_ADDRESS) {
+                        balance = val[1];
+                    }
+                });
             }
-            props.failedDialog();
-            props.showMessage(error);
-            return;
+
+            return null;
+        });
+
+        const available = balance;
+        const intervalTime = setInterval(() => {
+            props.getBalance(props.address, (result) => {
+                if (result && result.length) {
+                    let localBalance = null;
+                    result && result.length && result.map((val) => {
+                        if (val && val.length) {
+                            val.map((value) => {
+                                if (value === config.TOKEN_ADDRESS) {
+                                    localBalance = val[1];
+                                }
+                            });
+                        }
+
+                        return null;
+                    });
+
+                    if (localBalance !== available) {
+                        setInProgress(false);
+                        clearInterval(intervalTime);
+                        props.successDialog(null);
+                        updateBalance();
+                    }
+                }
+            });
+        }, 2000);
+
+        if (intervalTime) {
+            setTimeout(() => {
+                setInProgress(false);
+                clearInterval(intervalTime);
+            }, 60000);
         }
-        if (result) {
-            props.successDialog(result.transactionHash);
-            updateBalance();
-        }
+
+        // if (error) {
+        //     if (error.indexOf('not yet found on the chain') > -1) {
+        //         props.pendingDialog();
+        //         return;
+        //     }
+        //     props.failedDialog();
+        //     props.showMessage(error);
+        //     return;
+        // }
+        // if (result) {
+        //     props.successDialog(result.transactionHash);
+        //     updateBalance();
+        // }
     };
 
     const updateBalance = () => {
-        props.getBalance(props.address);
-        props.fetchVestingBalance(props.address);
-        props.getDelegations(props.address);
-        props.getUnBondingDelegations(props.address);
-        props.getDelegatedValidatorsDetails(props.address);
-        props.fetchRewards(props.address);
+        setTimeout(() => {
+            props.getBalance(props.address);
+        }, 4000);
+        // props.fetchVestingBalance(props.address);
+        // props.getDelegations(props.address);
+        // props.getUnBondingDelegations(props.address);
+        // props.getDelegatedValidatorsDetails(props.address);
+        // props.fetchRewards(props.address);
     };
 
     // const getValueObject = (type) => {
@@ -190,8 +236,20 @@ const DelegateDialog = (props) => {
     let staked = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
         return accumulator + Number(currentValue.balance.amount);
     }, 0);
-    const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-    const available = (balance && balance.amount && Number(balance.amount));
+    let balance = null;
+    props.balance && props.balance.length && props.balance.map((val) => {
+        if (val && val.length) {
+            val.map((value) => {
+                if (value === config.TOKEN_ADDRESS) {
+                    balance = val[1];
+                }
+            });
+        }
+
+        return null;
+    });
+
+    const available = balance;
 
     const vesting = props.vestingBalance && props.vestingBalance.value && props.vestingBalance.value['base_vesting_account'] &&
         props.vestingBalance.value['base_vesting_account']['original_vesting'] &&
@@ -216,11 +274,11 @@ const DelegateDialog = (props) => {
 
     const disable = !props.validator || !props.amount || inProgress ||
         ((props.name === 'Delegate' || props.name === 'Stake' || props.name === 'Multi-Delegate') && vestingTokens
-            ? props.amount > parseFloat((available + vestingTokens) / (10 ** config.COIN_DECIMALS))
+            ? props.amount > parseFloat((available + vestingTokens))
             : props.name === 'Delegate' || props.name === 'Stake' || props.name === 'Multi-Delegate'
-                ? props.amount > parseFloat(available / (10 ** config.COIN_DECIMALS))
+                ? props.amount > parseFloat(available)
                 : props.name === 'Undelegate' || props.name === 'Redelegate'
-                    ? props.amount > parseFloat(staked / (10 ** config.COIN_DECIMALS)) : false);
+                    ? props.amount > parseFloat(staked) : false);
 
     return (
         <Dialog

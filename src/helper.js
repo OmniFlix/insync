@@ -330,19 +330,19 @@ export const delegateTransaction = (tx, txs, type, cb) => {
             const client = namada.getSigner();
 
             console.log('000', client, tx, txs, type);
-            client.submitBond(tx, txs, type).then((result) => {
+            client.submitBond(tx, txs, type).then(() => {
                 console.log('Transaction was approved by user and submitted via the SDK');
                 // console.log('11111', result);
-                // cb(null, result);
+                cb(null, true);
             }).catch((error) => {
                 console.error(`Transaction was rejected: ${error}`);
                 // console.log('4444', error);
-                // const message = 'success';
-                // if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                //     cb(null, message);
-                // } else {
-                //     cb(error && error.message);
-                // }
+                const message = 'success';
+                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                    cb(null, message);
+                } else {
+                    cb(error && error.message);
+                }
             });
         } else {
             return null;

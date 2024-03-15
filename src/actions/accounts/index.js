@@ -108,7 +108,7 @@ const fetchBalanceError = (message) => {
     };
 };
 
-export const getBalance = (address) => (dispatch) => {
+export const getBalance = (address, cb) => (dispatch) => {
     dispatch(fetchBalanceInProgress());
     (async () => {
         await initShared();
@@ -128,6 +128,9 @@ export const getBalance = (address) => (dispatch) => {
         query.query_balance(address, array)
             .then((res) => {
                 dispatch(fetchBalanceSuccess(res));
+                if (cb) {
+                    cb(res);
+                }
             })
             .catch((error) => {
                 dispatch(fetchBalanceError(
@@ -137,6 +140,9 @@ export const getBalance = (address) => (dispatch) => {
                         ? error.response.data.message
                         : 'Failed!',
                 ));
+                if (cb) {
+                    cb(null);
+                }
             });
     })();
 };
