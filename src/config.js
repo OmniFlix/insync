@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-fetchhub-ia.cosmosia.notional.ventures',
-    REST_URL: 'https://api-fetchhub-ia.cosmosia.notional.ventures',
+    RPC_URL: 'https://rpc-fetchhub.fetch.ai',
+    REST_URL: 'https://rest-fetchhub.fetch.ai',
     EXPLORER_URL: 'https://explore-fetchhub.fetch.ai',
     STAKING_URL: 'https://fetch.omniflix.co/stake',
     NETWORK_NAME: 'Fetch',
