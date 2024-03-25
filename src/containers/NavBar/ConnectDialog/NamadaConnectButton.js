@@ -40,9 +40,9 @@ const KeplrConnectButton = (props) => {
             //     props.getUnBondingDelegations(addressList[0] && addressList[0].address);
             //     props.fetchRewards(addressList[0] && addressList[0].address);
             // }
-            // if (!props.proposalTab) {
-            //     props.getDelegations(addressList[0] && addressList[0].address);
-            // }
+            if (!props.proposalTab) {
+                props.getDelegations(addressList[0] && addressList[0].address);
+            }
             props.getBalance(addressList[0] && addressList[0].address);
             // props.fetchVestingBalance(addressList[0] && addressList[0].address);
             // if (!props.proposalTab) {

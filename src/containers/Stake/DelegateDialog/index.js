@@ -15,7 +15,7 @@ import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
 import ToValidatorSelectField from './ToValidatorSelectField';
 import MultiValidatorSelectField from './MultiValidatorSelectField';
-import { cosmoStationSign, delegateTransaction, signTxAndBroadcast } from '../../../helper';
+import { cosmoStationSign, delegateTransaction, signTxAndBroadcast, unDelegateTransaction } from '../../../helper';
 import {
     fetchRewards,
     fetchVestingBalance,
@@ -68,8 +68,11 @@ const DelegateDialog = (props) => {
             source: props.address,
             validator: value && value.nam_address,
             amount: new BigNumber(props.amount),
-            nativeToken: 'NAAN',
         };
+
+        if (props.name === 'Delegate' || props.name === 'Stake') {
+            tx.nativeToken = 'NAAN';
+        }
 
         const txs = {
             token: config.TOKEN_ADDRESS,
@@ -84,7 +87,11 @@ const DelegateDialog = (props) => {
         //     return;
         // }
 
-        delegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
+        if (props.name === 'Undelegate') {
+            unDelegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
+        } else {
+            delegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
+        }
     };
 
     const handleMultiDelegate = () => {
@@ -199,7 +206,7 @@ const DelegateDialog = (props) => {
             props.getBalance(props.address);
         }, 4000);
         // props.fetchVestingBalance(props.address);
-        // props.getDelegations(props.address);
+        props.getDelegations(props.address);
         // props.getUnBondingDelegations(props.address);
         // props.getDelegatedValidatorsDetails(props.address);
         // props.fetchRewards(props.address);
@@ -234,7 +241,9 @@ const DelegateDialog = (props) => {
     // };
 
     let staked = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
-        return accumulator + Number(currentValue.balance.amount);
+        if (currentValue && currentValue.length && currentValue[2]) {
+            return accumulator + Number(currentValue[2]);
+        }
     }, 0);
     let balance = null;
     props.balance && props.balance.length && props.balance.map((val) => {
@@ -325,6 +334,8 @@ const DelegateDialog = (props) => {
 };
 
 DelegateDialog.propTypes = {
+    balance: PropTypes.array.isRequired,
+    delegations: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
@@ -345,21 +356,6 @@ DelegateDialog.propTypes = {
     vestingBalance: PropTypes.object.isRequired,
     address: PropTypes.string,
     amount: PropTypes.any,
-    balance: PropTypes.arrayOf(
-        PropTypes.shape({
-            amount: PropTypes.any,
-            denom: PropTypes.string,
-        }),
-    ),
-    delegations: PropTypes.arrayOf(
-        PropTypes.shape({
-            validator_address: PropTypes.string,
-            balance: PropTypes.shape({
-                amount: PropTypes.any,
-                denom: PropTypes.string,
-            }),
-        }),
-    ),
     toValidator: PropTypes.string,
     validator: PropTypes.string,
 };

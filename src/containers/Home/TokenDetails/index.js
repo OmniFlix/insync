@@ -4,20 +4,22 @@ import * as PropTypes from 'prop-types';
 import variables from '../../../utils/variables';
 import totalTokens from '../../../assets/userDetails/totalTokens.png';
 import stakedTokens from '../../../assets/userDetails/stakedTokens.png';
-import unStake from '../../../assets/userDetails/unstake.png';
-import rewardsIcon from '../../../assets/userDetails/rewards.svg';
+// import unStake from '../../../assets/userDetails/unstake.png';
+// import rewardsIcon from '../../../assets/userDetails/rewards.svg';
 import { connect } from 'react-redux';
 import StakeTokensButton from './StakeTokensButton';
 import UnDelegateButton from './UnDelegateButton';
 // import ReDelegateButton from './ReDelegateButton';
-import ClaimButton from './ClaimButton';
+// import ClaimButton from './ClaimButton';
 // import Compound from './Compound';
 import { config } from '../../../config';
 // import { gas } from '../../../defaultGasValues';
 
 const TokenDetails = (props) => {
     const staked = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
-        return accumulator + Number(currentValue.balance.amount);
+        if (currentValue && currentValue.length && currentValue[2]) {
+            return accumulator + Number(currentValue[2]);
+        }
     }, 0);
     let balance = null;
     props.balance && props.balance.length && props.balance.map((val) => {
@@ -46,9 +48,9 @@ const TokenDetails = (props) => {
     });
 
     // const gasValue = (gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE;
-    let rewards = props.rewards && props.rewards.total && props.rewards.total.length &&
+    /* let rewards = props.rewards && props.rewards.total && props.rewards.total.length &&
         props.rewards.total.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-    rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
+    rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0; */
     // let tokens = props.rewards && props.rewards.total && props.rewards.total.length &&
     //     props.rewards.total.find((val) => val.amount > gasValue);
     // tokens = tokens && tokens.amount ? tokens.amount / 10 ** config.COIN_DECIMALS : 0;
@@ -75,31 +77,33 @@ const TokenDetails = (props) => {
                     {/* <ReDelegateButton/> */}
                 </div>
             </div>
-            <div className="chip_info">
-                <p>{variables[props.lang].rewards}</p>
-                <div className="chip">
-                    <img alt="total tokens" src={rewardsIcon}/>
-                    <p>{rewards > 0 ? rewards.toFixed(4) : 0}</p>
-                </div>
-                <div className="buttons_div">
-                    <ClaimButton disable={rewards <= 0}/>
-                    {/* <span/> */}
-                    {/* <Compound disable={tokens <= 0}/> */}
-                </div>
-            </div>
-            <div className="chip_info">
-                <p>{variables[props.lang]['un_staked_tokens']}</p>
-                <div className="chip">
-                    <img alt="unstaked tokens" src={unStake}/>
-                    <p>{unStaked}</p>
-                </div>
-            </div>
+            {/* <div className="chip_info"> */}
+            {/*     <p>{variables[props.lang].rewards}</p> */}
+            {/*     <div className="chip"> */}
+            {/*         <img alt="total tokens" src={rewardsIcon}/> */}
+            {/*         <p>{rewards > 0 ? rewards.toFixed(4) : 0}</p> */}
+            {/*     </div> */}
+            {/*     <div className="buttons_div"> */}
+            {/*         <ClaimButton disable={rewards <= 0}/> */}
+            {/*         /!* <span/> *!/ */}
+            {/*         /!* <Compound disable={tokens <= 0}/> *!/ */}
+            {/*     </div> */}
+            {/* </div> */}
+            {/* <div className="chip_info"> */}
+            {/*     <p>{variables[props.lang]['un_staked_tokens']}</p> */}
+            {/*     <div className="chip"> */}
+            {/*         <img alt="unstaked tokens" src={unStake}/> */}
+            {/*         <p>{unStaked}</p> */}
+            {/*     </div> */}
+            {/* </div> */}
         </div>
     );
 };
 
 TokenDetails.propTypes = {
+    balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
+    delegations: PropTypes.array.isRequired,
     delegationsInProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     rewards: PropTypes.shape({
@@ -108,21 +112,6 @@ TokenDetails.propTypes = {
     }).isRequired,
     rewardsInProgress: PropTypes.bool.isRequired,
     unBondingDelegationsInProgress: PropTypes.bool.isRequired,
-    balance: PropTypes.arrayOf(
-        PropTypes.shape({
-            amount: PropTypes.any,
-            denom: PropTypes.string,
-        }),
-    ),
-    delegations: PropTypes.arrayOf(
-        PropTypes.shape({
-            validator_address: PropTypes.string,
-            balance: PropTypes.shape({
-                amount: PropTypes.any,
-                denom: PropTypes.string,
-            }),
-        }),
-    ),
     unBondingDelegations: PropTypes.arrayOf(
         PropTypes.shape({
             entries: PropTypes.arrayOf(

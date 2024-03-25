@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '../../components/CircularProgress';
 import UnDelegateButton from '../Home/TokenDetails/UnDelegateButton';
-import ReDelegateButton from '../Home/TokenDetails/ReDelegateButton';
+// import ReDelegateButton from '../Home/TokenDetails/ReDelegateButton';
 import DelegateButton from './DelegateButton';
 import { formatCount } from '../../utils/numberFormats';
 import ValidatorName from './ValidatorName';
@@ -120,13 +120,20 @@ class Table extends Component {
             options: {
                 sort: false,
                 customBodyRender: (item) => {
-                    let value = this.props.delegations.find((val) =>
-                        (val.delegation && val.delegation.validator_address) === item.operator_address);
-                    value = value ? value.balance && value.balance.amount && value.balance.amount / 10 ** config.COIN_DECIMALS : null;
+                    let address = null;
+                    if (this.props.genesisValidatorList && this.props.genesisValidatorList[item.address]) {
+                        address = this.props.genesisValidatorList[item.address];
+                    }
+                    let value = null;
+                    address && address.nam_address && this.props.delegations.map((val) => {
+                        if (val && val.length && val[1] && (address.nam_address === val[1])) {
+                            value = val[2];
+                        }
+                    });
 
                     return (
                         <div className={value ? 'tokens' : 'no_tokens'}>
-                            {value || 'no tokens'}
+                            {Number(value) || 'no tokens'}
                         </div>
                     );
                 },
@@ -144,10 +151,10 @@ class Table extends Component {
 
                     return (
                         this.props.delegations.find((item) =>
-                            (item.delegation && item.delegation.validator_address) === validatorAddress)
+                            (item && item.length && item[1]) === value.nam_address)
                             ? <div className="actions">
-                                <ReDelegateButton valAddress={validatorAddress}/>
-                                <span/>
+                                {/* <ReDelegateButton valAddress={validatorAddress}/> */}
+                                {/* <span/> */}
                                 <UnDelegateButton valAddress={validatorAddress}/>
                                 <span/>
                                 <DelegateButton valAddress={validatorAddress}/>
@@ -159,14 +166,32 @@ class Table extends Component {
                     );
                 },
             },
-        }]
-        ;
+        }];
 
-        const dataToMap = this.props.active === 2
+        let dataToMap = this.props.active === 2
             ? this.props.delegatedValidatorList
             : this.props.active === 3
                 ? this.props.inActiveValidators
                 : this.props.validatorList;
+
+        if (this.props.active === 2) {
+            dataToMap = [];
+            this.props.validatorList && this.props.validatorList.length && this.props.validatorList.map((val) => {
+                if (val && val.address) {
+                    let address = null;
+                    if (this.props.genesisValidatorList && this.props.genesisValidatorList[val.address]) {
+                        address = this.props.genesisValidatorList[val.address];
+                    }
+                    this.props.delegations && this.props.delegations.length &&
+                    this.props.delegations.map((value) => {
+                        if (value && value.length && value[1] && address &&
+                            address.nam_address && (address.nam_address === value[1])) {
+                            dataToMap.push(val);
+                        }
+                    });
+                }
+            });
+        }
 
         const tableData = dataToMap && dataToMap.length
             ? dataToMap.map((item) =>

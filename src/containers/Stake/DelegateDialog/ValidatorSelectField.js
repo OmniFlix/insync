@@ -22,10 +22,24 @@ const ValidatorSelectField = (props) => {
     validatorList.push(...props.inActiveValidators);
 
     if (props.name === 'Undelegate' || props.name === 'Redelegate') {
-        validatorList = [...props.delegatedValidatorList];
+        validatorList = [];
+        props.validatorList && props.validatorList.length && props.validatorList.map((val) => {
+            if (val && val.address) {
+                let address = null;
+                if (props.genesisValidatorList && props.genesisValidatorList[val.address]) {
+                    address = props.genesisValidatorList[val.address];
+                }
+                props.delegations && props.delegations.length &&
+                props.delegations.map((value) => {
+                    if (value && value.length && value[1] && address &&
+                        address.nam_address && (address.nam_address === value[1])) {
+                        validatorList.push(val);
+                    }
+                });
+            }
+        });
     }
 
-    console.log('11111', props.dialogValidatorAddress, props.value);
     return (
         <SelectField
             id="validator_select_field"
@@ -104,6 +118,7 @@ ValidatorSelectField.propTypes = {
             }),
         }),
     ),
+    delegations: PropTypes.array,
     dialogValidatorAddress: PropTypes.string,
     inProgress: PropTypes.bool,
     validatorList: PropTypes.arrayOf(
@@ -130,6 +145,7 @@ const stateToProps = (state) => {
         delegatedValidatorList: state.stake.delegatedValidators.list,
         inActiveValidators: state.stake.inActiveValidators.list,
         genesisValidatorList: state.stake.genesisValidators.list,
+        delegations: state.accounts.delegations.result,
     };
 };
 

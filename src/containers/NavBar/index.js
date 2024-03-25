@@ -19,11 +19,13 @@ import {
     getBalance,
     getDelegations,
     getUnBondingDelegations,
-    setAccountAddress, setAccountDetails,
+    setAccountAddress,
+    setAccountDetails,
     showSelectAccountDialog,
 } from '../../actions/accounts';
 import {
-    fetchAPR, fetchGenesisValidators,
+    fetchAPR,
+    fetchGenesisValidators,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
     getDelegatedValidatorsDetails,
@@ -36,6 +38,8 @@ import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposal
 import { Button } from '@material-ui/core';
 import ConnectDialog from './ConnectDialog';
 import withRouter from '../../components/WithRouter';
+// import { init as initShared } from '@namada/shared/dist/init-inline';
+import { init as initShared } from '../../private_modules/namada/shared/init-inline';
 
 class NavBar extends Component {
     constructor (props) {
@@ -56,6 +60,9 @@ class NavBar extends Component {
     }
 
     componentDidMount () {
+        (async () => {
+            await initShared();
+        })();
         if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'cosmostation')) {
             setTimeout(() => {
                 this.handleCosmoStation(true);
@@ -297,10 +304,10 @@ class NavBar extends Component {
         //     !this.props.unBondingDelegationsInProgress && !this.props.proposalTab && !this.props.stake) {
         //     this.props.getUnBondingDelegations(address);
         // }
-        // if (this.props.delegations && !this.props.delegations.length &&
-        //     !this.props.delegationsInProgress && !this.props.proposalTab) {
-        //     this.props.getDelegations(address);
-        // }
+        if (this.props.delegations && !this.props.delegations.length &&
+            !this.props.delegationsInProgress && !this.props.proposalTab) {
+            this.props.getDelegations(address);
+        }
         // if (this.props.delegatedValidatorList && !this.props.delegatedValidatorList.length &&
         //     !this.props.delegatedValidatorListInProgress && !this.props.proposalTab) {
         //     this.props.getDelegatedValidatorsDetails(address);

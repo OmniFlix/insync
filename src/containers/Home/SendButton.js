@@ -26,8 +26,8 @@ const SendButton = (props) => {
 
         const txs = {
             token: config.TOKEN_ADDRESS,
-            feeAmount: new BigNumber(0.00100),
-            gasLimit: new BigNumber(10000),
+            feeAmount: new BigNumber(0.000100),
+            gasLimit: new BigNumber(30000),
             chainId: config.CHAIN_ID,
         };
 

@@ -329,7 +329,6 @@ export const delegateTransaction = (tx, txs, type, cb) => {
             const namada = window.namada;
             const client = namada.getSigner();
 
-            console.log('000', client, tx, txs, type);
             client.submitBond(tx, txs, type).then(() => {
                 console.log('Transaction was approved by user and submitted via the SDK');
                 // console.log('11111', result);
@@ -337,6 +336,36 @@ export const delegateTransaction = (tx, txs, type, cb) => {
             }).catch((error) => {
                 console.error(`Transaction was rejected: ${error}`);
                 // console.log('4444', error);
+                const message = 'success';
+                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                    cb(null, message);
+                } else {
+                    cb(error && error.message);
+                }
+            });
+        } else {
+            return null;
+        }
+    })();
+};
+
+export const unDelegateTransaction = (tx, txs, type, cb) => {
+    (async () => {
+        const isExtensionInstalled = typeof window.namada === 'object';
+        if (!isExtensionInstalled || !window.namada) {
+            const error = 'Download the Namada Extension';
+            cb(error);
+        }
+
+        if (window.namada) {
+            const namada = window.namada;
+            const client = namada.getSigner();
+
+            client.submitUnbond(tx, txs, type).then(() => {
+                console.log('Transaction was approved by user and submitted via the SDK');
+                cb(null, true);
+            }).catch((error) => {
+                console.error(`Transaction was rejected: ${error}`);
                 const message = 'success';
                 if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                     cb(null, message);

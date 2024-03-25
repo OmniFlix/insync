@@ -24,19 +24,23 @@ const TokensTextField = (props) => {
     // const available = (balance && balance.amount && Number(balance.amount));
     // const availableTokens = available / (10 ** config.COIN_DECIMALS);
     const availableTokens = balance;
-    const staked = props.delegations.reduce((accumulator, currentValue) => {
-        return accumulator + Number(currentValue.balance.amount);
+    let stakedTokens = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
+        if (currentValue && currentValue.length && currentValue[2]) {
+            return accumulator + Number(currentValue[2]);
+        }
     }, 0);
-    let stakedTokens = staked / (10 ** config.COIN_DECIMALS);
 
     if (props.selectedValidator && (props.name === 'Undelegate' || props.name === 'Redelegate')) {
-        const filterList = props.delegations.find((value) => value.delegation &&
-            (value.delegation.validator_address === props.selectedValidator));
+        let address = null;
+        if (props.genesisValidatorList && props.genesisValidatorList[props.selectedValidator]) {
+            address = props.genesisValidatorList[props.selectedValidator];
+        }
 
-        if (filterList && filterList.balance && filterList.balance.amount) {
-            const balance = filterList.balance.amount;
+        const filterList = props.delegations.find((value) => value && value.length && value[1] && address &&
+            address.nam_address && (address.nam_address === value[1]));
 
-            stakedTokens = balance / (10 ** config.COIN_DECIMALS);
+        if (filterList && filterList.length && filterList[2]) {
+            stakedTokens = Number(filterList[2]);
         }
     }
 
@@ -100,6 +104,7 @@ const TokensTextField = (props) => {
 };
 
 TokensTextField.propTypes = {
+    genesisValidatorList: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     selectedValidator: PropTypes.string.isRequired,
@@ -119,6 +124,7 @@ const stateToProps = (state) => {
         value: state.stake.tokens,
         name: state.stake.delegateDialog.name,
         selectedValidator: state.stake.validator.value,
+        genesisValidatorList: state.stake.genesisValidators.list,
     };
 };
 
