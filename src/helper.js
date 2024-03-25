@@ -3,12 +3,13 @@ import { SigningStargateClient } from '@cosmjs/stargate';
 import { config } from './config';
 import { cosmos, InstallError } from '@cosmostation/extension-client';
 import { getOfflineSigner } from '@cosmostation/cosmos-client';
-// import { Sdk } from '@namada/shared';
-// import { init as initShared } from '@namada/shared/dist/init-inline';
-// import { AccountType, TransferProps, TxProps } from "@namada/types";
-// import {
-//     SubmitBondMsgValue,
-// } from '@namada/types';
+import { Sdk, Query } from './libs/namada/shared';
+import { init as initShared } from './libs/namada/shared/init-inline';
+import { AccountType, TransferProps, TxProps, Message, TransferMsgValue, TxMsgValue} from "./libs/namada/types";
+import {
+     SubmitBondMsgValue,
+} from '@namada/types';
+import BigNumber from 'bignumber.js';
 
 const chainId = config.CHAIN_ID;
 const chainName = config.CHAIN_NAME;
@@ -199,38 +200,59 @@ export const initializeNamadaChain = (cb) => {
     })();
 };
 
-export const sentTransaction = (tx, txs, type, cb) => {
-    (async () => {
+export const sentTransaction = async (tx, txs, type, address, cb) => {
         const isExtensionInstalled = typeof window.namada === 'object';
         if (!isExtensionInstalled || !window.namada) {
             const error = 'Download the Namada Extension';
             cb(error);
         }
-
-        // if (window.namada) {
-        //     await initShared();
-        //
-        //     const sdk = new Sdk(config.RPC_URL);
-        //     console.log('1', sdk);
-        //     sdk.build_transfer(tx, ['tnam1qxvg64psvhwumv3mwrrjfcz0h3t3274hwggyzcee'])
-        //         .then((result) => {
-        //             console.log('11111', result);
-        //             cb(null, result);
-        //         })
-        //         .catch((error) => {
-        //             console.log('4444', error);
-        //             const message = 'success';
-        //             if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-        //                 cb(null, message);
-        //             } else {
-        //                 cb(error && error.message);
-        //             }
-        //         });
-        // } else {
-        //     return null;
-        // }
-
+/*
         if (window.namada) {
+            await initShared();
+            console.log("TX", tx)
+        
+             const sdk = new Sdk(config.RPC_URL, tx.token);
+
+             const transferMsgValue = new TransferMsgValue({
+                source: tx.source,
+                target: tx.target,
+                token: tx.token,
+                amount: tx.amount,
+                nativeToken: tx.nativeToken,
+            });
+            
+            const txMessageValue = new TxMsgValue({
+                token: txs.token,
+                feeAmount: txs.feeAmount,
+                gasLimit: txs.gasLimit,
+                chainId: txs.chainId,
+            });
+        
+            console.log("Tx Msg value", txMessageValue);
+             const message = new Message();
+             const txEncode = message.encode(transferMsgValue);
+             console.log('Encoded TX', txEncode, address);
+             const txsEncode = message.encode(txMessageValue);
+             // console.log('55555', txEncode, message, txsEncode);
+             sdk.build_transfer(txEncode, txsEncode, address, address)
+                 .then((result) => {
+                     console.log('Built Message', result);
+                     cb(null, result);
+                 })
+                 .catch((error) => {
+                     console.log('Built Error', error);
+                     const message = 'success';
+                     if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                         cb(null, message);
+                     } else {
+                         cb(error && error.message);
+                     }
+                 });
+         } else {
+             return null;
+         } */
+
+       if (window.namada) {
             const namada = window.namada;
             const client = namada && namada.getSigner();
 
@@ -251,13 +273,13 @@ export const sentTransaction = (tx, txs, type, cb) => {
                     //     cb(error && error.message);
                     // }
                 });
-        } else {
-            return null;
         }
-    })();
+        else {
+            return null;
+        } 
 };
 
-export const delegateTransaction = (tx, txs, type, cb) => {
+export const delegateTransaction = async (tx, txs, type, cb) => {
     (async () => {
         const isExtensionInstalled = typeof window.namada === 'object';
         if (!isExtensionInstalled || !window.namada) {
@@ -265,17 +287,25 @@ export const delegateTransaction = (tx, txs, type, cb) => {
             cb(error);
         }
 
-        // if (window.namada) {
-        //     await initShared();
-        //
-        //     const sdk = new Sdk(config.RPC_URL);
-        //     console.log('1', sdk);
-        //     const bondMsgValue = new SubmitBondMsgValue({
+        if (window.namada) {
+             // await initShared();
+        
+             const sdk = new Sdk(config.RPC_URL, txs.token);
+             console.log('1', sdk);
+
+             const querier = new Query(config.RPC_URL)
+             const epoch = await querier.query_epoch()
+             console.log("Epoch", epoch)
+             const delegations = await querier.query_my_validators(["tnam1qp4m542w5cqagh3ryt6j38xvyf7u6r6vtu0uzvrn"])
+             console.log('delegations', delegations);
+        }
+
+       //      const bondMsgValue = new SubmitBondMsgValue({
         //         source: tx.source,
-        //         validator: tx.validator,
-        //         amount: tx.amount,
-        //         nativeToken: tx.nativeToken,
-        //     });
+         //        validator: tx.validator,
+          //       amount: tx.amount,
+          //       nativeToken: tx.nativeToken,
+          //   });
         //
         //     // const params = ApprovalsService.getParamsBond(
         //     //     new Uint8Array([]),

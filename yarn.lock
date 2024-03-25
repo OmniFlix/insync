@@ -8908,26 +8908,6 @@ mz@^2.7.0:
     object-assign "^4.0.1"
     thenify-all "^1.0.0"
 
-namada-connect-fixed@^0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/namada-connect-fixed/-/namada-connect-fixed-0.0.0.tgz#46f44db375ade796d7fa0965f96c951382e68894"
-  integrity sha512-6fXfSY2tmm5FvPyTnAo5Bi2kRnIah9L5ZR3plK8z2ALBW6sdmPSqGwFHkkuhCH5zdhxHBjyOjxfhY0z+zF4Sxg==
-  dependencies:
-    "@dao-xyz/borsh" "^5.1.5"
-    bignumber.js "^9.1.2"
-    bn.js "^5.2.1"
-    slip44 "^3.0.11"
-
-namada-connect@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/namada-connect/-/namada-connect-0.3.0.tgz#30358c8d0a66a2ee66e6d277586489518cc454ff"
-  integrity sha512-4CADshnGEQOzWkDE3tTlxAQuM23kFzPc2ZFW8JGoUbenaB36Oh8UaePY2PUVB495TkR6VXDLKDiPq981Q7x8+w==
-  dependencies:
-    "@dao-xyz/borsh" "^5.1.5"
-    bignumber.js "^9.1.2"
-    bn.js "^5.2.1"
-    slip44 "^3.0.11"
-
 nanoid@^3.3.7:
   version "3.3.7"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"

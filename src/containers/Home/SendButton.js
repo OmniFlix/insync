@@ -18,20 +18,20 @@ const SendButton = (props) => {
 
         const tx = {
             source: props.address,
-            target: 'tnam1qqrhwfj678xq07nfwmmxkvjgzzdr9ywamqqjn88x',
+            target: 'tnam1qptfnvqmzht2kvcd839g3zk68qags8jutyss5vu6',
             token: config.TOKEN_ADDRESS,
-            amount: new BigNumber(0.1),
+            amount: new BigNumber(2),
             nativeToken: 'NAAN',
         };
 
         const txs = {
             token: config.TOKEN_ADDRESS,
-            feeAmount: new BigNumber(0.000100 * 20000),
+            feeAmount: new BigNumber(0.000100),
             gasLimit: new BigNumber(20000),
             chainId: config.CHAIN_ID,
         };
 
-        sentTransaction(tx, txs, props.details && props.details.type, (error, result) => {
+        sentTransaction(tx, txs, props.details && props.details.type, props.address, (error, result) => {
             console.log('aaaa', result, error);
         });
     };

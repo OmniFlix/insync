@@ -27,8 +27,8 @@ import {
     urlFetchUnBondingDelegations,
     urlFetchVestingBalance,
 } from '../../constants/url';
-import { init as initShared } from '@namada/shared/dist/init-inline';
-import { Query } from '@namada/shared';
+import { Query } from '../../libs/namada/shared';
+import { init as initShared } from '../../libs/namada/shared/init-inline';
 import { config } from '../../config';
 // import { Tokens } from '@namada/types';
 
@@ -68,24 +68,33 @@ const fetchDelegationsError = (message) => {
 
 export const getDelegations = (address) => (dispatch) => {
     dispatch(fetchDelegationsInProgress());
-    const url = urlFetchDelegations(address);
-    Axios.get(url, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-        },
-    })
-        .then((res) => {
-            dispatch(fetchDelegationsSuccess(res.data && res.data.delegation_responses));
-        })
-        .catch((error) => {
-            dispatch(fetchDelegationsError(
-                error.response &&
-                error.response.data &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : 'Failed!',
-            ));
-        });
+    (async () => {
+        await initShared();
+
+        const query = new Query(config.RPC_URL);
+        const array = [address];
+        console.log('3333', query, array);
+        /*query.query_my_validators(array)
+            .then((res) => {
+                console.log('1111', res);
+                dispatch(fetchDelegationsSuccess(res));
+            })
+            .catch((error) => {
+                console.log('2222', error);
+                dispatch(fetchDelegationsError(
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.message
+                        ? error.response.data.message
+                        : 'Failed!',
+                ));
+            });*/
+            const delegations = await query.query_my_validators(array)
+            console.log('delegations', delegations);
+            // if (delegations && delegations.length) {
+            //   dispatch(fetchDelegationsSuccess(res));
+            // } 
+    })();
 };
 
 const fetchBalanceInProgress = () => {
@@ -111,8 +120,6 @@ const fetchBalanceError = (message) => {
 export const getBalance = (address) => (dispatch) => {
     dispatch(fetchBalanceInProgress());
     (async () => {
-        await initShared();
-
         const query = new Query(config.RPC_URL);
         // console.log('5555', Tokens);
         const array = [config.TOKEN_ADDRESS];

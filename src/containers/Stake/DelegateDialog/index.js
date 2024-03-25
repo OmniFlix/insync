@@ -67,14 +67,14 @@ const DelegateDialog = (props) => {
         const tx = {
             source: props.address,
             validator: value && value.nam_address,
-            amount: new BigNumber(0.1),
+            amount: new BigNumber(props.amount),
             nativeToken: 'NAAN',
         };
 
         const txs = {
             token: config.TOKEN_ADDRESS,
             feeAmount: new BigNumber(0.000100),
-            gasLimit: new BigNumber(200),
+            gasLimit: new BigNumber(10000),
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
         };
