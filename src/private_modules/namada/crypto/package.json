@@ -1,0 +1,23 @@
+{
+  "name": "crypto",
+  "collaborators": [
+    "Heliax AG <hello@heliax.dev>"
+  ],
+  "description": "Cryptographic functions for Namada apps",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anoma/namada-interface/"
+  },
+  "files": [
+    "crypto_bg.wasm",
+    "crypto.js",
+    "crypto.d.ts"
+  ],
+  "module": "crypto.js",
+  "types": "crypto.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}

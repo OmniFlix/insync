@@ -1,0 +1,24 @@
+{
+  "name": "shared",
+  "collaborators": [
+    "Heliax AG <hello@heliax.dev>"
+  ],
+  "description": "Shared functionality from Namada protocol",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anoma/namada-interface/"
+  },
+  "files": [
+    "shared_bg.wasm",
+    "shared.js",
+    "shared.d.ts",
+    "LICENSE_MIT"
+  ],
+  "module": "shared.js",
+  "types": "shared.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
