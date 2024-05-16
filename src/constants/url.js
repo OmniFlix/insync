@@ -14,6 +14,8 @@ export const urlFetchVoteDetails = (proposalId, address) => `${REST_URL}/cosmos/
 export const VALIDATORS_LIST_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000`;
 export const getValidatorURL = (address) => `${REST_URL}/cosmos/staking/v1beta1/validators/${address}`;
 export const PROPOSALS_LIST_URL = `${REST_URL}/cosmos/gov/v1beta1/proposals?pagination.limit=1000`;
+export const INACTIVE_VALIDATORS_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000&status=BOND_STATUS_UNBONDED`;
+export const INACTIVE_VALIDATORS_UNBONDING_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000&status=BOND_STATUS_UNBONDING`;
 export const getDelegatedValidatorsURL = (address) => `${REST_URL}/cosmos/staking/v1beta1/delegators/${address}/validators`;
 export const urlFetchProposalVotes = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/votes`;
 export const urlFetchTallyDetails = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/tally`;

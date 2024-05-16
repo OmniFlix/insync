@@ -9,7 +9,7 @@ import { showProposalDialog } from '../../actions/proposals';
 import moment from 'moment';
 import { tally } from '../../utils/numberFormats';
 import DotsLoading from '../../components/DotsLoading';
-import { withRouter } from 'react-router';
+import withRouter from '../../components/WithRouter';
 
 const Cards = (props) => {
     const [page, setPage] = useState(1);
@@ -34,24 +34,44 @@ const Cards = (props) => {
             const value = props.tallyDetails && props.tallyDetails[proposal.proposal_id];
             const sum = value && value.yes && value.no && value.no_with_veto && value.abstain &&
                 (parseInt(value.yes) + parseInt(value.no) + parseInt(value.no_with_veto) + parseInt(value.abstain));
+            let val1 = null;
+            if (val === 'yes_count') {
+                val1 = 'yes';
+            } else if (val === 'no_count') {
+                val1 = 'no';
+            } else if (val === 'no_with_veto_count') {
+                val1 = 'no_with_veto';
+            } else if (val === 'abstain_count') {
+                val1 = 'abstain';
+            }
 
-            return (props.tallyDetails && props.tallyDetails[proposal.proposal_id] && props.tallyDetails[proposal.proposal_id][val]
-                ? tally(props.tallyDetails[proposal.proposal_id][val], sum) : '0%');
+            return (props.tallyDetails && props.tallyDetails[proposal.proposal_id] && props.tallyDetails[proposal.proposal_id][val1]
+                ? tally(props.tallyDetails[proposal.proposal_id][val1], sum) : '0%');
         } else {
             const sum = proposal.final_tally_result && proposal.final_tally_result.yes &&
                 proposal.final_tally_result.no && proposal.final_tally_result.no_with_veto &&
                 proposal.final_tally_result.abstain &&
                 (parseInt(proposal.final_tally_result.yes) + parseInt(proposal.final_tally_result.no) +
                     parseInt(proposal.final_tally_result.no_with_veto) + parseInt(proposal.final_tally_result.abstain));
+            let val1 = null;
+            if (val === 'yes_count') {
+                val1 = 'yes';
+            } else if (val === 'no_count') {
+                val1 = 'no';
+            } else if (val === 'no_with_veto_count') {
+                val1 = 'no_with_veto';
+            } else if (val === 'abstain_count') {
+                val1 = 'abstain';
+            }
 
             return (proposal && proposal.final_tally_result &&
-            proposal.final_tally_result[val]
-                ? tally(proposal.final_tally_result[val], sum) : '0%');
+            proposal.final_tally_result[val1]
+                ? tally(proposal.final_tally_result[val1], sum) : '0%');
         }
     };
 
     const handleProposal = (proposal) => {
-        props.history.push(`/proposals/${proposal.proposal_id}`);
+        props.router.navigate(`/proposals/${proposal.proposal_id}`);
         props.handleShow(proposal);
     };
 
@@ -97,7 +117,7 @@ const Cards = (props) => {
                                     </span>
                                     <div className="card_heading">
                                         <h2 onClick={() => props.handleShow(proposal)}> {
-                                            proposal.content && proposal.content.title
+                                            proposal.title || (proposal.content && proposal.content.title)
                                         }</h2>
                                         {proposal.status === 3 || proposal.status === 'PROPOSAL_STATUS_PASSED'
                                             ? <Icon className="success" icon="success"/>
@@ -126,7 +146,7 @@ const Cards = (props) => {
                                                     </Button>
                                                     : null}
                                     </div>
-                                    <p className="description">{proposal.content && proposal.content.description}</p>
+                                    <p className="description">{proposal.summary || (proposal.content && proposal.content.description)}</p>
                                     <div className="row">
                                         <div className="icon_info">
                                             <Icon className="person" icon="person"/>
@@ -159,7 +179,7 @@ const Cards = (props) => {
                                         proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')
                                         ? 'voting_period'
                                         : (proposal.status === 4 ||
-                                        proposal.status === 'PROPOSAL_STATUS_REJECTED')
+                                        proposal.status === 'PROPOSAL_STATUS_REJECTED' || proposal.status === 'PROPOSAL_STATUS_FAILED')
                                             ? 'rejected'
                                             : null)}>
                                         <p>Proposal Status: {
@@ -180,19 +200,19 @@ const Cards = (props) => {
                                     <div className="vote_details">
                                         <div className="yes">
                                             <span/>
-                                            <p>YES ({VoteCalculation(proposal, 'yes')})</p>
+                                            <p>YES ({VoteCalculation(proposal, 'yes_count')})</p>
                                         </div>
                                         <div className="no">
                                             <span/>
-                                            <p>NO ({VoteCalculation(proposal, 'no')})</p>
+                                            <p>NO ({VoteCalculation(proposal, 'no_count')})</p>
                                         </div>
                                         <div className="option3">
                                             <span/>
-                                            <p>NoWithVeto ({VoteCalculation(proposal, 'no_with_veto')})</p>
+                                            <p>NoWithVeto ({VoteCalculation(proposal, 'no_with_veto_count')})</p>
                                         </div>
                                         <div className="option4">
                                             <span/>
-                                            <p>Abstain ({VoteCalculation(proposal, 'abstain')})</p>
+                                            <p>Abstain ({VoteCalculation(proposal, 'abstain_count')})</p>
                                         </div>
                                     </div>
                                 </div>
@@ -214,9 +234,6 @@ const Cards = (props) => {
 
 Cards.propTypes = {
     handleShow: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     proposalDetails: PropTypes.object.isRequired,
     proposalDetailsInProgress: PropTypes.bool.isRequired,
     tallyDetails: PropTypes.object.isRequired,
@@ -225,6 +242,9 @@ Cards.propTypes = {
     home: PropTypes.bool,
     proposals: PropTypes.array,
     proposalsInProgress: PropTypes.bool,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {

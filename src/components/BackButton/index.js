@@ -3,7 +3,7 @@ import backIcon from '../../assets/back.png';
 import { IconButton } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import './index.css';
-import { withRouter } from 'react-router-dom';
+import withRouter from '../WithRouter';
 
 const BackButton = (props) => {
     const onClick = () => {
@@ -13,7 +13,7 @@ const BackButton = (props) => {
             return;
         }
 
-        props.history.goBack();
+        props.router.navigate(-1);
     };
 
     return (
@@ -26,9 +26,9 @@ const BackButton = (props) => {
 };
 
 BackButton.propTypes = {
-    history: PropTypes.shape({
-        goBack: PropTypes.func.isRequired,
-    }).isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
     onClick: PropTypes.func,
 };
 

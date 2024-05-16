@@ -16,12 +16,12 @@ import Voting from './Voting';
 import moment from 'moment';
 import ClassNames from 'classnames';
 import { tally } from '../../../utils/numberFormats';
-import { withRouter } from 'react-router-dom';
 import NavBar from '../../NavBar';
 import variables from '../../../utils/variables';
 import UnSuccessDialog from '../../Stake/DelegateDialog/UnSuccessDialog';
 import PendingDialog from '../../Stake/DelegateDialog/PendingDialog';
 import SuccessDialog from '../../Stake/DelegateDialog/SuccessDialog';
+import withRouter from '../../../components/WithRouter';
 
 class ProposalDialog extends Component {
     constructor (props) {
@@ -44,11 +44,11 @@ class ProposalDialog extends Component {
             this.props.fetchVoteDetails(this.props.proposal.proposal_id, this.props.address);
         }
 
-        if (this.props.match && this.props.match.params && this.props.match.params.proposalID) {
+        if (this.props.router && this.props.router.params && this.props.router.params.proposalID) {
             if (this.props.proposal && !this.props.proposal.proposal_id) {
                 this.props.getProposals((result) => {
                     if (result && result.length) {
-                        const proposal = result.find((val) => val.proposal_id === this.props.match.params.proposalID);
+                        const proposal = result.find((val) => val.proposal_id === this.props.router.params.proposalID);
                         this.props.showProposalDialog(proposal);
                         if (proposal && (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                             this.props.fetchProposalTally(proposal.proposal_id);
@@ -57,8 +57,8 @@ class ProposalDialog extends Component {
                 });
             }
 
-            if (this.props.proposalDetails && !this.props.proposalDetails[this.props.match.params.proposalID]) {
-                this.props.fetchProposalDetails(this.props.match.params.proposalID);
+            if (this.props.proposalDetails && !this.props.proposalDetails[this.props.router.params.proposalID]) {
+                this.props.fetchProposalDetails(this.props.router.params.proposalID);
             }
         }
     }
@@ -76,24 +76,44 @@ class ProposalDialog extends Component {
             const value = this.props.tallyDetails && this.props.tallyDetails[proposal.proposal_id];
             const sum = value && value.yes && value.no && value.no_with_veto && value.abstain &&
                 (parseInt(value.yes) + parseInt(value.no) + parseInt(value.no_with_veto) + parseInt(value.abstain));
+            let val1 = null;
+            if (val === 'yes_count') {
+                val1 = 'yes';
+            } else if (val === 'no_count') {
+                val1 = 'no';
+            } else if (val === 'no_with_veto_count') {
+                val1 = 'no_with_veto';
+            } else if (val === 'abstain_count') {
+                val1 = 'abstain';
+            }
 
-            return (this.props.tallyDetails && this.props.tallyDetails[proposal.proposal_id] && this.props.tallyDetails[proposal.proposal_id][val]
-                ? tally(this.props.tallyDetails[proposal.proposal_id][val], sum) : '0%');
+            return (this.props.tallyDetails && this.props.tallyDetails[proposal.proposal_id] && this.props.tallyDetails[proposal.proposal_id][val1]
+                ? tally(this.props.tallyDetails[proposal.proposal_id][val1], sum) : '0%');
         } else {
             const sum = proposal && proposal.final_tally_result && proposal.final_tally_result.yes &&
                 proposal.final_tally_result.no && proposal.final_tally_result.no_with_veto &&
                 proposal.final_tally_result.abstain &&
                 (parseInt(proposal.final_tally_result.yes) + parseInt(proposal.final_tally_result.no) +
                     parseInt(proposal.final_tally_result.no_with_veto) + parseInt(proposal.final_tally_result.abstain));
+            let val1 = null;
+            if (val === 'yes_count') {
+                val1 = 'yes';
+            } else if (val === 'no_count') {
+                val1 = 'no';
+            } else if (val === 'no_with_veto_count') {
+                val1 = 'no_with_veto';
+            } else if (val === 'abstain_count') {
+                val1 = 'abstain';
+            }
 
             return (proposal && proposal.final_tally_result &&
-            proposal.final_tally_result[val]
-                ? tally(proposal.final_tally_result[val], sum) : '0%');
+            proposal.final_tally_result[val1]
+                ? tally(proposal.final_tally_result[val1], sum) : '0%');
         }
     }
 
     handleClose () {
-        this.props.history.push('/proposals');
+        this.props.router.navigate('/proposals');
         this.props.handleClose();
     }
 
@@ -101,6 +121,9 @@ class ProposalDialog extends Component {
         let votedOption = this.props.voteDetails && this.props.voteDetails.length &&
             this.props.proposal && this.props.proposal.proposal_id &&
             this.props.voteDetails.filter((vote) => vote && (vote.proposal_id === this.props.proposal.proposal_id))[0];
+        if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
+            votedOption = votedOption.options[0];
+        }
         let proposer = this.props.proposal && this.props.proposal.proposer;
 
         this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
@@ -119,10 +142,6 @@ class ProposalDialog extends Component {
 
             return null;
         });
-
-        if (votedOption && votedOption.options && votedOption.options.length) {
-            votedOption = votedOption.options[0];
-        }
 
         return (
             <div className="proposals">
@@ -146,7 +165,7 @@ class ProposalDialog extends Component {
                                         (this.props.proposal.status === 2 || this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')
                                             ? 'voting_period'
                                             : this.props.proposal && (this.props.proposal.status === 4 ||
-                                                this.props.proposal.status === 'PROPOSAL_STATUS_REJECTED')
+                                                this.props.proposal.status === 'PROPOSAL_STATUS_REJECTED' || this.props.proposal.status === 'PROPOSAL_STATUS_FAILED')
                                                 ? 'rejected'
                                                 : null)}> Proposal
                                         Status: &nbsp;{this.props.proposal && this.props.proposal.status
@@ -208,19 +227,19 @@ class ProposalDialog extends Component {
                                                     this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') ? 'vote_in_progress' : '')}>
                                                 <div className="yes">
                                                     <span/>
-                                                    <p>YES ({this.VoteCalculation('yes')})</p>
+                                                    <p>YES ({this.VoteCalculation('yes_count')})</p>
                                                 </div>
                                                 <div className="no">
                                                     <span/>
-                                                    <p>NO ({this.VoteCalculation('no')})</p>
+                                                    <p>NO ({this.VoteCalculation('no_count')})</p>
                                                 </div>
                                                 <div className="option3">
                                                     <span/>
-                                                    <p>NoWithVeto ({this.VoteCalculation('no_with_veto')})</p>
+                                                    <p>NoWithVeto ({this.VoteCalculation('no_with_veto_count')})</p>
                                                 </div>
                                                 <div className="option4">
                                                     <span/>
-                                                    <p>Abstain ({this.VoteCalculation('abstain')})</p>
+                                                    <p>Abstain ({this.VoteCalculation('abstain_count')})</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -274,9 +293,6 @@ ProposalDialog.propTypes = {
     fetchVoteDetails: PropTypes.func.isRequired,
     getProposals: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     lang: PropTypes.string.isRequired,
     proposalDetails: PropTypes.object.isRequired,
     showProposalDialog: PropTypes.func.isRequired,
@@ -284,16 +300,17 @@ ProposalDialog.propTypes = {
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
     address: PropTypes.string,
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            proposalID: PropTypes.string,
-        }),
-    }),
     proposal: PropTypes.object,
     proposalsInProgress: PropTypes.bool,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        params: PropTypes.shape({
+            proposalID: PropTypes.string,
+        }).isRequired,
+    }),
     votes: PropTypes.arrayOf(
         PropTypes.shape({
-            proposal_id: PropTypes.string.isRequired,
+            id: PropTypes.string.isRequired,
             voter: PropTypes.string.isRequired,
             option: PropTypes.number,
         }),

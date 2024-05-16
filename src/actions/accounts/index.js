@@ -149,7 +149,7 @@ export const fetchVestingBalance = (address) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchVestingBalanceSuccess(res.data && res.data.result));
+            dispatch(fetchVestingBalanceSuccess(res.data && res.data.balances));
         })
         .catch((error) => {
             dispatch(fetchVestingBalanceError(
