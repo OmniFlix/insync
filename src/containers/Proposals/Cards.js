@@ -31,7 +31,7 @@ const Cards = (props) => {
 
     const VoteCalculation = (proposal, val) => {
         if (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-            const value = props.tallyDetails && props.tallyDetails[proposal.proposal_id];
+            const value = props.tallyDetails && props.tallyDetails[proposal.id];
             const sum = value && value.yes && value.no && value.no_with_veto && value.abstain &&
                 (parseInt(value.yes) + parseInt(value.no) + parseInt(value.no_with_veto) + parseInt(value.abstain));
             let val1 = null;
@@ -45,33 +45,24 @@ const Cards = (props) => {
                 val1 = 'abstain';
             }
 
-            return (props.tallyDetails && props.tallyDetails[proposal.proposal_id] && props.tallyDetails[proposal.proposal_id][val1]
-                ? tally(props.tallyDetails[proposal.proposal_id][val1], sum) : '0%');
+            console.log('55555', sum, val, val1, value, props.tallyDetails, proposal.id);
+            return (props.tallyDetails && props.tallyDetails[proposal.id] && props.tallyDetails[proposal.id][val1]
+                ? tally(props.tallyDetails[proposal.id][val1], sum) : '0%');
         } else {
-            const sum = proposal.final_tally_result && proposal.final_tally_result.yes &&
-                proposal.final_tally_result.no && proposal.final_tally_result.no_with_veto &&
-                proposal.final_tally_result.abstain &&
-                (parseInt(proposal.final_tally_result.yes) + parseInt(proposal.final_tally_result.no) +
-                    parseInt(proposal.final_tally_result.no_with_veto) + parseInt(proposal.final_tally_result.abstain));
-            let val1 = null;
-            if (val === 'yes_count') {
-                val1 = 'yes';
-            } else if (val === 'no_count') {
-                val1 = 'no';
-            } else if (val === 'no_with_veto_count') {
-                val1 = 'no_with_veto';
-            } else if (val === 'abstain_count') {
-                val1 = 'abstain';
-            }
+            const sum = proposal.final_tally_result && proposal.final_tally_result.yes_count &&
+                proposal.final_tally_result.no_count && proposal.final_tally_result.no_with_veto_count &&
+                proposal.final_tally_result.abstain_count &&
+                (parseInt(proposal.final_tally_result.yes_count) + parseInt(proposal.final_tally_result.no_count) +
+                    parseInt(proposal.final_tally_result.no_with_veto_count) + parseInt(proposal.final_tally_result.abstain_count));
 
             return (proposal && proposal.final_tally_result &&
-            proposal.final_tally_result[val1]
-                ? tally(proposal.final_tally_result[val1], sum) : '0%');
+            proposal.final_tally_result[val]
+                ? tally(proposal.final_tally_result[val], sum) : '0%');
         }
     };
 
     const handleProposal = (proposal) => {
-        props.router.navigate(`/proposals/${proposal.proposal_id}`);
+        props.router.navigate(`/proposals/${proposal.id}`);
         props.handleShow(proposal);
     };
 
@@ -82,22 +73,23 @@ const Cards = (props) => {
                     reversedItems.map((proposal, index) => {
                         if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
                             let votedOption = props.voteDetails && props.voteDetails.length &&
-                                proposal && proposal.proposal_id &&
-                                props.voteDetails.filter((vote) => vote && (vote.proposal_id === proposal.proposal_id))[0];
+                                proposal && proposal.id &&
+                                props.voteDetails.filter((vote) => vote && vote.proposal_id === proposal.id)[0];
                             if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
                                 votedOption = votedOption.options[0];
                             }
                             let proposer = proposal.proposer;
                             props.proposalDetails && Object.keys(props.proposalDetails).length &&
                             Object.keys(props.proposalDetails).filter((key) => {
-                                if (key === proposal.proposal_id) {
+                                if (key === proposal.id) {
                                     if (props.proposalDetails[key] &&
                                         props.proposalDetails[key][0] &&
-                                        props.proposalDetails[key][0].body &&
-                                        props.proposalDetails[key][0].body.messages &&
-                                        props.proposalDetails[key][0].body.messages.length &&
-                                        props.proposalDetails[key][0].body.messages[0].proposer) {
-                                        proposer = props.proposalDetails[key][0].body.messages[0].proposer;
+                                        props.proposalDetails[key][0].tx &&
+                                        props.proposalDetails[key][0].tx.value &&
+                                        props.proposalDetails[key][0].tx.value.msg[0] &&
+                                        props.proposalDetails[key][0].tx.value.msg[0].value &&
+                                        props.proposalDetails[key][0].tx.value.msg[0].value.proposer) {
+                                        proposer = props.proposalDetails[key][0].tx.value.msg[0].value.proposer;
                                     }
                                 }
 
@@ -107,17 +99,19 @@ const Cards = (props) => {
                                 Object.keys(props.proposalDetails).find((key) => key === proposal.proposal_id);
                             inProgress = !inProgress && props.proposalDetailsInProgress;
 
+                            const content = proposal && proposal.messages && proposal.messages[0] && proposal.messages[0].content;
+
                             return (
                                 <div
                                     key={index}
                                     className="card"
                                     onClick={() => handleProposal(proposal)}>
                                     <span className="number">
-                                        {proposal.proposal_id}
+                                        {proposal.id}
                                     </span>
                                     <div className="card_heading">
                                         <h2 onClick={() => props.handleShow(proposal)}> {
-                                            proposal.title || (proposal.content && proposal.content.title)
+                                            proposal.title || (content && content.title)
                                         }</h2>
                                         {proposal.status === 3 || proposal.status === 'PROPOSAL_STATUS_PASSED'
                                             ? <Icon className="success" icon="success"/>
@@ -146,7 +140,7 @@ const Cards = (props) => {
                                                     </Button>
                                                     : null}
                                     </div>
-                                    <p className="description">{proposal.summary || (proposal.content && proposal.content.description)}</p>
+                                    <p className="description">{proposal.summary || (content && content.description)}</p>
                                     <div className="row">
                                         <div className="icon_info">
                                             <Icon className="person" icon="person"/>
@@ -179,7 +173,9 @@ const Cards = (props) => {
                                         proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')
                                         ? 'voting_period'
                                         : (proposal.status === 4 ||
-                                        proposal.status === 'PROPOSAL_STATUS_REJECTED' || proposal.status === 'PROPOSAL_STATUS_FAILED')
+                                            proposal.status === 5 ||
+                                            proposal.status === 'PROPOSAL_STATUS_FAILED' ||
+                                            proposal.status === 'PROPOSAL_STATUS_REJECTED')
                                             ? 'rejected'
                                             : null)}>
                                         <p>Proposal Status: {
@@ -190,7 +186,7 @@ const Cards = (props) => {
                                                     : proposal.status === 2 ||
                                                     proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? 'VotingPeriod'
                                                         : proposal.status === 3 ||
-                                                            proposal.status === 'PROPOSAL_STATUS_PASSED' ? 'Passed'
+                                                        proposal.status === 'PROPOSAL_STATUS_PASSED' ? 'Passed'
                                                             : proposal.status === 4 ||
                                                             proposal.status === 'PROPOSAL_STATUS_REJECTED' ? 'Rejected'
                                                                 : proposal.status === 5 ||

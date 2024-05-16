@@ -81,7 +81,7 @@ class NavBar extends Component {
                             array.push(val.proposal_id);
                         }
                         if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                            this.props.fetchProposalTally(val.proposal_id);
+                            this.props.fetchProposalTally(val.id);
                         }
 
                         return null;
@@ -104,7 +104,7 @@ class NavBar extends Component {
                     array.push(val.proposal_id);
                 }
                 if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                    this.props.fetchProposalTally(val.proposal_id);
+                    this.props.fetchProposalTally(val.id);
                 }
 
                 return null;
@@ -174,7 +174,7 @@ class NavBar extends Component {
 
                 if ((val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
                     !votedOption && this.props.address) {
-                    this.props.fetchVoteDetails(val.proposal_id, this.props.address);
+                    this.props.fetchVoteDetails(val.id, this.props.address);
                 }
 
                 return null;
@@ -197,8 +197,8 @@ class NavBar extends Component {
                             array.push(val.proposal_id);
                         }
                         if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                            this.props.fetchProposalTally(val.proposal_id);
-                            this.props.fetchVoteDetails(val.proposal_id, this.props.address);
+                            this.props.fetchProposalTally(val.id);
+                            this.props.fetchVoteDetails(val.id, this.props.address);
                         }
 
                         return null;

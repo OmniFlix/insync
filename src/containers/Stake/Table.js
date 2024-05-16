@@ -91,17 +91,6 @@ class Table extends Component {
                 ),
             },
         }, {
-            name: 'apr',
-            label: 'APR %',
-            options: {
-                sort: true,
-                customBodyRender: (value) => {
-                    let apr = Number(this.props.actualAPR) * Number(value);
-                    apr = Number(this.props.actualAPR) - apr;
-                    return apr ? apr.toFixed(2) + ' %' : '--';
-                },
-            },
-        }, {
             name: 'commission',
             label: 'Commission',
             options: {
@@ -162,8 +151,6 @@ class Table extends Component {
                     item.description && item.description.moniker,
                     item,
                     parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
-                    item.commission && item.commission.commission_rates &&
-                    item.commission.commission_rates.rate,
                     item.commission && item.commission.commission_rates &&
                     item.commission.commission_rates.rate
                         ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,
