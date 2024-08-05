@@ -49,7 +49,7 @@ const DelegateDialog = (props) => {
             },
             fee: {
                 amount: [{
-                    amount: String(gasValue * config.GAS_PRICE_STEP_AVERAGE),
+                    amount: String(gasValue * config.GAS_PRICE_STEP_HIGH),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
                 gas: String(gasValue),

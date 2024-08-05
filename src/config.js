@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-fetchhub.fetch.ai',
-    REST_URL: 'https://rest-fetchhub.fetch.ai',
+    RPC_URL: 'https://fetch-rpc.polkachu.com',
+    REST_URL: 'https://fetch-api.polkachu.com',
     EXPLORER_URL: 'https://explore-fetchhub.fetch.ai',
     STAKING_URL: 'https://fetch.omniflix.co/stake',
     NETWORK_NAME: 'Fetch',

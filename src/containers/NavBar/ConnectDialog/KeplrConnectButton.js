@@ -22,7 +22,7 @@ import variables from '../../../utils/variables';
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
-    const initKeplr = () => {
+    const initKeplr = (second) => {
         setInProgress(true);
         initializeChain((error, addressList) => {
             setInProgress(false);
@@ -50,6 +50,14 @@ const KeplrConnectButton = (props) => {
             localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
             localStorage.setItem('of_co_wallet', 'keplr');
         });
+
+        if (second) {
+            return;
+        }
+
+        setTimeout(() => {
+            initKeplr(true);
+        }, 5000);
     };
 
     return (
@@ -57,7 +65,7 @@ const KeplrConnectButton = (props) => {
             className="disconnect_button"
             disabled={inProgress}
             variant="contained"
-            onClick={initKeplr}>
+            onClick={() => initKeplr(false)}>
             <img alt="logo" src={keplrIcon}/>
             {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].keplr}
         </Button>

@@ -33,7 +33,7 @@ const ClaimDialog = (props) => {
             msgs: [],
             fee: {
                 amount: [{
-                    amount: String(gasValue * config.GAS_PRICE_STEP_AVERAGE),
+                    amount: String(gasValue * config.GAS_PRICE_STEP_HIGH),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
                 gas: String(gasValue),
@@ -99,7 +99,7 @@ const ClaimDialog = (props) => {
             },
             fee: {
                 amount: [{
-                    amount: String(gas.claim_reward * config.GAS_PRICE_STEP_AVERAGE),
+                    amount: String(gas.claim_reward * config.GAS_PRICE_STEP_HIGH),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
                 gas: String(gas.claim_reward),
