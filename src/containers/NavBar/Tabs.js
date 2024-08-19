@@ -79,12 +79,12 @@ class Tabs extends Component {
                         value="stake"
                         onClick={() => this.handleChange('stake')}
                         {...a11yProps(1)} />
-                    <Tab
-                        className={'tab ' + (this.state.value === 'proposals' ? 'active_tab' : '')}
-                        label={variables[this.props.lang].proposals}
-                        value="proposals"
-                        onClick={() => this.handleChange('proposals')}
-                        {...a11yProps(1)} />
+                    {/* <Tab */}
+                    {/*     className={'tab ' + (this.state.value === 'proposals' ? 'active_tab' : '')} */}
+                    {/*     label={variables[this.props.lang].proposals} */}
+                    {/*     value="proposals" */}
+                    {/*     onClick={() => this.handleChange('proposals')} */}
+                    {/*     {...a11yProps(1)} /> */}
                 </div>
             </AppBar>
         );

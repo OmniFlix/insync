@@ -6,6 +6,7 @@ module.exports = function override (config, env) {
         crypto: require.resolve('crypto-browserify'),
         process: require.resolve('process/browser'),
         buffer: require.resolve('buffer'),
+        vm: false,
     };
     config.resolve.extensions = [...config.resolve.extensions, '.ts', '.js'];
     config.plugins = [
