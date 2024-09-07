@@ -177,6 +177,12 @@
     display: flex;
 }
 
+@media (max-width: 2000px) {
+    .stake .stake_content .heading .buttons {
+        display: flex;
+    }
+}
+
 @media (max-width: 1441px) {
     .home .card {
         flex-direction: column;

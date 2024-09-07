@@ -3,9 +3,9 @@ import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import variables from '../../utils/variables';
-import { withRouter } from 'react-router';
 import { hideSideBar } from '../../actions/navBar';
 import { hideProposalDialog } from '../../actions/proposals';
+import withRouter from '../../components/WithRouter';
 
 class Tabs extends Component {
     constructor (props) {
@@ -17,8 +17,8 @@ class Tabs extends Component {
     }
 
     componentDidMount () {
-        const route = this.props.location.pathname && this.props.location.pathname.split('/') &&
-            this.props.location.pathname.split('/')[1];
+        const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
+            this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
 
         if (this.state.value !== route && (route === '' || route === 'stake' || route === 'proposals')) {
             this.setState({
@@ -28,8 +28,9 @@ class Tabs extends Component {
     }
 
     componentDidUpdate (pp, ps, ss) {
-        if (pp.location.pathname !== this.props.location.pathname) {
-            const value = this.props.location.pathname.split('/')[1];
+        if (pp.router && pp.router.location && this.props.router && this.props.router.location &&
+            pp.router.location.pathname !== this.props.router.location.pathname) {
+            const value = this.props.router.location.pathname.split('/')[1];
 
             if (value !== this.state.value && (value === '' || value === 'stake' || value === 'proposals')) {
                 this.setState({
@@ -44,12 +45,12 @@ class Tabs extends Component {
         if (this.props.open) {
             this.props.hideProposalDialog();
         }
-        if ((newValue === this.state.value) && (this.props.match &&
-            this.props.match.params && !this.props.match.params.proposalID)) {
+        if ((newValue === this.state.value) && (this.props.router &&
+            this.props.router.params && !this.props.router.params.proposalID)) {
             return;
         }
 
-        this.props.history.push('/' + newValue);
+        this.props.router.navigate('/' + newValue);
         this.setState({
             value: newValue,
         });
@@ -93,18 +94,16 @@ class Tabs extends Component {
 Tabs.propTypes = {
     handleClose: PropTypes.func.isRequired,
     hideProposalDialog: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     lang: PropTypes.string.isRequired,
-    location: PropTypes.shape({
-        pathname: PropTypes.string.isRequired,
-    }).isRequired,
     open: PropTypes.bool.isRequired,
-    match: PropTypes.shape({
+    router: PropTypes.shape({
+        location: PropTypes.shape({
+            pathname: PropTypes.string.isRequired,
+        }).isRequired,
+        navigate: PropTypes.func.isRequired,
         params: PropTypes.shape({
             proposalID: PropTypes.string,
-        }),
+        }).isRequired,
     }),
 };
 

@@ -52,12 +52,11 @@ export const getProposals = (cb) => (dispatch) => {
     Axios.get(PROPOSALS_LIST_URL, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
-            dispatch(fetchProposalsSuccess(res.data && res.data.result));
-            cb(res.data && res.data.result);
+            dispatch(fetchProposalsSuccess(res.data && res.data.proposals));
+            cb(res.data && res.data.proposals);
         })
         .catch((error) => {
             dispatch(fetchProposalsError(
@@ -98,7 +97,6 @@ export const getProposalVotes = (id) => (dispatch) => {
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
@@ -155,11 +153,10 @@ export const fetchVoteDetails = (id, address) => (dispatch) => {
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
-            dispatch(fetchVoteDetailsSuccess(res.data && res.data.result));
+            dispatch(fetchVoteDetailsSuccess(res.data && res.data.vote));
         })
         .catch((error) => {
             dispatch(fetchVoteDetailsError(
@@ -200,11 +197,10 @@ export const fetchProposalTally = (id) => (dispatch) => {
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {
-            dispatch(fetchProposalTallySuccess(res.data && res.data.result, id));
+            dispatch(fetchProposalTallySuccess(res.data && res.data.tally, id));
         })
         .catch((error) => {
             dispatch(fetchProposalTallyError(
@@ -245,7 +241,6 @@ export const fetchProposalDetails = (id, cb) => (dispatch) => {
     Axios.get(url, {
         headers: {
             Accept: 'application/json, text/plain, */*',
-            Connection: 'keep-alive',
         },
     })
         .then((res) => {

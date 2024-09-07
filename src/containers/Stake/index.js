@@ -54,6 +54,7 @@ const Stake = (props) => {
                         <span/>
                         <MultiDelegateButton/>
                     </div>
+                    <p>Unbonding Period: 21 Days</p>
                 </div>
                 <Table active={active}/>
             </div>
