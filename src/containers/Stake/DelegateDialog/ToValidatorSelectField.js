@@ -26,15 +26,16 @@ const ToValidatorSelectField = (props) => {
             onChange={handleChange}>
             {props.validatorList && props.validatorList.length &&
                 props.validatorList.map((item, index) => {
-                    const image = item && item.description && item.description.identity &&
-                            props.validatorImages && props.validatorImages.length &&
-                            props.validatorImages.filter((value) => value._id === item.description.identity.toString());
+                    const image = item && item.avatar;
+                    // const image = item && item.description && item.description.identity &&
+                    //         props.validatorImages && props.validatorImages.length &&
+                    //         props.validatorImages.filter((value) => value._id === item.description.identity.toString());
 
                     return (
                         props.removeValue !== item.operator_address && <MenuItem
                             key={item.key || item.value || item.name || item.type ||
-                                    item.operator_address}
-                            value={item.value || item.name || item.type ||
+                                    item.address || item.operator_address}
+                            value={item.address || item.value || item.name || item.type ||
                                     (item.operator_address)}>
                             {image && image.length && image[0] && image[0].them && image[0].them.length &&
                                 image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
@@ -51,7 +52,7 @@ const ToValidatorSelectField = (props) => {
                                     </span>
                                     : <span className="image" style={{ background: colors[index % 6] }}/>}
                             {item.name ? item.name : item.type
-                                ? item.name : item.description && item.description.moniker}
+                                ? item.name : item.address ? item.address : item.description && item.description.moniker}
                         </MenuItem>
                     );
                 },

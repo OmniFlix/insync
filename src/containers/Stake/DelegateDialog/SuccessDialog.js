@@ -53,7 +53,7 @@ const SuccessDialog = (props) => {
         props.validatorList.find((val) => val.operator_address === props.validator);
     const toValidatorDetails = props.validatorList && props.validatorList.length &&
         props.validatorList.find((val) => val.operator_address === props.toValidator);
-    const delegatedList = props.validatorList.filter((item) => props.selectedMultiValidatorArray.includes(item.operator_address));
+    // const delegatedList = props.validatorList.filter((item) => props.selectedMultiValidatorArray.includes(item.operator_address));
 
     return (
         <Dialog
@@ -161,7 +161,7 @@ const SuccessDialog = (props) => {
                                             <div className="validator">
                                                 <div className="hash_text">
                                                     <p className="name">{props.selectedMultiValidatorArray.length + ' '}</p>
-                                                    <CustomTooltip
+                                                    {/* <CustomTooltip
                                                         interactive={true} title={
                                                             <div className = {'validator_popover'} style={{ padding: 5 }}>
                                                                 {delegatedList && delegatedList.length > 0 &&
@@ -202,7 +202,7 @@ const SuccessDialog = (props) => {
                                                             </div>
                                                         }>
                                                         <div className={'popover_button'}> ? </div>
-                                                    </CustomTooltip>
+                                                    </CustomTooltip> */}
                                                 </div>
                                             </div>
                                         </div>

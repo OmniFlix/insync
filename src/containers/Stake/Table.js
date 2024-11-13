@@ -199,8 +199,8 @@ class Table extends Component {
                     // item.description && item.description.moniker,
                     item.address,
                     // item,
+                    item.votingPower,
                     // parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
-                    parseFloat((Number(item.voting_power) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
                     // item.commission && item.commission.commission_rates &&
                     // item.commission.commission_rates.rate,
                     // item.commission && item.commission.commission_rates &&

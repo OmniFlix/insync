@@ -53,18 +53,20 @@ const ValidatorSelectField = (props) => {
             </MenuItem>
             {validatorList && validatorList.length > 0 &&
                 validatorList.map((item, index) => {
-                    const image = item && item.description && item.description.identity &&
-                            props.validatorImages && props.validatorImages.length &&
-                            props.validatorImages.filter((value) => value._id === item.description.identity.toString());
-                    let value = null;
-                    if (props.genesisValidatorList && props.genesisValidatorList[item.address]) {
-                        value = props.genesisValidatorList[item.address];
-                    }
+                    const image = item && item.avatar;
+                    // const image = item && item.description && item.description.identity &&
+                    //         props.validatorImages && props.validatorImages.length &&
+                    //         props.validatorImages.filter((value) => value._id === item.description.identity.toString());
+                    // let value = null;
+                    // if (props.genesisValidatorList && props.genesisValidatorList[item.address]) {
+                    //     value = props.genesisValidatorList[item.address];
+                    // }
+                    const value = item;
 
                     return (
                         value && <MenuItem
                             key={item.key || item.value || item.name || item.type ||
-                                    item.operator_address}
+                                    item.address || item.operator_address}
                             value={item.address || item.name || item.type ||
                                     (item.operator_address)}>
                             {image && image.length && image[0] && image[0].them && image[0].them.length &&
@@ -84,7 +86,8 @@ const ValidatorSelectField = (props) => {
                             {value && value.alias
                                 ? value.alias
                                 : item.name ? item.name : item.type
-                                    ? item.name : item.description && item.description.moniker}
+                                    ? item.name
+                                    : item.address ? item.address : item.description && item.description.moniker}
                         </MenuItem>
                     );
                 },

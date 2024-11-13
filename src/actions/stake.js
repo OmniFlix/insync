@@ -86,8 +86,8 @@ export const getValidators = (page, cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchValidatorsSuccess(res.data && res.data.result && res.data.result.validators, res.data && res.data.result && res.data.result.total, page));
-            cb(res.data && res.data.result && res.data.result.validators, res.data && res.data.result && res.data.result.total, page, res.data && res.data.result && res.data.result.count);
+            dispatch(fetchValidatorsSuccess(res.data, res.data && res.data.length, page));
+            cb(res.data, res.data && res.data.length, page, res.data && res.data.length);
         })
         .catch((error) => {
             dispatch(fetchValidatorsError(

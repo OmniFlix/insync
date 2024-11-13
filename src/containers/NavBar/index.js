@@ -130,7 +130,7 @@ class NavBar extends Component {
         }
 
         if (this.props.validatorList && !this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
-            this.props.fetchGenesisValidators();
+            // this.props.fetchGenesisValidators();
             this.handleFetchValidators(DEFAULT_PAGE, 0);
         }
 
@@ -237,10 +237,10 @@ class NavBar extends Component {
 
     handleFetchValidators (page, oldCount) {
         this.props.getValidators(page, (data, total, pageCount, count) => {
-            const newCount = Number(count) + Number(oldCount);
-            if (newCount && total > newCount) {
-                this.handleFetchValidators(page + 1, newCount);
-            }
+            // const newCount = Number(count) + Number(oldCount);
+            // if (newCount && total > newCount) {
+            //     this.handleFetchValidators(page + 1, newCount);
+            // }
             // if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
             //     const array = data.filter((val) => val && val.description && val.description.identity);
             //     this.getValidatorImage(0, array);
