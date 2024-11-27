@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { field, vec } from "@dao-xyz/borsh";
-export var SignatureMsgValue = /** @class */ (function () {
+var SignatureMsgValue = /** @class */ (function () {
     function SignatureMsgValue(data) {
         Object.assign(this, data);
     }
@@ -27,3 +27,4 @@ export var SignatureMsgValue = /** @class */ (function () {
     ], SignatureMsgValue.prototype, "wrapperSignature", void 0);
     return SignatureMsgValue;
 }());
+export { SignatureMsgValue };

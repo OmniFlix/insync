@@ -6,18 +6,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { field } from "@dao-xyz/borsh";
-export var SubmitVoteProposalMsgValue = /** @class */ (function () {
-    function SubmitVoteProposalMsgValue(data) {
+var VoteProposalMsgValue = /** @class */ (function () {
+    function VoteProposalMsgValue(data) {
         Object.assign(this, data);
     }
     __decorate([
         field({ type: "string" })
-    ], SubmitVoteProposalMsgValue.prototype, "signer", void 0);
+    ], VoteProposalMsgValue.prototype, "signer", void 0);
     __decorate([
         field({ type: "u64" })
-    ], SubmitVoteProposalMsgValue.prototype, "proposalId", void 0);
+    ], VoteProposalMsgValue.prototype, "proposalId", void 0);
     __decorate([
         field({ type: "string" })
-    ], SubmitVoteProposalMsgValue.prototype, "vote", void 0);
-    return SubmitVoteProposalMsgValue;
+    ], VoteProposalMsgValue.prototype, "vote", void 0);
+    return VoteProposalMsgValue;
 }());
+export { VoteProposalMsgValue };

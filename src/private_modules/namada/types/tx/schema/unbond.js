@@ -4,20 +4,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { field } from "@dao-xyz/borsh";
 import { BigNumberSerializer } from "./utils";
-export var SubmitUnbondMsgValue = /** @class */ (function () {
-    function SubmitUnbondMsgValue(data) {
+var UnbondMsgValue = /** @class */ (function () {
+    function UnbondMsgValue(data) {
         Object.assign(this, data);
     }
     __decorate([
         field({ type: "string" })
-    ], SubmitUnbondMsgValue.prototype, "source", void 0);
+    ], UnbondMsgValue.prototype, "source", void 0);
     __decorate([
         field({ type: "string" })
-    ], SubmitUnbondMsgValue.prototype, "validator", void 0);
+    ], UnbondMsgValue.prototype, "validator", void 0);
     __decorate([
         field(BigNumberSerializer)
-    ], SubmitUnbondMsgValue.prototype, "amount", void 0);
-    return SubmitUnbondMsgValue;
+    ], UnbondMsgValue.prototype, "amount", void 0);
+    return UnbondMsgValue;
 }());
+export { UnbondMsgValue };

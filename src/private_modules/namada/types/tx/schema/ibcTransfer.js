@@ -4,12 +4,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-import { field, option } from "@dao-xyz/borsh";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { field, option, vec } from "@dao-xyz/borsh";
 import { BigNumberSerializer } from "./utils";
-export var IbcTransferMsgValue = /** @class */ (function () {
+var IbcTransferMsgValue = /** @class */ (function () {
     function IbcTransferMsgValue(data) {
         Object.assign(this, data);
-        this.token = data.token.address;
     }
     __decorate([
         field({ type: "string" })
@@ -35,5 +35,12 @@ export var IbcTransferMsgValue = /** @class */ (function () {
     __decorate([
         field({ type: option("u64") })
     ], IbcTransferMsgValue.prototype, "timeoutSecOffset", void 0);
+    __decorate([
+        field({ type: option("string") })
+    ], IbcTransferMsgValue.prototype, "memo", void 0);
+    __decorate([
+        field({ type: option(vec("u8")) })
+    ], IbcTransferMsgValue.prototype, "shieldingData", void 0);
     return IbcTransferMsgValue;
 }());
+export { IbcTransferMsgValue };

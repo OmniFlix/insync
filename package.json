@@ -13,6 +13,7 @@
     "@cosmostation/cosmos-client": "0.0.5",
     "@cosmostation/extension-client": "^0.1.7",
     "@emotion/react": "^11.11.3",
+    "@heliaxdev/namada-sdk": "^0.10.0",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
@@ -24,6 +25,8 @@
     "classnames": "2.5.1",
     "crypto-browserify": "^3.12.0",
     "history": "^5.0.0",
+    "html-webpack-plugin": "^5.6.3",
+    "jotai": "^2.10.2",
     "js-base64": "^3.6.0",
     "latest": "^0.2.0",
     "long": "^5.2.0",
@@ -50,6 +53,28 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
+  },
+  "exports": {
+    "./web": {
+      "import": "./dist/web/sdk/src/indexWeb.js",
+      "types": "./dist/web/sdk/src/indexWeb.d.ts"
+    },
+    "./web-init": {
+      "import": "./dist/web/sdk/src/initWeb.js",
+      "types": "./dist/web/sdk/src/initWeb.d.ts"
+    },
+    "./inline-init": {
+      "import": "./dist/inline/sdk/src/initInline.js",
+      "types": "./dist/inline/sdk/src/initInline.d.ts"
+    },
+    "./node": {
+      "require": "./dist/node/sdk/src/indexNode.js",
+      "types": "./dist/node/sdk/src/indexNode.d.ts"
+    },
+    "./node-init": {
+      "require": "./dist/node/sdk/src/initNode.js",
+      "types": "./dist/node/sdk/src/initNode.d.ts"
+    }
   },
   "devDependencies": {
     "axios": "^0.21.1",

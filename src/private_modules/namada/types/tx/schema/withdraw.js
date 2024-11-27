@@ -6,15 +6,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { field } from "@dao-xyz/borsh";
-export var SubmitWithdrawMsgValue = /** @class */ (function () {
-    function SubmitWithdrawMsgValue(data) {
+var WithdrawMsgValue = /** @class */ (function () {
+    function WithdrawMsgValue(data) {
         Object.assign(this, data);
     }
     __decorate([
         field({ type: "string" })
-    ], SubmitWithdrawMsgValue.prototype, "source", void 0);
+    ], WithdrawMsgValue.prototype, "source", void 0);
     __decorate([
         field({ type: "string" })
-    ], SubmitWithdrawMsgValue.prototype, "validator", void 0);
-    return SubmitWithdrawMsgValue;
+    ], WithdrawMsgValue.prototype, "validator", void 0);
+    return WithdrawMsgValue;
 }());
+export { WithdrawMsgValue };

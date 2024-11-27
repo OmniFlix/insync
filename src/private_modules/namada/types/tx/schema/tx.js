@@ -1,3 +1,14 @@
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5,35 +16,46 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { field, option } from "@dao-xyz/borsh";
-import { BigNumberSerializer } from "./utils";
-export var TxMsgValue = /** @class */ (function () {
-    function TxMsgValue(data) {
+import { field, option, vec } from "@dao-xyz/borsh";
+import { WrapperTxMsgValue } from "./wrapperTx";
+var SigningDataMsgValue = /** @class */ (function () {
+    function SigningDataMsgValue(data) {
         Object.assign(this, data);
     }
     __decorate([
+        field({ type: option("string") })
+    ], SigningDataMsgValue.prototype, "owner", void 0);
+    __decorate([
+        field({ type: vec("string") })
+    ], SigningDataMsgValue.prototype, "publicKeys", void 0);
+    __decorate([
+        field({ type: "u8" })
+    ], SigningDataMsgValue.prototype, "threshold", void 0);
+    __decorate([
+        field({ type: option(vec("u8")) })
+    ], SigningDataMsgValue.prototype, "accountPublicKeysMap", void 0);
+    __decorate([
         field({ type: "string" })
-    ], TxMsgValue.prototype, "token", void 0);
+    ], SigningDataMsgValue.prototype, "feePayer", void 0);
+    return SigningDataMsgValue;
+}());
+export { SigningDataMsgValue };
+var TxMsgValue = /** @class */ (function () {
+    function TxMsgValue(data) {
+        Object.assign(this, __assign(__assign({}, data), { args: new WrapperTxMsgValue(data.args), signingData: data.signingData.map(function (props) { return new SigningDataMsgValue(props); }) }));
+    }
     __decorate([
-        field(BigNumberSerializer)
-    ], TxMsgValue.prototype, "feeAmount", void 0);
-    __decorate([
-        field(BigNumberSerializer)
-    ], TxMsgValue.prototype, "gasLimit", void 0);
+        field({ type: WrapperTxMsgValue })
+    ], TxMsgValue.prototype, "args", void 0);
     __decorate([
         field({ type: "string" })
-    ], TxMsgValue.prototype, "chainId", void 0);
+    ], TxMsgValue.prototype, "hash", void 0);
     __decorate([
-        field({ type: option("string") })
-    ], TxMsgValue.prototype, "publicKey", void 0);
+        field({ type: vec("u8") })
+    ], TxMsgValue.prototype, "bytes", void 0);
     __decorate([
-        field({ type: option("bool") })
-    ], TxMsgValue.prototype, "disposableSigningKey", void 0);
-    __decorate([
-        field({ type: option("string") })
-    ], TxMsgValue.prototype, "feeUnshield", void 0);
-    __decorate([
-        field({ type: option("string") })
-    ], TxMsgValue.prototype, "memo", void 0);
+        field({ type: vec(SigningDataMsgValue) })
+    ], TxMsgValue.prototype, "signingData", void 0);
     return TxMsgValue;
 }());
+export { TxMsgValue };

@@ -64,14 +64,15 @@ const DelegateDialog = (props) => {
             value = props.genesisValidatorList[props.validator];
         }
 
+        console.log('validator', props);
         const tx = {
             source: props.address,
-            validator: value && value.nam_address,
+            validator: props.validator,
             amount: new BigNumber(props.amount),
         };
 
         if (props.name === 'Delegate' || props.name === 'Stake') {
-            tx.nativeToken = 'NAAN';
+            tx.nativeToken = 'NAM';
         }
 
         const txs = {
@@ -321,7 +322,7 @@ const DelegateDialog = (props) => {
             </DialogContent>
             <DialogActions className="footer">
                 <Button
-                    disabled={disable}
+                    // disabled={disable}
                     variant="contained"
                     onClick={props.name === 'Multi-Delegate' ? handleMultiDelegate : handleDelegateType}>
                     {inProgress

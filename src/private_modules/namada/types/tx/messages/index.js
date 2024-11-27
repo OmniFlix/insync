@@ -10,7 +10,7 @@ var Message = /** @class */ (function () {
             throw new Error("Unable to serialize message: ".concat(e));
         }
     };
-    Message.prototype.decode = function (buffer, parser) {
+    Message.decode = function (buffer, parser) {
         try {
             return deserialize(Buffer.from(buffer), parser);
         }

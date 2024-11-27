@@ -9,5 +9,7 @@ export declare class IbcTransferMsgValue {
     channelId: string;
     timeoutHeight?: bigint;
     timeoutSecOffset?: bigint;
+    memo?: string;
+    shieldingData?: Uint8Array;
     constructor(data: IbcTransferProps);
 }
