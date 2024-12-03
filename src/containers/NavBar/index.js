@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.svg';
 import './index.css';
 import DisconnectButton from './DisconnectButton';
 import Tabs from './Tabs';
