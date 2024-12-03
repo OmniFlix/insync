@@ -79,7 +79,7 @@ export const getDelegations = (address) => (dispatch) => {
         const { rpc } = sdk;
         const query = rpc.query;
         const array = [address];
-        query.query_my_validators(array)
+        query && query.query_my_validators(array)
             .then((res) => {
                 dispatch(fetchDelegationsSuccess(res));
             })
