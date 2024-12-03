@@ -38,7 +38,7 @@ import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposal
 import { Button } from '@material-ui/core';
 import ConnectDialog from './ConnectDialog';
 import withRouter from '../../components/WithRouter';
-import { init as initShared } from '@namada/shared/dist/init-inline';
+// import { init as initShared } from '@namada/shared/dist/init-inline';
 // import { init as initShared } from '../../private_modules/namada/shared/init-inline';
 
 class NavBar extends Component {
@@ -60,9 +60,9 @@ class NavBar extends Component {
     }
 
     componentDidMount () {
-        (async () => {
-            await initShared();
-        })();
+        // (async () => {
+        //     await initShared();
+        // })();
         if (localStorage.getItem('of_co_address') && (localStorage.getItem('of_co_wallet') === 'cosmostation')) {
             setTimeout(() => {
                 this.handleCosmoStation(true);
