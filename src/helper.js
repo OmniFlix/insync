@@ -206,7 +206,12 @@ export const initializeNamadaChain = (cb) => {
             await namada.connect(chainId);
 
             const offlineSigner = namada.getSigner(chainId);
-            const accounts = await offlineSigner.accounts();
+            let accounts;
+            if (offlineSigner.accounts) {
+                accounts = await offlineSigner.accounts();
+            } else {
+                accounts = await namada.accounts();
+            }
             cb(null, accounts);
         } else {
             return null;
@@ -304,8 +309,6 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
             const client = namada.getSigner();
 
             const { cryptoMemory } = await init();
-            console.log('cryptoMemory', cryptoMemory);
-            // const sdk = getSdk(config.RPC_URL, config.TOKEN_ADDRESS, cryptoMemory);
             const sdk = getSdk(
               cryptoMemory,
               config.RPC_URL,
@@ -314,16 +317,14 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
               config.TOKEN_ADDRESS
             );
 
-            const { rpc, signing, tx } = sdk;
-            console.log('sdk', rpc, signing);
-            
+            const { rpc, tx } = sdk;
+
             // const checksums = await rpc.queryChecksums();
         
             const bondMsgValue = new BondMsgValue({
                 source: Tx.source,
-                validator: 'tnam1q9ur6jvl3rd8unel48cy8h526pw89tuq9qp5jsch',
+                validator: Tx.validator,
                 amount: Tx.amount,
-                // nativeToken: tx.nativeToken,
             });
 
             const wrapperProps = {
@@ -336,16 +337,14 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
             };
 
             const newTxs = [];
-            // const revealPkTx = await tx.buildRevealPk(wrapperProps);
-            // newTxs.push(revealPkTx);
+            const revealPkTx = await tx.buildRevealPk(wrapperProps);
+            newTxs.push(revealPkTx);
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
             const encoded = await tx.buildBond(wrapperTxValue, bondMsgValue);
-            console.log('encoded', encoded);
             newTxs.push(encoded);
 
             const updateDate = tx.buildBatch(newTxs);
 
-            console.log('555555', newTxs, updateDate);
             const checksums = {
                 "tx_become_validator.wasm": "a623483dfb1651c64f554bb4bf5814b327f060b2a43d5e9e3439efff221bc48f",
                 "tx_bond.wasm": "30caf17e23725c23b0d679807a7711c302373aa24e5786ad342d26019716d64f",
@@ -363,12 +362,14 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
             };
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
-                console.log('Transaction was approved by user and submitted via the SDK', signedBondTxBytes);
-                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((res) => {
-                    console.log('broadcast res', res);
+                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
+                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                        cb(result.info || result.log || result.rawLog);
+                    } else {
+                        cb(null, result);
+                    }
                 }).catch((error) => {
                     console.error(`broadcast error: ${error}`);
-                    // console.log('4444', error);
                     const message = 'success';
                     if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                         cb(null, message);
@@ -376,11 +377,8 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
                         cb(error && error.message);
                     }
                 });
-                // console.log('11111', result);
-                cb(null, true);
             }).catch((error) => {
                 console.error(`Transaction was rejected: ${error}`);
-                // console.log('4444', error);
                 const message = 'success';
                 if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                     cb(null, message);

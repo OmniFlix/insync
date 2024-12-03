@@ -145,13 +145,14 @@ class Table extends Component {
                 sort: false,
                 customBodyRender: (validatorAddress) => {
                     let value = null;
+                    console.log('55555', validatorAddress, this.props.genesisValidatorList)
                     if (this.props.genesisValidatorList && this.props.genesisValidatorList[validatorAddress]) {
                         value = this.props.genesisValidatorList[validatorAddress];
                     }
 
                     return (
                         this.props.delegations.find((item) =>
-                            (item && item.length && item[1]) === value.nam_address)
+                            value && (item && item.length && item[1]) === value.address)
                             ? <div className="actions">
                                 {/* <ReDelegateButton valAddress={validatorAddress}/> */}
                                 {/* <span/> */}
@@ -159,7 +160,7 @@ class Table extends Component {
                                 <span/>
                                 <DelegateButton valAddress={validatorAddress}/>
                             </div>
-                            : value && value.nam_address
+                            : value && value.address
                                 ? <div className="actions">
                                     <DelegateButton valAddress={validatorAddress}/>
                                 </div> : null
@@ -197,10 +198,10 @@ class Table extends Component {
             ? dataToMap.map((item) =>
                 [
                     // item.description && item.description.moniker,
-                    item.address,
+                    item.name || item.address,
                     // item,
                     // parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
-                    parseFloat((Number(item.voting_power) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
+                    parseFloat((Number(item.votingPower) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
                     // item.commission && item.commission.commission_rates &&
                     // item.commission.commission_rates.rate,
                     // item.commission && item.commission.commission_rates &&

@@ -59,14 +59,14 @@ const DelegateDialog = (props) => {
         //     memo: '',
         // };
 
-        let value = null;
-        if (props.genesisValidatorList && props.genesisValidatorList[props.validator]) {
-            value = props.genesisValidatorList[props.validator];
-        }
+        // let value = null;
+        // if (props.genesisValidatorList && props.genesisValidatorList[props.validator]) {
+        //     value = props.genesisValidatorList[props.validator];
+        // }
 
         const tx = {
             source: props.address,
-            validator: value && value.nam_address,
+            validator: props.validator,
             amount: new BigNumber(props.amount),
         };
 
@@ -81,11 +81,6 @@ const DelegateDialog = (props) => {
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
         };
-
-        // if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
-        //     cosmoStationSign(updatedTx, props.address, handleFetch);
-        //     return;
-        // }
 
         if (props.name === 'Undelegate') {
             unDelegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
@@ -138,7 +133,16 @@ const DelegateDialog = (props) => {
         signTxAndBroadcast(updatedTx, props.address, handleFetch);
     };
 
-    const handleFetch = () => {
+    const handleFetch = (error, value) => {
+        if (error) {
+            if (error.indexOf('not yet found on the chain') > -1) {
+                props.pendingDialog();
+                return;
+            }
+            props.failedDialog();
+            props.showMessage(error);
+            return;
+        }
         let balance = null;
         props.balance && props.balance.length && props.balance.map((val) => {
             if (val && val.length) {
@@ -172,7 +176,7 @@ const DelegateDialog = (props) => {
                     if (localBalance !== available) {
                         setInProgress(false);
                         clearInterval(intervalTime);
-                        props.successDialog(null);
+                        props.successDialog(value && value.hash);
                         updateBalance();
                     }
                 }

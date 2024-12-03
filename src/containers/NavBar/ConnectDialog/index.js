@@ -38,7 +38,7 @@ const ConnectDialog = (props) => {
                         <LightTooltip title="Download the Keplr Extension">
                             <IconButton
                                 className="download_button"
-                                onClick={() => window.open('https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap?hl=en')}>
+                                onClick={() => window.open('https://chromewebstore.google.com/detail/namada-keychain/hnebcbhjpeejiclgbohcijljcnjdofek?hl=en')}>
                                 <GetAppRoundedIcon/>
                             </IconButton>
                         </LightTooltip>

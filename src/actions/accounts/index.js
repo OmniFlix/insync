@@ -25,6 +25,9 @@ import Axios from 'axios';
 import { urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance } from '../../constants/url';
 import { Query } from '@namada/shared';
 import { config } from '../../config';
+// import { init as initShared } from '@namada/shared/dist/init-inline';
+import { Sdk, getSdk } from "@heliaxdev/namada-sdk/web";
+import init from "@heliaxdev/namada-sdk/web-init";
 // import { Tokens } from '@namada/types';
 
 export const setAccountAddress = (value) => {
@@ -64,25 +67,31 @@ const fetchDelegationsError = (message) => {
 export const getDelegations = (address) => (dispatch) => {
     dispatch(fetchDelegationsInProgress());
     (async () => {
-        // await initShared();
+        const { cryptoMemory } = await init();
+        const sdk = getSdk(
+          cryptoMemory,
+          config.RPC_URL,
+          config.MAPS_REST_URL,
+          "",
+          config.TOKEN_ADDRESS
+        );
 
-        // const query = new Query(config.RPC_URL);
-        // console.log('query', query);
-        // const array = [address];
-        // query.query_my_validators(array)
-        //     .then((res) => {
-        //         console.log('res', res);
-        //         dispatch(fetchDelegationsSuccess(res));
-        //     })
-        //     .catch((error) => {
-        //         dispatch(fetchDelegationsError(
-        //             error.response &&
-        //             error.response.data &&
-        //             error.response.data.message
-        //                 ? error.response.data.message
-        //                 : 'Failed!',
-        //         ));
-        //     });
+        const { rpc} = sdk;
+        const query = rpc.query;
+        const array = [address];
+        query.query_my_validators(array)
+            .then((res) => {
+                dispatch(fetchDelegationsSuccess(res));
+            })
+            .catch((error) => {
+                dispatch(fetchDelegationsError(
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.message
+                        ? error.response.data.message
+                        : 'Failed!',
+                ));
+            });
     })();
 };
 

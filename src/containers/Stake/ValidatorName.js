@@ -39,11 +39,11 @@ const ValidatorName = (props) => {
                     {props.name &&
                         props.name.slice(props.name.length - 6, props.name.length)}
                 </div>
-                {value && value.nam_address
-                    ? <div className="hash_text" title={value.nam_address}>
-                        <p className="name">{value.nam_address}</p>
-                        {value.nam_address &&
-                        value.nam_address.slice(value.nam_address.length - 6, value.nam_address.length)}
+                {value && value.address
+                    ? <div className="hash_text" title={value.address}>
+                        <p className="name">{value.address}</p>
+                        {value.address &&
+                        value.address.slice(value.address.length - 6, value.address.length)}
                     </div> : null}
             </div>
         </div>
