@@ -1,7 +1,8 @@
 .home .card {
-    background: rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(100px);
-    border-radius: 10px;
+    border-radius: 32px;
+    background: #FFFF46;
+    backdrop-filter: blur(50px);
+
     padding: 80px 100px;
     display: flex;
     align-items: center;
@@ -10,17 +11,32 @@
 }
 
 .home .card h2 {
-    font-family: 'Blinker', sans-serif;
-    font-weight: 600;
-    font-size: 36px;
-    line-height: 130%;
-    margin: 0 0 10px;
+
+    color: #000;
+font-family: "Rubik Glitch", system-ui;
+font-size: 36px;
+font-style: normal;
+font-weight: 400;
+line-height: 130%; /* 46.8px */
+margin-bottom: 0;
 }
 
 .home .card .info {
+    color: #000;
     font-family: 'Blinker', sans-serif;
     font-size: 24px;
-    line-height: 130%;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%; /* 31.2px */
+    margin: 10px 0;
+}
+
+.home .card .info strong {
+    font-weight: 700;
+}
+
+.home .card img {
+    
 }
 
 .home .card.telegram_card {

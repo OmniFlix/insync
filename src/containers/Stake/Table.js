@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '../../components/CircularProgress';
 import UnDelegateButton from '../Home/TokenDetails/UnDelegateButton';
-// import ReDelegateButton from '../Home/TokenDetails/ReDelegateButton';
+import ReDelegateButton from '../Home/TokenDetails/ReDelegateButton';
 import DelegateButton from './DelegateButton';
 import { formatCount } from '../../utils/numberFormats';
 import ValidatorName from './ValidatorName';
@@ -153,8 +153,8 @@ class Table extends Component {
                         this.props.delegations.find((item) =>
                             value && (item && item.length && item[1]) === value.address)
                             ? <div className="actions">
-                                {/* <ReDelegateButton valAddress={validatorAddress}/> */}
-                                {/* <span/> */}
+                                <ReDelegateButton valAddress={value && value.address}/>
+                                <span/>
                                 <UnDelegateButton valAddress={value && value.address}/>
                                 <span/>
                                 <DelegateButton valAddress={value && value.address}/>

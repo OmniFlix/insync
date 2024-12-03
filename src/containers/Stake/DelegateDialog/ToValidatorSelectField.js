@@ -32,9 +32,9 @@ const ToValidatorSelectField = (props) => {
 
                     return (
                         props.removeValue !== item.operator_address && <MenuItem
-                            key={item.key || item.value || item.name || item.type ||
+                            key={item.key || item.value || item.name || item.address || item.type ||
                                     item.operator_address}
-                            value={item.value || item.name || item.type ||
+                            value={item.value || item.name || item.address || item.type ||
                                     (item.operator_address)}>
                             {image && image.length && image[0] && image[0].them && image[0].them.length &&
                                 image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
@@ -50,8 +50,8 @@ const ToValidatorSelectField = (props) => {
                                         {item.description.moniker[0]}
                                     </span>
                                     : <span className="image" style={{ background: colors[index % 6] }}/>}
-                            {item.name ? item.name : item.type
-                                ? item.name : item.description && item.description.moniker}
+                            {item.name ? item.name : item.address
+                                ? item.address : item.description && item.description.moniker}
                         </MenuItem>
                     );
                 },

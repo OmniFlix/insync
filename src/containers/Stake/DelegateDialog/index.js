@@ -15,7 +15,7 @@ import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
 import ToValidatorSelectField from './ToValidatorSelectField';
 import MultiValidatorSelectField from './MultiValidatorSelectField';
-import { cosmoStationSign, delegateTransaction, signTxAndBroadcast, unDelegateTransaction } from '../../../helper';
+import { cosmoStationSign, delegateTransaction, reDelegateTransaction, signTxAndBroadcast, unDelegateTransaction } from '../../../helper';
 import {
     fetchRewards,
     fetchVestingBalance,
@@ -85,6 +85,16 @@ const DelegateDialog = (props) => {
         if (props.name === 'Undelegate') {
             txs.gasLimit = new BigNumber(100000);
             unDelegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
+        } else if (props.name === 'Redelegate') {
+            const tx = {
+                source: props.address,
+                validator: props.validator,
+                toValidator: props.toValidator,
+                amount: new BigNumber(props.amount),
+            };
+
+            txs.gasLimit = new BigNumber(100000);
+            reDelegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
         } else {
             delegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
         }
