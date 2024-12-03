@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import NavBar from '../NavBar';
-import variables from '../../utils/variables';
+// import variables from '../../utils/variables';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './index.css';
-import Cards from './Cards';
+// import Cards from './Cards';
 import { fetchProposalTally, fetchVoteDetails, getProposals } from '../../actions/proposals';
 import UnSuccessDialog from '../Stake/DelegateDialog/UnSuccessDialog';
 import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
@@ -12,26 +12,29 @@ import SuccessDialog from '../Stake/DelegateDialog/SuccessDialog';
 import withRouter from '../../components/WithRouter';
 
 const Proposals = (props) => {
-    const [active, setActive] = useState(1);
-    const [filter, setFilter] = useState(null);
+    // const [active, setActive] = useState(1);
+    // const [filter, setFilter] = useState(null);
 
-    const handleChange = (value) => {
-        if (active === value) {
-            return;
-        }
+    // const handleChange = (value) => {
+    //     if (active === value) {
+    //         return;
+    //     }
 
-        setActive(value);
-        setFilter(value === null ? 2
-            : value === 2 ? 'PROPOSAL_STATUS_PASSED'
-                : value === 3 ? 'PROPOSAL_STATUS_VOTING_PERIOD'
-                    : value === 4 ? 'PROPOSAL_STATUS_REJECTED' : null);
-    };
-    const filteredProposals = filter ? props.proposals.filter((item) => item.status === filter) : props.proposals;
+    //     setActive(value);
+    //     setFilter(value === null ? 2
+    //         : value === 2 ? 'PROPOSAL_STATUS_PASSED'
+    //             : value === 3 ? 'PROPOSAL_STATUS_VOTING_PERIOD'
+    //                 : value === 4 ? 'PROPOSAL_STATUS_REJECTED' : null);
+    // };
+    // const filteredProposals = filter ? props.proposals.filter((item) => item.status === filter) : props.proposals;
 
     return (
         <div className="proposals">
             <NavBar proposalTab={true}/>
             <div className="proposals_content padding">
+                Coming Soon...
+            </div>
+            {/* <div className="proposals_content padding">
                 <div className="heading">
                     <div className="tabs">
                         <p className={active === 1 ? 'active' : ''} onClick={() => handleChange(1)}>
@@ -57,7 +60,7 @@ const Proposals = (props) => {
                     : filteredProposals && filteredProposals.length
                         ? <Cards proposals={filteredProposals}/>
                         : <div className="cards_content">No data found</div>}
-            </div>
+            </div> */}
             <UnSuccessDialog/>
             <PendingDialog/>
             <SuccessDialog/>

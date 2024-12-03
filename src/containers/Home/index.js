@@ -11,8 +11,8 @@ import ClaimDialog from './ClaimDialog';
 import ClaimDelegateDialog from './ClaimDialog/ClaimDelegateDialog';
 import Table from '../Stake/Table';
 import { Button } from '@material-ui/core';
-import Cards from '../Proposals/Cards';
-import ProposalDialog from '../Proposals/ProposalDialog';
+// import Cards from '../Proposals/Cards';
+// import ProposalDialog from '../Proposals/ProposalDialog';
 import { connect } from 'react-redux';
 import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
 // import MultiDelegateButton from '../Stake/MultiDelegateButton';
@@ -75,8 +75,8 @@ class Home extends Component {
 
     render () {
         const { active } = this.state;
-        const filteredProposals = this.props.proposals && this.props.proposals.filter((item) => item.status === 2 ||
-            item.status === 'PROPOSAL_STATUS_VOTING_PERIOD');
+        // const filteredProposals = this.props.proposals && this.props.proposals.filter((item) => item.status === 2 ||
+        //     item.status === 'PROPOSAL_STATUS_VOTING_PERIOD');
 
         return (
             <>
@@ -86,7 +86,7 @@ class Home extends Component {
                         <div className="left_content">
                             <h2>
                                 {/* {variables[this.props.lang].welcome} */}
-                            NAM Staking & Governance part
+                            NAM Staking & Governance
                             </h2>
                             <p className="info">
                             {/* <span>developed by OmniFlix for Cosmic Validator</span>
@@ -138,7 +138,7 @@ class Home extends Component {
                         <Table active={active} home={true}/>
                     </div>
                 </div>
-                <div className="proposals">
+                {/* <div className="proposals">
                     {!this.props.open
                         ? <div className="proposals_content padding">
                             <div className="heading">
@@ -158,7 +158,7 @@ class Home extends Component {
                                     : <div className="cards_content">{variables[this.props.lang]['no_data_found']}</div>}
                         </div>
                         : <ProposalDialog/>}
-                </div>
+                </div> */}
                 <DelegateDialog/>
                 <SuccessDialog/>
                 <UnSuccessDialog/>

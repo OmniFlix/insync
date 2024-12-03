@@ -307,7 +307,14 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
 
             const { rpc, tx } = sdk;
 
-            // const checksums = await rpc.queryChecksums();
+            // let checksums = await rpc.queryChecksums();
+            // if (checksums && Object.keys(checksums).length) {
+            //     Object.keys(checksums).map((key) => {
+            //         if (key && checksums[key]) {
+            //             checksums[key] = checksums[key].toLowerCase();
+            //         }
+            //     })
+            // }
         
             const bondMsgValue = new BondMsgValue({
                 source: Tx.source,
@@ -334,19 +341,19 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
             const updateDate = tx.buildBatch(newTxs);
 
             const checksums = {
-                "tx_become_validator.wasm": "a623483dfb1651c64f554bb4bf5814b327f060b2a43d5e9e3439efff221bc48f",
-                "tx_bond.wasm": "30caf17e23725c23b0d679807a7711c302373aa24e5786ad342d26019716d64f",
-                "tx_change_validator_commission.wasm": "5c252a4b1abfc66084f769bacfe07cb97ee54f88cd635489876e3200d6b075f7",
-                "tx_change_validator_metadata.wasm": "8b2ee588f065b3830f48d4ade60ffd154c6bffc634b1f1fc22517005c626c6d3",
-                "tx_claim_rewards.wasm": "b72b6b20862e63134691d2058e08487dc0fbf83463f3ab6c801b9074c1e92835",
-                "tx_ibc.wasm": "4865b16a86eb4b37fc77fed4c1c45824fa4d59c5655b1ffbe614eec76685c74a",
-                "tx_init_proposal.wasm": "76a4a0ab7c1c237557bf5d492287b7e196fcdf9560867f339661dc02b807a142",
-                "tx_redelegate.wasm": "de0e8a80a1be4bfc184ae9af574b1d4dc6cd9c663328ac643e6bfd4ee12fe1b5",
-                "tx_reveal_pk.wasm": "bf00e581f8dcfd50d62f1bf5ba9d3f8ede15487e2882539fcc355008fbf72450",
-                "tx_transfer.wasm": "847de1a968118227b3c97b6f5f5ce358737208edcb580a3a381f0d2ad8833fb9",
-                "tx_unbond.wasm": "af2f45838ce5fe6efbda0b9ce692c58a1ab61064296633a26031d6eb4d8bccdc",
-                "tx_vote_proposal.wasm": "f43a6e0e6d36533d415298cc1a4c9525bc92a1597c115078548d8b7e948d3955",
-                "tx_withdraw.wasm": "d3e8cdbf06112592aa5544751bc77dd9ce8c36fa603a387d83594738bb00bc04"
+                "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
+                "tx_bond.wasm": "490cf419bdbffe616c6aa6c72d38064e350ee65fb04d92472ccf285aec6844b6",
+                "tx_change_validator_commission.wasm": "b745bc2b87bf8acd07e2f3409c77eee06c9b5206d2a77a2f23bb8e593c70cbfe",
+                "tx_change_validator_metadata.wasm": "1b5a323c140b54700f280cde8b9aac1c12555f9c119e936432ddfa8f194d23ac",
+                "tx_claim_rewards.wasm": "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c",
+                "tx_ibc.wasm": "cecb1f1b75cd649915423c5e68be20c5232f94ab57a11a908dc66751bbdc4f72",
+                "tx_init_proposal.wasm": "33ee28597cf0f6a11dfe6e23e9aedf2eb04dabb44069cbe317768f4d982d80be",
+                "tx_redelegate.wasm": "7d5ad1877643f7d9b32a511ef93a11e8503426baee0f5986d29e3f63a2355d58",
+                "tx_reveal_pk.wasm": "f1fc74460bd9bbd17140c88dfc0543440f066ffb84849c35c2bb0e331e51cf1c",
+                "tx_transfer.wasm": "6d753db0390e7cec16729fc405bfe41384c93bd79f42b8b8be41b22edbbf1b7c",
+                "tx_unbond.wasm": "36e774350b865752c9d309d518223abf0a60374bae15a1f73dfe4721b5887048",
+                "tx_vote_proposal.wasm": "faad78023b9391596981ac9a536070a3d7d469d5c6e20c2855b2cfca63c38f59",
+                "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
             };
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
@@ -428,19 +435,19 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
             const updateDate = tx.buildBatch(newTxs);
 
             const checksums = {
-                "tx_become_validator.wasm": "a623483dfb1651c64f554bb4bf5814b327f060b2a43d5e9e3439efff221bc48f",
-                "tx_bond.wasm": "30caf17e23725c23b0d679807a7711c302373aa24e5786ad342d26019716d64f",
-                "tx_change_validator_commission.wasm": "5c252a4b1abfc66084f769bacfe07cb97ee54f88cd635489876e3200d6b075f7",
-                "tx_change_validator_metadata.wasm": "8b2ee588f065b3830f48d4ade60ffd154c6bffc634b1f1fc22517005c626c6d3",
-                "tx_claim_rewards.wasm": "b72b6b20862e63134691d2058e08487dc0fbf83463f3ab6c801b9074c1e92835",
-                "tx_ibc.wasm": "4865b16a86eb4b37fc77fed4c1c45824fa4d59c5655b1ffbe614eec76685c74a",
-                "tx_init_proposal.wasm": "76a4a0ab7c1c237557bf5d492287b7e196fcdf9560867f339661dc02b807a142",
-                "tx_redelegate.wasm": "de0e8a80a1be4bfc184ae9af574b1d4dc6cd9c663328ac643e6bfd4ee12fe1b5",
-                "tx_reveal_pk.wasm": "bf00e581f8dcfd50d62f1bf5ba9d3f8ede15487e2882539fcc355008fbf72450",
-                "tx_transfer.wasm": "847de1a968118227b3c97b6f5f5ce358737208edcb580a3a381f0d2ad8833fb9",
-                "tx_unbond.wasm": "af2f45838ce5fe6efbda0b9ce692c58a1ab61064296633a26031d6eb4d8bccdc",
-                "tx_vote_proposal.wasm": "f43a6e0e6d36533d415298cc1a4c9525bc92a1597c115078548d8b7e948d3955",
-                "tx_withdraw.wasm": "d3e8cdbf06112592aa5544751bc77dd9ce8c36fa603a387d83594738bb00bc04"
+                "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
+                "tx_bond.wasm": "490cf419bdbffe616c6aa6c72d38064e350ee65fb04d92472ccf285aec6844b6",
+                "tx_change_validator_commission.wasm": "b745bc2b87bf8acd07e2f3409c77eee06c9b5206d2a77a2f23bb8e593c70cbfe",
+                "tx_change_validator_metadata.wasm": "1b5a323c140b54700f280cde8b9aac1c12555f9c119e936432ddfa8f194d23ac",
+                "tx_claim_rewards.wasm": "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c",
+                "tx_ibc.wasm": "cecb1f1b75cd649915423c5e68be20c5232f94ab57a11a908dc66751bbdc4f72",
+                "tx_init_proposal.wasm": "33ee28597cf0f6a11dfe6e23e9aedf2eb04dabb44069cbe317768f4d982d80be",
+                "tx_redelegate.wasm": "7d5ad1877643f7d9b32a511ef93a11e8503426baee0f5986d29e3f63a2355d58",
+                "tx_reveal_pk.wasm": "f1fc74460bd9bbd17140c88dfc0543440f066ffb84849c35c2bb0e331e51cf1c",
+                "tx_transfer.wasm": "6d753db0390e7cec16729fc405bfe41384c93bd79f42b8b8be41b22edbbf1b7c",
+                "tx_unbond.wasm": "36e774350b865752c9d309d518223abf0a60374bae15a1f73dfe4721b5887048",
+                "tx_vote_proposal.wasm": "faad78023b9391596981ac9a536070a3d7d469d5c6e20c2855b2cfca63c38f59",
+                "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
             };
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
@@ -523,19 +530,19 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
             const updateDate = tx.buildBatch(newTxs);
 
             const checksums = {
-                "tx_become_validator.wasm": "a623483dfb1651c64f554bb4bf5814b327f060b2a43d5e9e3439efff221bc48f",
-                "tx_bond.wasm": "30caf17e23725c23b0d679807a7711c302373aa24e5786ad342d26019716d64f",
-                "tx_change_validator_commission.wasm": "5c252a4b1abfc66084f769bacfe07cb97ee54f88cd635489876e3200d6b075f7",
-                "tx_change_validator_metadata.wasm": "8b2ee588f065b3830f48d4ade60ffd154c6bffc634b1f1fc22517005c626c6d3",
-                "tx_claim_rewards.wasm": "b72b6b20862e63134691d2058e08487dc0fbf83463f3ab6c801b9074c1e92835",
-                "tx_ibc.wasm": "4865b16a86eb4b37fc77fed4c1c45824fa4d59c5655b1ffbe614eec76685c74a",
-                "tx_init_proposal.wasm": "76a4a0ab7c1c237557bf5d492287b7e196fcdf9560867f339661dc02b807a142",
-                "tx_redelegate.wasm": "de0e8a80a1be4bfc184ae9af574b1d4dc6cd9c663328ac643e6bfd4ee12fe1b5",
-                "tx_reveal_pk.wasm": "bf00e581f8dcfd50d62f1bf5ba9d3f8ede15487e2882539fcc355008fbf72450",
-                "tx_transfer.wasm": "847de1a968118227b3c97b6f5f5ce358737208edcb580a3a381f0d2ad8833fb9",
-                "tx_unbond.wasm": "af2f45838ce5fe6efbda0b9ce692c58a1ab61064296633a26031d6eb4d8bccdc",
-                "tx_vote_proposal.wasm": "f43a6e0e6d36533d415298cc1a4c9525bc92a1597c115078548d8b7e948d3955",
-                "tx_withdraw.wasm": "d3e8cdbf06112592aa5544751bc77dd9ce8c36fa603a387d83594738bb00bc04"
+                "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
+                "tx_bond.wasm": "490cf419bdbffe616c6aa6c72d38064e350ee65fb04d92472ccf285aec6844b6",
+                "tx_change_validator_commission.wasm": "b745bc2b87bf8acd07e2f3409c77eee06c9b5206d2a77a2f23bb8e593c70cbfe",
+                "tx_change_validator_metadata.wasm": "1b5a323c140b54700f280cde8b9aac1c12555f9c119e936432ddfa8f194d23ac",
+                "tx_claim_rewards.wasm": "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c",
+                "tx_ibc.wasm": "cecb1f1b75cd649915423c5e68be20c5232f94ab57a11a908dc66751bbdc4f72",
+                "tx_init_proposal.wasm": "33ee28597cf0f6a11dfe6e23e9aedf2eb04dabb44069cbe317768f4d982d80be",
+                "tx_redelegate.wasm": "7d5ad1877643f7d9b32a511ef93a11e8503426baee0f5986d29e3f63a2355d58",
+                "tx_reveal_pk.wasm": "f1fc74460bd9bbd17140c88dfc0543440f066ffb84849c35c2bb0e331e51cf1c",
+                "tx_transfer.wasm": "6d753db0390e7cec16729fc405bfe41384c93bd79f42b8b8be41b22edbbf1b7c",
+                "tx_unbond.wasm": "36e774350b865752c9d309d518223abf0a60374bae15a1f73dfe4721b5887048",
+                "tx_vote_proposal.wasm": "faad78023b9391596981ac9a536070a3d7d469d5c6e20c2855b2cfca63c38f59",
+                "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
             };
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
