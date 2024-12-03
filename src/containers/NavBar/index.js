@@ -218,11 +218,14 @@ class NavBar extends Component {
         }
 
         if ((pp.address !== this.props.address) && (pp.address !== '') && (this.props.address !== '')) {
-            this.props.getBalance(this.props.address);
+            this.props.getBalance(this.props.address, (result) => {
+                if (result) {
+                    this.props.getDelegations(this.props.address);
+                }
+            });
             this.props.fetchVestingBalance(this.props.address);
             this.props.fetchRewards(this.props.address);
             this.props.getUnBondingDelegations(this.props.address);
-            this.props.getDelegations(this.props.address);
             this.props.getDelegatedValidatorsDetails(this.props.address);
         }
     }
@@ -289,7 +292,17 @@ class NavBar extends Component {
     handleFetch (address) {
         if (this.props.balance && !this.props.balance.length &&
             !this.props.balanceInProgress) {
-            this.props.getBalance(address);
+            this.props.getBalance(address, (result) => {
+                if (result) {
+                    if (this.props.delegations && !this.props.delegations.length &&
+                        !this.props.delegationsInProgress && !this.props.proposalTab) {
+                        this.props.getDelegations(address);
+                    }
+                }
+            });
+        } else if (this.props.delegations && !this.props.delegations.length &&
+            !this.props.delegationsInProgress && !this.props.proposalTab) {
+            this.props.getDelegations(address);
         }
         // if (this.props.vestingBalance && !this.props.vestingBalance.value &&
         //     !this.props.vestingBalanceInProgress) {
@@ -304,10 +317,6 @@ class NavBar extends Component {
         //     !this.props.unBondingDelegationsInProgress && !this.props.proposalTab && !this.props.stake) {
         //     this.props.getUnBondingDelegations(address);
         // }
-        if (this.props.delegations && !this.props.delegations.length &&
-            !this.props.delegationsInProgress && !this.props.proposalTab) {
-            this.props.getDelegations(address);
-        }
         if (this.props.delegatedValidatorList && !this.props.delegatedValidatorList.length &&
             !this.props.delegatedValidatorListInProgress && !this.props.proposalTab) {
             this.props.getDelegatedValidatorsDetails(address);
