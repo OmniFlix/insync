@@ -28,18 +28,23 @@
     font-weight: 600;
     font-size: 24px;
     line-height: 130%;
-    color: #FFFFFF;
+    color: #000;
     margin: auto;
     width: max-content;
     text-align: center;
 }
 
 .table th button div {
-    color: #ffffff;
+    color: #000;
+    font-family: 'Blinker', sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%; /* 31.2px */
 }
 
 .table th button svg {
-    fill: #ffffff;
+    fill: #000;
 }
 
 .table th button > span > div > div:last-child {
@@ -48,11 +53,11 @@
 }
 
 .table tbody tr td {
-    background: #FFFFFF;
     border: unset;
     margin-bottom: 10px;
     padding: 12px;
     border-color: #ffff;
+    background: #000;
 }
 
 .table tbody tr td > div {
@@ -65,11 +70,11 @@
 }
 
 .table tbody tr td:first-child {
-    border-radius: 50px 0 0 50px;
+    border-radius: 100px 0 0 100px;
 }
 
 .table tbody tr td:last-child {
-    border-radius: 0 50px 50px 0;
+    border-radius: 0 100px 100px 0;
 }
 
 .table tbody tr td[colspan='6'] {
