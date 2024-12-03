@@ -61,7 +61,7 @@ const TokenDetails = (props) => {
                 <p>{variables[props.lang]['available_tokens']}</p>
                 <div className="chip">
                     <img alt="available tokens" src={totalTokens}/>
-                    <p>{available}</p>
+                    <p>{available || 0}</p>
                 </div>
                 <StakeTokensButton/>
             </div>
