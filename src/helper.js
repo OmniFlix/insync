@@ -307,14 +307,14 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
 
             const { rpc, tx } = sdk;
 
-            // let checksums = await rpc.queryChecksums();
-            // if (checksums && Object.keys(checksums).length) {
-            //     Object.keys(checksums).map((key) => {
-            //         if (key && checksums[key]) {
-            //             checksums[key] = checksums[key].toLowerCase();
-            //         }
-            //     })
-            // }
+            let checksums = await rpc.queryChecksums();
+            if (checksums && Object.keys(checksums).length) {
+                Object.keys(checksums).map((key) => {
+                    if (key && checksums[key]) {
+                        checksums[key] = checksums[key].toLowerCase();
+                    }
+                })
+            }
         
             const bondMsgValue = new BondMsgValue({
                 source: Tx.source,
@@ -340,21 +340,21 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
 
             const updateDate = tx.buildBatch(newTxs);
 
-            const checksums = {
-                "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
-                "tx_bond.wasm": "490cf419bdbffe616c6aa6c72d38064e350ee65fb04d92472ccf285aec6844b6",
-                "tx_change_validator_commission.wasm": "b745bc2b87bf8acd07e2f3409c77eee06c9b5206d2a77a2f23bb8e593c70cbfe",
-                "tx_change_validator_metadata.wasm": "1b5a323c140b54700f280cde8b9aac1c12555f9c119e936432ddfa8f194d23ac",
-                "tx_claim_rewards.wasm": "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c",
-                "tx_ibc.wasm": "cecb1f1b75cd649915423c5e68be20c5232f94ab57a11a908dc66751bbdc4f72",
-                "tx_init_proposal.wasm": "33ee28597cf0f6a11dfe6e23e9aedf2eb04dabb44069cbe317768f4d982d80be",
-                "tx_redelegate.wasm": "7d5ad1877643f7d9b32a511ef93a11e8503426baee0f5986d29e3f63a2355d58",
-                "tx_reveal_pk.wasm": "f1fc74460bd9bbd17140c88dfc0543440f066ffb84849c35c2bb0e331e51cf1c",
-                "tx_transfer.wasm": "6d753db0390e7cec16729fc405bfe41384c93bd79f42b8b8be41b22edbbf1b7c",
-                "tx_unbond.wasm": "36e774350b865752c9d309d518223abf0a60374bae15a1f73dfe4721b5887048",
-                "tx_vote_proposal.wasm": "faad78023b9391596981ac9a536070a3d7d469d5c6e20c2855b2cfca63c38f59",
-                "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
-            };
+            // const checksums = {
+            //     "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
+            //     "tx_bond.wasm": "490cf419bdbffe616c6aa6c72d38064e350ee65fb04d92472ccf285aec6844b6",
+            //     "tx_change_validator_commission.wasm": "b745bc2b87bf8acd07e2f3409c77eee06c9b5206d2a77a2f23bb8e593c70cbfe",
+            //     "tx_change_validator_metadata.wasm": "1b5a323c140b54700f280cde8b9aac1c12555f9c119e936432ddfa8f194d23ac",
+            //     "tx_claim_rewards.wasm": "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c",
+            //     "tx_ibc.wasm": "cecb1f1b75cd649915423c5e68be20c5232f94ab57a11a908dc66751bbdc4f72",
+            //     "tx_init_proposal.wasm": "33ee28597cf0f6a11dfe6e23e9aedf2eb04dabb44069cbe317768f4d982d80be",
+            //     "tx_redelegate.wasm": "7d5ad1877643f7d9b32a511ef93a11e8503426baee0f5986d29e3f63a2355d58",
+            //     "tx_reveal_pk.wasm": "f1fc74460bd9bbd17140c88dfc0543440f066ffb84849c35c2bb0e331e51cf1c",
+            //     "tx_transfer.wasm": "6d753db0390e7cec16729fc405bfe41384c93bd79f42b8b8be41b22edbbf1b7c",
+            //     "tx_unbond.wasm": "36e774350b865752c9d309d518223abf0a60374bae15a1f73dfe4721b5887048",
+            //     "tx_vote_proposal.wasm": "faad78023b9391596981ac9a536070a3d7d469d5c6e20c2855b2cfca63c38f59",
+            //     "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
+            // };
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
@@ -410,7 +410,14 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
 
             const { rpc, tx } = sdk;
 
-            // const checksums = await rpc.queryChecksums();
+            let checksums = await rpc.queryChecksums();
+            if (checksums && Object.keys(checksums).length) {
+                Object.keys(checksums).map((key) => {
+                    if (key && checksums[key]) {
+                        checksums[key] = checksums[key].toLowerCase();
+                    }
+                })
+            }
         
             const bondMsgValue = new UnbondMsgValue({
                 source: Tx.source,
@@ -433,22 +440,6 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
             newTxs.push(encoded);
 
             const updateDate = tx.buildBatch(newTxs);
-
-            const checksums = {
-                "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
-                "tx_bond.wasm": "490cf419bdbffe616c6aa6c72d38064e350ee65fb04d92472ccf285aec6844b6",
-                "tx_change_validator_commission.wasm": "b745bc2b87bf8acd07e2f3409c77eee06c9b5206d2a77a2f23bb8e593c70cbfe",
-                "tx_change_validator_metadata.wasm": "1b5a323c140b54700f280cde8b9aac1c12555f9c119e936432ddfa8f194d23ac",
-                "tx_claim_rewards.wasm": "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c",
-                "tx_ibc.wasm": "cecb1f1b75cd649915423c5e68be20c5232f94ab57a11a908dc66751bbdc4f72",
-                "tx_init_proposal.wasm": "33ee28597cf0f6a11dfe6e23e9aedf2eb04dabb44069cbe317768f4d982d80be",
-                "tx_redelegate.wasm": "7d5ad1877643f7d9b32a511ef93a11e8503426baee0f5986d29e3f63a2355d58",
-                "tx_reveal_pk.wasm": "f1fc74460bd9bbd17140c88dfc0543440f066ffb84849c35c2bb0e331e51cf1c",
-                "tx_transfer.wasm": "6d753db0390e7cec16729fc405bfe41384c93bd79f42b8b8be41b22edbbf1b7c",
-                "tx_unbond.wasm": "36e774350b865752c9d309d518223abf0a60374bae15a1f73dfe4721b5887048",
-                "tx_vote_proposal.wasm": "faad78023b9391596981ac9a536070a3d7d469d5c6e20c2855b2cfca63c38f59",
-                "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
-            };
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
@@ -504,8 +495,15 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
 
             const { rpc, tx } = sdk;
 
-            // const checksums = await rpc.queryChecksums();
-        
+            let checksums = await rpc.queryChecksums();
+            if (checksums && Object.keys(checksums).length) {
+                Object.keys(checksums).map((key) => {
+                    if (key && checksums[key]) {
+                        checksums[key] = checksums[key].toLowerCase();
+                    }
+                })
+            }
+
             const bondMsgValue = new RedelegateMsgValue({
                 owner: Tx.source,
                 sourceValidator: Tx.validator,
@@ -528,22 +526,6 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
             newTxs.push(encoded);
 
             const updateDate = tx.buildBatch(newTxs);
-
-            const checksums = {
-                "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
-                "tx_bond.wasm": "490cf419bdbffe616c6aa6c72d38064e350ee65fb04d92472ccf285aec6844b6",
-                "tx_change_validator_commission.wasm": "b745bc2b87bf8acd07e2f3409c77eee06c9b5206d2a77a2f23bb8e593c70cbfe",
-                "tx_change_validator_metadata.wasm": "1b5a323c140b54700f280cde8b9aac1c12555f9c119e936432ddfa8f194d23ac",
-                "tx_claim_rewards.wasm": "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c",
-                "tx_ibc.wasm": "cecb1f1b75cd649915423c5e68be20c5232f94ab57a11a908dc66751bbdc4f72",
-                "tx_init_proposal.wasm": "33ee28597cf0f6a11dfe6e23e9aedf2eb04dabb44069cbe317768f4d982d80be",
-                "tx_redelegate.wasm": "7d5ad1877643f7d9b32a511ef93a11e8503426baee0f5986d29e3f63a2355d58",
-                "tx_reveal_pk.wasm": "f1fc74460bd9bbd17140c88dfc0543440f066ffb84849c35c2bb0e331e51cf1c",
-                "tx_transfer.wasm": "6d753db0390e7cec16729fc405bfe41384c93bd79f42b8b8be41b22edbbf1b7c",
-                "tx_unbond.wasm": "36e774350b865752c9d309d518223abf0a60374bae15a1f73dfe4721b5887048",
-                "tx_vote_proposal.wasm": "faad78023b9391596981ac9a536070a3d7d469d5c6e20c2855b2cfca63c38f59",
-                "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
-            };
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
