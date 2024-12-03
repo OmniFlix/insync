@@ -119,14 +119,18 @@
     font-size: 14px;
     line-height: 130%;
     color: #FFF;
+    text-transform: capitalize;
 }
 
 .table .actions > button.delegate_button {
-    border-color: #00FF0A;
+    border-color: #00FFFE;
+    color: #00FFFE;
 }
 
 .table .actions > button.un_delegate {
-    border-color: #FF0000;
+    border-color: #FF6B6B;
+    /* border: 1px solid #FF6B6B; */
+    color: #FF6B6B;
 }
 
 .table .actions > span {
