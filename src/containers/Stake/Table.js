@@ -36,7 +36,7 @@ class Table extends Component {
                                 onClick={() => this.props.showConnectDialog()}>
                                 Connect
                             </Button>
-                            : <div className="no_data_table"> No data found </div>,
+                            : <div className="no_data_table"> Stake with a Validator now! </div>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {

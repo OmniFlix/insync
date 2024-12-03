@@ -401,7 +401,7 @@ class NavBar extends Component {
                     alt="OmniFlix"
                     src={logo}
                     style={{ cursor: 'pointer' }}
-                    onClick={() => window.open('https://namada-insync.cosmicvalidator.com', '_self')}/>
+                    onClick={() => window.open('https://namada.omniflix.co', '_self')}/>
                 <ExpansionButton/>
                 <div className={ClassNames('right_content', this.props.show ? 'show' : '')}>
                     <div className="back_button" onClick={this.props.handleClose}>
