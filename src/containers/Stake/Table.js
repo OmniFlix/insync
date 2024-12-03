@@ -121,12 +121,17 @@ class Table extends Component {
                 sort: false,
                 customBodyRender: (item) => {
                     let address = null;
-                    if (this.props.genesisValidatorList && this.props.genesisValidatorList[item.address]) {
-                        address = this.props.genesisValidatorList[item.address];
-                    }
+                    this.props.delegatedValidatorList && this.props.delegatedValidatorList.length &&
+                    this.props.delegatedValidatorList.map((value) => {
+                        if (value && value.validator && value.validator.address && item &&
+                            (item.address === value.validator.address)) {
+                            address = value.validator.address;
+                        }
+                    });
                     let value = null;
-                    address && address.nam_address && this.props.delegations.map((val) => {
-                        if (val && val.length && val[1] && (address.nam_address === val[1])) {
+                    address && this.props.delegations && this.props.delegations.length &&
+                    this.props.delegations.map((val) => {
+                        if (val && val.length && val[1] && (address === val[1])) {
                             value = val[2];
                         }
                     });
@@ -143,26 +148,20 @@ class Table extends Component {
             label: 'Action',
             options: {
                 sort: false,
-                customBodyRender: (validatorAddress) => {
-                    let value = null;
-                    console.log('55555', validatorAddress, this.props.genesisValidatorList)
-                    if (this.props.genesisValidatorList && this.props.genesisValidatorList[validatorAddress]) {
-                        value = this.props.genesisValidatorList[validatorAddress];
-                    }
-
+                customBodyRender: (value) => {
                     return (
                         this.props.delegations.find((item) =>
                             value && (item && item.length && item[1]) === value.address)
                             ? <div className="actions">
                                 {/* <ReDelegateButton valAddress={validatorAddress}/> */}
                                 {/* <span/> */}
-                                <UnDelegateButton valAddress={validatorAddress}/>
+                                <UnDelegateButton valAddress={value && value.address}/>
                                 <span/>
-                                <DelegateButton valAddress={validatorAddress}/>
+                                <DelegateButton valAddress={value && value.address}/>
                             </div>
                             : value && value.address
                                 ? <div className="actions">
-                                    <DelegateButton valAddress={validatorAddress}/>
+                                    <DelegateButton valAddress={value && value.address}/>
                                 </div> : null
                     );
                 },
@@ -179,14 +178,14 @@ class Table extends Component {
             dataToMap = [];
             this.props.validatorList && this.props.validatorList.length && this.props.validatorList.map((val) => {
                 if (val && val.address) {
-                    let address = null;
-                    if (this.props.genesisValidatorList && this.props.genesisValidatorList[val.address]) {
-                        address = this.props.genesisValidatorList[val.address];
-                    }
-                    this.props.delegations && this.props.delegations.length &&
-                    this.props.delegations.map((value) => {
-                        if (value && value.length && value[1] && address &&
-                            address.nam_address && (address.nam_address === value[1])) {
+                    // let address = null;
+                    // if (this.props.genesisValidatorList && this.props.genesisValidatorList[val.address]) {
+                    //     address = this.props.genesisValidatorList[val.address];
+                    // }
+                    this.props.delegatedValidatorList && this.props.delegatedValidatorList.length &&
+                    this.props.delegatedValidatorList.map((value) => {
+                        if (value && value.validator && value.validator.address &&
+                            (val.address === value.validator.address)) {
                             dataToMap.push(val);
                         }
                     });
@@ -208,7 +207,7 @@ class Table extends Component {
                     // item.commission.commission_rates.rate
                     //     ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,
                     item,
-                    item.address,
+                    item,
                 ])
             : [];
 

@@ -308,10 +308,10 @@ class NavBar extends Component {
             !this.props.delegationsInProgress && !this.props.proposalTab) {
             this.props.getDelegations(address);
         }
-        // if (this.props.delegatedValidatorList && !this.props.delegatedValidatorList.length &&
-        //     !this.props.delegatedValidatorListInProgress && !this.props.proposalTab) {
-        //     this.props.getDelegatedValidatorsDetails(address);
-        // }
+        if (this.props.delegatedValidatorList && !this.props.delegatedValidatorList.length &&
+            !this.props.delegatedValidatorListInProgress && !this.props.proposalTab) {
+            this.props.getDelegatedValidatorsDetails(address);
+        }
     }
 
     initKeplr () {

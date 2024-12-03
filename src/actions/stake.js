@@ -51,8 +51,6 @@ import {
 } from '../constants/url';
 import { config } from '../config';
 import { calculateNominalAPR, calculateRealAPR, getBlocksPerYearReal, getParams } from '../utils/aprCalculation';
-// import { Query, Sdk } from '@namada/shared';
-// import { init as initShared } from '@namada/shared/dist/init-inline';
 
 const axios = require('axios').default;
 
@@ -99,32 +97,6 @@ export const getValidators = (page, cb) => (dispatch) => {
             ));
             cb(null);
         });
-
-    // (async () => {
-    //     console.log('888');
-    //     await initShared();
-    //
-    //     console.log('0');
-    //     const query = new Query(config.RPC_URL);
-    //     console.log('1', query);
-    //     query.query_balance('tnam1qptfnvqmzht2kvcd839g3zk68qags8jutyss5vu6', ['tnam1qxvg64psvhwumv3mwrrjfcz0h3t3274hwggyzcee'])
-    //         .then((res) => {
-    //             console.log('2', res);
-    //             // dispatch(fetchValidatorsSuccess(res.data && res.data.validators));
-    //             // cb(res.data && res.data.validators);
-    //         })
-    //         .catch((error) => {
-    //             console.log('3', error);
-    //             dispatch(fetchValidatorsError(
-    //                 error.response &&
-    //                 error.response.data &&
-    //                 error.response.data.message
-    //                     ? error.response.data.message
-    //                     : 'Failed!',
-    //             ));
-    //             cb(null);
-    //         });
-    // })();
 };
 
 const fetchGenesisValidatorsInProgress = () => {
@@ -326,7 +298,7 @@ export const getDelegatedValidatorsDetails = (address) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchDelegatedValidatorsSuccess(res.data && res.data.validators));
+            dispatch(fetchDelegatedValidatorsSuccess(res.data && res.data.results));
         })
         .catch((error) => {
             dispatch(fetchDelegatedValidatorsError(
