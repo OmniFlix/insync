@@ -24,18 +24,29 @@ const TokensTextField = (props) => {
     // const available = (balance && balance.amount && Number(balance.amount));
     // const availableTokens = available / (10 ** config.COIN_DECIMALS);
     const availableTokens = balance;
-    let stakedTokens = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
-        if (currentValue && currentValue.length && currentValue[2]) {
-            return accumulator + Number(currentValue[2]);
+    // let stakedTokens = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
+    //     if (currentValue && currentValue.length && currentValue[2]) {
+    //         return accumulator + Number(currentValue[2]);
+    //     }
+    // }, 0);
+
+    let stakedTokens = props.delegatedValidatorList && props.delegatedValidatorList.reduce((accumulator, currentValue) => {
+        if (currentValue && currentValue.minDenomAmount) {
+            return accumulator + Number(currentValue.minDenomAmount);
         }
     }, 0);
-
+    stakedTokens = stakedTokens && stakedTokens / 10 ** config.COIN_DECIMALS;
     if (props.selectedValidator && (props.name === 'Undelegate' || props.name === 'Redelegate')) {
-        const filterList = props.delegations.find((value) => value && value.length && value[1] &&
-        (props.selectedValidator === value[1]));
+        // const filterList = props.delegations.find((value) => value && value.length && value[1] &&
+        // (props.selectedValidator === value[1]));
 
-        if (filterList && filterList.length && filterList[2]) {
-            stakedTokens = Number(filterList[2]);
+        // if (filterList && filterList.length && filterList[2]) {
+        //     stakedTokens = Number(filterList[2]);
+        // }
+        const filterList = props.delegatedValidatorList.find((value) => value && value.validator && value.validator.address &&
+        (props.selectedValidator === value.validator.address));
+        if (filterList && filterList.minDenomAmount && filterList.minDenomAmount) {
+            stakedTokens = filterList.minDenomAmount && Number(filterList.minDenomAmount) / 10 ** config.COIN_DECIMALS;
         }
     }
 
@@ -99,6 +110,7 @@ const TokensTextField = (props) => {
 };
 
 TokensTextField.propTypes = {
+    delegatedValidatorList: PropTypes.array.isRequired,
     genesisValidatorList: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
@@ -115,6 +127,7 @@ const stateToProps = (state) => {
         balance: state.accounts.balance.result,
         vestingBalance: state.accounts.vestingBalance.result,
         delegations: state.accounts.delegations.result,
+        delegatedValidatorList: state.stake.delegatedValidators.list,
         lang: state.language,
         value: state.stake.tokens,
         name: state.stake.delegateDialog.name,

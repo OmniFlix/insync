@@ -16,11 +16,17 @@ import { config } from '../../../config';
 // import { gas } from '../../../defaultGasValues';
 
 const TokenDetails = (props) => {
-    const staked = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
-        if (currentValue && currentValue.length && currentValue[2]) {
-            return accumulator + Number(currentValue[2]);
+    let staked = props.delegatedValidatorList && props.delegatedValidatorList.reduce((accumulator, currentValue) => {
+        if (currentValue && currentValue.minDenomAmount) {
+            return accumulator + Number(currentValue.minDenomAmount);
         }
     }, 0);
+    staked = staked && staked / 10 ** config.COIN_DECIMALS;
+    // const staked = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
+    //     if (currentValue && currentValue.length && currentValue[2]) {
+    //         return accumulator + Number(currentValue[2]);
+    //     }
+    // }, 0);
     let balance = null;
     props.balance && props.balance.length && props.balance.map((val) => {
         if (val && val.length) {
@@ -104,6 +110,7 @@ TokenDetails.propTypes = {
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
     delegations: PropTypes.array.isRequired,
+    delegatedValidatorList: PropTypes.array.isRequired,
     delegationsInProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
     rewards: PropTypes.shape({
@@ -126,6 +133,7 @@ TokenDetails.propTypes = {
 const stateToProps = (state) => {
     return {
         delegations: state.accounts.delegations.result,
+        delegatedValidatorList: state.stake.delegatedValidators.list,
         delegationsInProgress: state.accounts.delegations.inProgress,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,

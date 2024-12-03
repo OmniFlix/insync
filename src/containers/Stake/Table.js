@@ -54,7 +54,7 @@ class Table extends Component {
                 customBodyRender: (value, index) => (
                     <ValidatorName
                         index={index && index.rowIndex} name={value}
-                        value={index.rowData && index.rowData.length && index.rowData[1]}/>
+                        value={index.rowData && index.rowData.length && index.rowData[2]}/>
                 ),
             },
         },
@@ -121,24 +121,25 @@ class Table extends Component {
                 sort: false,
                 customBodyRender: (item) => {
                     let address = null;
+                    let newValue = null;
                     this.props.delegatedValidatorList && this.props.delegatedValidatorList.length &&
                     this.props.delegatedValidatorList.map((value) => {
                         if (value && value.validator && value.validator.address && item &&
                             (item.address === value.validator.address)) {
                             address = value.validator.address;
+                            newValue = value.minDenomAmount && value.minDenomAmount / 10 ** config.COIN_DECIMALS;;
                         }
                     });
-                    let value = null;
-                    address && this.props.delegations && this.props.delegations.length &&
-                    this.props.delegations.map((val) => {
-                        if (val && val.length && val[1] && (address === val[1])) {
-                            value = val[2];
-                        }
-                    });
+                    // address && this.props.delegations && this.props.delegations.length &&
+                    // this.props.delegations.map((val) => {
+                    //     if (val && val.length && val[1] && (address === val[1])) {
+                    //         value = val[2];
+                    //     }
+                    // });
 
                     return (
-                        <div className={value ? 'tokens' : 'no_tokens'}>
-                            {Number(value) || 'no tokens'}
+                        <div className={newValue ? 'tokens' : 'no_tokens'}>
+                            {Number(newValue) || 'no tokens'}
                         </div>
                     );
                 },
@@ -197,7 +198,7 @@ class Table extends Component {
             ? dataToMap.map((item) =>
                 [
                     // item.description && item.description.moniker,
-                    item.name || item.address,
+                    item.name,
                     // item,
                     // parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
                     parseFloat((Number(item.votingPower)).toFixed(1)),
