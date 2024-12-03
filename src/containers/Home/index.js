@@ -18,6 +18,7 @@ import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
 // import MultiDelegateButton from '../Stake/MultiDelegateButton';
 import withRouter from '../../components/WithRouter';
 // import SendButton from './SendButton';
+import cvIcon from '../../assets/cv.png';
 
 class Home extends Component {
     constructor (props) {
@@ -83,8 +84,17 @@ class Home extends Component {
                 <div className="home padding">
                     <div className="card">
                         <div className="left_content">
-                            <h2>{variables[this.props.lang].welcome}</h2>
-                            <p className="info">{variables[this.props.lang].participate}</p>
+                            <h2>
+                                {/* {variables[this.props.lang].welcome} */}
+                            NAM Staking & Governance part
+                            </h2>
+                            <p className="info">
+                            {/* <span>developed by OmniFlix for Cosmic Validator</span>
+                            <span>supported with a grant by Mandragora</span> */}
+                                {/* {variables[this.props.lang].participate} */}
+                                developed by <strong>OmniFlix Network</strong> in association with
+                                </p>
+                                <img alt="cv" src={cvIcon} />
                         </div>
                         <TokenDetails lang={this.props.lang}/>
                         {/* <SendButton/> */}

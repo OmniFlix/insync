@@ -19,11 +19,13 @@
     font-weight: 600;
     font-size: 36px;
     line-height: 130%;
-    color: #ffffff80;
+    color: #fff;
+    opacity: 0.5;
 }
 
 .proposals .tabs > p.active {
-    color: #ffffff;
+    color: #00FFFE;
+    opacity: 1;
 }
 
 .proposals .tabs > span {
@@ -43,6 +45,11 @@
     border-radius: 10px;
     margin-top: 16px;
     padding: 38px;
+    color: #000;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 130%;
 }
 
 .proposals .cards_content.loading_card {

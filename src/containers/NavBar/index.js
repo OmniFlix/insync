@@ -424,7 +424,7 @@ class NavBar extends Component {
                     {localStorage.getItem('of_co_address') || this.props.address
                         ? <DisconnectButton/>
                         : <Button
-                            className="disconnect_button"
+                            className="connect_button"
                             onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
                             Connect
                         </Button>}

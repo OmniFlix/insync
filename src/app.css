@@ -10,7 +10,7 @@ html, body, #root, .of_community, .main_content, .content_div {
 body {
     margin: 0;
     text-align: center;
-    background: linear-gradient(125.7deg, #0023DA 0.64%, #E4317C 59.22%, #EBFF00 114.62%);
+    background: linear-gradient(180deg, #000 0%, #4E4E15 30.5%, #FFFF46 100%);
     color: #ffffff;
     font-family: 'Blinker', sans-serif;
 }

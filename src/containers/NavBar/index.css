@@ -85,31 +85,44 @@ table .disconnect_button {
     box-shadow: unset;
 }
 
+.nav_bar .tabs_content {
+    display: flex;
+    gap: 20px;
+}
+
 .nav_bar .horizontal_tabs .tab {
-    background: linear-gradient(
-            91.04deg, rgba(0, 0, 0, 0.3) -2.67%, rgba(0, 0, 0, 0.228) 48.93%, rgba(0, 0, 0, 0.3) 99.58%);
     border-radius: 50px;
-    padding: 10px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(10px);
+    height: 50px;
+    flex-shrink: 0;
+    color: #FFF;
+    text-align: center;
     font-family: 'Blinker', sans-serif;
+    font-size: 24px;
     font-style: normal;
     font-weight: 600;
-    font-size: 20px;
     line-height: 130%;
-    text-align: center;
-    text-transform: unset;
+    text-transform: capitalize;
+    min-width: auto;
+    padding: 10px 26px;
     opacity: 1;
-    margin: 0 10px;
-    min-width: max-content;
+}
+
+.nav_bar .horizontal_tabs .tab:hover {
+    border: 1px solid #C0C00D;
+    background: rgba(255, 255, 70, 0.20);
 }
 
 .nav_bar .horizontal_tabs .tab:first-child {
     margin-left: 0;
 }
 
-.nav_bar .horizontal_tabs .tab:hover,
 .nav_bar .horizontal_tabs .tab.active_tab {
-    background: #FFFFFF;
-    color: #000000;
+    color: #000;
+    border: 1px solid #C0C00D;
+    background: #FFFF46;
 }
 
 .nav_bar .toggle_button,
@@ -123,6 +136,28 @@ table .disconnect_button {
     font-weight: 600;
     line-height: 130%;
     color: #FFFFFF;
+}
+
+.nav_bar .connect_button {
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 70, 0.50);
+    background: rgba(255, 255, 70, 0.20);
+    backdrop-filter: blur(10px);
+    height: 50px;
+    flex-shrink: 0;
+
+    color: #FFFF46;
+    font-family: 'Blinker', sans-serif;
+    font-size: 23px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%; 
+    text-transform: uppercase;
+    margin-left: 20px;
+}
+
+.nav_bar .connect_button:hover {
+    background: rgba(255, 255, 70, 0.20);
 }
 
 @keyframes fadeInDown {

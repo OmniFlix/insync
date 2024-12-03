@@ -16,15 +16,17 @@
     font-weight: 600;
     font-size: 36px;
     line-height: 130%;
-    color: #ffffff80;
+    color: #FFF;
+    opacity: 0.5;
 }
 
 .stake .tabs > p.active {
-    color: #ffffff;
+    color: #00FFFE;
+    opacity: 1;
 }
 
 .stake .tabs > span {
-    border: 1px solid #FFFFFF;
+    border: 1px solid #FFF;
     height: 30px;
     margin: 0 20px;
 }
@@ -35,9 +37,9 @@
 }
 
 .stake .table {
-    background: rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(100px);
-    border-radius: 10px;
+    border-radius: 32px;
+    background: #FFFF46;
+    backdrop-filter: blur(50px);
     margin-top: 16px;
     padding: 40px 58px;
 }
@@ -70,6 +72,13 @@
 .stake .table .validator .name_section .hash_text {
     color: unset;
     max-width: 140px;
+
+    color: #FFF;
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%; /* 23.4px */
 }
 
 /*.stake .table tbody tr td {*/
@@ -80,6 +89,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    color: #FFF;
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%; /* 23.4px */
 }
 
 .table .voting_power > span {
@@ -102,7 +118,7 @@
     font-weight: 600;
     font-size: 14px;
     line-height: 130%;
-    color: #000000;
+    color: #FFF;
 }
 
 .table .actions > button.delegate_button {
@@ -124,7 +140,7 @@
     font-weight: 600;
     font-size: 18px;
     line-height: 130%;
-    color: #BDBDBD;
+    color: #FFF;
 }
 
 .table td .tokens {
@@ -133,7 +149,7 @@
     font-size: 18px;
     line-height: 130%;
     text-align: center;
-    color: #0085FF;
+    color: #00FFFE;
 }
 
 .table td .status {
