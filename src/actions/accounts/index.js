@@ -23,8 +23,7 @@ import {
 } from '../../constants/accounts';
 import Axios from 'axios';
 import { urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance } from '../../constants/url';
-import { Query } from '../../private_modules/namada/shared';
-// import { init as initShared } from '../../private_modules/namada/shared/init-inline';
+import { Query } from '@namada/shared';
 import { config } from '../../config';
 // import { Tokens } from '@namada/types';
 
@@ -67,21 +66,23 @@ export const getDelegations = (address) => (dispatch) => {
     (async () => {
         // await initShared();
 
-        const query = new Query(config.RPC_URL);
-        const array = [address];
-        query.query_my_validators(array)
-            .then((res) => {
-                dispatch(fetchDelegationsSuccess(res));
-            })
-            .catch((error) => {
-                dispatch(fetchDelegationsError(
-                    error.response &&
-                    error.response.data &&
-                    error.response.data.message
-                        ? error.response.data.message
-                        : 'Failed!',
-                ));
-            });
+        // const query = new Query(config.RPC_URL);
+        // console.log('query', query);
+        // const array = [address];
+        // query.query_my_validators(array)
+        //     .then((res) => {
+        //         console.log('res', res);
+        //         dispatch(fetchDelegationsSuccess(res));
+        //     })
+        //     .catch((error) => {
+        //         dispatch(fetchDelegationsError(
+        //             error.response &&
+        //             error.response.data &&
+        //             error.response.data.message
+        //                 ? error.response.data.message
+        //                 : 'Failed!',
+        //         ));
+        //     });
     })();
 };
 

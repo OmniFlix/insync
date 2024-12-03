@@ -38,8 +38,8 @@ import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposal
 import { Button } from '@material-ui/core';
 import ConnectDialog from './ConnectDialog';
 import withRouter from '../../components/WithRouter';
-// import { init as initShared } from '@namada/shared/dist/init-inline';
-import { init as initShared } from '../../private_modules/namada/shared/init-inline';
+import { init as initShared } from '@namada/shared/dist/init-inline';
+// import { init as initShared } from '../../private_modules/namada/shared/init-inline';
 
 class NavBar extends Component {
     constructor (props) {

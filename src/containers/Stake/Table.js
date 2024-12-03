@@ -151,7 +151,7 @@ class Table extends Component {
 
                     return (
                         this.props.delegations.find((item) =>
-                            (item && item.length && item[1]) === value && value.nam_address)
+                            (item && item.length && item[1]) === value.nam_address)
                             ? <div className="actions">
                                 {/* <ReDelegateButton valAddress={validatorAddress}/> */}
                                 {/* <span/> */}
@@ -199,8 +199,8 @@ class Table extends Component {
                     // item.description && item.description.moniker,
                     item.address,
                     // item,
-                    item.votingPower,
                     // parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
+                    parseFloat((Number(item.voting_power) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
                     // item.commission && item.commission.commission_rates &&
                     // item.commission.commission_rates.rate,
                     // item.commission && item.commission.commission_rates &&

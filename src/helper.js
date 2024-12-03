@@ -3,45 +3,27 @@ import { SigningStargateClient } from '@cosmjs/stargate';
 import { config } from './config';
 import { cosmos, InstallError } from '@cosmostation/extension-client';
 import { getOfflineSigner } from '@cosmostation/cosmos-client';
-// import initSdk from "./private_modules/namada/sdk/inline-init";
-// import { getSdk, Sdk } from "./private_modules/namada/sdk/web";
-// import { Sdk } from './private_modules/namada/sdk/web/sdk/src/index';
-// import sdkInit from "@namada/sdk/web-init";
-// import sdkInit from './private_modules/namada/sdk/web/sdk/src/initWeb';
-// import { init as initShared } from '@namada/shared/src/init';
-// import { init as initShared } from './private_modules/namada/sdk/src/initInline';
-// import init from './private_modules/namada/sdk/web/sdk/src/initWeb';
-// import { AccountType, TransferProps, TxProps } from "@namada/types";
-// import {
-//     BondMsgValue,
-//     WrapperTxMsgValue,
-//     Message,
-//     TransferMsgSchema,
-//     TransferMsgValue,
-//     TxMsgValue,
-//     SigningDataMsgValue,
-// } from './private_modules/namada/types/index';
-// import { getDefaultStore } from "jotai";
-// import { Sdk, getSdk } from "@heliaxdev/namada-sdk/web";
-// import sdkInit from "@heliaxdev/namada-sdk/web-init";
-
-// // // Load Tx props from types package
-// // import { BondProps, WrapperTxProps } from "@namada/types";
-// import { Sdk } from './private_modules/namada/sdk/web/sdk/src/sdk';
-// // import sdkInit from "@namada/sdk/web-init";
-// import sdkInit from './private_modules/namada/sdk/web/sdk/src/initWeb';
-// // import { init as initShared } from '@namada/shared/src/init';
-// import { init as initShared } from './private_modules/namada/sdk/web/shared/src/init';
+// import { Sdk } from '@namada/shared';
+// import { init as initShared } from '@namada/shared/dist/init-inline';
 // // import { AccountType, TransferProps, TxProps } from "@namada/types";
-// import {
-//     BondMsgValue,
-//     WrapperTxMsgValue,
-//     Message,
-//     TransferMsgSchema,
-//     TransferMsgValue,
-//     TxMsgValue,
-//     SigningDataMsgValue,
-// } from './private_modules/namada/sdk/web/types/src/index';
+import {
+    BondMsgValue,
+    WrapperTxMsgValue,
+    Message,
+    // TransferMsgSchema,
+    TransferMsgValue,
+    UnshieldingTransferMsgValue,
+    TransparentTransferDataMsgValue,
+    TxMsgValue,
+} from '@namada/types';
+
+// import initSdk from "@namada/sdk/inline-init";
+// import { getSdk, Sdk } from "@namada/sdk/web";
+
+import { Sdk, getSdk } from "@heliaxdev/namada-sdk/web";
+import init from "@heliaxdev/namada-sdk/web-init";
+import { AccountType, TransferProps, TxProps } from "@namada/types";
+import BigNumber from 'bignumber.js';
 
 const chainId = config.CHAIN_ID;
 const chainName = config.CHAIN_NAME;
@@ -50,10 +32,6 @@ const coinMinimalDenom = config.COIN_MINIMAL_DENOM;
 const coinDecimals = config.COIN_DECIMALS;
 const prefix = config.PREFIX;
 const coinGeckoId = config.COINGECKO_ID;
-
-import { Sdk, getSdk } from "@heliaxdev/namada-sdk/web";
-import init from "@heliaxdev/namada-sdk/web-init";
-import { BondProps, WrapperTxProps } from "@namada/types";
 
 const chainConfig = {
     chainId: chainId,
@@ -236,232 +214,183 @@ export const initializeNamadaChain = (cb) => {
     })();
 };
 
-export const sentTransaction = (tx, txs, address, type, cb) => {
+// export const sentTransaction = (tx, txs, address, type, cb) => {
+//     (async () => {
+//         const isExtensionInstalled = typeof window.namada === 'object';
+//         if (!isExtensionInstalled || !window.namada) {
+//             const error = 'Download the Namada Extension';
+//             cb(error);
+//         }
+
+//         // if (window.namada) {
+//         //     await initShared();
+//         //
+//         //     const transferMsgValue = new TransferMsgValue({
+//         //         source: tx.source,
+//         //         target: tx.target,
+//         //         token: tx.token,
+//         //         amount: tx.amount,
+//         //         nativeToken: tx.nativeToken,
+//         //     });
+//         //
+//         //     const txMessageValue = new TxMsgValue({
+//         //         token: txs.token,
+//         //         feeAmount: txs.feeAmount,
+//         //         gasLimit: txs.gasLimit,
+//         //         chainId: txs.chainId,
+//         //     });
+//         //
+//         //     const sdk = new Sdk(config.RPC_URL);
+//         //     const message = new Message();
+//         //     const txEncode = message.encode(transferMsgValue);
+//         //     // console.log('111', txEncode, tx, txs, address);
+//         //     const txsEncode = message.encode(txMessageValue);
+//         //     // console.log('55555', txEncode, message, txsEncode);
+//         //     sdk.build_transfer(txEncode, txsEncode, address, address)
+//         //         .then((result) => {
+//         //             console.log('11111', result);
+//         //             cb(null, result);
+//         //         })
+//         //         .catch((error) => {
+//         //             console.log('4444', error);
+//         //             const message = 'success';
+//         //             if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+//         //                 cb(null, message);
+//         //             } else {
+//         //                 cb(error && error.message);
+//         //             }
+//         //         });
+//         // } else {
+//         //     return null;
+//         // }
+
+//         if (window.namada) {
+//             const namada = window.namada;
+//             const client = namada && namada.getSigner();
+
+//             console.log('000', client, tx, txs, type);
+//             await client.submitTransfer(tx, txs, type)
+//                 .then(() => {
+//                     console.log('Transaction was approved by user and submitted via the SDK');
+//                     // console.log('11111', result);
+//                     // cb(null, result);
+//                 })
+//                 .catch((error) => {
+//                     console.error(`Transaction was rejected: ${error}`);
+//                     // console.log('4444', error);
+//                     // const message = 'success';
+//                     // if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+//                     //     cb(null, message);
+//                     // } else {
+//                     //     cb(error && error.message);
+//                     // }
+//                 });
+//         } else {
+//             return null;
+//         }
+//     })();
+// };
+
+export const delegateTransaction = (Tx, txs, type, cb) => {
     (async () => {
         const isExtensionInstalled = typeof window.namada === 'object';
         if (!isExtensionInstalled || !window.namada) {
             const error = 'Download the Namada Extension';
             cb(error);
         }
-
-        // if (window.namada) {
-        //     await initShared();
-        
-        //     const transferMsgValue = new TransferMsgValue({
-        //         source: tx.source,
-        //         target: tx.target,
-        //         token: tx.token,
-        //         amount: tx.amount,
-        //         nativeToken: tx.nativeToken,
-        //     });
-        
-        //     const txMessageValue = new TxMsgValue({
-        //         token: txs.token,
-        //         feeAmount: txs.feeAmount,
-        //         gasLimit: txs.gasLimit,
-        //         chainId: txs.chainId,
-        //     });
-        
-        //     const sdk = new Sdk(config.RPC_URL);
-        //     const message = new Message();
-        //     const txEncode = message.encode(transferMsgValue);
-        //     // console.log('111', txEncode, tx, txs, address);
-        //     const txsEncode = message.encode(txMessageValue);
-        //     // console.log('55555', txEncode, message, txsEncode);
-        //     sdk.build_transfer(txEncode, txsEncode, address, address)
-        //         .then((result) => {
-        //             console.log('11111', result);
-        //             cb(null, result);
-        //         })
-        //         .catch((error) => {
-        //             console.log('4444', error);
-        //             const message = 'success';
-        //             if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-        //                 cb(null, message);
-        //             } else {
-        //                 cb(error && error.message);
-        //             }
-        //         });
-        // } else {
-        //     return null;
-        // }
 
         if (window.namada) {
             const namada = window.namada;
-            const client = namada && namada.getSigner();
+            const client = namada.getSigner();
 
-            console.log('000', client, tx, txs, type);
-            await client.submitTransfer(tx, txs, type)
-                .then(() => {
-                    console.log('Transaction was approved by user and submitted via the SDK');
-                    // console.log('11111', result);
-                    // cb(null, result);
-                })
-                .catch((error) => {
-                    console.error(`Transaction was rejected: ${error}`);
-                    // console.log('4444', error);
-                    // const message = 'success';
-                    // if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                    //     cb(null, message);
-                    // } else {
-                    //     cb(error && error.message);
-                    // }
-                });
-        } else {
-            return null;
-        }
-    })();
-};
-
-export const delegateTransaction = (tx, txs, type, cb) => {
-    (async () => {
-        const isExtensionInstalled = typeof window.namada === 'object';
-        if (!isExtensionInstalled || !window.namada) {
-            const error = 'Download the Namada Extension';
-            cb(error);
-        }
-
-        if (window.namada) {
             const { cryptoMemory } = await init();
             console.log('cryptoMemory', cryptoMemory);
-            const sdk = getSdk(config.RPC_URL, config.TOKEN_ADDRESS, cryptoMemory);
-          
-            console.log('sdk', sdk);
-            // Access various modules of the SDK
-            const { keys, mnemonic, rpc, signing, tx } = sdk;
-            console.log('alllll', tx);
+            // const sdk = getSdk(config.RPC_URL, config.TOKEN_ADDRESS, cryptoMemory);
+            const sdk = getSdk(
+              cryptoMemory,
+              config.RPC_URL,
+              config.MAPS_REST_URL,
+              "",
+              config.TOKEN_ADDRESS
+            );
+
+            const { rpc, signing, tx } = sdk;
+            console.log('sdk', rpc, signing);
+            
+            // const checksums = await rpc.queryChecksums();
+        
+            const bondMsgValue = new BondMsgValue({
+                source: Tx.source,
+                validator: 'tnam1q9ur6jvl3rd8unel48cy8h526pw89tuq9qp5jsch',
+                amount: Tx.amount,
+                // nativeToken: tx.nativeToken,
+            });
+
+            const wrapperProps = {
+                token: txs.token,
+                feeAmount: txs.feeAmount,
+                gasLimit: txs.gasLimit,
+                chainId: txs.chainId,
+                publicKey: txs.publicKey,
+                memo: "",
+            };
+
+            const newTxs = [];
+            // const revealPkTx = await tx.buildRevealPk(wrapperProps);
+            // newTxs.push(revealPkTx);
+            const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+            const encoded = await tx.buildBond(wrapperTxValue, bondMsgValue);
+            console.log('encoded', encoded);
+            newTxs.push(encoded);
+
+            const updateDate = tx.buildBatch(newTxs);
+
+            console.log('555555', newTxs, updateDate);
+            const checksums = {
+                "tx_become_validator.wasm": "a623483dfb1651c64f554bb4bf5814b327f060b2a43d5e9e3439efff221bc48f",
+                "tx_bond.wasm": "30caf17e23725c23b0d679807a7711c302373aa24e5786ad342d26019716d64f",
+                "tx_change_validator_commission.wasm": "5c252a4b1abfc66084f769bacfe07cb97ee54f88cd635489876e3200d6b075f7",
+                "tx_change_validator_metadata.wasm": "8b2ee588f065b3830f48d4ade60ffd154c6bffc634b1f1fc22517005c626c6d3",
+                "tx_claim_rewards.wasm": "b72b6b20862e63134691d2058e08487dc0fbf83463f3ab6c801b9074c1e92835",
+                "tx_ibc.wasm": "4865b16a86eb4b37fc77fed4c1c45824fa4d59c5655b1ffbe614eec76685c74a",
+                "tx_init_proposal.wasm": "76a4a0ab7c1c237557bf5d492287b7e196fcdf9560867f339661dc02b807a142",
+                "tx_redelegate.wasm": "de0e8a80a1be4bfc184ae9af574b1d4dc6cd9c663328ac643e6bfd4ee12fe1b5",
+                "tx_reveal_pk.wasm": "bf00e581f8dcfd50d62f1bf5ba9d3f8ede15487e2882539fcc355008fbf72450",
+                "tx_transfer.wasm": "847de1a968118227b3c97b6f5f5ce358737208edcb580a3a381f0d2ad8833fb9",
+                "tx_unbond.wasm": "af2f45838ce5fe6efbda0b9ce692c58a1ab61064296633a26031d6eb4d8bccdc",
+                "tx_vote_proposal.wasm": "f43a6e0e6d36533d415298cc1a4c9525bc92a1597c115078548d8b7e948d3955",
+                "tx_withdraw.wasm": "d3e8cdbf06112592aa5544751bc77dd9ce8c36fa603a387d83594738bb00bc04"
+            };
+
+            client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
+                console.log('Transaction was approved by user and submitted via the SDK', signedBondTxBytes);
+                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((res) => {
+                    console.log('broadcast res', res);
+                }).catch((error) => {
+                    console.error(`broadcast error: ${error}`);
+                    // console.log('4444', error);
+                    const message = 'success';
+                    if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                        cb(null, message);
+                    } else {
+                        cb(error && error.message);
+                    }
+                });
+                // console.log('11111', result);
+                cb(null, true);
+            }).catch((error) => {
+                console.error(`Transaction was rejected: ${error}`);
+                // console.log('4444', error);
+                const message = 'success';
+                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                    cb(null, message);
+                } else {
+                    cb(error && error.message);
+                }
+            });
         } else {
             return null;
         }
-
-        // if (window.namada) {
-        //     // await initShared();
-        //     console.log('init');
-        //     const { cryptoMemory } = await initSdk();
-        //     console.log('init2');
-        //     // const namada = window.namada;
-        //     // const client = namada.getSigner();
-        
-        //     console.log('1', cryptoMemory);
-        //     const sdk = new Sdk(config.RPC_URL, config.TOKEN_ADDRESS, cryptoMemory);
-        //     console.log('22222', sdk);
-        //     const bondMsgValue = new BondMsgValue({
-        //         source: tx.source,
-        //         validator: tx.validator,
-        //         amount: tx.amount,
-        //         // nativeToken: tx.nativeToken,
-        //     });
-        //     const wrapperTxMsg = new WrapperTxMsgValue({
-        //         token: txs.token,
-        //         feeAmount: txs.feeAmount,
-        //         gasLimit: txs.gasLimit,
-        //         chainId: txs.chainId,
-        //         publicKey: txs.publicKey,
-        //     });
-        //     // const wrapperTxProps = {
-        //     //     token: tx.nativeToken,
-        //     //     feeAmount: BigNumber(1),
-        //     //     gasLimit: BigNumber(1000),
-        //     //     chainId: "",
-        //     //     publicKey,
-        //     //     memo: "A bond transaction",
-        //     // };
-        //     const message = new Message();
-        
-        //     console.log('aaaa', bondMsgValue, wrapperTxMsg, message.encode(wrapperTxMsg));
-        //     // const params = ApprovalsService.getParamsBond(
-        //     //     new Uint8Array([]),
-        //     //     txs,
-        //     // );
-        
-        //     // const bond = sdk.encode(bondMsgValue);
-        //     // console.log('3333', bondMsgValue, bond);
-        //     sdk.build_bond(message.encode(bondMsgValue), message.encode(wrapperTxMsg))
-        //         .then((result) => {
-        //             console.log('11111', result);
-        //             cb(null, result);
-        //         })
-        //         .catch((error) => {
-        //             console.log('4444', error);
-        //             const message = 'success';
-        //             if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-        //                 cb(null, message);
-        //             } else {
-        //                 cb(error && error.message);
-        //             }
-        //         });
-        // } else {
-        //     return null;
-        // }
-
-        // if (window.namada) {
-        //     const namada = window.namada;
-        //     const client = namada.getSigner(chainId);
-        //     // const offlineSigner = namada.getSigner(chainId);
-        //     // // const accounts = await offlineSigner.accounts();
-        //     // const client = await SigningStargateClient.connectWithSigner(
-        //     //     RPC_URL,
-        //     //     offlineSigner,
-        //     // );
-        //     // const store = getDefaultStore();
-        //     // const { data } = store.get(chainParametersAtom);
-        //     // const checksums = data?.checksums;
-
-        //     console.log('55555', client);
-        //     client.build_bond(tx, tx.source, config.CHAIN_ID).then(() => {
-        //     // client.signAndBroadcast(tx, txs, type).then(() => {
-        //         console.log('Transaction was approved by user and submitted via the SDK');
-        //         // console.log('11111', result);
-        //         cb(null, true);
-        //     }).catch((error) => {
-        //         console.error(`Transaction was rejected: ${error}`);
-        //         // console.log('4444', error);
-        //         const message = 'success';
-        //         if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-        //             cb(null, message);
-        //         } else {
-        //             cb(error && error.message);
-        //         }
-        //     });
-        // } else {
-        //     return null;
-        // }
-
-        // if (window.namada) {
-        //     // const { cryptoMemory } = await sdkInit();
-        //     // const sdk = getSdk(config.RPC_URL, config.TOKEN_ADDRESS, cryptoMemory);
-        //     // console.log('dsdfsd', cryptoMemory, sdk);
-        //     const namada = window.namada;
-        //     const client = namada.getSigner(chainId);
-        //     // const offlineSigner = namada.getSigner(chainId);
-        //     // // const accounts = await offlineSigner.accounts();
-        //     // const client = await SigningStargateClient.connectWithSigner(
-        //     //     RPC_URL,
-        //     //     offlineSigner,
-        //     // );
-        //     // const store = getDefaultStore();
-        //     // const { data } = store.get(chainParametersAtom);
-        //     // const checksums = data?.checksums;
-
-        //     console.log('55555', client);
-        //     client.build_bond(tx, tx.source, config.CHAIN_ID).then(() => {
-        //     // client.signAndBroadcast(tx, txs, type).then(() => {
-        //         console.log('Transaction was approved by user and submitted via the SDK');
-        //         // console.log('11111', result);
-        //         cb(null, true);
-        //     }).catch((error) => {
-        //         console.error(`Transaction was rejected: ${error}`);
-        //         // console.log('4444', error);
-        //         const message = 'success';
-        //         if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-        //             cb(null, message);
-        //         } else {
-        //             cb(error && error.message);
-        //         }
-        //     });
-        // } else {
-        //     return null;
-        // }
     })();
 };
 

@@ -33,27 +33,23 @@ const KeplrConnectButton = (props) => {
                 return;
             }
 
+            props.setAccountAddress(addressList[0] && addressList[0].address);
+            props.setAccountDetails(addressList[0]);
+            props.hideConnectDialog();
             // if (!props.proposalTab && !props.stake) {
             //     props.getUnBondingDelegations(addressList[0] && addressList[0].address);
             //     props.fetchRewards(addressList[0] && addressList[0].address);
             // }
-            if (addressList && addressList.length) {
-                props.setAccountAddress(addressList[0] && addressList[0].address);
-                props.setAccountDetails(addressList[0]);
-                props.hideConnectDialog();
-                if (!props.proposalTab) {
-                    props.getDelegations(addressList[0] && addressList[0].address);
-                }
-                props.getBalance(addressList[0] && addressList[0].address);
-                localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
-                localStorage.setItem('of_co_wallet', 'namada');
-            } else {
-                props.showMessage('Account details are not there check Namada extension.');
+            if (!props.proposalTab) {
+                props.getDelegations(addressList[0] && addressList[0].address);
             }
+            props.getBalance(addressList[0] && addressList[0].address);
             // props.fetchVestingBalance(addressList[0] && addressList[0].address);
             // if (!props.proposalTab) {
             //     props.getDelegatedValidatorsDetails(addressList[0] && addressList[0].address);
             // }
+            localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
+            localStorage.setItem('of_co_wallet', 'namada');
         });
     };
 

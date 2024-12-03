@@ -1,0 +1,32 @@
+{
+    "extends": "../../jsconfig.base.json",
+    "compilerOptions": {
+      "baseUrl": "./src",
+      "jsx": "react-jsx",
+      "noEmit": false,
+      "target": "es2015",
+      "lib": [
+        "dom",
+        "dom.iterable",
+        "esnext"
+      ],
+      "allowJs": true,
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true,
+      "module": "esnext",
+      "moduleResolution": "node",
+      "resolveJsonModule": true
+    },
+    "include": [
+      "src/**/*.js",
+      "src/**/*.jsx"
+    ],
+    "exclude": [
+      "node_modules"
+    ],
+    "typeRoots": ["./node_modules/@types"]
+  }
+  
