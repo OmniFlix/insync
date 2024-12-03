@@ -23,7 +23,7 @@ import {
 } from '../../constants/accounts';
 import Axios from 'axios';
 import { urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance } from '../../constants/url';
-import { Query } from '@namada/shared';
+// import { Query } from '@namada/shared';
 import { config } from '../../config';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
 import { Sdk, getSdk } from "@heliaxdev/namada-sdk/web";
@@ -120,8 +120,8 @@ export const getBalance = (address, cb) => (dispatch) => {
     (async () => {
         // await initShared();
 
-        const query = new Query(config.RPC_URL);
-        // console.log('5555', Tokens);
+        // const query = new Query(config.RPC_URL);
+        // // console.log('5555', Tokens);
         const array = [config.TOKEN_ADDRESS];
         // if (Tokens && Object.keys(Tokens).length) {
         //     Object.keys(Tokens).map((key) => {
@@ -132,6 +132,17 @@ export const getBalance = (address, cb) => (dispatch) => {
         //         return null;
         //     });
         // }
+        const { cryptoMemory } = await init();
+        const sdk = getSdk(
+          cryptoMemory,
+          config.RPC_URL,
+          config.MAPS_REST_URL,
+          "",
+          config.TOKEN_ADDRESS
+        );
+
+        const { rpc } = sdk;
+        const query = rpc.query;
         query.query_balance(address, array)
             .then((res) => {
                 dispatch(fetchBalanceSuccess(res));
