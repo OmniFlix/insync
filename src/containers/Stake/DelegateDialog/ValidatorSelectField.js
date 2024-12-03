@@ -25,14 +25,10 @@ const ValidatorSelectField = (props) => {
         validatorList = [];
         props.validatorList && props.validatorList.length && props.validatorList.map((val) => {
             if (val && val.address) {
-                let address = null;
-                if (props.genesisValidatorList && props.genesisValidatorList[val.address]) {
-                    address = props.genesisValidatorList[val.address];
-                }
                 props.delegations && props.delegations.length &&
                 props.delegations.map((value) => {
-                    if (value && value.length && value[1] && address &&
-                        address.nam_address && (address.nam_address === value[1])) {
+                    if (value && value.length && value[1] && val && val.address &&
+                        (String(val.address) === String(value[1]))) {
                         validatorList.push(val);
                     }
                 });

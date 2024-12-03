@@ -31,13 +31,8 @@ const TokensTextField = (props) => {
     }, 0);
 
     if (props.selectedValidator && (props.name === 'Undelegate' || props.name === 'Redelegate')) {
-        let address = null;
-        if (props.genesisValidatorList && props.genesisValidatorList[props.selectedValidator]) {
-            address = props.genesisValidatorList[props.selectedValidator];
-        }
-
-        const filterList = props.delegations.find((value) => value && value.length && value[1] && address &&
-            address.nam_address && (address.nam_address === value[1]));
+        const filterList = props.delegations.find((value) => value && value.length && value[1] &&
+        (props.selectedValidator === value[1]));
 
         if (filterList && filterList.length && filterList[2]) {
             stakedTokens = Number(filterList[2]);

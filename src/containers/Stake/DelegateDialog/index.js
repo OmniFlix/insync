@@ -83,6 +83,7 @@ const DelegateDialog = (props) => {
         };
 
         if (props.name === 'Undelegate') {
+            txs.gasLimit = new BigNumber(100000);
             unDelegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
         } else {
             delegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
