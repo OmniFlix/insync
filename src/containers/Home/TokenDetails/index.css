@@ -22,10 +22,16 @@
     justify-content: center;
     padding: 10px 20px;
     margin: 10px 0;
+    width: fit-content;
+    padding: 10px 40px;
+    height: 50px;
+    margin: 10px auto;
 }
 
 .token_details .chip > img {
     margin-right: 20px;
+    width: 30px;
+    height: 30px;
 }
 
 .token_details .chip p {
@@ -80,7 +86,7 @@ flex-shrink: 0;
     .token_details {
         margin: 40px 0 0;
         width: 100%;
-        justify-content: space-around;
+        /* justify-content: space-around; */
         flex-wrap: wrap;
     }
 

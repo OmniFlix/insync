@@ -36,7 +36,7 @@ margin-bottom: 0;
 }
 
 .home .card img {
-    
+    margin-left: -8px;
 }
 
 .home .card.telegram_card {
