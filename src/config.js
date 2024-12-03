@@ -1,7 +1,7 @@
 export const config = {
-    RPC_URL: 'https://namada-rpc.mandragora.io',
-    REST_URL: 'https://indexer.namada.tududes.com',
-    MAPS_REST_URL: 'https://masp.namada.tududes.com',
+    RPC_URL: 'https://namada-mainnet-rpc.mellifera.network',
+    REST_URL: 'https://namada-mainnet-indexer.mellifera.network',
+    MAPS_REST_URL: 'https://namada-mainnet-masp.mellifera.network',
     EXPLORER_URL: 'https://explorer75.org/namada',
     STAKING_URL: 'https://namada.omniflix.co/stake',
     NETWORK_NAME: 'Namada',

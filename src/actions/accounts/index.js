@@ -67,10 +67,19 @@ const fetchDelegationsError = (message) => {
 export const getDelegations = (address) => (dispatch) => {
     dispatch(fetchDelegationsInProgress());
     (async () => {
-        const query = new Query(config.RPC_URL);
-        // const query = rpc.query;
+        const { cryptoMemory } = await init();
+        const sdk = getSdk(
+          cryptoMemory,
+          config.RPC_URL,
+          config.MAPS_REST_URL,
+          "",
+          config.TOKEN_ADDRESS
+        );
+
+        const { rpc } = sdk;
+        const query = rpc.query;
         const array = [address];
-        query && query.query_my_validators(array)
+        query.query_my_validators(array)
             .then((res) => {
                 dispatch(fetchDelegationsSuccess(res));
             })

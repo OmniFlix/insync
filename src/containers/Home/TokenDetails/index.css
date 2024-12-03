@@ -95,6 +95,12 @@ flex-shrink: 0;
     }
 }
 
+@media (max-width: 1300px) {
+    .token_details {
+        justify-content: space-around;
+    }
+}
+
 @media (max-width: 426px) {
     .token_details {
         flex-direction: column;
