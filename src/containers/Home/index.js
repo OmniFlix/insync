@@ -130,6 +130,7 @@ class Home extends Component {
                             </div>
                             <div className="buttons">
                                 {/* <MultiDelegateButton/> */}
+                                <p>Unbonding Period: 14 Days</p>
                                 <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>
                                     {variables[this.props.lang]['view_all']}
                                 </Button>

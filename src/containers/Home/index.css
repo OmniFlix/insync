@@ -192,6 +192,11 @@ margin-bottom: 0;
 @media (max-width: 2000px) {
     .stake .stake_content .heading .buttons {
         display: flex;
+        align-items: center;
+    }
+
+    .stake .stake_content .heading .buttons > p {
+        margin-right: 10px;
     }
 }
 
