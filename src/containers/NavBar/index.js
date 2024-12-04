@@ -14,6 +14,7 @@ import { decode, encode } from 'js-base64';
 import { config, DEFAULT_PAGE } from '../../config';
 import { showMessage } from '../../actions/snackbar';
 import {
+    fetchRevealedPubKey,
     fetchRewards,
     fetchVestingBalance,
     getBalance,
@@ -223,6 +224,7 @@ class NavBar extends Component {
                     this.props.getDelegations(this.props.address);
                 }
             });
+            this.props.fetchRevealedPubKey(this.props.address);
             this.props.fetchVestingBalance(this.props.address);
             this.props.fetchRewards(this.props.address);
             this.props.getUnBondingDelegations(this.props.address);
@@ -308,11 +310,11 @@ class NavBar extends Component {
         //     !this.props.vestingBalanceInProgress) {
         //     this.props.fetchVestingBalance(address);
         // }
-        //
-        // if (!this.props.proposalTab && !this.props.stake) {
-        //     this.props.fetchRewards(address);
-        // }
-        //
+
+        if (!this.props.proposalTab && !this.props.stake) {
+            this.props.fetchRewards(address);
+        }
+        this.props.fetchRevealedPubKey(address);
         // if (this.props.unBondingDelegations && !this.props.unBondingDelegations.length &&
         //     !this.props.unBondingDelegationsInProgress && !this.props.proposalTab && !this.props.stake) {
         //     this.props.getUnBondingDelegations(address);
@@ -343,12 +345,12 @@ class NavBar extends Component {
 
             const previousAddress = localStorage.getItem('of_co_address') &&
                 decode(localStorage.getItem('of_co_address'));
-            this.props.setAccountAddress(addressList[0] && addressList[0].address);
+            this.props.setAccountAddress(addressList && addressList.address);
             if (fetch) {
-                this.handleFetch(addressList[0] && addressList[0].address);
+                this.handleFetch(addressList && addressList.address);
             }
-            if (addressList[0] && previousAddress !== addressList[0].address) {
-                localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
+            if (addressList && previousAddress !== addressList.address) {
+                localStorage.setItem('of_co_address', encode(addressList && addressList.address));
             }
         });
     }
@@ -369,13 +371,13 @@ class NavBar extends Component {
 
             const previousAddress = localStorage.getItem('of_co_address') &&
                 decode(localStorage.getItem('of_co_address'));
-            this.props.setAccountAddress(addressList[0] && addressList[0].address);
-            this.props.setAccountDetails(addressList[0]);
+            this.props.setAccountAddress(addressList && addressList.address);
+            this.props.setAccountDetails(addressList);
             if (fetch) {
-                this.handleFetch(addressList[0] && addressList[0].address);
+                this.handleFetch(addressList && addressList.address);
             }
-            if (addressList[0] && previousAddress !== addressList[0].address) {
-                localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
+            if (addressList && previousAddress !== addressList.address) {
+                localStorage.setItem('of_co_address', encode(addressList && addressList.address));
             }
         });
     }
@@ -453,6 +455,7 @@ NavBar.propTypes = {
     fetchGenesisValidators: PropTypes.func.isRequired,
     fetchProposalDetails: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
+    fetchRevealedPubKey: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
     fetchValidatorImage: PropTypes.func.isRequired,
     fetchValidatorImageSuccess: PropTypes.func.isRequired,
@@ -569,6 +572,7 @@ const actionToProps = {
     fetchVoteDetails,
     fetchProposalTally,
     fetchProposalDetails,
+    fetchRevealedPubKey,
     getInActiveValidators,
     showConnectDialog,
     setAccountDetails,

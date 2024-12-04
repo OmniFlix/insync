@@ -8,8 +8,9 @@ export const urlFetchBalance = (address) => `${REST_URL}/cosmos/bank/v1beta1/bal
 export const urlFetchVestingBalance = (address) => `${REST_URL}/cosmos/auth/v1beta1/accounts/${address}`;
 export const urlFetchUnBondingDelegations = (address) => `${REST_URL}/cosmos/staking/v1beta1/delegators/${address}/unbonding_delegations`;
 
-export const urlFetchRewards = (address) => `${REST_URL}/cosmos/distribution/v1beta1/delegators/${address}/rewards`;
+export const urlFetchRewards = (address) => `${REST_URL}/api/v1/pos/reward/${address}`;
 export const urlFetchVoteDetails = (proposalId, address) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${proposalId}/votes/${address}`;
+export const urlFetchRevealedPubkey = (address) => `${REST_URL}/api/v1/revealed-public-key/${address}`;
 
 export const VALIDATORS_LIST_URL = () => `${REST_URL}/api/v1/pos/validator/all`;
 export const GENESIS_VALIDATORS_LIST_URL = 'https://namada.info/shielded-expedition.88f17d1d14/output/genesis_tm_address_to_alias.json';

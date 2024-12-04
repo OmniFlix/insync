@@ -11,13 +11,14 @@ import {
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
 import ValidatorsSelectField from './ValidatorsSelectField';
-import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
+import { claimTransaction, cosmoStationSign, signTxAndBroadcast } from '../../../helper';
 import { showMessage } from '../../../actions/snackbar';
 import { fetchRewards, fetchVestingBalance, getBalance } from '../../../actions/accounts';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import CircularProgress from '../../../components/CircularProgress';
 import { gas } from '../../../defaultGasValues';
+import BigNumber from 'bignumber.js';
 
 const ClaimDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -77,60 +78,44 @@ const ClaimDialog = (props) => {
         }
         if (result) {
             props.setTokens(tokens);
-            props.successDialog(result.transactionHash);
+            props.successDialog(result.hash);
             props.fetchRewards(props.address);
             props.getBalance(props.address);
-            props.fetchVestingBalance(props.address);
+            // props.fetchVestingBalance(props.address);
         }
     };
 
     const handleClaim = () => {
         setInProgress(true);
-        const updatedTx = {
-            msg: {
-                typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
-                value: {
-                    delegatorAddress: props.address,
-                    validatorAddress: props.value,
-                    amount: {
-                        denom: config.COIN_MINIMAL_DENOM,
-                    },
-                },
-            },
-            fee: {
-                amount: [{
-                    amount: String(gas.claim_reward * config.GAS_PRICE_STEP_AVERAGE),
-                    denom: config.COIN_MINIMAL_DENOM,
-                }],
-                gas: String(gas.claim_reward),
-            },
-            memo: '',
+
+        const tx = {
+            source: props.address,
+            validator: props.value,
         };
 
-        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
-            cosmoStationSign(updatedTx, props.address, handleFetch);
-            return;
-        }
+        const txs = {
+            token: config.TOKEN_ADDRESS,
+            feeAmount: new BigNumber(0.000010),
+            gasLimit: new BigNumber(50000),
+            chainId: config.CHAIN_ID,
+            publicKey: props.details && props.details.publicKey,
+        };
 
-        signTxAndBroadcast(updatedTx, props.address, handleFetch);
+        claimTransaction(tx, txs, props.details && props.details.type, handleFetch);
     };
 
-    const rewards = props.rewards && props.rewards.rewards &&
-        props.rewards.rewards.length &&
-        props.rewards.rewards.filter((value) => value.validator_address === props.value);
+    const rewards = props.rewards && props.rewards.length &&
+        props.rewards.find((value) => value.validator && value.validator.address === props.value);
 
-    let tokens = rewards && rewards.length && rewards[0] && rewards[0].reward &&
-        rewards[0].reward.length && rewards[0].reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-    tokens = tokens && tokens.amount ? tokens.amount / 10 ** config.COIN_DECIMALS : 0;
+    let tokens = rewards && rewards.minDenomAmount;
+    tokens = tokens ? tokens / 10 ** config.COIN_DECIMALS : 0;
 
-    if (props.value === 'all' && props.rewards && props.rewards.rewards &&
-        props.rewards.rewards.length) {
+    if (props.value === 'all' && props.rewards && props.rewards.length) {
         let total = 0;
 
-        props.rewards.rewards.map((value) => {
-            let rewards = value.reward && value.reward.length &&
-                value.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-            rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
+        props.rewards.map((value) => {
+            let rewards = value.minDenomAmount;
+            rewards = rewards ? rewards / 10 ** config.COIN_DECIMALS : 0;
             total = rewards + total;
 
             return total;
@@ -172,6 +157,7 @@ const ClaimDialog = (props) => {
 };
 
 ClaimDialog.propTypes = {
+    details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
@@ -198,6 +184,7 @@ const stateToProps = (state) => {
         open: state.stake.claimDialog.open,
         value: state.stake.claimDialog.validator,
         rewards: state.accounts.rewards.result,
+        details: state.accounts.address.details,
     };
 };
 

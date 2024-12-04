@@ -33,8 +33,8 @@ const KeplrConnectButton = (props) => {
                 return;
             }
 
-            props.setAccountAddress(addressList[0] && addressList[0].address);
-            props.setAccountDetails(addressList[0]);
+            props.setAccountAddress(addressList && addressList.address);
+            props.setAccountDetails(addressList);
             props.hideConnectDialog();
             // if (!props.proposalTab && !props.stake) {
             //     props.getUnBondingDelegations(addressList[0] && addressList[0].address);

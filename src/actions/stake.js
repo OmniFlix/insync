@@ -51,6 +51,7 @@ import {
 } from '../constants/url';
 import { config } from '../config';
 import { calculateNominalAPR, calculateRealAPR, getBlocksPerYearReal, getParams } from '../utils/aprCalculation';
+import { randomNoRepeats } from 'utils/array';
 
 const axios = require('axios').default;
 
@@ -84,8 +85,9 @@ export const getValidators = (page, cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchValidatorsSuccess(res.data, res.data && res.data.length, page));
-            cb(res.data, res.data && res.data.length, page, res.data && res.data.length);
+            const data = randomNoRepeats(res.data);
+            dispatch(fetchValidatorsSuccess(data, data && data.length, page));
+            cb(data, data && data.length, page, data && data.length);
         })
         .catch((error) => {
             dispatch(fetchValidatorsError(

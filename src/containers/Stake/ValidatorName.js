@@ -16,13 +16,11 @@ const ValidatorName = (props) => {
 
     return (
         <div className="validator">
-            {image && image.length && image[0] && image[0].them && image[0].them.length &&
-            image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
-            image[0].them[0].pictures.primary.url
+            {props.value && props.value.avatar
                 ? <img
-                    alt={props.value.description && props.value.description.moniker}
+                    alt={props.value.name || props.value.address}
                     className="image"
-                    src={image[0].them[0].pictures.primary.url}/>
+                    src={props.value.avatar}/>
                 : props.value.description && props.value.description.moniker
                     ? <div
                         className="image"

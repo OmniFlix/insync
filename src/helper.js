@@ -8,10 +8,11 @@ import {
     WrapperTxMsgValue,
     UnbondMsgValue,
     RedelegateMsgValue,
+    ClaimRewardsMsgValue,
 } from '@namada/types';
 
-import { getSdk } from "@heliaxdev/namada-sdk/web";
-import init from "@heliaxdev/namada-sdk/web-init";
+import { getSdk } from '@heliaxdev/namada-sdk/web';
+import init from '@heliaxdev/namada-sdk/web-init';
 
 const chainId = config.CHAIN_ID;
 const chainName = config.CHAIN_NAME;
@@ -196,9 +197,9 @@ export const initializeNamadaChain = (cb) => {
             const offlineSigner = namada.getSigner(chainId);
             let accounts;
             if (offlineSigner.accounts) {
-                accounts = await offlineSigner.accounts();
+                accounts = await offlineSigner.defaultAccount();
             } else {
-                accounts = await namada.accounts();
+                accounts = await namada.defaultAccount();
             }
             cb(null, accounts);
         } else {
@@ -284,7 +285,7 @@ export const initializeNamadaChain = (cb) => {
 //     })();
 // };
 
-export const delegateTransaction = (Tx, txs, type, cb) => {
+export const delegateTransaction = (Tx, txs, revealPublicKey, cb) => {
     (async () => {
         const isExtensionInstalled = typeof window.namada === 'object';
         if (!isExtensionInstalled || !window.namada) {
@@ -298,24 +299,24 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
 
             const { cryptoMemory } = await init();
             const sdk = getSdk(
-              cryptoMemory,
-              config.RPC_URL,
-              config.MAPS_REST_URL,
-              "",
-              config.TOKEN_ADDRESS
+                cryptoMemory,
+                config.RPC_URL,
+                config.MAPS_REST_URL,
+                '',
+                config.TOKEN_ADDRESS,
             );
 
             const { rpc, tx } = sdk;
 
-            let checksums = await rpc.queryChecksums();
+            const checksums = await rpc.queryChecksums();
             if (checksums && Object.keys(checksums).length) {
                 Object.keys(checksums).map((key) => {
                     if (key && checksums[key]) {
                         checksums[key] = checksums[key].toLowerCase();
                     }
-                })
+                });
             }
-        
+
             const bondMsgValue = new BondMsgValue({
                 source: Tx.source,
                 validator: Tx.validator,
@@ -328,12 +329,14 @@ export const delegateTransaction = (Tx, txs, type, cb) => {
                 gasLimit: txs.gasLimit,
                 chainId: txs.chainId,
                 publicKey: txs.publicKey,
-                memo: "",
+                memo: '',
             };
 
             const newTxs = [];
-            const revealPkTx = await tx.buildRevealPk(wrapperProps);
-            newTxs.push(revealPkTx);
+            if (revealPublicKey && !revealPublicKey.publicKey) {
+                const revealPkTx = await tx.buildRevealPk(wrapperProps);
+                newTxs.push(revealPkTx);
+            }
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
             const encoded = await tx.buildBond(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
@@ -401,24 +404,24 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
 
             const { cryptoMemory } = await init();
             const sdk = getSdk(
-              cryptoMemory,
-              config.RPC_URL,
-              config.MAPS_REST_URL,
-              "",
-              config.TOKEN_ADDRESS
+                cryptoMemory,
+                config.RPC_URL,
+                config.MAPS_REST_URL,
+                '',
+                config.TOKEN_ADDRESS,
             );
 
             const { rpc, tx } = sdk;
 
-            let checksums = await rpc.queryChecksums();
+            const checksums = await rpc.queryChecksums();
             if (checksums && Object.keys(checksums).length) {
                 Object.keys(checksums).map((key) => {
                     if (key && checksums[key]) {
                         checksums[key] = checksums[key].toLowerCase();
                     }
-                })
+                });
             }
-        
+
             const bondMsgValue = new UnbondMsgValue({
                 source: Tx.source,
                 validator: Tx.validator,
@@ -431,7 +434,7 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
                 gasLimit: txs.gasLimit,
                 chainId: txs.chainId,
                 publicKey: txs.publicKey,
-                memo: "",
+                memo: '',
             };
 
             const newTxs = [];
@@ -486,22 +489,22 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
 
             const { cryptoMemory } = await init();
             const sdk = getSdk(
-              cryptoMemory,
-              config.RPC_URL,
-              config.MAPS_REST_URL,
-              "",
-              config.TOKEN_ADDRESS
+                cryptoMemory,
+                config.RPC_URL,
+                config.MAPS_REST_URL,
+                '',
+                config.TOKEN_ADDRESS,
             );
 
             const { rpc, tx } = sdk;
 
-            let checksums = await rpc.queryChecksums();
+            const checksums = await rpc.queryChecksums();
             if (checksums && Object.keys(checksums).length) {
                 Object.keys(checksums).map((key) => {
                     if (key && checksums[key]) {
                         checksums[key] = checksums[key].toLowerCase();
                     }
-                })
+                });
             }
 
             const bondMsgValue = new RedelegateMsgValue({
@@ -517,13 +520,108 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
                 gasLimit: txs.gasLimit,
                 chainId: txs.chainId,
                 publicKey: txs.publicKey,
-                memo: "",
+                memo: '',
             };
 
             const newTxs = [];
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
             const encoded = await tx.buildRedelegate(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
+
+            const updateDate = tx.buildBatch(newTxs);
+
+            client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
+                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
+                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                        cb(result.info || result.log || result.rawLog);
+                    } else {
+                        cb(null, result);
+                    }
+                }).catch((error) => {
+                    console.error(`broadcast error: ${error}`);
+                    const message = 'success';
+                    if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                        cb(null, message);
+                    } else {
+                        cb(error && error.message);
+                    }
+                });
+            }).catch((error) => {
+                console.error(`Transaction was rejected: ${error}`);
+                const message = 'success';
+                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                    cb(null, message);
+                } else {
+                    cb(error && error.message);
+                }
+            });
+        } else {
+            return null;
+        }
+    })();
+};
+
+export const claimTransaction = (Tx, txs, type, cb) => {
+    (async () => {
+        const isExtensionInstalled = typeof window.namada === 'object';
+        if (!isExtensionInstalled || !window.namada) {
+            const error = 'Download the Namada Extension';
+            cb(error);
+        }
+
+        if (window.namada) {
+            const namada = window.namada;
+            const client = namada.getSigner();
+
+            const { cryptoMemory } = await init();
+            const sdk = getSdk(
+                cryptoMemory,
+                config.RPC_URL,
+                config.MAPS_REST_URL,
+                '',
+                config.TOKEN_ADDRESS,
+            );
+
+            const { rpc, tx } = sdk;
+
+            const checksums = await rpc.queryChecksums();
+            if (checksums && Object.keys(checksums).length) {
+                Object.keys(checksums).map((key) => {
+                    if (key && checksums[key]) {
+                        checksums[key] = checksums[key].toLowerCase();
+                    }
+                });
+            }
+
+            const wrapperProps = {
+                token: txs.token,
+                feeAmount: txs.feeAmount,
+                gasLimit: txs.gasLimit,
+                chainId: txs.chainId,
+                publicKey: txs.publicKey,
+                memo: '',
+            };
+
+            const newTxs = [];
+            const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+            if (Tx && Tx.length > 1) {
+                Tx.map((newTx) => {
+                    (async () => {
+                        const bondMsgValue = new ClaimRewardsMsgValue({
+                            validator: newTx.validator,
+                        });
+                        const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
+                        newTxs.push(encoded);
+                    })();
+                });
+            } else {
+                const bondMsgValue = new ClaimRewardsMsgValue({
+                    // source: Tx.source,
+                    validator: Tx.validator,
+                });
+                const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
+                newTxs.push(encoded);
+            }
 
             const updateDate = tx.buildBatch(newTxs);
 

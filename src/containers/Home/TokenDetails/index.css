@@ -86,7 +86,7 @@ flex-shrink: 0;
     .token_details {
         margin: 40px 0 0;
         width: 100%;
-        /* justify-content: space-around; */
+        justify-content: space-around;
         flex-wrap: wrap;
     }
 

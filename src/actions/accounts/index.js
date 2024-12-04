@@ -8,6 +8,9 @@ import {
     DELEGATIONS_FETCH_IN_PROGRESS,
     DELEGATIONS_FETCH_SUCCESS,
     DISCONNECT_SET,
+    REVEALED_PUB_KEY_FETCH_ERROR,
+    REVEALED_PUB_KEY_FETCH_IN_PROGRESS,
+    REVEALED_PUB_KEY_FETCH_SUCCESS,
     REWARDS_FETCH_ERROR,
     REWARDS_FETCH_IN_PROGRESS,
     REWARDS_FETCH_SUCCESS,
@@ -22,12 +25,12 @@ import {
     VESTING_BALANCE_FETCH_SUCCESS,
 } from '../../constants/accounts';
 import Axios from 'axios';
-import { urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance } from '../../constants/url';
+import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance } from '../../constants/url';
 // import { Query } from '@namada/shared';
 import { config } from '../../config';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
-import { Sdk, getSdk } from "@heliaxdev/namada-sdk/web";
-import init from "@heliaxdev/namada-sdk/web-init";
+import { Sdk, getSdk } from '@heliaxdev/namada-sdk/web';
+import init from '@heliaxdev/namada-sdk/web-init';
 // import { Tokens } from '@namada/types';
 
 export const setAccountAddress = (value) => {
@@ -69,11 +72,11 @@ export const getDelegations = (address) => (dispatch) => {
     (async () => {
         const { cryptoMemory } = await init();
         const sdk = getSdk(
-          cryptoMemory,
-          config.RPC_URL,
-          config.MAPS_REST_URL,
-          "",
-          config.TOKEN_ADDRESS
+            cryptoMemory,
+            config.RPC_URL,
+            config.MAPS_REST_URL,
+            '',
+            config.TOKEN_ADDRESS,
         );
 
         const { rpc } = sdk;
@@ -134,11 +137,11 @@ export const getBalance = (address, cb) => (dispatch) => {
         // }
         const { cryptoMemory } = await init();
         const sdk = getSdk(
-          cryptoMemory,
-          config.RPC_URL,
-          config.MAPS_REST_URL,
-          "",
-          config.TOKEN_ADDRESS
+            cryptoMemory,
+            config.RPC_URL,
+            config.MAPS_REST_URL,
+            '',
+            config.TOKEN_ADDRESS,
         );
 
         const { rpc } = sdk;
@@ -301,6 +304,48 @@ export const fetchRewards = (address) => (dispatch) => {
         })
         .catch((error) => {
             dispatch(fetchRewardsError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+        });
+};
+
+const fetchRevealedPubKeyInProgress = () => {
+    return {
+        type: REVEALED_PUB_KEY_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchRevealedPubKeySuccess = (value) => {
+    return {
+        type: REVEALED_PUB_KEY_FETCH_SUCCESS,
+        value,
+    };
+};
+
+const fetchRevealedPubKeyError = (message) => {
+    return {
+        type: REVEALED_PUB_KEY_FETCH_ERROR,
+        message,
+    };
+};
+
+export const fetchRevealedPubKey = (address) => (dispatch) => {
+    dispatch(fetchRevealedPubKeyInProgress());
+    const url = urlFetchRevealedPubkey(address);
+    Axios.get(url, {
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+        },
+    })
+        .then((res) => {
+            dispatch(fetchRevealedPubKeySuccess(res.data));
+        })
+        .catch((error) => {
+            dispatch(fetchRevealedPubKeyError(
                 error.response &&
                 error.response.data &&
                 error.response.data.message

@@ -96,7 +96,7 @@ const DelegateDialog = (props) => {
             txs.gasLimit = new BigNumber(100000);
             reDelegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
         } else {
-            delegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
+            delegateTransaction(tx, txs, props.revealPublicKey, handleFetch);
         }
     };
 
@@ -371,6 +371,7 @@ DelegateDialog.propTypes = {
     vestingBalance: PropTypes.object.isRequired,
     address: PropTypes.string,
     amount: PropTypes.any,
+    revealPublicKey: PropTypes.object,
     toValidator: PropTypes.string,
     validator: PropTypes.string,
 };
@@ -386,6 +387,7 @@ const stateToProps = (state) => {
         amount: state.stake.tokens,
         validator: state.stake.validator.value,
         vestingBalance: state.accounts.vestingBalance.result,
+        revealPublicKey: state.accounts.revealPublicKey.result,
         toValidator: state.stake.toValidator.value,
         selectedMultiValidatorArray: state.stake.selectMultiValidators.list,
         details: state.accounts.address.details,

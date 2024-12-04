@@ -89,12 +89,12 @@ class Home extends Component {
                             NAM Staking & Governance
                             </h2>
                             <p className="info">
-                            {/* <span>developed by OmniFlix for Cosmic Validator</span>
+                                {/* <span>developed by OmniFlix for Cosmic Validator</span>
                             <span>supported with a grant by Mandragora</span> */}
                                 {/* {variables[this.props.lang].participate} */}
                                 developed by <strong>OmniFlix Network</strong> in association with
-                                </p>
-                                <img alt="cv" src={cvIcon} />
+                            </p>
+                            <img alt="cv" src={cvIcon} />
                         </div>
                         <TokenDetails lang={this.props.lang}/>
                         {/* <SendButton/> */}

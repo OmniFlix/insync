@@ -12,6 +12,7 @@ import ValidatorName from './ValidatorName';
 import { config } from '../../config';
 import { Button } from '@material-ui/core';
 import { showConnectDialog } from '../../actions/navBar';
+import { randomNoRepeats } from 'utils/array';
 
 class Table extends Component {
     render () {
@@ -22,10 +23,10 @@ class Table extends Component {
             pagination: false,
             selectableRows: 'none',
             selectToolbarPlacement: 'none',
-            sortOrder: {
-                name: 'voting_power',
-                direction: 'desc',
-            },
+            // sortOrder: {
+            //     name: 'voting_power',
+            //     direction: 'desc',
+            // },
             textLabels: {
                 body: {
                     noMatch: this.props.inProgress
@@ -127,7 +128,7 @@ class Table extends Component {
                         if (value && value.validator && value.validator.address && item &&
                             (item.address === value.validator.address)) {
                             address = value.validator.address;
-                            newValue = value.minDenomAmount && value.minDenomAmount / 10 ** config.COIN_DECIMALS;;
+                            newValue = value.minDenomAmount && value.minDenomAmount / 10 ** config.COIN_DECIMALS;
                         }
                     });
                     // address && this.props.delegations && this.props.delegations.length &&
@@ -194,8 +195,28 @@ class Table extends Component {
             });
         }
 
-        const tableData = dataToMap && dataToMap.length
-            ? dataToMap.map((item) =>
+        let newData = [];
+        if (dataToMap && dataToMap.length) {
+            dataToMap.map((val) => {
+                if (val && val.name && val.name.toLowerCase() === 'cosmic validator') {
+                    newData.splice(0, 0, val);
+                } else if (val && val.name && val.name.toLowerCase() === 'mandragora') {
+                    const find = newData.find((val1) => val1 && val1.name && val1.name.toLowerCase() === 'cosmic validator');
+                    if (!find) {
+                        newData.splice(0, 0, val);
+                    } else {
+                        newData.splice(1, 0, val);
+                    }
+                } else {
+                    newData.push(val);
+                }
+            });
+        } else {
+            newData = dataToMap;
+        }
+
+        const tableData = newData && newData.length
+            ? newData.map((item) =>
                 [
                     // item.description && item.description.moniker,
                     item.name,

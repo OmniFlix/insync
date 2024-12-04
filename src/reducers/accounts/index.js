@@ -9,6 +9,9 @@ import {
     DELEGATIONS_FETCH_IN_PROGRESS,
     DELEGATIONS_FETCH_SUCCESS,
     DISCONNECT_SET,
+    REVEALED_PUB_KEY_FETCH_ERROR,
+    REVEALED_PUB_KEY_FETCH_IN_PROGRESS,
+    REVEALED_PUB_KEY_FETCH_SUCCESS,
     REWARDS_FETCH_ERROR,
     REWARDS_FETCH_IN_PROGRESS,
     REWARDS_FETCH_SUCCESS,
@@ -223,6 +226,37 @@ const rewards = (state = {
     }
 };
 
+const revealPublicKey = (state = {
+    result: {},
+    inProgress: false,
+}, action) => {
+    switch (action.type) {
+    case REVEALED_PUB_KEY_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case REVEALED_PUB_KEY_FETCH_SUCCESS:
+        return {
+            ...state,
+            inProgress: false,
+            result: action.value,
+        };
+    case REVEALED_PUB_KEY_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            result: {},
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     address,
     delegations,
@@ -232,4 +266,5 @@ export default combineReducers({
     unBondingDelegations,
     stakeAccountAddress,
     rewards,
+    revealPublicKey,
 });
