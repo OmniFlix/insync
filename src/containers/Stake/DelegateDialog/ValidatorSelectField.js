@@ -34,6 +34,27 @@ const ValidatorSelectField = (props) => {
                 });
             }
         });
+    } else {
+        let newData = [];
+        if (validatorList && validatorList.length) {
+            validatorList.map((val) => {
+                if (val && val.name && val.name.toLowerCase() === 'cosmic validator') {
+                    newData.splice(0, 0, val);
+                } else if (val && val.name && val.name.toLowerCase() === 'mandragora') {
+                    const find = newData.find((val1) => val1 && val1.name && val1.name.toLowerCase() === 'cosmic validator');
+                    if (!find) {
+                        newData.splice(0, 0, val);
+                    } else {
+                        newData.splice(1, 0, val);
+                    }
+                } else {
+                    newData.push(val);
+                }
+            });
+        } else {
+            newData = dataToMap;
+        }
+        validatorList = newData;
     }
 
     return (
@@ -65,13 +86,11 @@ const ValidatorSelectField = (props) => {
                                     item.address || item.operator_address}
                             value={item.address || item.name || item.type ||
                                     (item.operator_address)}>
-                            {image && image.length && image[0] && image[0].them && image[0].them.length &&
-                                image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
-                                image[0].them[0].pictures.primary.url
+                            {item && item.avatar
                                 ? <img
-                                    alt={item.description && item.description.moniker}
+                                    alt={item.name || item.address}
                                     className="image"
-                                    src={image[0].them[0].pictures.primary.url}/>
+                                    src={item.avatar}/>
                                 : item.description && item.description.moniker
                                     ? <span
                                         className="image"

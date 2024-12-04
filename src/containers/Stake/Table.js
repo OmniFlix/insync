@@ -128,7 +128,11 @@ class Table extends Component {
                         if (value && value.validator && value.validator.address && item &&
                             (item.address === value.validator.address)) {
                             address = value.validator.address;
-                            newValue = value.minDenomAmount && value.minDenomAmount / 10 ** config.COIN_DECIMALS;
+                            if (newValue) {
+                                newValue = (value.minDenomAmount && value.minDenomAmount / 10 ** config.COIN_DECIMALS) + newValue;
+                            } else {
+                                newValue = value.minDenomAmount && value.minDenomAmount / 10 ** config.COIN_DECIMALS;
+                            }
                         }
                     });
                     // address && this.props.delegations && this.props.delegations.length &&
@@ -184,10 +188,12 @@ class Table extends Component {
                     // if (this.props.genesisValidatorList && this.props.genesisValidatorList[val.address]) {
                     //     address = this.props.genesisValidatorList[val.address];
                     // }
+                    let valid = true;
                     this.props.delegatedValidatorList && this.props.delegatedValidatorList.length &&
                     this.props.delegatedValidatorList.map((value) => {
                         if (value && value.validator && value.validator.address &&
-                            (val.address === value.validator.address)) {
+                            (val.address === value.validator.address) && valid) {
+                            valid = false;
                             dataToMap.push(val);
                         }
                     });

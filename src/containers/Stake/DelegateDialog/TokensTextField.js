@@ -43,10 +43,14 @@ const TokensTextField = (props) => {
         // if (filterList && filterList.length && filterList[2]) {
         //     stakedTokens = Number(filterList[2]);
         // }
-        const filterList = props.delegatedValidatorList.find((value) => value && value.validator && value.validator.address &&
+        const filterList = props.delegatedValidatorList.filter((value) => value && value.validator && value.validator.address &&
         (props.selectedValidator === value.validator.address));
-        if (filterList && filterList.minDenomAmount && filterList.minDenomAmount) {
-            stakedTokens = filterList.minDenomAmount && Number(filterList.minDenomAmount) / 10 ** config.COIN_DECIMALS;
+        if (filterList && filterList.length) {
+            stakedTokens = 0;
+            filterList.map((value) => {
+                stakedTokens = stakedTokens + Number(value.minDenomAmount);
+            })
+            stakedTokens = stakedTokens && Number(stakedTokens) / 10 ** config.COIN_DECIMALS;
         }
     }
 

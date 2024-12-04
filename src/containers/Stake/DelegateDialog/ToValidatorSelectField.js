@@ -36,13 +36,11 @@ const ToValidatorSelectField = (props) => {
                                     item.operator_address}
                             value={item.value || item.name || item.address || item.type ||
                                     (item.operator_address)}>
-                            {image && image.length && image[0] && image[0].them && image[0].them.length &&
-                                image[0].them[0] && image[0].them[0].pictures && image[0].them[0].pictures.primary &&
-                                image[0].them[0].pictures.primary.url
+                            {item && item.avatar
                                 ? <img
-                                    alt={item.description && item.description.moniker}
+                                    alt={item.name || item.address}
                                     className="image"
-                                    src={image[0].them[0].pictures.primary.url}/>
+                                    src={item.avatar}/>
                                 : item.description && item.description.moniker
                                     ? <span
                                         className="image"
