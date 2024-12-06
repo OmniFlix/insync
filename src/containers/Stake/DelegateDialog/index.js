@@ -96,7 +96,7 @@ const DelegateDialog = (props) => {
             txs.gasLimit = new BigNumber(100000);
             reDelegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
         } else {
-            delegateTransaction(tx, txs, props.revealPublicKey, handleFetch);
+            delegateTransaction(tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
         }
     };
 
@@ -222,6 +222,8 @@ const DelegateDialog = (props) => {
         }, 4000);
         // props.fetchVestingBalance(props.address);
         props.getDelegations(props.address);
+        props.fetchRewards(props.address);
+        props.getDelegatedValidatorsDetails(props.address);
         // props.getUnBondingDelegations(props.address);
         // props.getDelegatedValidatorsDetails(props.address);
         // props.fetchRewards(props.address);

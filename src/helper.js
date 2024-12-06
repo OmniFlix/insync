@@ -285,7 +285,7 @@ export const initializeNamadaChain = (cb) => {
 //     })();
 // };
 
-export const delegateTransaction = (Tx, txs, revealPublicKey, cb) => {
+export const delegateTransaction = (Tx, txs, revealPublicKey, type, cb) => {
     (async () => {
         const isExtensionInstalled = typeof window.namada === 'object';
         if (!isExtensionInstalled || !window.namada) {
@@ -341,7 +341,13 @@ export const delegateTransaction = (Tx, txs, revealPublicKey, cb) => {
             const encoded = await tx.buildBond(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
 
-            const updateDate = tx.buildBatch(newTxs);
+            // const updateDate = tx.buildBatch(newTxs);
+            let updateDate;
+            if (type === 'ledger') {
+                updateDate = newTxs;
+            } else {
+                updateDate = tx.buildBatch(newTxs);
+            }
 
             // const checksums = {
             //     "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
@@ -361,6 +367,7 @@ export const delegateTransaction = (Tx, txs, revealPublicKey, cb) => {
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
+                    console.log('result', result);
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
                         cb(result.info || result.log || result.rawLog);
                     } else {

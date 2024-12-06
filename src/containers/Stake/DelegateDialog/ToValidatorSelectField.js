@@ -17,19 +17,35 @@ const ToValidatorSelectField = (props) => {
         props.onChange(value);
     };
 
+    let validatorList = [];
+    if (props.validatorList && props.validatorList.length) {
+        props.validatorList.map((val) => {
+            if (val && val.name && val.name.toLowerCase() === 'cosmic validator') {
+                validatorList.splice(0, 0, val);
+            } else if (val && val.name && val.name.toLowerCase() === 'mandragora') {
+                const find = validatorList.find((val1) => val1 && val1.name && val1.name.toLowerCase() === 'cosmic validator');
+                if (!find) {
+                    validatorList.splice(0, 0, val);
+                } else {
+                    validatorList.splice(1, 0, val);
+                }
+            } else {
+                validatorList.push(val);
+            }
+        });
+    } else {
+        validatorList = dataToMap;
+    }
+
     return (
         <SelectField
             id="validator_select_field"
-            items={props.validatorList}
+            items={validatorList}
             name="validators"
             value={props.value}
             onChange={handleChange}>
-            {props.validatorList && props.validatorList.length &&
-                props.validatorList.map((item, index) => {
-                    const image = item && item.description && item.description.identity &&
-                            props.validatorImages && props.validatorImages.length &&
-                            props.validatorImages.filter((value) => value._id === item.description.identity.toString());
-
+            {validatorList && validatorList.length &&
+                validatorList.map((item, index) => {
                     return (
                         props.removeValue !== item.operator_address && <MenuItem
                             key={item.key || item.value || item.name || item.address || item.type ||
