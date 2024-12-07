@@ -12,9 +12,9 @@ export const urlFetchRewards = (address) => `${REST_URL}/api/v1/pos/reward/${add
 export const urlFetchVoteDetails = (proposalId, address) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${proposalId}/votes/${address}`;
 export const urlFetchRevealedPubkey = (address) => `${REST_URL}/api/v1/revealed-public-key/${address}`;
 
-export const VALIDATORS_LIST_URL = () => `${REST_URL}/api/v1/pos/validator/all`;
+export const VALIDATORS_LIST_URL = () => `${REST_URL}/api/v1/pos/validator/all?state=consensus`;
 export const GENESIS_VALIDATORS_LIST_URL = 'https://namada.info/shielded-expedition.88f17d1d14/output/genesis_tm_address_to_alias.json';
-export const INACTIVE_VALIDATORS_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000&status=BOND_STATUS_UNBONDED`;
+export const INACTIVE_VALIDATORS_URL = `${REST_URL}/api/v1/pos/validator/all?state=belowCapacity&state=belowThreshold&state=inactive&state=jailed&state=unknown`;
 export const INACTIVE_VALIDATORS_UNBONDING_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000&status=BOND_STATUS_UNBONDING`;
 export const getValidatorURL = (address) => `${REST_URL}/cosmos/staking/v1beta1/validators/${address}`;
 export const PROPOSALS_LIST_URL = `${REST_URL}/cosmos/gov/v1/proposals?pagination.limit=1000`;

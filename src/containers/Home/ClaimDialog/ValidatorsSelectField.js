@@ -90,15 +90,7 @@ ValidatorSelectField.propTypes = {
     onChange: PropTypes.func.isRequired,
     inProgress: PropTypes.bool,
     items: PropTypes.array,
-    validatorList: PropTypes.arrayOf(
-        PropTypes.shape({
-            operator_address: PropTypes.string,
-            status: PropTypes.number,
-            description: PropTypes.shape({
-                moniker: PropTypes.string,
-            }),
-        }),
-    ),
+    validatorList: PropTypes.array,
 };
 
 const stateToProps = (state) => {

@@ -430,13 +430,16 @@ export const getInActiveValidators = (cb) => (dispatch) => {
                     Connection: 'keep-alive',
                 },
             });
-            const unBondingResult = await Axios.get(INACTIVE_VALIDATORS_UNBONDING_URL, {
-                headers: {
-                    Accept: 'application/json, text/plain, */*',
-                    Connection: 'keep-alive',
-                },
-            });
-            const updatedResult = [...result.data && result.data.result, ...unBondingResult.data && unBondingResult.data.result];
+            // const unBondingResult = await Axios.get(INACTIVE_VALIDATORS_UNBONDING_URL, {
+            //     headers: {
+            //         Accept: 'application/json, text/plain, */*',
+            //         Connection: 'keep-alive',
+            //     },
+            // });
+            const updatedResult = [
+                ...result.data,
+                // ...unBondingResult.data && unBondingResult.data.result
+            ];
             dispatch(fetchInActiveValidatorsSuccess(updatedResult));
             cb(updatedResult);
         } catch (error) {

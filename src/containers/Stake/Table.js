@@ -13,6 +13,7 @@ import { config } from '../../config';
 import { Button } from '@material-ui/core';
 import { showConnectDialog } from '../../actions/navBar';
 import { randomNoRepeats } from 'utils/array';
+import classNames from 'classnames';
 
 class Table extends Component {
     render () {
@@ -59,23 +60,23 @@ class Table extends Component {
                 ),
             },
         },
-        //         {
+        // {
         //     name: 'status',
         //     label: 'Status',
         //     options: {
         //         sort: false,
         //         customBodyRender: (value) => (
         //             <div
-        //                 className={classNames('status', (value.jailed || value.status === 'BOND_STATUS_UNBONDED') ? 'red_status' : '')}
-        //                 title={value.status === 'BOND_STATUS_UNBONDED' ? 'jailed'
-        //                     : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
-        //                         : value.status === 'BOND_STATUS_BONDED' ? 'active'
-        //                             : value.status === 'BOND_STATUS_UNSPECIFIED' ? 'invalid'
+        //                 className={classNames('status', (value.status === 'inactive' || value.status === 'jailed') ? 'red_status' : '')}
+        //                 title={value.status === 'jailed' ? 'jailed'
+        //                     // : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
+        //                         : value.status === 'consensus' ? 'active'
+        //                             : value.status === 'inactive' ? 'invalid'
         //                                 : ''}>
-        //                 {value.status === 'BOND_STATUS_UNBONDED' ? 'jailed'
-        //                     : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
-        //                         : value.status === 'BOND_STATUS_BONDED' ? 'active'
-        //                             : value.status === 'BOND_STATUS_UNSPECIFIED' ? 'invalid'
+        //                 {value.status === 'jailed' ? 'jailed'
+        //                     // : value.status === 'BOND_STATUS_UNBONDING' ? 'unbonding'
+        //                         : value.status === 'consensus' ? 'active'
+        //                             : value.status === 'inactive' ? 'invalid'
         //                                 : ''}
         //             </div>
         //         ),
@@ -105,16 +106,16 @@ class Table extends Component {
         //         },
         //     },
         // },
-        //         {
-        //     name: 'commission',
-        //     label: 'Commission',
-        //     options: {
-        //         sort: true,
-        //         customBodyRender: (value) => (
-        //             value ? value + '%' : '0%'
-        //         ),
-        //     },
-        // },
+        {
+            name: 'commission',
+            label: 'Commission',
+            options: {
+                sort: true,
+                customBodyRender: (value) => (
+                    value ? value + '%' : '0%'
+                ),
+            },
+        },
         {
             name: 'tokens_staked',
             label: 'Tokens Staked',
@@ -229,11 +230,8 @@ class Table extends Component {
                     // item,
                     // parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
                     parseFloat((Number(item.votingPower)).toFixed(1)),
-                    // item.commission && item.commission.commission_rates &&
-                    // item.commission.commission_rates.rate,
-                    // item.commission && item.commission.commission_rates &&
-                    // item.commission.commission_rates.rate
-                    //     ? parseFloat((Number(item.commission.commission_rates.rate) * 100).toFixed(2)) : null,
+                    item.commission
+                        ? parseFloat((Number(item.commission) * 100).toFixed(2)) : null,
                     item,
                     item,
                 ])
@@ -301,22 +299,7 @@ Table.propTypes = {
             }),
         }),
     ),
-    validatorList: PropTypes.arrayOf(
-        PropTypes.shape({
-            operator_address: PropTypes.string,
-            status: PropTypes.number,
-            tokens: PropTypes.string,
-            commission: PropTypes.shape({
-                commission_rates: PropTypes.shape({
-                    rate: PropTypes.string,
-                }),
-            }),
-            delegator_shares: PropTypes.string,
-            description: PropTypes.shape({
-                moniker: PropTypes.string,
-            }),
-        }),
-    ),
+    validatorList: PropTypes.array,
 };
 
 const stateToProps = (state) => {

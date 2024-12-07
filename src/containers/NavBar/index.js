@@ -139,12 +139,12 @@ class NavBar extends Component {
         //     this.props.fetchAPR();
         // }
 
-        // if (!this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
+        // if (this.props.inActiveValidatorsList && !this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
         //     this.props.getInActiveValidators((data) => {
-        //         if (data && data.length) {
-        //             const array = data.filter((val) => val && val.description && val.description.identity);
-        //             this.getValidatorImage(0, array);
-        //         }
+        //         // if (data && data.length) {
+        //         //     const array = data.filter((val) => val && val.description && val.description.identity);
+        //         //     this.getValidatorImage(0, array);
+        //         // }
         //     });
         // }
 

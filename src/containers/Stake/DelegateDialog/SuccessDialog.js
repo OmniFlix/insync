@@ -264,15 +264,7 @@ SuccessDialog.propTypes = {
         }).isRequired,
     }),
     tokens: PropTypes.any,
-    validatorList: PropTypes.arrayOf(
-        PropTypes.shape({
-            operator_address: PropTypes.string,
-            status: PropTypes.number,
-            description: PropTypes.shape({
-                moniker: PropTypes.string,
-            }),
-        }),
-    ),
+    validatorList: PropTypes.array,
 };
 
 const stateToProps = (state) => {

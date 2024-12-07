@@ -46,10 +46,10 @@ const ValidatorName = (props) => {
 
 ValidatorName.propTypes = {
     genesisValidatorList: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
     validatorImages: PropTypes.array.isRequired,
     value: PropTypes.object.isRequired,
     index: PropTypes.number,
+    name: PropTypes.string,
 };
 
 const stateToProps = (state) => {
