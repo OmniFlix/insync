@@ -737,7 +737,7 @@ export const voteTransaction = (Tx, txs, type, cb) => {
                 updateDate = tx.buildBatch(newTxs);
             }
 
-            client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
+            client.sign(updateDate, Tx.voter, checksums).then((signedBondTxBytes) => {
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
                         cb(result.info || result.log || result.rawLog);
