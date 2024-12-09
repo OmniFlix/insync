@@ -12,7 +12,7 @@ import {
     showProposalDialog,
 } from '../../../actions/proposals';
 import Icon from '../../../components/Icon';
-import Voting from './Voting';
+// import Voting from './Voting';
 import moment from 'moment';
 import ClassNames from 'classnames';
 import { tally } from '../../../utils/numberFormats';
@@ -22,6 +22,7 @@ import UnSuccessDialog from '../../Stake/DelegateDialog/UnSuccessDialog';
 import PendingDialog from '../../Stake/DelegateDialog/PendingDialog';
 import SuccessDialog from '../../Stake/DelegateDialog/SuccessDialog';
 import withRouter from '../../../components/WithRouter';
+import { fixDateString } from 'utils/date';
 
 class ProposalDialog extends Component {
     constructor (props) {
@@ -92,15 +93,11 @@ class ProposalDialog extends Component {
             return (this.props.tallyDetails && this.props.tallyDetails[proposal.id] && this.props.tallyDetails[proposal.id][val1]
                 ? tally(this.props.tallyDetails[proposal.id][val1], sum) : '0%');
         } else {
-            const sum = proposal && proposal.final_tally_result && proposal.final_tally_result.yes_count &&
-                proposal.final_tally_result.no_count && proposal.final_tally_result.no_with_veto_count &&
-                proposal.final_tally_result.abstain_count &&
-                (parseInt(proposal.final_tally_result.yes_count) + parseInt(proposal.final_tally_result.no_count) +
-                    parseInt(proposal.final_tally_result.no_with_veto_count) + parseInt(proposal.final_tally_result.abstain_count));
+            const sum = proposal && proposal.yayVotes && proposal.nayVotes && proposal.abstainVotes &&
+                (parseInt(proposal.yayVotes) + parseInt(proposal.nayVotes) + parseInt(proposal.abstainVotes));
 
-            return (proposal && proposal.final_tally_result &&
-            proposal.final_tally_result[val]
-                ? tally(proposal.final_tally_result[val], sum) : '0%');
+            return (proposal && proposal[val]
+                ? tally(proposal[val], sum) : '0%');
         }
     }
 
@@ -116,27 +113,8 @@ class ProposalDialog extends Component {
         if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
             votedOption = votedOption.options[0];
         }
-        let proposer = this.props.proposal && this.props.proposal.proposer;
-
-        this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-        Object.keys(this.props.proposalDetails).filter((key) => {
-            if (this.props.proposal && key === this.props.proposal.id) {
-                if (this.props.proposalDetails[key] &&
-                    this.props.proposalDetails[key][0] &&
-                    this.props.proposalDetails[key][0].body &&
-                    this.props.proposalDetails[key][0].body.messages &&
-                    this.props.proposalDetails[key][0].body.messages.length &&
-                    this.props.proposalDetails[key][0].body.messages[0] &&
-                    this.props.proposalDetails[key][0].body.messages[0].proposer) {
-                    proposer = this.props.proposalDetails[key][0].body.messages[0].proposer;
-                }
-            }
-
-            return null;
-        });
-
-        const content = this.props.proposal && this.props.proposal.messages && this.props.proposal.messages[0] && this.props.proposal.messages[0].content;
-
+        const content = this.props.proposal && this.props.proposal.content
+        ? JSON.parse(this.props.proposal.content) : {};
         return (
             <div className="proposals">
                 <NavBar proposalTab={true}/>
@@ -152,26 +130,26 @@ class ProposalDialog extends Component {
                                 </IconButton>
                                 <div className="proposal_dialog_section1">
                                     <div
-                                        className="proposal_dialog_section1_header">{this.props.proposal && this.props.proposal.title}</div>
+                                        className="proposal_dialog_section1_header">{content?.title}</div>
                                     <div
                                         className={ClassNames('proposal_dialog_section1_status', this.props.proposal &&
-                                        (this.props.proposal.status === 2 || this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')
+                                        (this.props.proposal.status === 2 || this.props.proposal.status === 'voting')
                                             ? 'voting_period'
                                             : this.props.proposal && (this.props.proposal.status === 4 ||
-                                                this.props.proposal.status === 'PROPOSAL_STATUS_REJECTED')
+                                                this.props.proposal.status === 'rejected')
                                                 ? 'rejected'
                                                 : null)}> Proposal
                                         Status: &nbsp;{this.props.proposal && this.props.proposal.status
                                             ? this.props.proposal.status === 0 ||
-                                            this.props.proposal.status === 'PROPOSAL_STATUS_UNSPECIFIED' ? 'Nil'
+                                            this.props.proposal.status === 'pending' ? 'Nil'
                                                 : this.props.proposal.status === 1 ||
                                                 this.props.proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? 'DepositPeriod'
                                                     : this.props.proposal.status === 2 ||
-                                                    this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? 'VotingPeriod'
+                                                    this.props.proposal.status === 'voting' ? 'VotingPeriod'
                                                         : this.props.proposal.status === 3 ||
-                                                        this.props.proposal.status === 'PROPOSAL_STATUS_PASSED' ? 'Passed'
+                                                        this.props.proposal.status === 'passed' ? 'Passed'
                                                             : this.props.proposal.status === 4 ||
-                                                            this.props.proposal.status === 'PROPOSAL_STATUS_REJECTED' ? 'Rejected'
+                                                            this.props.proposal.status === 'rejected' ? 'Rejected'
                                                                 : this.props.proposal.status === 5 ||
                                                                 this.props.proposal.status === 'PROPOSAL_STATUS_FAILED' ? 'Failed' : ''
                                             : ''}</div>
@@ -179,7 +157,9 @@ class ProposalDialog extends Component {
                                 <div className="proposal_dialog_section2">
                                     <pre
                                         className={ClassNames('proposal_dialog_section2_content', this.state.show ? 'show_more' : '')}>
-                                        {this.props.proposal && this.props.proposal.summary}
+                                        {content?.abstract}
+                                        <br/>
+                                        {content?.details}
                                     </pre>
                                     <div
                                         className="proposal_dialog_section2_more"
@@ -193,24 +173,24 @@ class ProposalDialog extends Component {
                                     <div className="proposal_dialog_section3_left">
                                         <div className="pds3l_c">
                                             <p className="pds3l_c1">Proposer</p>
-                                            {proposer && <div className="pds3l_c2 hash_text" title={proposer}>
-                                                <p className="name">{proposer}</p>
-                                                {proposer &&
-                                                    proposer.slice(proposer.length - 6, proposer.length)}
+                                            {this.props.proposal?.author && <div className="pds3l_c2 hash_text" title={this.props.proposal.author}>
+                                                <p className="name">{this.props.proposal.author}</p>
+                                                {this.props.proposal.author &&
+                                                    this.props.proposal.author.slice(this.props.proposal.author.length - 6, this.props.proposal.author.length)}
                                             </div>}
                                         </div>
                                         <div className="pds3l_c">
                                             <p className="pds3l_c1">Submitted on</p>
-                                            <p className="pds3l_c2">{this.props.proposal && this.props.proposal.submit_time
-                                                ? moment(this.props.proposal.submit_time).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
+                                            <p className="pds3l_c2">{content && content.created
+                                                ? moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
                                         </div>
                                         <div className="pds3l_c">
                                             <p className="pds3l_c1">Voting Period</p>
                                             <div className="pds3l_c2 vp_cards">
-                                                <p>{this.props.proposal && this.props.proposal.voting_start_time
-                                                    ? moment(this.props.proposal.voting_start_time).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
-                                                <p>{this.props.proposal && this.props.proposal.voting_end_time
-                                                    ? moment(this.props.proposal.voting_end_time).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
+                                                <p>{this.props.proposal && this.props.proposal.startTime
+                                                    ? moment.unix(this.props.proposal.startTime).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
+                                                <p>{this.props.proposal && this.props.proposal.endTime
+                                                    ? moment.unix(this.props.proposal.endTime).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
                                             </div>
                                         </div>
                                         <div className="pds3l_c">
@@ -220,34 +200,33 @@ class ProposalDialog extends Component {
                                                     this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') ? 'vote_in_progress' : '')}>
                                                 <div className="yes">
                                                     <span/>
-                                                    <p>YES ({this.VoteCalculation('yes_count')})</p>
+                                                    <p>YES ({this.VoteCalculation('yayVotes')})</p>
                                                 </div>
                                                 <div className="no">
                                                     <span/>
-                                                    <p>NO ({this.VoteCalculation('no_count')})</p>
+                                                    <p>NO ({this.VoteCalculation('nayVotes')})</p>
                                                 </div>
-                                                <div className="option3">
+                                                {/* <div className="option3">
                                                     <span/>
                                                     <p>NoWithVeto ({this.VoteCalculation('no_with_veto_count')})</p>
-                                                </div>
+                                                </div> */}
                                                 <div className="option4">
                                                     <span/>
-                                                    <p>Abstain ({this.VoteCalculation('abstain_count')})</p>
+                                                    <p>Abstain ({this.VoteCalculation('abstainVotes')})</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="pds3l_c">
                                             <p className="pds3l_c1">Type</p>
-                                            <p className="pds3l_c2 type">{this.props.proposal && content && content.type
-                                                ? content.type
-                                                : this.props.proposal && content && content['@type']
-                                                    ? content['@type'] : null}</p>
+                                            <p className="pds3l_c2 type">{this.props.proposal && this.props.proposal.type
+                                                ? this.props.proposal.type
+                                                : null}</p>
                                         </div>
                                     </div>
-                                    {this.props.proposal && (this.props.proposal.status === 2 ||
-                                        this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') && !this.props.voteDetailsInProgress
+                                    {/* {this.props.proposal && (this.props.proposal.status === 2 ||
+                                        this.props.proposal.status === 'voting') && !this.props.voteDetailsInProgress
                                         ? <Voting proposalId={this.props.proposal && this.props.proposal.id}/>
-                                        : null}
+                                        : null} */}
                                 </div>
                                 {votedOption
                                     ? <div className="already_voted">

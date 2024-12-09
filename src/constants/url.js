@@ -17,10 +17,10 @@ export const GENESIS_VALIDATORS_LIST_URL = 'https://namada.info/shielded-expedit
 export const INACTIVE_VALIDATORS_URL = `${REST_URL}/api/v1/pos/validator/all?state=belowCapacity&state=belowThreshold&state=inactive&state=jailed&state=unknown`;
 export const INACTIVE_VALIDATORS_UNBONDING_URL = `${REST_URL}/cosmos/staking/v1beta1/validators?pagination.limit=1000&status=BOND_STATUS_UNBONDING`;
 export const getValidatorURL = (address) => `${REST_URL}/cosmos/staking/v1beta1/validators/${address}`;
-export const PROPOSALS_LIST_URL = `${REST_URL}/cosmos/gov/v1/proposals?pagination.limit=1000`;
+export const PROPOSALS_LIST_URL = `${REST_URL}/api/v1/gov/proposal/all`;
 export const getDelegatedValidatorsURL = (address) => `${REST_URL}/api/v1/pos/bond/${address}`;
 export const urlFetchProposalVotes = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/votes`;
 export const urlFetchTallyDetails = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/tally`;
-export const urlFetchProposalDetails = (id) => `${REST_URL}/cosmos/gov/v1/proposals/${id}`;
+export const urlFetchProposalDetails = (id) => `${REST_URL}/api/v1/gov/proposal/${id}`;
 
 export const validatorImageURL = (id) => `https://keybase.io/_/api/1.0/user/lookup.json?fields=pictures&key_suffix=${id}`;

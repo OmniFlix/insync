@@ -56,7 +56,7 @@ class Table extends Component {
                 customBodyRender: (value, index) => (
                     <ValidatorName
                         index={index && index.rowIndex} name={value}
-                        value={index.rowData && index.rowData.length && index.rowData[2]}/>
+                        value={index.rowData && index.rowData.length && index.rowData[3]}/>
                 ),
             },
         },

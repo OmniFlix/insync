@@ -107,7 +107,7 @@ const Voting = (props) => {
                 <RadioGroup name="voting" value={value} onChange={handleChange}>
                     <FormControlLabel control={<Radio/>} label="Yes" value="Yes"/>
                     <FormControlLabel control={<Radio/>} label="No" value="No"/>
-                    <FormControlLabel control={<Radio/>} label="NoWithVeto" value="NoWithVeto"/>
+                    {/* <FormControlLabel control={<Radio/>} label="NoWithVeto" value="NoWithVeto"/> */}
                     <FormControlLabel control={<Radio/>} label="Abstain" value="Abstain"/>
                 </RadioGroup>
                 <div className="buttons_div">
