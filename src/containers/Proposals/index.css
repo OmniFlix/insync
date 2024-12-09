@@ -65,9 +65,9 @@
 }
 
 .proposals .card {
-    background: #FFFFFF;
+    background: #000;
     border-radius: 20px;
-    color: #000000;
+    color: #fff;
     padding: 18px 28px;
     width: 31%;
     text-align: left;
@@ -97,6 +97,8 @@
     font-weight: 600;
     font-size: 24px;
     line-height: 130%;
+    color: #000;
+    background: #FFFF46;
 }
 
 .proposals .card_heading {
@@ -111,7 +113,7 @@
     font-weight: 600;
     font-size: 28px;
     line-height: 130%;
-    color: #000000;
+    color: #fff;
     margin: unset;
     white-space: nowrap;
     overflow: hidden;
@@ -173,7 +175,7 @@
     font-weight: 600;
     font-size: 18px;
     line-height: 130%;
-    color: #696969;
+    color: #ffffff9e;
     margin-bottom: 26px;
     display: -webkit-box;
     -webkit-line-clamp: 5;
@@ -195,7 +197,7 @@
     font-weight: 600;
     font-size: 14px;
     line-height: 130%;
-    color: #696969;
+    color: #ffffff9e;
     display: flex;
 }
 
@@ -204,7 +206,7 @@
     font-weight: 600;
     font-size: 14px;
     line-height: 130%;
-    color: #696969;
+    color: #ffffff9e;
     max-width: 110px;
 }
 
@@ -299,7 +301,7 @@
     font-weight: 600;
     font-size: 14px;
     line-height: 130%;
-    color: #000000;
+    color: #fff;
     display: flex;
 }
 
