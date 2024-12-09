@@ -37,18 +37,18 @@ const KeplrConnectButton = (props) => {
             props.setAccountDetails(addressList);
             props.hideConnectDialog();
             // if (!props.proposalTab && !props.stake) {
-            //     props.getUnBondingDelegations(addressList[0] && addressList[0].address);
-            //     props.fetchRewards(addressList[0] && addressList[0].address);
+            //     props.getUnBondingDelegations(addressList && addressList.address);
+            //     props.fetchRewards(addressList && addressList.address);
             // }
             if (!props.proposalTab) {
-                props.getDelegations(addressList[0] && addressList[0].address);
+                props.getDelegations(addressList && addressList.address);
             }
-            props.getBalance(addressList[0] && addressList[0].address);
-            // props.fetchVestingBalance(addressList[0] && addressList[0].address);
+            props.getBalance(addressList && addressList.address);
+            // props.fetchVestingBalance(addressList && addressList.address);
             // if (!props.proposalTab) {
-            //     props.getDelegatedValidatorsDetails(addressList[0] && addressList[0].address);
+            //     props.getDelegatedValidatorsDetails(addressList && addressList.address);
             // }
-            localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
+            localStorage.setItem('of_co_address', encode(addressList && addressList.address));
             localStorage.setItem('of_co_wallet', 'namada');
         });
     };

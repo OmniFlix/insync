@@ -4,7 +4,6 @@ import { fetchProposalTally, fetchVoteDetails, hideProposalDialog } from '../../
 import { connect } from 'react-redux';
 import { Button, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
 import CircularProgress from '../../../components/CircularProgress';
-import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import { showMessage } from '../../../actions/snackbar';
@@ -14,8 +13,9 @@ import {
     showDelegateSuccessDialog,
 } from '../../../actions/stake';
 import { fetchVestingBalance, getBalance } from '../../../actions/accounts';
-import { gas } from '../../../defaultGasValues';
 import Long from 'long';
+import { voteTransaction } from 'helper';
+import BigNumber from 'bignumber.js';
 
 const Voting = (props) => {
     const [value, setValue] = React.useState('');
@@ -39,36 +39,30 @@ const Voting = (props) => {
 
         setInProgress(true);
 
-        const option = value === 'Yes' ? 1
-            : value === 'Abstain' ? 2
-                : value === 'No' ? 3
-                    : value === 'NoWithVeto' ? 4 : null;
+        const option = value === 'Yes' ? 'yay'
+            : value === 'Abstain' ? 'abstain'
+                : value === 'No' ? 'nay'
+                    : null;
 
         const tx = {
-            msgs: [{
-                typeUrl: '/cosmos.gov.v1beta1.MsgVote',
-                value: {
-                    option: option,
-                    proposalId: Long.fromString(props.proposalId),
-                    voter: props.address,
-                },
-            }],
-            fee: {
-                amount: [{
-                    amount: String(gas.vote * config.GAS_PRICE_STEP_AVERAGE),
-                    denom: config.COIN_MINIMAL_DENOM,
-                }],
-                gas: String(gas.vote),
-            },
-            memo: '',
+            voter: props.address,
+            proposalId: Long.fromString(props.proposalId),
+            option: option,
         };
 
-        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
-            cosmoStationSign(tx, props.address, handleFetch);
-            return;
+        if (props.name === 'Delegate' || props.name === 'Stake') {
+            tx.nativeToken = 'NAAN';
         }
 
-        signTxAndBroadcast(tx, props.address, handleFetch);
+        const txs = {
+            token: config.TOKEN_ADDRESS,
+            feeAmount: new BigNumber(0.000001),
+            gasLimit: new BigNumber(50000),
+            chainId: config.CHAIN_ID,
+            publicKey: props.details && props.details.publicKey,
+        };
+
+        voteTransaction(tx, txs, props.details && props.details.type, handleFetch);
     };
 
     const handleFetch = (error, result) => {
@@ -132,6 +126,7 @@ const Voting = (props) => {
 };
 
 Voting.propTypes = {
+    details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
@@ -150,6 +145,7 @@ const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         lang: state.language,
+        details: state.accounts.address.details,
     };
 };
 

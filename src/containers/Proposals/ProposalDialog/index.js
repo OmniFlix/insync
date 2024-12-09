@@ -12,7 +12,7 @@ import {
     showProposalDialog,
 } from '../../../actions/proposals';
 import Icon from '../../../components/Icon';
-// import Voting from './Voting';
+import Voting from './Voting';
 import moment from 'moment';
 import ClassNames from 'classnames';
 import { tally } from '../../../utils/numberFormats';
@@ -109,7 +109,7 @@ class ProposalDialog extends Component {
     render () {
         let votedOption = this.props.voteDetails && this.props.voteDetails.length &&
             this.props.proposal && this.props.proposal.id &&
-            this.props.voteDetails.filter((vote) => vote && vote.proposal_id === this.props.proposal.id)[0];
+            this.props.voteDetails.filter((vote) => vote && vote.proposalId === this.props.proposal.id)[0];
         if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
             votedOption = votedOption.options[0];
         }
@@ -223,20 +223,20 @@ class ProposalDialog extends Component {
                                                 : null}</p>
                                         </div>
                                     </div>
-                                    {/* {this.props.proposal && (this.props.proposal.status === 2 ||
+                                    {this.props.proposal && (this.props.proposal.status === 2 ||
                                         this.props.proposal.status === 'voting') && !this.props.voteDetailsInProgress
                                         ? <Voting proposalId={this.props.proposal && this.props.proposal.id}/>
-                                        : null} */}
+                                        : null}
                                 </div>
-                                {votedOption
+                                {votedOption && votedOption.voterAddress
                                     ? <div className="already_voted">
                                         <Icon className="right-arrow" icon="right-arrow"/>
                                         <p>{`you voted “${
-                                            votedOption && (votedOption.option === 1 || votedOption.option === 'VOTE_OPTION_YES') ? 'Yes'
-                                                : votedOption && (votedOption.option === 2 || votedOption.option === 'VOTE_OPTION_ABSTAIN') ? 'Abstain'
-                                                    : votedOption && (votedOption.option === 3 || votedOption.option === 'VOTE_OPTION_NO') ? 'No'
-                                                        : votedOption && (votedOption.option === 4 || votedOption.option === 'VOTE_OPTION_NO_WITH_VETO') ? 'NoWithVeto'
-                                                            : votedOption && votedOption.option
+                                            votedOption && (votedOption.vote === 1 || votedOption.vote === 'yay') ? 'Yes'
+                                                : votedOption && (votedOption.vote === 2 || votedOption.vote === 'abstain') ? 'Abstain'
+                                                    : votedOption && (votedOption.vote === 3 || votedOption.vote === 'nay') ? 'No'
+                                                        : votedOption && (votedOption.vote === 4 || votedOption.vote === 'VOTE_OPTION_NO_WITH_VETO') ? 'NoWithVeto'
+                                                            : votedOption && votedOption.vote
                                         }” for this proposal`}</p>
                                     </div>
                                     : null}

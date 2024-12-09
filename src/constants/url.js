@@ -9,7 +9,8 @@ export const urlFetchVestingBalance = (address) => `${REST_URL}/cosmos/auth/v1be
 export const urlFetchUnBondingDelegations = (address) => `${REST_URL}/cosmos/staking/v1beta1/delegators/${address}/unbonding_delegations`;
 
 export const urlFetchRewards = (address) => `${REST_URL}/api/v1/pos/reward/${address}`;
-export const urlFetchVoteDetails = (proposalId, address) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${proposalId}/votes/${address}`;
+// export const urlFetchVoteDetails = (proposalId, address) => `${REST_URL}/api/v1/gov/voter/${proposalId}/votes/${address}`
+export const urlFetchVoteDetails = (proposalId, address) => `${REST_URL}/api/v1/gov/voter/${address}/votes`;
 export const urlFetchRevealedPubkey = (address) => `${REST_URL}/api/v1/revealed-public-key/${address}`;
 
 export const VALIDATORS_LIST_URL = () => `${REST_URL}/api/v1/pos/validator/all?state=consensus`;

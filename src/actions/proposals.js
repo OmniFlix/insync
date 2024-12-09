@@ -156,7 +156,7 @@ export const fetchVoteDetails = (id, address) => (dispatch) => {
         },
     })
         .then((res) => {
-            dispatch(fetchVoteDetailsSuccess(res.data && res.data.vote));
+            dispatch(fetchVoteDetailsSuccess(res.data));
         })
         .catch((error) => {
             dispatch(fetchVoteDetailsError(
