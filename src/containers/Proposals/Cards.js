@@ -70,9 +70,9 @@ const Cards = (props) => {
                         if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
                             let votedOption = props.voteDetails && props.voteDetails.length &&
                                 proposal && proposal.id &&
-                                props.voteDetails.filter((vote) => vote && vote.proposal_id === proposal.id)[0];
-                            if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
-                                votedOption = votedOption.options[0];
+                                props.voteDetails.filter((vote) => vote && ((String(vote.proposalId) === String(proposal.id)) || (String(vote.proposalId) === '0' && String(proposal.id) === '0')));
+                            if (votedOption && votedOption.length && votedOption[0]) {
+                                votedOption = votedOption[0];
                             }
                             let inProgress = props.proposalDetails && Object.keys(props.proposalDetails).length &&
                                 Object.keys(props.proposalDetails).find((key) => key === proposal.proposal_id);
@@ -92,17 +92,17 @@ const Cards = (props) => {
                                         <h2 onClick={() => props.handleShow(proposal)}> {
                                             content?.title
                                         }</h2>
-                                        {proposal.status === 3 || proposal.status === 'PROPOSAL_STATUS_PASSED'
+                                        {proposal.status === 3 || proposal.status === 'passed'
                                             ? <Icon className="success" icon="success"/>
-                                            : (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
+                                            : (proposal.status === 2 || proposal.status === 'voting') &&
                                             votedOption
                                                 ? <div className="details">
                                                     <p>your vote is taken: <b>
-                                                        {votedOption && (votedOption.option === 1 || votedOption.option === 'VOTE_OPTION_YES') ? 'Yes'
-                                                            : votedOption && (votedOption.option === 2 || votedOption.option === 'VOTE_OPTION_ABSTAIN') ? 'Abstain'
-                                                                : votedOption && (votedOption.option === 3 || votedOption.option === 'VOTE_OPTION_NO') ? 'No'
-                                                                    : votedOption && (votedOption.option === 4 || votedOption.option === 'VOTE_OPTION_NO_WITH_VETO') ? 'NoWithVeto'
-                                                                        : votedOption && votedOption.option}
+                                                        {votedOption && (votedOption.vote === 1 || votedOption.vote === 'yay') ? 'Yes'
+                                                            : votedOption && (votedOption.vote === 2 || votedOption.vote === 'abstain') ? 'Abstain'
+                                                                : votedOption && (votedOption.vote === 3 || votedOption.vote === 'nay') ? 'No'
+                                                                    : votedOption && (votedOption.vote === 4 || votedOption.vote === 'VOTE_OPTION_NO_WITH_VETO') ? 'NoWithVeto'
+                                                                        : votedOption && votedOption.vote}
                                                     </b></p>
                                                     <Button
                                                         variant="contained"

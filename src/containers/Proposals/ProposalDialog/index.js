@@ -109,9 +109,9 @@ class ProposalDialog extends Component {
     render () {
         let votedOption = this.props.voteDetails && this.props.voteDetails.length &&
             this.props.proposal && this.props.proposal.id &&
-            this.props.voteDetails.filter((vote) => vote && vote.proposalId === this.props.proposal.id)[0];
-        if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
-            votedOption = votedOption.options[0];
+            this.props.voteDetails.filter((vote) => vote && ((String(vote.proposalId) === String(this.props.proposal.id)) || (String(vote.proposalId) === '0' && String(this.props.proposal.id) === '0')));
+        if (votedOption && votedOption.length && votedOption[0]) {
+            votedOption = votedOption[0];
         }
         const content = this.props.proposal && this.props.proposal.content
         ? JSON.parse(this.props.proposal.content) : {};

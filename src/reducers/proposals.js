@@ -104,17 +104,17 @@ const voteDetails = (state = {
             value: [],
         };
     case VOTE_DETAILS_FETCH_SUCCESS: {
-        const arr = [...state.value];
-        const filter = state.value && state.value.length &&
-            action.value && action.value.proposal_id &&
-            state.value.filter((val) => val.proposal_id === action.value.proposal_id);
-        if (!filter.length) {
-            arr.push(action.value);
-        }
+        // const arr = [...state.value];
+        // const filter = state.value && state.value.length &&
+        //     action.value && action.value.proposal_id &&
+        //     state.value.filter((val) => val.proposal_id === action.value.proposal_id);
+        // if (!filter.length) {
+        //     arr.push(action.value);
+        // }
 
         return {
             inProgress: false,
-            value: [...arr],
+            value: [...action.value],
         };
     }
     case VOTE_DETAILS_FETCH_ERROR:

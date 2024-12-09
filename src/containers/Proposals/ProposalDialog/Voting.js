@@ -77,7 +77,7 @@ const Voting = (props) => {
             return;
         }
         if (result) {
-            props.successDialog(result.transactionHash);
+            props.successDialog(value && value.hash);
             props.fetchVoteDetails(props.proposalId, props.address);
             props.fetchProposalTally(props.proposalId);
             props.getBalance(props.address);
