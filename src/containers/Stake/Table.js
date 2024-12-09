@@ -106,16 +106,16 @@ class Table extends Component {
         //         },
         //     },
         // },
-        {
-            name: 'commission',
-            label: 'Commission',
-            options: {
-                sort: true,
-                customBodyRender: (value) => (
-                    value ? value + '%' : '0%'
-                ),
-            },
-        },
+        // {
+        //     name: 'commission',
+        //     label: 'Commission',
+        //     options: {
+        //         sort: true,
+        //         customBodyRender: (value) => (
+        //             value ? value + '%' : '0%'
+        //         ),
+        //     },
+        // },
         {
             name: 'tokens_staked',
             label: 'Tokens Staked',
@@ -230,8 +230,8 @@ class Table extends Component {
                     // item,
                     // parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
                     parseFloat((Number(item.votingPower)).toFixed(1)),
-                    item.commission
-                        ? parseFloat((Number(item.commission) * 100).toFixed(2)) : null,
+                    // item.commission
+                    //     ? parseFloat((Number(item.commission) * 100).toFixed(2)) : null,
                     item,
                     item,
                 ])

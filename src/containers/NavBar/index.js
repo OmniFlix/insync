@@ -78,53 +78,53 @@ class NavBar extends Component {
             }, 600);
         }
 
-        // if (this.props.proposals && !this.props.proposals.length &&
-        //     !this.props.proposalsInProgress && !this.props.stake &&
-        //     this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
-        //     this.props.getProposals((result) => {
-        //         if (result && result.length) {
-        //             const array = [];
-        //             result.map((val) => {
-        //                 const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-        //                     Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
-        //                 if (!filter) {
-        //                     if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
-        //                         return null;
-        //                     }
-        //
-        //                     array.push(val.proposal_id);
-        //                 }
-        //                 if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-        //                     this.props.fetchProposalTally(val.id);
-        //                 }
-        //
-        //                 return null;
-        //             });
-        //             this.getProposalDetails(array && array.reverse());
-        //         }
-        //     });
-        // } else if (this.props.proposals && !this.props.proposalsInProgress && !this.props.stake &&
-        //     this.props.proposalDetails && Object.keys(this.props.proposalDetails).length === 1 &&
-        //     this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
-        //     const array = [];
-        //     this.props.proposals.map((val) => {
-        //         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-        //             Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
-        //         if (!filter) {
-        //             if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
-        //                 return null;
-        //             }
-        //
-        //             array.push(val.proposal_id);
-        //         }
-        //         if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-        //             this.props.fetchProposalTally(val.id);
-        //         }
-        //
-        //         return null;
-        //     });
-        //     this.getProposalDetails(array && array.reverse());
-        // }
+        if (this.props.proposals && !this.props.proposals.length &&
+            !this.props.proposalsInProgress && !this.props.stake &&
+            this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
+            this.props.getProposals((result) => {
+                if (result && result.length) {
+                    // const array = [];
+                    // result.map((val) => {
+                    //     const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
+                    //         Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+                    //     if (!filter) {
+                    //         if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
+                    //             return null;
+                    //         }
+        
+                    //         array.push(val.proposal_id);
+                    //     }
+                    //     if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                    //         this.props.fetchProposalTally(val.id);
+                    //     }
+        
+                    //     return null;
+                    // });
+                    // this.getProposalDetails(array && array.reverse());
+                }
+            });
+        } else if (this.props.proposals && !this.props.proposalsInProgress && !this.props.stake &&
+            this.props.proposalDetails && Object.keys(this.props.proposalDetails).length === 1 &&
+            this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
+            const array = [];
+            this.props.proposals.map((val) => {
+                const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
+                    Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+                if (!filter) {
+                    if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
+                        return null;
+                    }
+        
+                    array.push(val.proposal_id);
+                }
+                if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                    this.props.fetchProposalTally(val.id);
+                }
+        
+                return null;
+            });
+            this.getProposalDetails(array && array.reverse());
+        }
 
         if (this.props.address) {
             this.handleFetch(this.props.address);
@@ -182,7 +182,7 @@ class NavBar extends Component {
                 const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.proposal_id &&
                     this.props.voteDetails.filter((vote) => vote.proposal_id === val.proposal_id)[0];
 
-                if ((val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
+                if ((val.status === 2 || val.status === 'voting') &&
                     !votedOption && this.props.address) {
                     this.props.fetchVoteDetails(val.id, this.props.address);
                 }
@@ -206,14 +206,14 @@ class NavBar extends Component {
 
                             array.push(val.proposal_id);
                         }
-                        if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                        if (val.status === 2 || val.status === 'voting') {
                             this.props.fetchProposalTally(val.id);
                             this.props.fetchVoteDetails(val.id, this.props.address);
                         }
 
                         return null;
                     });
-                    this.getProposalDetails(array && array.reverse());
+                    // this.getProposalDetails(array && array.reverse());
                 }
             });
         }

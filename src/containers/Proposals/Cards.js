@@ -10,6 +10,7 @@ import moment from 'moment';
 import { tally } from '../../utils/numberFormats';
 import DotsLoading from '../../components/DotsLoading';
 import withRouter from '../../components/WithRouter';
+import { fixDateString } from 'utils/date';
 
 const Cards = (props) => {
     const [page, setPage] = useState(1);
@@ -18,9 +19,9 @@ const Cards = (props) => {
         rowsPerPage = 6;
     }
 
-    const handleChangePage = (event, page) => {
-        setPage(page);
-    };
+    // const handleChangePage = (event, page) => {
+    //     setPage(page);
+    // };
 
     const count = Math.ceil(props.proposals.length / rowsPerPage);
 
@@ -48,15 +49,11 @@ const Cards = (props) => {
             return (props.tallyDetails && props.tallyDetails[proposal.id] && props.tallyDetails[proposal.id][val1]
                 ? tally(props.tallyDetails[proposal.id][val1], sum) : '0%');
         } else {
-            const sum = proposal.final_tally_result && proposal.final_tally_result.yes_count &&
-                proposal.final_tally_result.no_count && proposal.final_tally_result.no_with_veto_count &&
-                proposal.final_tally_result.abstain_count &&
-                (parseInt(proposal.final_tally_result.yes_count) + parseInt(proposal.final_tally_result.no_count) +
-                    parseInt(proposal.final_tally_result.no_with_veto_count) + parseInt(proposal.final_tally_result.abstain_count));
+            const sum = proposal && proposal.yayVotes && proposal.nayVotes && proposal.abstainVotes &&
+                (parseInt(proposal.yayVotes) + parseInt(proposal.nayVotes) + parseInt(proposal.abstainVotes));
 
-            return (proposal && proposal.final_tally_result &&
-            proposal.final_tally_result[val]
-                ? tally(proposal.final_tally_result[val], sum) : '0%');
+            return (proposal && proposal[val]
+                ? tally(proposal[val], sum) : '0%');
         }
     };
 
@@ -73,31 +70,16 @@ const Cards = (props) => {
                         if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
                             let votedOption = props.voteDetails && props.voteDetails.length &&
                                 proposal && proposal.id &&
-                                props.voteDetails.filter((vote) => vote && vote.proposal_id === proposal.id)[0];
-                            if (votedOption && votedOption.options && votedOption.options.length && votedOption.options[0]) {
-                                votedOption = votedOption.options[0];
+                                props.voteDetails.filter((vote) => vote && ((String(vote.proposalId) === String(proposal.id)) || (String(vote.proposalId) === '0' && String(proposal.id) === '0')));
+                            if (votedOption && votedOption.length && votedOption[0]) {
+                                votedOption = votedOption[0];
                             }
-                            let proposer = proposal.proposer;
-                            props.proposalDetails && Object.keys(props.proposalDetails).length &&
-                            Object.keys(props.proposalDetails).filter((key) => {
-                                if (key === proposal.id) {
-                                    if (props.proposalDetails[key] &&
-                                        props.proposalDetails[key][0] &&
-                                        props.proposalDetails[key][0].tx &&
-                                        props.proposalDetails[key][0].tx.value &&
-                                        props.proposalDetails[key][0].tx.value.msg[0] &&
-                                        props.proposalDetails[key][0].tx.value.msg[0].value &&
-                                        props.proposalDetails[key][0].tx.value.msg[0].value.proposer) {
-                                        proposer = props.proposalDetails[key][0].tx.value.msg[0].value.proposer;
-                                    }
-                                }
-
-                                return null;
-                            });
                             let inProgress = props.proposalDetails && Object.keys(props.proposalDetails).length &&
                                 Object.keys(props.proposalDetails).find((key) => key === proposal.proposal_id);
                             inProgress = !inProgress && props.proposalDetailsInProgress;
 
+                            const content = proposal && proposal.content
+                                ? JSON.parse(proposal.content) : {};
                             return (
                                 <div
                                     key={index}
@@ -108,19 +90,19 @@ const Cards = (props) => {
                                     </span>
                                     <div className="card_heading">
                                         <h2 onClick={() => props.handleShow(proposal)}> {
-                                            proposal.title
+                                            content?.title
                                         }</h2>
-                                        {proposal.status === 3 || proposal.status === 'PROPOSAL_STATUS_PASSED'
+                                        {proposal.status === 3 || proposal.status === 'passed'
                                             ? <Icon className="success" icon="success"/>
-                                            : (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
+                                            : (proposal.status === 2 || proposal.status === 'voting') &&
                                             votedOption
                                                 ? <div className="details">
                                                     <p>your vote is taken: <b>
-                                                        {votedOption && (votedOption.option === 1 || votedOption.option === 'VOTE_OPTION_YES') ? 'Yes'
-                                                            : votedOption && (votedOption.option === 2 || votedOption.option === 'VOTE_OPTION_ABSTAIN') ? 'Abstain'
-                                                                : votedOption && (votedOption.option === 3 || votedOption.option === 'VOTE_OPTION_NO') ? 'No'
-                                                                    : votedOption && (votedOption.option === 4 || votedOption.option === 'VOTE_OPTION_NO_WITH_VETO') ? 'NoWithVeto'
-                                                                        : votedOption && votedOption.option}
+                                                        {votedOption && (votedOption.vote === 1 || votedOption.vote === 'yay') ? 'Yes'
+                                                            : votedOption && (votedOption.vote === 2 || votedOption.vote === 'abstain') ? 'Abstain'
+                                                                : votedOption && (votedOption.vote === 3 || votedOption.vote === 'nay') ? 'No'
+                                                                    : votedOption && (votedOption.vote === 4 || votedOption.vote === 'VOTE_OPTION_NO_WITH_VETO') ? 'NoWithVeto'
+                                                                        : votedOption && votedOption.vote}
                                                     </b></p>
                                                     <Button
                                                         variant="contained"
@@ -137,53 +119,53 @@ const Cards = (props) => {
                                                     </Button>
                                                     : null}
                                     </div>
-                                    <p className="description">{proposal.summary}</p>
+                                    <p className="description">{content?.abstract}</p>
                                     <div className="row">
                                         <div className="icon_info">
                                             <Icon className="person" icon="person"/>
                                             <span className="key_text">Proposer &nbsp;/&nbsp;
                                                 {inProgress
                                                     ? <DotsLoading/>
-                                                    : proposer && <div className="hash_text" title={proposer}>
-                                                        <p className="name">{proposer}</p>
-                                                        {proposer &&
-                                                        proposer.slice(proposer.length - 6, proposer.length)}
+                                                    : proposal && proposal.author && <div className="hash_text" title={proposal.author}>
+                                                        <p className="name">{proposal.author}</p>
+                                                        {proposal.author &&
+                                                        proposal.author.slice(proposal.author.length - 6, proposal.author.length)}
                                                     </div>}
                                             </span>
                                         </div>
-                                        <p className="key_text">Submitted on &nbsp;/&nbsp; {proposal.submit_time
-                                            ? moment(proposal.submit_time).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
+                                        <p className="key_text">Submitted on &nbsp;/&nbsp; {content && content.created
+                                            ? moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
                                     </div>
                                     <div className="row">
                                         <div className="icon_info">
                                             <Icon className="time" icon="time"/>
                                             <p className="key_text">Voting Period</p>
                                             <p className="value_text">
-                                                {`${proposal && proposal.voting_start_time
-                                                    ? moment(proposal.voting_start_time).format('DD-MMM-YYYY HH:mm:ss') : ''} -> 
-                                                ${proposal && proposal.voting_end_time
-                                    ? moment(proposal.voting_end_time).format('DD-MMM-YYYY HH:mm:ss') : ''}`}
+                                                {`${proposal && proposal.startTime
+                                                    ? moment.unix(proposal.startTime).format('DD-MMM-YYYY HH:mm:ss') : ''} -> 
+                                                ${proposal && proposal.endTime
+                                                    ? moment.unix(proposal.endTime).format('DD-MMM-YYYY HH:mm:ss') : ''}`}
                                             </p>
                                         </div>
                                     </div>
                                     <div className={ClassNames('status', (proposal.status === 2 ||
-                                        proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD')
+                                        proposal.status === 'voting')
                                         ? 'voting_period'
                                         : (proposal.status === 4 ||
-                                            proposal.status === 'PROPOSAL_STATUS_REJECTED')
+                                            proposal.status === 'rejected')
                                             ? 'rejected'
                                             : null)}>
                                         <p>Proposal Status: {
                                             proposal.status === 0 ||
-                                            proposal.status === 'PROPOSAL_STATUS_UNSPECIFIED' ? 'Nil'
+                                            proposal.status === 'pending' ? 'Nil'
                                                 : proposal.status === 1 ||
                                                 proposal.status === 'PROPOSAL_STATUS_DEPOSIT_PERIOD' ? 'DepositPeriod'
                                                     : proposal.status === 2 ||
-                                                    proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD' ? 'VotingPeriod'
+                                                    proposal.status === 'voting' ? 'VotingPeriod'
                                                         : proposal.status === 3 ||
-                                                        proposal.status === 'PROPOSAL_STATUS_PASSED' ? 'Passed'
+                                                        proposal.status === 'passed' ? 'Passed'
                                                             : proposal.status === 4 ||
-                                                            proposal.status === 'PROPOSAL_STATUS_REJECTED' ? 'Rejected'
+                                                            proposal.status === 'rejected' ? 'Rejected'
                                                                 : proposal.status === 5 ||
                                                                 proposal.status === 'PROPOSAL_STATUS_FAILED' ? 'Failed' : ''
                                         }</p>
@@ -191,19 +173,19 @@ const Cards = (props) => {
                                     <div className="vote_details">
                                         <div className="yes">
                                             <span/>
-                                            <p>YES ({VoteCalculation(proposal, 'yes_count')})</p>
+                                            <p>YES ({VoteCalculation(proposal, 'yayVotes')})</p>
                                         </div>
                                         <div className="no">
                                             <span/>
-                                            <p>NO ({VoteCalculation(proposal, 'no_count')})</p>
+                                            <p>NO ({VoteCalculation(proposal, 'nayVotes')})</p>
                                         </div>
-                                        <div className="option3">
+                                        {/* <div className="option3">
                                             <span/>
                                             <p>NoWithVeto ({VoteCalculation(proposal, 'no_with_veto_count')})</p>
-                                        </div>
+                                        </div> */}
                                         <div className="option4">
                                             <span/>
-                                            <p>Abstain ({VoteCalculation(proposal, 'abstain_count')})</p>
+                                            <p>Abstain ({VoteCalculation(proposal, 'abstainVotes')})</p>
                                         </div>
                                     </div>
                                 </div>
@@ -213,12 +195,12 @@ const Cards = (props) => {
                         return null;
                     })}
             </div>
-            {!props.home && <div className="pagination">
+            {/* {!props.home && <div className="pagination">
                 <Pagination
                     count={count}
                     page={page}
                     onChange={handleChangePage}/>
-            </div>}
+            </div>} */}
         </div>
     );
 };

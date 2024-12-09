@@ -75,7 +75,7 @@ const SuccessDialog = (props) => {
                                     ? <h1>{variables[props.lang].claimed_success}</h1>
                                     : <h1>{variables[props.lang].success}</h1>}
                 </div>
-                {props.router && props.router.params && props.router.params.proposalID && props.hash
+                {props.router && props.router.params && (props.router.params.proposalID || (props.router.params.proposalID === 0)) && props.hash
                     ? <div className="row">
                         <p>{variables[props.lang]['transaction_hash']}</p>
                         <div
