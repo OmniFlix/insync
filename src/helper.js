@@ -9,6 +9,7 @@ import {
     UnbondMsgValue,
     RedelegateMsgValue,
     ClaimRewardsMsgValue,
+    VoteProposalMsgValue,
 } from '@namada/types';
 
 import { getSdk } from '@heliaxdev/namada-sdk/web';
@@ -448,7 +449,12 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
             const encoded = await tx.buildUnbond(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
 
-            const updateDate = tx.buildBatch(newTxs);
+            let updateDate;
+            if (type === 'ledger') {
+                updateDate = newTxs;
+            } else {
+                updateDate = tx.buildBatch(newTxs);
+            }
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
@@ -534,7 +540,12 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
             const encoded = await tx.buildRedelegate(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
 
-            const updateDate = tx.buildBatch(newTxs);
+            let updateDate;
+            if (type === 'ledger') {
+                updateDate = newTxs;
+            } else {
+                updateDate = tx.buildBatch(newTxs);
+            }
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
@@ -629,9 +640,104 @@ export const claimTransaction = (Tx, txs, type, cb) => {
                 newTxs.push(encoded);
             }
 
-            const updateDate = tx.buildBatch(newTxs);
+            let updateDate;
+            if (type === 'ledger') {
+                updateDate = newTxs;
+            } else {
+                updateDate = tx.buildBatch(newTxs);
+            }
 
             client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
+                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
+                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                        cb(result.info || result.log || result.rawLog);
+                    } else {
+                        cb(null, result);
+                    }
+                }).catch((error) => {
+                    console.error(`broadcast error: ${error}`);
+                    const message = 'success';
+                    if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                        cb(null, message);
+                    } else {
+                        cb(error && error.message);
+                    }
+                });
+            }).catch((error) => {
+                console.error(`Transaction was rejected: ${error}`);
+                const message = 'success';
+                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                    cb(null, message);
+                } else {
+                    cb(error && error.message);
+                }
+            });
+        } else {
+            return null;
+        }
+    })();
+};
+
+export const voteTransaction = (Tx, txs, type, cb) => {
+    (async () => {
+        const isExtensionInstalled = typeof window.namada === 'object';
+        if (!isExtensionInstalled || !window.namada) {
+            const error = 'Download the Namada Extension';
+            cb(error);
+        }
+
+        if (window.namada) {
+            const namada = window.namada;
+            const client = namada.getSigner();
+
+            const { cryptoMemory } = await init();
+            const sdk = getSdk(
+                cryptoMemory,
+                config.RPC_URL,
+                config.MAPS_REST_URL,
+                '',
+                config.TOKEN_ADDRESS,
+            );
+
+            const { rpc, tx } = sdk;
+
+            const checksums = await rpc.queryChecksums();
+            if (checksums && Object.keys(checksums).length) {
+                Object.keys(checksums).map((key) => {
+                    if (key && checksums[key]) {
+                        checksums[key] = checksums[key].toLowerCase();
+                    }
+                });
+            }
+
+            const bondMsgValue = new VoteProposalMsgValue({
+                signer: Tx.voter,
+                proposalId: Tx.proposalId,
+                vote: Tx.option,
+            });
+
+            const wrapperProps = {
+                token: txs.token,
+                feeAmount: txs.feeAmount,
+                gasLimit: txs.gasLimit,
+                chainId: txs.chainId,
+                publicKey: txs.publicKey,
+                memo: '',
+            };
+
+            const newTxs = [];
+            const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+            const encoded = await tx.buildVoteProposal(wrapperTxValue, bondMsgValue);
+            newTxs.push(encoded);
+
+            let updateDate;
+            if (type === 'ledger') {
+                updateDate = newTxs;
+            } else {
+                updateDate = tx.buildBatch(newTxs);
+            }
+
+            client.sign(updateDate, Tx.voter, checksums).then((signedBondTxBytes) => {
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
                         cb(result.info || result.log || result.rawLog);

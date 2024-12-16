@@ -25,44 +25,32 @@ const ClaimDialog = (props) => {
 
     const handleClaimAll = () => {
         setInProgress(true);
-        let gasValue = gas.claim_reward;
-        if (props.rewards && props.rewards.rewards && props.rewards.rewards.length > 1) {
-            gasValue = props.rewards.rewards.length * gas.claim_reward / 1.1 + gas.claim_reward;
+        let gasValue = 1;
+        if (props.rewards && props.rewards.length) {
+            gasValue = props.rewards.length;
         }
 
-        const updatedTx = {
-            msgs: [],
-            fee: {
-                amount: [{
-                    amount: String(gasValue * config.GAS_PRICE_STEP_AVERAGE),
-                    denom: config.COIN_MINIMAL_DENOM,
-                }],
-                gas: String(gasValue),
-            },
-            memo: '',
+        const txs = {
+            token: config.TOKEN_ADDRESS,
+            feeAmount: new BigNumber(0.000010 * gasValue),
+            gasLimit: new BigNumber(50000 * gasValue),
+            chainId: config.CHAIN_ID,
+            publicKey: props.details && props.details.publicKey,
         };
-
-        if (props.rewards && props.rewards.rewards &&
-            props.rewards.rewards.length) {
-            props.rewards.rewards.map((item) => {
-                updatedTx.msgs.push({
-                    typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
-                    value: {
-                        delegatorAddress: props.address,
-                        validatorAddress: item.validator_address,
-                    },
+        
+        const msg = [];
+        if (props.rewards && props.rewards.length) {
+            props.rewards.map((item) => {
+                msg.push({
+                    source: props.address,
+                    validator: item.validator && item.validator.address,
                 });
 
                 return null;
             });
         }
 
-        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
-            cosmoStationSign(updatedTx, props.address, handleFetch);
-            return;
-        }
-
-        signTxAndBroadcast(updatedTx, props.address, handleFetch);
+        claimTransaction(msg, txs, props.details && props.details.type, handleFetch);
     };
 
     const handleFetch = (error, result) => {
