@@ -11,13 +11,12 @@ import {
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
 import ValidatorsSelectField from './ValidatorsSelectField';
-import { claimTransaction, cosmoStationSign, signTxAndBroadcast } from '../../../helper';
+import { claimTransaction } from '../../../helper';
 import { showMessage } from '../../../actions/snackbar';
 import { fetchRewards, fetchVestingBalance, getBalance } from '../../../actions/accounts';
 import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import CircularProgress from '../../../components/CircularProgress';
-import { gas } from '../../../defaultGasValues';
 import BigNumber from 'bignumber.js';
 
 const ClaimDialog = (props) => {
@@ -37,7 +36,7 @@ const ClaimDialog = (props) => {
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
         };
-        
+
         const msg = [];
         if (props.rewards && props.rewards.length) {
             props.rewards.map((item) => {

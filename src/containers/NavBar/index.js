@@ -91,13 +91,13 @@ class NavBar extends Component {
                     //         if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                     //             return null;
                     //         }
-        
+
                     //         array.push(val.proposal_id);
                     //     }
                     //     if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
                     //         this.props.fetchProposalTally(val.id);
                     //     }
-        
+
                     //     return null;
                     // });
                     // this.getProposalDetails(array && array.reverse());
@@ -114,13 +114,13 @@ class NavBar extends Component {
                     if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                         return null;
                     }
-        
+
                     array.push(val.proposal_id);
                 }
                 if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
                     this.props.fetchProposalTally(val.id);
                 }
-        
+
                 return null;
             });
             this.getProposalDetails(array && array.reverse());

@@ -622,15 +622,13 @@ export const claimTransaction = (Tx, txs, type, cb) => {
             const newTxs = [];
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
             if (Tx && Tx.length > 1) {
-                Tx.map((newTx) => {
-                    (async () => {
-                        const bondMsgValue = new ClaimRewardsMsgValue({
-                            source: newTx.source,
-                            validator: newTx.validator,
-                        });
-                        const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
-                        newTxs.push(encoded);
-                    })();
+                Tx.map(async (newTx) => {
+                    const bondMsgValue = new ClaimRewardsMsgValue({
+                        source: newTx.source,
+                        validator: newTx.validator,
+                    });
+                    const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
+                    newTxs.push(encoded);
                 });
             } else {
                 const bondMsgValue = new ClaimRewardsMsgValue({

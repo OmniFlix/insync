@@ -49,7 +49,7 @@ const TokensTextField = (props) => {
             stakedTokens = 0;
             filterList.map((value) => {
                 stakedTokens = stakedTokens + Number(value.minDenomAmount);
-            })
+            });
             stakedTokens = stakedTokens && Number(stakedTokens) / 10 ** config.COIN_DECIMALS;
         }
     }
