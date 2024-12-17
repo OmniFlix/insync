@@ -24,15 +24,15 @@ const ClaimDialog = (props) => {
 
     const handleClaimAll = () => {
         setInProgress(true);
-        let gasValue = 1;
+        let gasValue = 50000;
         if (props.rewards && props.rewards.length) {
-            gasValue = props.rewards.length;
+            gasValue = 50000 + ((props.rewards.length - 1) * 30000);
         }
 
         const txs = {
             token: config.TOKEN_ADDRESS,
-            feeAmount: new BigNumber(0.000010),
-            gasLimit: new BigNumber(50000 * gasValue),
+            feeAmount: new BigNumber(0.000001),
+            gasLimit: new BigNumber(gasValue),
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
         };
