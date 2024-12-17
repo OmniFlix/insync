@@ -90,7 +90,7 @@ const TokenDetails = (props) => {
                     <p>{rewards > 0 ? rewards.toFixed(4) : 0}</p>
                 </div>
                 <div className="buttons_div">
-                    {/* <ClaimButton disable={rewards <= 0}/> */}
+                    <ClaimButton disable={rewards <= 0}/>
                     {/*         /!* <span/> *!/ */}
                     {/*         /!* <Compound disable={tokens <= 0}/> *!/ */}
                 </div>

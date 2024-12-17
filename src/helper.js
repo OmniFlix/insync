@@ -625,6 +625,7 @@ export const claimTransaction = (Tx, txs, type, cb) => {
                 Tx.map((newTx) => {
                     (async () => {
                         const bondMsgValue = new ClaimRewardsMsgValue({
+                            source: newTx.source,
                             validator: newTx.validator,
                         });
                         const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
@@ -633,7 +634,7 @@ export const claimTransaction = (Tx, txs, type, cb) => {
                 });
             } else {
                 const bondMsgValue = new ClaimRewardsMsgValue({
-                    // source: Tx.source,
+                    source: Tx.source,
                     validator: Tx.validator,
                 });
                 const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
