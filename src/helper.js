@@ -621,15 +621,18 @@ export const claimTransaction = (Tx, txs, type, cb) => {
 
             const newTxs = [];
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+            let address;
             if (Tx && Tx.length > 1) {
-                Tx.map(async (newTx) => {
+                for (let i = 0; i < Tx.length; i++) {
+                    const newTx = Tx[i];
                     const bondMsgValue = new ClaimRewardsMsgValue({
                         source: newTx.source,
                         validator: newTx.validator,
                     });
                     const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
                     newTxs.push(encoded);
-                });
+                    address = newTx.source;
+                }
             } else {
                 const bondMsgValue = new ClaimRewardsMsgValue({
                     source: Tx.source,
@@ -637,6 +640,7 @@ export const claimTransaction = (Tx, txs, type, cb) => {
                 });
                 const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
                 newTxs.push(encoded);
+                address = Tx.source;
             }
 
             let updateDate;
@@ -646,7 +650,7 @@ export const claimTransaction = (Tx, txs, type, cb) => {
                 updateDate = tx.buildBatch(newTxs);
             }
 
-            client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
+            client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
                         cb(result.info || result.log || result.rawLog);
