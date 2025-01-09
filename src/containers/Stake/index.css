@@ -296,7 +296,6 @@
     }
 
     .stake .table .validator .name_section > p {
-        width: 15
-        0px;
+        width: 150px;
     }
 }
