@@ -28,7 +28,7 @@ const Cards = (props) => {
     const reversedItems = props.proposals.length &&
         props.proposals.map(function iterateItems (item) {
             return item;
-        }).reverse();
+        });
 
     const VoteCalculation = (proposal, val) => {
         if (proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
