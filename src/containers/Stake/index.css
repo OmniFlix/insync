@@ -69,6 +69,14 @@
     align-items: flex-start;
 }
 
+.stake .table .validator .name_section > p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 300px;
+    text-align: left;
+}
+
 .stake .table .validator .name_section .hash_text {
     color: unset;
     max-width: 140px;
@@ -199,6 +207,10 @@
         width: max-content;
         margin: auto;
     }
+
+    .stake .table .validator .name_section > p {
+        width: 200px;
+    }
 }
 
 @media (max-width: 958px) {
@@ -220,6 +232,10 @@
 
     .table td .tokens {
         text-align: right;
+    }
+
+    .stake .table .validator .name_section > p {
+        width: 300px;
     }
 }
 
@@ -263,6 +279,10 @@
     .table .actions > button {
         padding: 5px 10px;
     }
+
+    .stake .table .validator .name_section > p {
+        width: 200px;
+    }
 }
 
 @media (max-width: 375px) {
@@ -273,5 +293,10 @@
     .table .actions > button {
         width: 100%;
         margin: 4px 0;
+    }
+
+    .stake .table .validator .name_section > p {
+        width: 15
+        0px;
     }
 }
