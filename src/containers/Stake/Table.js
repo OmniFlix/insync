@@ -52,7 +52,7 @@ class Table extends Component {
             name: 'validator',
             label: 'Validator',
             options: {
-                sort: true,
+                sort: false,
                 customBodyRender: (value, index) => (
                     <ValidatorName
                         index={index && index.rowIndex} name={value}
