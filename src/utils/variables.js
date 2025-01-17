@@ -73,6 +73,8 @@ const variables = {
         multi_delegate: 'Multi Delegate',
         number_of_validators: 'Number of Validators',
         tokens_to_each: 'Tokens to each',
+        masp: 'MASP',
+        ibc_transfer: 'IBC Transfer',
     },
 };
 

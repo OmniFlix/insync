@@ -110,6 +110,10 @@ table .disconnect_button {
     opacity: 1;
 }
 
+.nav_bar .horizontal_tabs .tab.coming_soon {
+    opacity: 0.6;
+}
+
 .nav_bar .horizontal_tabs .tab:hover {
     border: 1px solid #C0C00D;
     background: rgba(255, 255, 70, 0.20);
@@ -151,7 +155,7 @@ table .disconnect_button {
     font-size: 23px;
     font-style: normal;
     font-weight: 600;
-    line-height: 130%; 
+    line-height: 130%;
     text-transform: uppercase;
     margin-left: 20px;
 }
@@ -197,7 +201,7 @@ table .disconnect_button {
     }
 }
 
-@media (max-width: 769px) {
+@media (max-width: 950px) {
     .nav_bar .right_content {
         flex-direction: column;
         align-items: flex-end;

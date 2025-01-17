@@ -1,4 +1,4 @@
-import { AppBar, Tab } from '@material-ui/core';
+import { AppBar, Tab, Tooltip } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -84,7 +84,29 @@ class Tabs extends Component {
                         label={variables[this.props.lang].proposals}
                         value="proposals"
                         onClick={() => this.handleChange('proposals')}
-                        {...a11yProps(1)} />
+                        {...a11yProps(2)} />
+                    <Tooltip arrow title={'Launching soon'}>
+                        <span>
+                            <Tab
+                                className={'tab ' + (this.state.value === 'masp' ? 'active_tab' : '') + 'coming_soon'}
+                                disabled={true}
+                                label={variables[this.props.lang].masp}
+                                value="masp"
+                                onClick={() => this.handleChange('masp')}
+                                {...a11yProps(3)} />
+                        </span>
+                    </Tooltip>
+                    <Tooltip arrow title={'Launching soon'}>
+                        <span>
+                            <Tab
+                                className={'tab ' + (this.state.value === 'ibc' ? 'active_tab' : '') + 'coming_soon'}
+                                disabled={true}
+                                label={variables[this.props.lang].ibc_transfer}
+                                value="ibc"
+                                onClick={() => this.handleChange('ibc')}
+                                {...a11yProps(3)} />
+                        </span>
+                    </Tooltip>
                 </div>
             </AppBar>
         );
