@@ -85,7 +85,7 @@ class Tabs extends Component {
                         value="proposals"
                         onClick={() => this.handleChange('proposals')}
                         {...a11yProps(2)} />
-                    <Tooltip arrow title={'Launching soon'}>
+                    <Tooltip arrow title={'Coming soon'}>
                         <span>
                             <Tab
                                 className={'tab ' + (this.state.value === 'masp' ? 'active_tab' : '') + 'coming_soon'}
@@ -96,7 +96,7 @@ class Tabs extends Component {
                                 {...a11yProps(3)} />
                         </span>
                     </Tooltip>
-                    <Tooltip arrow title={'Launching soon'}>
+                    <Tooltip arrow title={'Coming soon'}>
                         <span>
                             <Tab
                                 className={'tab ' + (this.state.value === 'ibc' ? 'active_tab' : '') + 'coming_soon'}

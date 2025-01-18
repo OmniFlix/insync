@@ -55,6 +55,7 @@ const validators = (state = {
     list: [],
     page: DEFAULT_PAGE,
     total: null,
+    totalVotingPower: 0,
     images: [],
 }, action) => {
     switch (action.type) {
@@ -70,6 +71,7 @@ const validators = (state = {
                 list: action.list,
                 total: action.total,
                 page: action.page,
+                totalVotingPower: action.totalVotingPower,
                 inProgress: false,
             };
         } else {

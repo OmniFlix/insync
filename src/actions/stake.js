@@ -61,12 +61,13 @@ const fetchValidatorsInProgress = () => {
     };
 };
 
-const fetchValidatorsSuccess = (list, total, page) => {
+const fetchValidatorsSuccess = (list, total, page, totalVotingPower) => {
     return {
         type: VALIDATORS_FETCH_SUCCESS,
         list,
         total,
         page,
+        totalVotingPower,
     };
 };
 
@@ -86,7 +87,15 @@ export const getValidators = (page, cb) => (dispatch) => {
     })
         .then((res) => {
             const data = randomNoRepeats(res.data);
-            dispatch(fetchValidatorsSuccess(data, data && data.length, page));
+            let totalVotingPower = 0;
+            if (data && data.length) {
+                data.map((item) => {
+                    if (item && item.votingPower) {
+                        totalVotingPower += Number(item.votingPower);
+                    }
+                });
+            }
+            dispatch(fetchValidatorsSuccess(data, data && data.length, page, totalVotingPower));
             cb(data, data && data.length, page, data && data.length);
         })
         .catch((error) => {
