@@ -87,10 +87,12 @@ class Table extends Component {
             label: 'Voting Power',
             options: {
                 sort: true,
-                customBodyRender: (value) => (
+                customBodyRender: (value, index) => (
                     <div className="voting_power">
-                        <p>{formatCount(parseFloat((Number(value.votingPower)).toFixed(1)), true)}</p>
-                        <p className="percentage">{formatCount(parseFloat((Number(value.votingPower) / this.props.totalVotingPower) * 100), 2)}%</p>
+                        <p>{formatCount(value, true)}</p>
+                        {index.rowData && index.rowData.length && index.rowData[2] && index.rowData[2].votingPower
+                            ? <p className="percentage">{formatCount(parseFloat((Number(index.rowData[2].votingPower) / this.props.totalVotingPower) * 100), 2)}%</p>
+                            : '-'}
                     </div>
                 ),
             },
@@ -223,7 +225,6 @@ class Table extends Component {
             newData = dataToMap;
         }
 
-        console.log('555555', this.props.totalVotingPower);
         const tableData = newData && newData.length
             ? newData.map((item) =>
                 [
@@ -231,8 +232,7 @@ class Table extends Component {
                     item.name,
                     // item,
                     // parseFloat((Number(item.tokens) / (10 ** config.COIN_DECIMALS)).toFixed(1)),
-                    item,
-                    // parseFloat((Number(item.votingPower)).toFixed(1)),
+                    parseFloat((Number(item.votingPower)).toFixed(1)),
                     // item.commission
                     //     ? parseFloat((Number(item.commission) * 100).toFixed(2)) : null,
                     item,
