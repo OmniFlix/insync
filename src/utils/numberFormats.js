@@ -40,6 +40,10 @@ export const formatCount = (value, decimals) => {
         return formatCountAbbr(value, true);
     }
 
+    if (value < 1) {
+        return floatDecimals(value, decimals || 5);
+    }
+
     if (value < 1000) {
         return floatDecimals(value, decimals);
     }

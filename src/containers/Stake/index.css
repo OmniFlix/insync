@@ -97,6 +97,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 
     color: #FFF;
     font-family: 'Blinker', sans-serif;
@@ -104,6 +105,11 @@
     font-style: normal;
     font-weight: 600;
     line-height: 130%; /* 23.4px */
+}
+
+.stake .table .voting_power .percentage {
+    color: hwb(0deg 100% 0% / 50%);
+    font-size: 15px;
 }
 
 .table .voting_power > span {
