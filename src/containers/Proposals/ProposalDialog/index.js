@@ -179,11 +179,12 @@ class ProposalDialog extends Component {
                                                     this.props.proposal.author.slice(this.props.proposal.author.length - 6, this.props.proposal.author.length)}
                                             </div>}
                                         </div>
-                                        <div className="pds3l_c">
-                                            <p className="pds3l_c1">Submitted on</p>
-                                            <p className="pds3l_c2">{content && content.created
-                                                ? moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
-                                        </div>
+                                        {content && content.created
+                                            ? <div className="pds3l_c">
+                                                <p className="pds3l_c1">Submitted on</p>
+                                                <p className="pds3l_c2">{moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss')}</p>
+                                            </div>
+                                            : null}
                                         <div className="pds3l_c">
                                             <p className="pds3l_c1">Voting Period</p>
                                             <div className="pds3l_c2 vp_cards">

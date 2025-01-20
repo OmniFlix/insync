@@ -133,8 +133,10 @@ const Cards = (props) => {
                                                     </div>}
                                             </span>
                                         </div>
-                                        <p className="key_text">Submitted on &nbsp;/&nbsp; {content && content.created
-                                            ? moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
+                                        {content && content.created
+                                            ? <p className="key_text">Submitted
+                                                on &nbsp;/&nbsp; {moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss')}</p>
+                                            : null}
                                     </div>
                                     <div className="row">
                                         <div className="icon_info">
