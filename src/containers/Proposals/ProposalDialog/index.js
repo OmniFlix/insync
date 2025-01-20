@@ -154,21 +154,23 @@ class ProposalDialog extends Component {
                                                                 this.props.proposal.status === 'PROPOSAL_STATUS_FAILED' ? 'Failed' : ''
                                             : ''}</div>
                                 </div>
-                                <div className="proposal_dialog_section2">
-                                    <pre
-                                        className={ClassNames('proposal_dialog_section2_content', this.state.show ? 'show_more' : '')}>
-                                        {content?.abstract}
-                                        <br/>
-                                        {content?.details}
-                                    </pre>
-                                    <div
-                                        className="proposal_dialog_section2_more"
-                                        onClick={this.handleChange}>
-                                        {this.state.show
-                                            ? 'Read Less...'
-                                            : 'Read More...'}
+                                {(content?.abstract) || (content?.details)
+                                    ? <div className="proposal_dialog_section2">
+                                        <pre
+                                            className={ClassNames('proposal_dialog_section2_content', this.state.show ? 'show_more' : '')}>
+                                                {content?.abstract}
+                                            <br/>
+                                            {content?.details}
+                                            </pre>
+                                        <div
+                                            className="proposal_dialog_section2_more"
+                                            onClick={this.handleChange}>
+                                            {this.state.show
+                                                ? 'Read Less...'
+                                                : 'Read More...'}
+                                        </div>
                                     </div>
-                                </div>
+                                    : null}
                                 <div className="proposal_dialog_section3">
                                     <div className="proposal_dialog_section3_left">
                                         <div className="pds3l_c">
