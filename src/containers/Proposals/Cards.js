@@ -119,17 +119,18 @@ const Cards = (props) => {
                                                     </Button>
                                                     : null}
                                     </div>
-                                    <p className="description">{content?.abstract}</p>
+                                    <p className="description">{(content?.abstract) || (content?.details)}</p>
                                     <div className="row">
                                         <div className="icon_info">
                                             <Icon className="person" icon="person"/>
                                             <span className="key_text">Proposer &nbsp;/&nbsp;
                                                 {inProgress
                                                     ? <DotsLoading/>
-                                                    : proposal && proposal.author && <div className="hash_text" title={proposal.author}>
+                                                    : proposal && proposal.author &&
+                                                    <div className="hash_text" title={proposal.author}>
                                                         <p className="name">{proposal.author}</p>
                                                         {proposal.author &&
-                                                        proposal.author.slice(proposal.author.length - 6, proposal.author.length)}
+                                                            proposal.author.slice(proposal.author.length - 6, proposal.author.length)}
                                                     </div>}
                                             </span>
                                         </div>
