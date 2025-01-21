@@ -154,21 +154,23 @@ class ProposalDialog extends Component {
                                                                 this.props.proposal.status === 'PROPOSAL_STATUS_FAILED' ? 'Failed' : ''
                                             : ''}</div>
                                 </div>
-                                <div className="proposal_dialog_section2">
-                                    <pre
-                                        className={ClassNames('proposal_dialog_section2_content', this.state.show ? 'show_more' : '')}>
-                                        {content?.abstract}
-                                        <br/>
-                                        {content?.details}
-                                    </pre>
-                                    <div
-                                        className="proposal_dialog_section2_more"
-                                        onClick={this.handleChange}>
-                                        {this.state.show
-                                            ? 'Read Less...'
-                                            : 'Read More...'}
+                                {(content?.abstract) || (content?.details)
+                                    ? <div className="proposal_dialog_section2">
+                                        <pre
+                                            className={ClassNames('proposal_dialog_section2_content', this.state.show ? 'show_more' : '')}>
+                                                {content?.abstract}
+                                            <br/>
+                                            {content?.details}
+                                            </pre>
+                                        <div
+                                            className="proposal_dialog_section2_more"
+                                            onClick={this.handleChange}>
+                                            {this.state.show
+                                                ? 'Read Less...'
+                                                : 'Read More...'}
+                                        </div>
                                     </div>
-                                </div>
+                                    : null}
                                 <div className="proposal_dialog_section3">
                                     <div className="proposal_dialog_section3_left">
                                         <div className="pds3l_c">
@@ -179,11 +181,12 @@ class ProposalDialog extends Component {
                                                     this.props.proposal.author.slice(this.props.proposal.author.length - 6, this.props.proposal.author.length)}
                                             </div>}
                                         </div>
-                                        <div className="pds3l_c">
-                                            <p className="pds3l_c1">Submitted on</p>
-                                            <p className="pds3l_c2">{content && content.created
-                                                ? moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
-                                        </div>
+                                        {content && content.created
+                                            ? <div className="pds3l_c">
+                                                <p className="pds3l_c1">Submitted on</p>
+                                                <p className="pds3l_c2">{moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss')}</p>
+                                            </div>
+                                            : null}
                                         <div className="pds3l_c">
                                             <p className="pds3l_c1">Voting Period</p>
                                             <div className="pds3l_c2 vp_cards">
