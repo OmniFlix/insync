@@ -1,5 +1,13 @@
 export const commaSeparator = (value) => {
-    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if (value === null || value === undefined) {
+        return '';
+    }
+    if (value && Number(value) < 1000) {
+        return value.toString();
+    }
+    const [integerPart, decimalPart] = value.toString().split('.');
+    const updatedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return decimalPart ? `${updatedInteger}.${decimalPart}` : updatedInteger;
 };
 
 export const tally = (value, sum) => {

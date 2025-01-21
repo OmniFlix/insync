@@ -15,7 +15,7 @@ import Icon from '../../../components/Icon';
 import Voting from './Voting';
 import moment from 'moment';
 import ClassNames from 'classnames';
-import { tally } from '../../../utils/numberFormats';
+import { commaSeparator, tally } from '../../../utils/numberFormats';
 import NavBar from '../../NavBar';
 import variables from '../../../utils/variables';
 import UnSuccessDialog from '../../Stake/DelegateDialog/UnSuccessDialog';
@@ -199,20 +199,29 @@ class ProposalDialog extends Component {
                                                 this.props.proposal && (this.props.proposal.status === 2 ||
                                                     this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') ? 'vote_in_progress' : '')}>
                                                 <div className="yes">
-                                                    <span/>
-                                                    <p>YES ({this.VoteCalculation('yayVotes')})</p>
+                                                    <div>
+                                                        <span/>
+                                                        <p>YES ({this.VoteCalculation('yayVotes')})</p>
+                                                    </div>
+                                                    <p className="total_nam_count">{commaSeparator(this.props && this.props.proposal && this.props.proposal.yayVotes)} NAM</p>
                                                 </div>
                                                 <div className="no">
-                                                    <span/>
-                                                    <p>NO ({this.VoteCalculation('nayVotes')})</p>
+                                                    <div>
+                                                        <span/>
+                                                        <p>NO ({this.VoteCalculation('nayVotes')})</p>
+                                                    </div>
+                                                    <p className="total_nam_count">{commaSeparator(this.props && this.props.proposal && this.props.proposal.nayVotes)} NAM</p>
                                                 </div>
                                                 {/* <div className="option3">
                                                     <span/>
                                                     <p>NoWithVeto ({this.VoteCalculation('no_with_veto_count')})</p>
                                                 </div> */}
                                                 <div className="option4">
-                                                    <span/>
-                                                    <p>Abstain ({this.VoteCalculation('abstainVotes')})</p>
+                                                    <div>
+                                                        <span/>
+                                                        <p>Abstain ({this.VoteCalculation('abstainVotes')})</p>
+                                                    </div>
+                                                    <p className="total_nam_count">{commaSeparator(this.props && this.props.proposal && this.props.proposal.abstainVotes)} NAM</p>
                                                 </div>
                                             </div>
                                         </div>
