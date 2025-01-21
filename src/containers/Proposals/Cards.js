@@ -7,7 +7,7 @@ import ClassNames from 'classnames';
 import { Button } from '@material-ui/core';
 import { showProposalDialog } from '../../actions/proposals';
 import moment from 'moment';
-import { commaSeparator, tally } from '../../utils/numberFormats';
+import { formatCount, tally } from '../../utils/numberFormats';
 import DotsLoading from '../../components/DotsLoading';
 import withRouter from '../../components/WithRouter';
 import { fixDateString } from 'utils/date';
@@ -176,14 +176,14 @@ const Cards = (props) => {
                                                 <span/>
                                                 <p>YES ({VoteCalculation(proposal, 'yayVotes')})</p>
                                             </div>
-                                            <p className="total_nam_count">{commaSeparator(proposal && proposal.yayVotes)} NAM</p>
+                                            <p className="total_nam_count">{formatCount(proposal && proposal.yayVotes)} NAM</p>
                                         </div>
                                         <div className="no">
-                                        <div>
+                                            <div>
                                                 <span/>
                                                 <p>NO ({VoteCalculation(proposal, 'nayVotes')})</p>
                                             </div>
-                                            <p className="total_nam_count">{commaSeparator(proposal && proposal.nayVotes)} NAM</p>
+                                            <p className="total_nam_count">{formatCount(proposal && proposal.nayVotes)} NAM</p>
                                         </div>
                                         {/* <div className="option3">
                                             <span/>
@@ -194,7 +194,7 @@ const Cards = (props) => {
                                                 <span/>
                                                 <p>Abstain ({VoteCalculation(proposal, 'abstainVotes')})</p>
                                             </div>
-                                            <p className="total_nam_count">{commaSeparator(proposal && proposal.abstainVotes)} NAM</p>
+                                            <p className="total_nam_count">{formatCount(proposal && proposal.abstainVotes)} NAM</p>
                                         </div>
                                     </div>
                                 </div>

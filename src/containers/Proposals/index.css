@@ -313,7 +313,8 @@
 }
 
 .proposals .vote_details > div > p.total_nam_count {
-    font-size: 18px;
+    font-size: 14px;
+    opacity: 0.6;
 }
 
 .proposals .pagination > nav {
