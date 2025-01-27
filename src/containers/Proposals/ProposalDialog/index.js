@@ -15,7 +15,7 @@ import Icon from '../../../components/Icon';
 import Voting from './Voting';
 import moment from 'moment';
 import ClassNames from 'classnames';
-import { commaSeparator, tally } from '../../../utils/numberFormats';
+import { formatCount, tally } from '../../../utils/numberFormats';
 import NavBar from '../../NavBar';
 import variables from '../../../utils/variables';
 import UnSuccessDialog from '../../Stake/DelegateDialog/UnSuccessDialog';
@@ -203,14 +203,14 @@ class ProposalDialog extends Component {
                                                         <span/>
                                                         <p>YES ({this.VoteCalculation('yayVotes')})</p>
                                                     </div>
-                                                    <p className="total_nam_count">{commaSeparator(this.props && this.props.proposal && this.props.proposal.yayVotes)} NAM</p>
+                                                    <p className="total_nam_count">{formatCount(this.props && this.props.proposal && this.props.proposal.yayVotes)} NAM</p>
                                                 </div>
                                                 <div className="no">
                                                     <div>
                                                         <span/>
                                                         <p>NO ({this.VoteCalculation('nayVotes')})</p>
                                                     </div>
-                                                    <p className="total_nam_count">{commaSeparator(this.props && this.props.proposal && this.props.proposal.nayVotes)} NAM</p>
+                                                    <p className="total_nam_count">{formatCount(this.props && this.props.proposal && this.props.proposal.nayVotes)} NAM</p>
                                                 </div>
                                                 {/* <div className="option3">
                                                     <span/>
@@ -221,7 +221,7 @@ class ProposalDialog extends Component {
                                                         <span/>
                                                         <p>Abstain ({this.VoteCalculation('abstainVotes')})</p>
                                                     </div>
-                                                    <p className="total_nam_count">{commaSeparator(this.props && this.props.proposal && this.props.proposal.abstainVotes)} NAM</p>
+                                                    <p className="total_nam_count">{formatCount(this.props && this.props.proposal && this.props.proposal.abstainVotes)} NAM</p>
                                                 </div>
                                             </div>
                                         </div>
