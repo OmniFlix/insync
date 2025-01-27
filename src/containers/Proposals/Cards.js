@@ -7,7 +7,7 @@ import ClassNames from 'classnames';
 import { Button } from '@material-ui/core';
 import { showProposalDialog } from '../../actions/proposals';
 import moment from 'moment';
-import { tally } from '../../utils/numberFormats';
+import { formatCount, tally } from '../../utils/numberFormats';
 import DotsLoading from '../../components/DotsLoading';
 import withRouter from '../../components/WithRouter';
 import { fixDateString } from 'utils/date';
@@ -175,20 +175,29 @@ const Cards = (props) => {
                                     </div>
                                     <div className="vote_details">
                                         <div className="yes">
-                                            <span/>
-                                            <p>YES ({VoteCalculation(proposal, 'yayVotes')})</p>
+                                            <div>
+                                                <span/>
+                                                <p>YES ({VoteCalculation(proposal, 'yayVotes')})</p>
+                                            </div>
+                                            <p className="total_nam_count">{formatCount(proposal && proposal.yayVotes)} NAM</p>
                                         </div>
                                         <div className="no">
-                                            <span/>
-                                            <p>NO ({VoteCalculation(proposal, 'nayVotes')})</p>
+                                            <div>
+                                                <span/>
+                                                <p>NO ({VoteCalculation(proposal, 'nayVotes')})</p>
+                                            </div>
+                                            <p className="total_nam_count">{formatCount(proposal && proposal.nayVotes)} NAM</p>
                                         </div>
                                         {/* <div className="option3">
                                             <span/>
                                             <p>NoWithVeto ({VoteCalculation(proposal, 'no_with_veto_count')})</p>
                                         </div> */}
                                         <div className="option4">
-                                            <span/>
-                                            <p>Abstain ({VoteCalculation(proposal, 'abstainVotes')})</p>
+                                            <div>
+                                                <span/>
+                                                <p>Abstain ({VoteCalculation(proposal, 'abstainVotes')})</p>
+                                            </div>
+                                            <p className="total_nam_count">{formatCount(proposal && proposal.abstainVotes)} NAM</p>
                                         </div>
                                     </div>
                                 </div>
