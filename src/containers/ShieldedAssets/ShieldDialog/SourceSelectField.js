@@ -5,6 +5,7 @@ import SelectField from '../../../components/SelectField/WithChildren';
 import { MenuItem } from '@material-ui/core';
 import variables from '../../../utils/variables';
 import { setSelectedSource } from '../../../actions/shieldedAssets';
+import NamadaLogo from '../../../assets/masp/namada_shielded.svg';
 
 const SourceSelectField = (props) => {
     const handleChange = (value) => {
@@ -19,12 +20,12 @@ const SourceSelectField = (props) => {
         <SelectField
             className="select_field"
             id="source_select_field"
-            // items={props.validatorList}
             name="source"
             placeholder={variables[props.lang]['select_asset']}
             value={props.value}
             onChange={handleChange}>
-            <MenuItem>
+            <MenuItem value="Namada">
+                <img alt="NamadaLogo" src={NamadaLogo}/>
                 Namada
             </MenuItem>
         </SelectField>

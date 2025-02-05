@@ -147,6 +147,18 @@
     padding: .429rem 1rem;
 }
 
+.transfer_source .select_section .select_field img {
+    align-items: center;
+    background: #696969;
+    border-radius: 50px;
+    color: #fff;
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    margin-right: 10px;
+    width: 30px;
+}
+
 .transfer_destination > div > p {
     color: #FFF;
     text-align: center;
