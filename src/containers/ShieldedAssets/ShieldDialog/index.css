@@ -1,0 +1,188 @@
+.shield_dialog {
+    max-width: 500px;
+    margin: 10px auto 0;
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.shield_dialog > div {
+    padding: 20px 16px;
+    background: #262626;;
+    border-radius: 14px;
+}
+
+.shield_dialog > div > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.shield_dialog .header p {
+    color: #FFF;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.shield_dialog .header p > img,
+.transfer_destination > div > p > img {
+    width: 28px;
+    height: 28px;
+}
+
+.shield_dialog .header .address {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 130%;
+    color: #696969;
+    text-align: left;
+    flex: 1 1;
+    display: flex  ;
+    max-width: 150px;
+}
+
+.shield_dialog .header .address > span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: -1px;
+}
+
+.shield_dialog .tokens_secion p {
+    color: #696969;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+}
+
+.shield_dialog .tokens_secion > button {
+    padding: 4px 6px;
+    border: 1px solid #FFF;
+    color: #696969;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    text-transform: none;
+}
+
+.shield_dialog > button {
+    background: #FFFF46 !important;
+    border-radius: 5px;
+    font-family: 'Blinker', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #000;
+    text-transform: capitalize;
+    padding: 10px 30px;
+}
+
+.shield_dialog > .arrow {
+    width: 50px;
+    height: 50px;
+    background: #FFFF46;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    position: absolute;
+    left: 45%;
+    top: 50%;
+}
+
+.arrow > img {
+    width: 100%;
+    height: auto;
+}
+
+.transfer_source .border {
+    border-bottom: 1px solid #696969;
+    margin: 10px 0;
+    opacity: 0.4;
+}
+
+.transfer_source .select_section > div {
+    width: 45%;
+    margin: 20px 0;
+}
+
+.transfer_source .select_section .select_field > div > div {
+    align-items: center;
+    border: 1px solid #696969;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: #696969;
+    display: flex;
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+}
+
+.transfer_source .select_section .select_field input {
+    box-sizing: border-box;
+    color: #696969;
+    font-family: Blinker, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    height: 100%;
+    line-height: 130%;
+    padding: .429rem 1rem;
+}
+
+.transfer_destination > div > p {
+    color: #FFF;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.transfer_destination > div > span {
+    color: #696969;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+}
+
+.transfer_destination > p {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    color: #FFF;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    text-decoration: underline;
+    margin-top: 40px;
+}

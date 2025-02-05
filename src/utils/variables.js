@@ -75,6 +75,8 @@ const variables = {
         tokens_to_each: 'Tokens to each',
         masp: 'MASP',
         ibc_transfer: 'IBC Transfer',
+        shielded_available_tokens: 'Shielded Available Tokens',
+        select_asset: 'Select Asset',
     },
 };
 

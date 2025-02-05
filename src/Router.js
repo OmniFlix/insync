@@ -4,6 +4,7 @@ import Home from './containers/Home';
 import Stake from './containers/Stake';
 import Proposals from './containers/Proposals';
 import ProposalDialog from './containers/Proposals/ProposalDialog';
+import ShieldedAssets from './containers/ShieldedAssets';
 
 const routes = [{
     path: '/',
@@ -17,6 +18,9 @@ const routes = [{
 }, {
     path: '/proposals/:proposalID',
     component: ProposalDialog,
+}, {
+    path: '/masp',
+    component: ShieldedAssets,
 }];
 
 const Router = () => {

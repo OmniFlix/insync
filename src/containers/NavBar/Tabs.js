@@ -85,17 +85,12 @@ class Tabs extends Component {
                         value="proposals"
                         onClick={() => this.handleChange('proposals')}
                         {...a11yProps(2)} />
-                    <Tooltip arrow title={'Coming soon'}>
-                        <span>
-                            <Tab
-                                className={'tab ' + (this.state.value === 'masp' ? 'active_tab' : '') + 'coming_soon'}
-                                disabled={true}
-                                label={variables[this.props.lang].masp}
-                                value="masp"
-                                onClick={() => this.handleChange('masp')}
-                                {...a11yProps(3)} />
-                        </span>
-                    </Tooltip>
+                    <Tab
+                        className={'tab ' + (this.state.value === 'masp' ? 'active_tab' : '')}
+                        label={variables[this.props.lang].masp}
+                        value="masp"
+                        onClick={() => this.handleChange('masp')}
+                        {...a11yProps(3)} />
                     <Tooltip arrow title={'Coming soon'}>
                         <span>
                             <Tab
