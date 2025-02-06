@@ -57,7 +57,10 @@ const ShieldDialog = (props) => {
                         <img alt="NamadaShieldedLogo" src={NamadaShieldedLogo}/>
                         Namada Shielded
                     </p>
-                    <span>address</span>
+                    <div className="address">
+                        <span>{props.shieldedAddress}</span>
+                        {props.shieldedAddress && props.shieldedAddress.slice(props.shieldedAddress.length - 6, props.shieldedAddress.length)}
+                    </div>
                 </div>
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
@@ -74,6 +77,7 @@ ShieldDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     setAmount: PropTypes.func.isRequired,
     address: PropTypes.string,
+    shieldedAddress: PropTypes.string,
 };
 
 const stateToProps = (state) => {
@@ -82,6 +86,7 @@ const stateToProps = (state) => {
         lang: state.language,
         address: state.accounts.address.value,
         amount: state.stake.tokens,
+        shieldedAddress: state.accounts.address.shieldedDetails,
     };
 };
 

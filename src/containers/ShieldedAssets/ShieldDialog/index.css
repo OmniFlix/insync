@@ -9,7 +9,7 @@
 
 .shield_dialog > div {
     padding: 20px 16px;
-    background: #262626;;
+    background: #000;
     border-radius: 14px;
 }
 
@@ -39,7 +39,7 @@
     height: 28px;
 }
 
-.shield_dialog .header .address {
+.shield_dialog .address {
     font-family: 'Blinker', sans-serif;
     font-weight: 500;
     font-size: 14px;
@@ -51,7 +51,7 @@
     max-width: 150px;
 }
 
-.shield_dialog .header .address > span {
+.shield_dialog .address > span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

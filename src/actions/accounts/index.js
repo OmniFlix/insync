@@ -33,10 +33,11 @@ import { Sdk, getSdk } from '@heliaxdev/namada-sdk/web';
 import init from '@heliaxdev/namada-sdk/web-init';
 // import { Tokens } from '@namada/types';
 
-export const setAccountAddress = (value) => {
+export const setAccountAddress = (value, shieldedAddress) => {
     return {
         type: ACCOUNT_ADDRESS_SET,
         value,
+        shieldedAddress,
     };
 };
 
