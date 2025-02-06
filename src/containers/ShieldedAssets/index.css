@@ -1,93 +1,14 @@
-.shielded_content .card {
-    border-radius: 32px;
-    background: #FFFF46;
-    backdrop-filter: blur(50px);
-
-    padding: 80px 100px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: left;
-}
-
-.shielded_content .card h2 {
-    color: #000;
-    font-family: "Rubik Glitch", system-ui;
-    font-size: 36px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 130%; /* 46.8px */
-    margin-bottom: 0;
-}
-
-.shielded_content .card .info {
-    color: #000;
-    font-family: 'Blinker', sans-serif;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 130%; /* 31.2px */
-    margin: 10px 0;
-}
-
-.shielded_content .card .info strong {
-    font-weight: 700;
-}
-
-.shielded_content .card img {
-    margin-left: -8px;
-}
-
-.shielded_content .chip {
-    border-radius: 50px;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: fit-content;
-    padding: 10px 40px;
-    height: 50px;
-    margin: 10px auto;
-}
-
-.shielded_content .chip > img {
-    margin-right: 20px;
-    width: 30px;
-    height: 30px;
-}
-
-.shielded_content .chip p {
-    font-family: 'Blinker', sans-serif;
-    font-weight: 600;
-    font-size: 30px;
-    line-height: 130%;
-    color: #FFF;
-    width: max-content;
-}
-
-.shielded_content .chip_info > p {
-    color: #000;
-    text-align: center;
-    font-family: 'Blinker', sans-serif;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 130%;
-    width: max-content;
-    margin: auto;
-}
-
 .shielded_content .shield_tranfer {
     border-radius: 32px;
     backdrop-filter: blur(50px);
     padding: 40px;
     width: max-content;
-    margin: 80px auto;
-    background: #000;
+    margin: 0 auto;
+    background: #FFFF46;
 }
 
 .shielded_content .shield_tranfer > p {
-    color: #FFF;
+    color: #000;
     text-align: center;
     font-family: 'Blinker', sans-serif;
     font-size: 20px;

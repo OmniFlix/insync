@@ -92,6 +92,7 @@
     color: #000;
     text-transform: capitalize;
     padding: 10px 30px;
+    border: 2px solid #000;
 }
 
 .shield_dialog > .arrow {
