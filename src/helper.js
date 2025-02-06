@@ -197,12 +197,15 @@ export const initializeNamadaChain = (cb) => {
 
             const offlineSigner = namada.getSigner(chainId);
             let accounts;
+            let accountsList;
             if (offlineSigner.accounts) {
                 accounts = await offlineSigner.defaultAccount();
+                accountsList = await offlineSigner.accounts();
             } else {
                 accounts = await namada.defaultAccount();
+                accountsList = await namada.accounts();
             }
-            cb(null, accounts);
+            cb(null, accounts, accountsList);
         } else {
             return null;
         }
