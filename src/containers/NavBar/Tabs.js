@@ -20,7 +20,7 @@ class Tabs extends Component {
         const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
             this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
 
-        if (this.state.value !== route && (route === '' || route === 'stake' || route === 'proposals' || route === 'masp')) {
+        if (this.state.value !== route && (route === '' || route === 'stake' || route === 'proposals' || route === 'masp' || route === 'ibc')) {
             this.setState({
                 value: route,
             });
@@ -32,7 +32,7 @@ class Tabs extends Component {
             pp.router.location.pathname !== this.props.router.location.pathname) {
             const value = this.props.router.location.pathname.split('/')[1];
 
-            if (value !== this.state.value && (value === '' || value === 'stake' || value === 'proposals' || value === 'masp')) {
+            if (value !== this.state.value && (value === '' || value === 'stake' || value === 'proposals' || value === 'masp' || value === 'ibc')) {
                 this.setState({
                     value: value,
                 });
@@ -91,17 +91,12 @@ class Tabs extends Component {
                         value="masp"
                         onClick={() => this.handleChange('masp')}
                         {...a11yProps(3)} />
-                    <Tooltip arrow title={'Coming soon'}>
-                        <span>
-                            <Tab
-                                className={'tab ' + (this.state.value === 'ibc' ? 'active_tab' : '') + 'coming_soon'}
-                                disabled={true}
-                                label={variables[this.props.lang].ibc_transfer}
-                                value="ibc"
-                                onClick={() => this.handleChange('ibc')}
-                                {...a11yProps(4)} />
-                        </span>
-                    </Tooltip>
+                    <Tab
+                        className={'tab ' + (this.state.value === 'ibc' ? 'active_tab' : '')}
+                        label={variables[this.props.lang].ibc_transfer}
+                        value="ibc"
+                        onClick={() => this.handleChange('ibc')}
+                        {...a11yProps(4)} />
                 </div>
             </AppBar>
         );
