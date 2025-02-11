@@ -7,11 +7,12 @@ import AmountTextField from './AmountTextField';
 import { setIBCSwapType, setIBCTransferAmount, setIBCTransferType } from '../../actions/IBCTransfer';
 import { config } from '../../config';
 import TransferIcon from '../../assets/transfer.svg';
-import SourceSelectField from './SourceSelectField';
+import AssetSelectField from './AssetSelectField';
 import NamadaLogo from '../../assets/masp/namada_logo.svg';
 import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
 import AddressTextField from './AddressTextField';
 import SourceChainSelectField from './SourceChainSelectField';
+import SourceSelectField from './SourceSelectField';
 
 const IBCTransferDialog = (props) => {
     let balance = null;
@@ -41,7 +42,7 @@ const IBCTransferDialog = (props) => {
                         </div>
                         <div className="border"></div>
                         <div className="select_section">
-                            <SourceSelectField/>
+                            <AssetSelectField/>
                             <AmountTextField/>
                         </div>
                         <div className="tokens_secion">
@@ -114,7 +115,7 @@ const IBCTransferDialog = (props) => {
                         <img alt="TransferIcon" src={TransferIcon}/>
                     </div>
                     <div className="transfer_destination from_namada">
-                        <SourceSelectField/>
+                        <SourceChainSelectField/>
                         <AddressTextField/>
                     </div>
                 </>}

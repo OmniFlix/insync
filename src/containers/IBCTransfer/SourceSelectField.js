@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import SelectField from '../../components/SelectField/WithChildren';
 import { MenuItem } from '@material-ui/core';
 import variables from '../../utils/variables';
-import { assets } from 'chain-registry';
-import { setSelectedAsset } from '../../actions/IBCTransfer';
+import NamadaLogo from '../../assets/masp/namada_shielded.svg';
+import { setFromNamadaSelectedAsset } from '../../actions/IBCTransfer';
 
 const SourceSelectField = (props) => {
     const handleChange = (value) => {
@@ -16,8 +16,6 @@ const SourceSelectField = (props) => {
         props.onChange(value);
     };
 
-    const filteredAssets = props.selectedChain && assets && assets.find((item) => item && item.chain_name === props.selectedChain.chain_name);
-
     return (
         <SelectField
             className="select_field"
@@ -26,22 +24,16 @@ const SourceSelectField = (props) => {
             placeholder={variables[props.lang]['select_asset']}
             value={props.value}
             onChange={handleChange}>
-            {filteredAssets && filteredAssets.assets && filteredAssets.assets.map((item, index) => {
-                const image = item.images && item.images[0] && (item.images[0].svg || item.images[0].png);
-                return (
-                    <MenuItem key={index} value={item}>
-                        <img alt="NamadaLogo" src={image} />
-                        {item.name}
-                    </MenuItem>
-                );
-            })}
+            <MenuItem value="Namada">
+                <img alt="NamadaLogo" src={NamadaLogo}/>
+                Namada
+            </MenuItem>
         </SelectField>
     );
 };
 
 SourceSelectField.propTypes = {
     lang: PropTypes.string.isRequired,
-    selectedChain: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
 };
@@ -49,13 +41,12 @@ SourceSelectField.propTypes = {
 const stateToProps = (state) => {
     return {
         lang: state.language,
-        value: state.ibcTransfer.selectedAsset.value,
-        selectedChain: state.ibcTransfer.selectedChain.value,
+        value: state.ibcTransfer.fromNamadaSelectedAsset.value,
     };
 };
 
 const actionToProps = {
-    onChange: setSelectedAsset,
+    onChange: setFromNamadaSelectedAsset,
 };
 
 export default connect(stateToProps, actionToProps)(SourceSelectField);

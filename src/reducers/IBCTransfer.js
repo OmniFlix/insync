@@ -1,9 +1,12 @@
 import { combineReducers } from 'redux';
 import {
+    FROM_NAMADA_SELECT_ASSET_SET,
     IBC_SWAP_TYPE_SET,
     IBC_TRANSFER_ADDRESS_SET,
     IBC_TRANSFER_AMOUNT_SET,
-    IBC_TRANSFER_TYPE_SET, SELECT_ASSET_SET, SELECT_CHAIN_SET,
+    IBC_TRANSFER_TYPE_SET,
+    SELECT_ASSET_SET,
+    SELECT_CHAIN_SET,
 } from '../constants/IBCTransfer';
 
 const ibcTransferAmount = (state = {
@@ -86,6 +89,20 @@ const ibcTransferAddress = (state = {
     }
 };
 
+const fromNamadaSelectedAsset = (state = {
+    value: '',
+}, action) => {
+    switch (action.type) {
+        case FROM_NAMADA_SELECT_ASSET_SET:
+            return {
+                ...state,
+                value: action.value,
+            };
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
     ibcTransferAmount,
     ibcTransferType,
@@ -93,4 +110,5 @@ export default combineReducers({
     selectedChain,
     selectedAsset,
     ibcTransferAddress,
+    fromNamadaSelectedAsset,
 });

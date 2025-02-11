@@ -1,8 +1,11 @@
 import {
+    FROM_NAMADA_SELECT_ASSET_SET,
     IBC_SWAP_TYPE_SET,
     IBC_TRANSFER_ADDRESS_SET,
     IBC_TRANSFER_AMOUNT_SET,
-    IBC_TRANSFER_TYPE_SET, SELECT_ASSET_SET, SELECT_CHAIN_SET
+    IBC_TRANSFER_TYPE_SET,
+    SELECT_ASSET_SET,
+    SELECT_CHAIN_SET,
 } from '../constants/IBCTransfer';
 
 export const setIBCTransferAmount = (value) => {
@@ -46,3 +49,11 @@ export const setIBCTransferAddress = (value) => {
         value,
     };
 };
+
+export const setFromNamadaSelectedAsset = (value) => {
+    return {
+        type: FROM_NAMADA_SELECT_ASSET_SET,
+        value,
+    };
+};
+
