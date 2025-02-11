@@ -22,6 +22,7 @@
     "@redux-devtools/extension": "^3.3.0",
     "bignumber.js": "^9.1.2",
     "buffer": "^6.0.3",
+    "chain-registry": "^1.63.100",
     "classnames": "2.5.1",
     "crypto-browserify": "^3.12.0",
     "customize-cra": "^1.0.0",
@@ -79,6 +80,7 @@
     }
   },
   "devDependencies": {
+    "@chain-registry/types": "^0.45.80",
     "@types/customize-cra": "^1",
     "axios": "^0.21.1",
     "env-cmd": "^10.1.0",
