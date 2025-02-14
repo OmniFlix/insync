@@ -29,14 +29,18 @@ import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, 
 // import { Query } from '@namada/shared';
 import { config } from '../../config';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
-import { Sdk, getSdk } from '@heliaxdev/namada-sdk/web';
-import init from '@heliaxdev/namada-sdk/web-init';
+// import { Sdk, getSdk } from '@heliaxdev/namada-sdk/web';
+// import init from '@heliaxdev/namada-sdk/web-init';
+
+import { Sdk, getSdk } from "@namada/sdk/web";
+import init from "@namada/sdk/web-init";
 // import { Tokens } from '@namada/types';
 
-export const setAccountAddress = (value) => {
+export const setAccountAddress = (value, shieldedAddress) => {
     return {
         type: ACCOUNT_ADDRESS_SET,
         value,
+        shieldedAddress,
     };
 };
 
@@ -146,7 +150,7 @@ export const getBalance = (address, cb) => (dispatch) => {
 
         const { rpc } = sdk;
         const query = rpc.query;
-        query.query_balance(address, array)
+        query.query_balance(address, array, config.CHAIN_ID)
             .then((res) => {
                 dispatch(fetchBalanceSuccess(res));
                 if (cb) {

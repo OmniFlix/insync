@@ -23,7 +23,8 @@ const TokensTextField = (props) => {
 
     // const available = (balance && balance.amount && Number(balance.amount));
     // const availableTokens = available / (10 ** config.COIN_DECIMALS);
-    const availableTokens = balance;
+    // const availableTokens = balance;
+    const availableTokens = balance && balance / 10 ** config.COIN_DECIMALS;
     // let stakedTokens = props.delegations && props.delegations.reduce((accumulator, currentValue) => {
     //     if (currentValue && currentValue.length && currentValue[2]) {
     //         return accumulator + Number(currentValue[2]);

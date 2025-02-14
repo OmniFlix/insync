@@ -1,0 +1,233 @@
+.ibc_content {
+    border-radius: 32px;
+    backdrop-filter: blur(50px);
+    padding: 40px;
+    width: max-content;
+    margin: 0 auto;
+    background: #FFFF46;
+}
+
+.ibc_content > p {
+    color: #000;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+}
+
+.ibc_content > span {
+    color: #000;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+}
+
+
+/* transfer dialog */
+.transfer_dialog {
+    max-width: 500px;
+    margin: 10px auto 0;
+    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.transfer_dialog > div {
+    padding: 24px 16px 20px;
+    background: #000;
+    border-radius: 14px;
+}
+
+.transfer_dialog > div > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.transfer_dialog > div > div.transfer_type {
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.transfer_dialog > div > div button {
+    width: 100%;
+    background: #262626;
+    color: #fff;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    text-transform: none;
+    border: 1px solid transparent;
+}
+
+.transfer_dialog > div > div button.active_tab {
+    border: 1px solid #FFFF46;
+}
+
+.transfer_dialog > div > div button:hover {
+    background: #262626;
+}
+
+.transfer_dialog .address {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 130%;
+    color: #696969;
+    text-align: left;
+    flex: 1 1;
+    display: flex  ;
+    max-width: 150px;
+}
+
+.transfer_dialog .address > span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: -1px;
+}
+
+.transfer_dialog > button {
+    background: #FFFF46 !important;
+    border-radius: 5px;
+    font-family: 'Blinker', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #000;
+    text-transform: capitalize;
+    padding: 10px 30px;
+    border: 2px solid #000;
+}
+
+.transfer_dialog > .arrow {
+    width: 50px;
+    height: 50px;
+    background: #FFFF46;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    position: absolute;
+    left: 45%;
+    top: 44%;
+    cursor: pointer;
+}
+
+.arrow > img {
+    width: 100%;
+    height: auto;
+}
+
+.transfer_source .border {
+    border-bottom: 1px solid #696969;
+    margin: 10px 0;
+    opacity: 0.4;
+}
+
+.transfer_source .select_section > div {
+    width: 45%;
+    margin: 20px 0;
+}
+
+.select_field > div > div {
+    align-items: center;
+    border: 1px solid #696969;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: #696969;
+    display: flex;
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+}
+
+.select_field input {
+    box-sizing: border-box;
+    color: #696969;
+    font-family: Blinker, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    height: 100%;
+    line-height: 130%;
+    padding: .429rem 1rem;
+}
+
+.select_field img {
+    align-items: center;
+    background: #696969;
+    border-radius: 50px;
+    color: #fff;
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    margin-right: 10px;
+    width: 30px;
+}
+
+.transfer_dialog .tokens_secion p {
+    color: #696969;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+}
+
+.transfer_dialog .tokens_secion > button {
+    padding: 4px 6px;
+    border: 1px solid #FFF;
+    color: #696969;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    text-transform: none;
+    width: auto;
+}
+
+.transfer_dialog .header p {
+    color: #FFF;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.transfer_dialog .header p > img {
+    width: 28px;
+    height: 28px;
+}
+
+.address_text_field > div,
+.from_namada .select_field > div {
+    width: 100%;
+}
+
+.from_namada .select_field {
+    width: 50%;
+}
+
+.transfer_dialog > .from_namada_transfer {
+    top: 41%;
+}

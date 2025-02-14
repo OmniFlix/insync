@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import './index.css';
@@ -10,8 +10,48 @@ import DownArrowIcon from '../../../assets/masp/downArrow.svg';
 import SourceSelectField from './SourceSelectField';
 import NamadaLogo from '../../../assets/masp/namada_logo.svg';
 import NamadaShieldedLogo from '../../../assets/masp/namada_shielded.svg';
+import BigNumber from 'bignumber.js';
+import { maspTransaction } from 'helper';
+import CircularProgress from 'components/CircularProgress';
+import { ShieldingTransferDataMsgValue } from '@namada/types';
+import variables from 'utils/variables';
+import { getBalance } from 'actions/accounts';
 
 const ShieldDialog = (props) => {
+    const [inProgress, setInProgress] = useState(false);
+    const handleSubmit = () => {
+        setInProgress(true);
+
+        const source = props.address;
+        const token = config.TOKEN_ADDRESS;
+        const amount = new BigNumber(props.amount);
+
+        const msgValue = new ShieldingTransferDataMsgValue({
+            source: source,
+            token: token,
+            amount: amount,
+        });
+
+        const tx = {
+            target: props.shieldedAddress,
+            data: [msgValue],
+        };
+
+        const txs = {
+            token: config.TOKEN_ADDRESS,
+            feeAmount: new BigNumber(0.000001),
+            gasLimit: new BigNumber(50000),
+            chainId: config.CHAIN_ID,
+            publicKey: props.details && props.details.publicKey,
+        };
+
+        maspTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
+    };
+
+    const handleFetch = () => {
+        props.getBalance(props.address);
+    };
+
     let balance = null;
     props.balance && props.balance.length && props.balance.map((val) => {
         if (val && val.length) {
@@ -24,6 +64,9 @@ const ShieldDialog = (props) => {
 
         return null;
     });
+
+    balance = balance && balance / 10 ** config.COIN_DECIMALS;
+    const disable = inProgress || !props.amount;
 
     return (
         <div className="shield_dialog">
@@ -57,12 +100,20 @@ const ShieldDialog = (props) => {
                         <img alt="NamadaShieldedLogo" src={NamadaShieldedLogo}/>
                         Namada Shielded
                     </p>
-                    <span>address</span>
+                    <div className="address">
+                        <span>{props.shieldedAddress}</span>
+                        {props.shieldedAddress && props.shieldedAddress.slice(props.shieldedAddress.length - 6, props.shieldedAddress.length)}
+                    </div>
                 </div>
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
-            <Button>
-                Submit
+            {inProgress && <CircularProgress className="full_screen"/>}
+            <Button 
+                disabled={disable}
+                onClick={handleSubmit}>
+                {inProgress
+                    ? variables[props.lang]['approval_pending']
+                    : 'Submit'}
             </Button>
         </div>
     );
@@ -70,10 +121,14 @@ const ShieldDialog = (props) => {
 
 ShieldDialog.propTypes = {
     balance: PropTypes.array.isRequired,
+    details: PropTypes.object.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     setAmount: PropTypes.func.isRequired,
+    getBalance: PropTypes.func.isRequired,
     address: PropTypes.string,
+    shieldedAddress: PropTypes.string,
+    revealPublicKey: PropTypes.object,
 };
 
 const stateToProps = (state) => {
@@ -81,12 +136,16 @@ const stateToProps = (state) => {
         balance: state.accounts.balance.result,
         lang: state.language,
         address: state.accounts.address.value,
-        amount: state.stake.tokens,
+        amount: state.shieldedAssets.amount.value,
+        details: state.accounts.address.details,
+        shieldedAddress: state.accounts.address.shieldedDetails,
+        revealPublicKey: state.accounts.revealPublicKey.result,
     };
 };
 
 const actionToProps = {
     setAmount,
+    getBalance,
 };
 
 export default connect(stateToProps, actionToProps)(ShieldDialog);

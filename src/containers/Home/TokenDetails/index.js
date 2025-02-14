@@ -40,7 +40,7 @@ const TokenDetails = (props) => {
         return null;
     });
 
-    const available = balance;
+    const available = balance && balance / 10 ** config.COIN_DECIMALS;
     let unStaked = 0;
     props.unBondingDelegations && props.unBondingDelegations.length &&
     props.unBondingDelegations.map((delegation) => {
@@ -70,6 +70,13 @@ const TokenDetails = (props) => {
                     <p>{available || 0}</p>
                 </div>
                 <StakeTokensButton/>
+            </div>
+            <div className="chip_info">
+                <p>{variables[props.lang]['shielded_available_tokens']}</p>
+                <div className="chip">
+                    <img alt="available tokens" src={totalTokens}/>
+                    <p>0</p>
+                </div>
             </div>
             <div className="chip_info">
                 <p>{variables[props.lang]['staked_tokens']}</p>

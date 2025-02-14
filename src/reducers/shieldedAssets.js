@@ -15,7 +15,7 @@ const amount = (state = {
 };
 
 const selectedAsset = (state = {
-    value: '',
+    value: 'Namada',
 }, action) => {
     switch (action.type) {
     case SELECT_SOURCE_SET:

@@ -18,6 +18,13 @@ module.exports = {
                 'node_modules/@heliaxdev/namada-sdk/package.json',
             ),
         };
+        config.resolve.alias = {
+            ...config.resolve.alias,
+            '../package.json': path.resolve(
+                __dirname,
+                'node_modules/@namada/sdk/package.json',
+            ),
+        };
         config.resolve.extensions = [...config.resolve.extensions, '.ts', '.js', '.wasm'];
         config.plugins = [
             ...config.plugins,
@@ -51,6 +58,7 @@ module.exports = {
             config.static = [
                 path.join(__dirname, 'public'),
                 path.join(__dirname, 'node_modules', '@heliaxdev', 'namada-sdk', 'dist'),
+                path.join(__dirname, 'node_modules', '@namada', 'sdk', 'dist'),
             ];
             config.compress = true;
             config.port = 9000;
