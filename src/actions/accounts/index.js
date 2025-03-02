@@ -150,6 +150,7 @@ export const getBalance = (address, cb) => (dispatch) => {
 
         const { rpc } = sdk;
         const query = rpc.query;
+        // const tokens = await query.query_native_token();
         query.query_balance(address, array, config.CHAIN_ID)
             .then((res) => {
                 dispatch(fetchBalanceSuccess(res));

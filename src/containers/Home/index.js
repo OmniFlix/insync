@@ -77,6 +77,24 @@ class Home extends Component {
         const { active } = this.state;
         const filteredProposals = this.props.proposals && this.props.proposals.filter((item) => item.status === 2 ||
             item.status === 'voting');
+        const dataToMap = [];
+        this.props.validatorList && this.props.validatorList.length && this.props.validatorList.map((val) => {
+            if (val && val.address) {
+                // let address = null;
+                // if (this.props.genesisValidatorList && this.props.genesisValidatorList[val.address]) {
+                //     address = this.props.genesisValidatorList[val.address];
+                // }
+                let valid = true;
+                this.props.delegatedValidatorList && this.props.delegatedValidatorList.length &&
+                this.props.delegatedValidatorList.map((value) => {
+                    if (value && value.validator && value.validator.address &&
+                        (val.address === value.validator.address) && valid) {
+                        valid = false;
+                        dataToMap.push(val);
+                    }
+                });
+            }
+        });
 
         return (
             <>
@@ -107,8 +125,8 @@ class Home extends Component {
                                 <p className={active === 2 ? 'active' : ''} onClick={() => this.handleChange(2)}>
                                     {variables[this.props.lang]['staked_validators']}
                                     {this.props.delegatedValidatorList &&
-                                    this.props.delegatedValidatorList.length
-                                        ? ' (' + this.props.delegatedValidatorList.length + ')'
+                                    this.props.delegatedValidatorList.length && dataToMap && dataToMap.length
+                                        ? ' (' + dataToMap.length + ')'
                                         : null}
                                 </p>
                                 <span/>

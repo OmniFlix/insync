@@ -22,6 +22,25 @@ const Stake = (props) => {
         setActive(value);
     };
 
+    const dataToMap = [];
+    props.validatorList && props.validatorList.length && props.validatorList.map((val) => {
+        if (val && val.address) {
+            // let address = null;
+            // if (props.genesisValidatorList && props.genesisValidatorList[val.address]) {
+            //     address = props.genesisValidatorList[val.address];
+            // }
+            let valid = true;
+            props.delegatedValidatorList && props.delegatedValidatorList.length &&
+            props.delegatedValidatorList.map((value) => {
+                if (value && value.validator && value.validator.address &&
+                    (val.address === value.validator.address) && valid) {
+                    valid = false;
+                    dataToMap.push(val);
+                }
+            });
+        }
+    });
+
     return (
         <div className="stake">
             <NavBar stake={true}/>
@@ -47,8 +66,8 @@ const Stake = (props) => {
                         <p className={active === 2 ? 'active' : ''} onClick={() => handleChange(2)}>
                             {variables[props.lang]['staked_validators']}
                             {props.delegatedValidatorList &&
-                            props.delegatedValidatorList.length
-                                ? ' (' + props.delegatedValidatorList.length + ')'
+                            props.delegatedValidatorList.length && dataToMap && dataToMap.length
+                                ? ' (' + dataToMap.length + ')'
                                 : null}
                         </p>
                         {/* <span/> */}
