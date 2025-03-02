@@ -57,14 +57,16 @@ div[role='presentation'] > div[tabindex='-1']::-webkit-scrollbar-thumb {
     background: #fff;
 }
 
-div[role='presentation'][id='menu-validators'] > div[tabindex='-1'] {
+div[role='presentation'][id='menu-validators'] > div[tabindex='-1'],
+div[role='presentation'][id='menu-source'] > div[tabindex='-1'] {
     background: #1E1E1E;
     box-shadow: 0 0 50px rgb(0 0 0 / 50%);
     border-radius: 5px;
     max-height: 400px;
 }
 
-div[role='presentation'][id='menu-validators'] li {
+div[role='presentation'][id='menu-validators'] li,
+div[role='presentation'][id='menu-source'] li {
     font-family: 'Blinker', sans-serif;
     font-size: 18px;
     line-height: 130%;
@@ -72,7 +74,8 @@ div[role='presentation'][id='menu-validators'] li {
     padding: 8px 40px;
 }
 
-div[role='presentation'][id='menu-validators'] li .image {
+div[role='presentation'][id='menu-validators'] li .image,
+div[role='presentation'][id='menu-source'] li img {
     background: #696969;
     width: 30px;
     height: 30px;
@@ -86,4 +89,13 @@ div[role='presentation'][id='menu-validators'] li .image {
 div[role='presentation'][id='menu-validators'] li:hover,
 div[role='presentation'][id='menu-validators'] li[aria-selected='true'] {
     background: #000000;
+}
+
+div[role='presentation'][id='menu-source'] > div[tabindex='-1'] {
+    background: #000
+}
+
+div[role='presentation'][id='menu-source'] li:hover,
+div[role='presentation'][id='menu-source'] li[aria-selected='true'] {
+    background: #1E1E1E;
 }

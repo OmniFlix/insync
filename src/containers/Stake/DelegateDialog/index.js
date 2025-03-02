@@ -275,7 +275,7 @@ const DelegateDialog = (props) => {
         return null;
     });
 
-    const available = balance;
+    const available = balance && balance / 10 ** config.COIN_DECIMALS;
 
     const vesting = props.vestingBalance && props.vestingBalance.value && props.vestingBalance.value['base_vesting_account'] &&
         props.vestingBalance.value['base_vesting_account']['original_vesting'] &&

@@ -1,0 +1,25 @@
+.shielded_content .shield_tranfer {
+    border-radius: 32px;
+    backdrop-filter: blur(50px);
+    padding: 60px 40px;
+    width: 550px;
+    margin: 0 auto;
+    background: #FFFF46;
+}
+
+.shielded_content .shield_tranfer > p {
+    color: #000;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 580px) {
+    .shielded_content .shield_tranfer {
+        width: 100%;
+    }
+}

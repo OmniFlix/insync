@@ -1,0 +1,2 @@
+export const AMOUNT_SET = 'AMOUNT_SET';
+export const SELECT_SOURCE_SET = 'SELECT_SOURCE_SET';

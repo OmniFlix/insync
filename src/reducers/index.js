@@ -5,6 +5,8 @@ import snackbar from './snackbar';
 import stake from './stake';
 import proposals from './proposals';
 import navBar from './navBar';
+import shieldedAssets from './shieldedAssets';
+import ibcTransfer from './IBCTransfer';
 
 const reduxObjects = combineReducers({
     accounts,
@@ -13,6 +15,8 @@ const reduxObjects = combineReducers({
     stake,
     proposals,
     navBar,
+    shieldedAssets,
+    ibcTransfer,
 });
 
 const rootReducer = (state, action) => {

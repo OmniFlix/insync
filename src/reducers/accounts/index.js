@@ -29,12 +29,14 @@ import {
 const address = (state = {
     value: '',
     details: {},
+    shieldedDetails: '',
 }, action) => {
     switch (action.type) {
     case ACCOUNT_ADDRESS_SET:
         return {
             ...state,
             value: action.value,
+            shieldedDetails: action.shieldedAddress,
         };
     case ACCOUNT_DETAILS_SET:
         return {
