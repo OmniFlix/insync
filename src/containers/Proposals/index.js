@@ -22,9 +22,9 @@ const Proposals = (props) => {
 
         setActive(value);
         setFilter(value === null ? 2
-            : value === 2 ? 3
-                : value === 3 ? 2
-                    : value === 4 ? 4 : null);
+            : value === 2 ? 'PROPOSAL_STATUS_PASSED'
+                : value === 3 ? 'PROPOSAL_STATUS_VOTING_PERIOD'
+                    : value === 4 ? 'PROPOSAL_STATUS_REJECTED' : null);
     };
     const filteredProposals = filter ? props.proposals.filter((item) => item.status === filter) : props.proposals;
 

@@ -55,7 +55,7 @@ const Voting = (props) => {
             }],
             fee: {
                 amount: [{
-                    amount: String(gas.vote * config.GAS_PRICE_STEP_AVERAGE),
+                    amount: String(gas.vote * config.GAS_PRICE_STEP_HIGH),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
                 gas: String(gas.vote),

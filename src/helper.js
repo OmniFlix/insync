@@ -24,7 +24,7 @@ const chainConfig = {
         coinGeckoId,
     },
     bip44: {
-        coinType: 118,
+        coinType: config.COIN_TYPE,
     },
     bech32Config: {
         bech32PrefixAccAddr: `${prefix}`,
