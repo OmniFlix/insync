@@ -178,3 +178,33 @@ html::-webkit-scrollbar-thumb,
         margin: 10px;
     }
 }
+
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.stake .stake_content,
+.proposals .proposals_content,
+.home .card {
+    animation: fadeInAnimation ease-in-out 1s;
+}
+
+@keyframes dialogOpen {
+    from {
+        transform: scale(0.5);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.dialog {
+    animation: dialogOpen 0.1s;
+}

@@ -18,7 +18,7 @@ yarn
 1. clone repository and install packages
 
   ```sh
-  git clone https://github.dev/OmniFlix/insync.git
+  git clone https://github.com/OmniFlix/insync.git
   cd insync
   yarn
   ```
@@ -33,7 +33,7 @@ yarn
 export const config = {
     RPC_URL: 'https://rpc.flixnet.omniflix.network',
     REST_URL: 'https://rest.flixnet.omniflix.network',
-    EXPLORER_URL: 'https://explorer.omniflix.network',
+    EXPLORER_URL: 'https://www.mintscan.io/omniflix',
     STAKING_URL: 'https://flix.omniflix.co/stake',
     NETWORK_NAME: 'OmniFlix',
     NETWORK_TYPE: 'testnet',

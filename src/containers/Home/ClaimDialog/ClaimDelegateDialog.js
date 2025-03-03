@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import {
-    hideClaimRewardsDialog,
+    hideClaimDelegateDialog,
     setTokens,
     showDelegateFailedDialog,
     showDelegateProcessingDialog,
@@ -10,7 +10,6 @@ import {
 } from '../../../actions/stake';
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
-import ValidatorsSelectField from './ValidatorsSelectField';
 import { cosmoStationSign, signTxAndBroadcast } from '../../../helper';
 import { showMessage } from '../../../actions/snackbar';
 import { fetchRewards, fetchVestingBalance, getBalance } from '../../../actions/accounts';
@@ -18,15 +17,27 @@ import { config } from '../../../config';
 import variables from '../../../utils/variables';
 import CircularProgress from '../../../components/CircularProgress';
 import { gas } from '../../../defaultGasValues';
+import ClaimDelegateValidatorsSelectField from './ClaimDelegateValidatorSelectField';
 
-const ClaimDialog = (props) => {
+const ClaimDelegateDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
     const handleClaimAll = () => {
         setInProgress(true);
-        let gasValue = gas.claim_reward;
+        let gasValue = gas.claim_reward + gas.delegate;
+        let count = 0;
         if (props.rewards && props.rewards.rewards && props.rewards.rewards.length > 1) {
-            gasValue = props.rewards.rewards.length * gas.claim_reward / 1.1 + gas.claim_reward;
+            props.rewards.rewards.map((item) => {
+                const tokens = item && item.reward && item.reward.length &&
+                    item.reward.filter((val) => val.amount > gasValue * config.GAS_PRICE_STEP_AVERAGE);
+                if (tokens) {
+                    count += tokens.length;
+                }
+                return null;
+            });
+        }
+        if (count) {
+            gasValue = count * gasValue / 1.1 + gasValue;
         }
 
         const updatedTx = {
@@ -40,18 +51,31 @@ const ClaimDialog = (props) => {
             },
             memo: '',
         };
-
         if (props.rewards && props.rewards.rewards &&
             props.rewards.rewards.length) {
             props.rewards.rewards.map((item) => {
-                updatedTx.msgs.push({
-                    typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
-                    value: {
-                        delegatorAddress: props.address,
-                        validatorAddress: item.validator_address,
-                    },
-                });
-
+                let tokens = item && item.reward && item.reward.length &&
+                    item.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+                tokens = tokens && tokens.amount;
+                if (tokens && tokens > ((gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE)) {
+                    updatedTx.msgs.push({
+                        typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
+                        value: {
+                            delegatorAddress: props.address,
+                            validatorAddress: item.validator_address,
+                        },
+                    }, {
+                        typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+                        value: {
+                            delegatorAddress: props.address,
+                            validatorAddress: item.validator_address,
+                            amount: {
+                                amount: String(Math.floor(Number(tokens))),
+                                denom: config.COIN_MINIMAL_DENOM,
+                            },
+                        },
+                    });
+                }
                 return null;
             });
         }
@@ -87,22 +111,29 @@ const ClaimDialog = (props) => {
     const handleClaim = () => {
         setInProgress(true);
         const updatedTx = {
-            msg: {
+            msgs: [{
                 typeUrl: '/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward',
                 value: {
                     delegatorAddress: props.address,
                     validatorAddress: props.value,
+                },
+            }, {
+                typeUrl: '/cosmos.staking.v1beta1.MsgDelegate',
+                value: {
+                    delegatorAddress: props.address,
+                    validatorAddress: props.value,
                     amount: {
+                        amount: String(Math.floor(Number(delegateableTokesn))),
                         denom: config.COIN_MINIMAL_DENOM,
                     },
                 },
-            },
+            }],
             fee: {
                 amount: [{
-                    amount: String(gas.claim_reward * config.GAS_PRICE_STEP_AVERAGE),
+                    amount: String((gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE),
                     denom: config.COIN_MINIMAL_DENOM,
                 }],
-                gas: String(gas.claim_reward),
+                gas: String(gas.claim_reward + gas.delegate),
             },
             memo: '',
         };
@@ -121,21 +152,22 @@ const ClaimDialog = (props) => {
 
     let tokens = rewards && rewards.length && rewards[0] && rewards[0].reward &&
         rewards[0].reward.length && rewards[0].reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+    const delegateableTokesn = tokens && tokens.amount;
     tokens = tokens && tokens.amount ? tokens.amount / 10 ** config.COIN_DECIMALS : 0;
 
     if (props.value === 'all' && props.rewards && props.rewards.rewards &&
         props.rewards.rewards.length) {
+        const gasValue = (gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE;
         let total = 0;
 
         props.rewards.rewards.map((value) => {
             let rewards = value.reward && value.reward.length &&
                 value.reward.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
-            rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
+            rewards = rewards && rewards.amount && rewards.amount > gasValue ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
             total = rewards + total;
 
             return total;
         });
-
         tokens = total;
     }
 
@@ -150,9 +182,9 @@ const ClaimDialog = (props) => {
             onClose={props.handleClose}>
             {inProgress && <CircularProgress className="full_screen"/>}
             <DialogContent className="content">
-                <h1>Claim Rewards</h1>
+                <h1>Claim and Delegate Rewards</h1>
                 <p>Select validator</p>
-                <ValidatorsSelectField/>
+                <ClaimDelegateValidatorsSelectField/>
                 {tokens && tokens > 0
                     ? <p>rewards: {tokens.toFixed(4)}</p>
                     : null}
@@ -164,14 +196,14 @@ const ClaimDialog = (props) => {
                     onClick={props.value === 'all' ? handleClaimAll : handleClaim}>
                     {inProgress
                         ? variables[props.lang]['approval_pending']
-                        : variables[props.lang].claim}
+                        : variables[props.lang].compound}
                 </Button>
             </DialogActions>
         </Dialog>
     );
 };
 
-ClaimDialog.propTypes = {
+ClaimDelegateDialog.propTypes = {
     failedDialog: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
@@ -195,14 +227,14 @@ const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         lang: state.language,
-        open: state.stake.claimDialog.open,
-        value: state.stake.claimDialog.validator,
+        open: state.stake.claimDelegateDialog.open,
+        value: state.stake.claimDelegateDialog.validator,
         rewards: state.accounts.rewards.result,
     };
 };
 
 const actionToProps = {
-    handleClose: hideClaimRewardsDialog,
+    handleClose: hideClaimDelegateDialog,
     failedDialog: showDelegateFailedDialog,
     successDialog: showDelegateSuccessDialog,
     pendingDialog: showDelegateProcessingDialog,
@@ -213,4 +245,4 @@ const actionToProps = {
     setTokens,
 };
 
-export default connect(stateToProps, actionToProps)(ClaimDialog);
+export default connect(stateToProps, actionToProps)(ClaimDelegateDialog);

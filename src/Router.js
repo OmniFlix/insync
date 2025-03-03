@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Home from './containers/Home';
 import Stake from './containers/Stake';
 import Proposals from './containers/Proposals';
@@ -23,19 +23,19 @@ const Router = () => {
     return (
         <div className="main_content">
             <div className="content_div scroll_bar">
-                <Switch>
+                <Routes>
                     {routes.map((route) =>
                         <Route
                             key={route.path}
                             exact
-                            component={route.component}
+                            element={<route.component/>}
                             path={route.path}/>,
                     )}
                     <Route
                         exact
-                        component={Home}
+                        element={<Home/>}
                         path="*"/>
-                </Switch>
+                </Routes>
             </div>
         </div>
     );
