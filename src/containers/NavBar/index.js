@@ -23,17 +23,19 @@ import {
     showSelectAccountDialog,
 } from '../../actions/accounts';
 import {
+    fetchAPR,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
     getDelegatedValidatorsDetails,
+    getInActiveValidators,
     getValidators,
 } from '../../actions/stake';
-import { withRouter } from 'react-router-dom';
 import CopyButton from '../../components/CopyButton/TextButton';
 import variables from '../../utils/variables';
 import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposals } from '../../actions/proposals';
 import { Button } from '@material-ui/core';
 import ConnectDialog from './ConnectDialog';
+import withRouter from '../../components/WithRouter';
 
 class NavBar extends Component {
     constructor (props) {
@@ -64,22 +66,22 @@ class NavBar extends Component {
 
         if (this.props.proposals && !this.props.proposals.length &&
             !this.props.proposalsInProgress && !this.props.stake &&
-            this.props.match && this.props.match.params && !this.props.match.params.proposalID) {
+            this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
             this.props.getProposals((result) => {
                 if (result && result.length) {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
                         if (!filter) {
                             if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
                             }
 
-                            array.push(val.proposal_id);
+                            array.push(val.id);
                         }
                         if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                            this.props.fetchProposalTally(val.proposal_id);
+                            this.props.fetchProposalTally(val.id);
                         }
 
                         return null;
@@ -89,20 +91,20 @@ class NavBar extends Component {
             });
         } else if (this.props.proposals && !this.props.proposalsInProgress && !this.props.stake &&
             this.props.proposalDetails && Object.keys(this.props.proposalDetails).length === 1 &&
-            this.props.match && this.props.match.params && !this.props.match.params.proposalID) {
+            this.props.router && this.props.router.params && !this.props.router.params.proposalID) {
             const array = [];
             this.props.proposals.map((val) => {
                 const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                    Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+                    Object.keys(this.props.proposalDetails).find((key) => key === val.id);
                 if (!filter) {
                     if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                         return null;
                     }
 
-                    array.push(val.proposal_id);
+                    array.push(val.id);
                 }
                 if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                    this.props.fetchProposalTally(val.proposal_id);
+                    this.props.fetchProposalTally(val.id);
                 }
 
                 return null;
@@ -114,7 +116,7 @@ class NavBar extends Component {
             this.handleFetch(this.props.address);
         }
 
-        if (!this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
+        if (this.props.validatorList && !this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
             this.props.getValidators((data) => {
                 if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
                     const array = data.filter((val) => val && val.description && val.description.identity);
@@ -123,38 +125,56 @@ class NavBar extends Component {
             });
         }
 
-        window.addEventListener('keplr_keystorechange', () => {
-            if (localStorage.getItem('of_co_address') || this.props.address !== '') {
-                this.handleChain();
-            }
-        });
+        if (!this.props.actualAPR && !this.props.aprInProgress) {
+            this.props.fetchAPR();
+        }
 
-        window.onload = () => {
-            if (window.cosmostation && window.cosmostation.cosmos) {
-                const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
-                    if (localStorage.getItem('of_co_address') || this.props.address !== '') {
-                        this.handleCosmoStation();
-                    }
-                });
+        if (!this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
+            this.props.getInActiveValidators((data) => {
+                if (data && data.length) {
+                    const array = data.filter((val) => val && val.description && val.description.identity);
+                    this.getValidatorImage(0, array);
+                }
+            });
+        }
 
-                this.setState({
-                    cosmostationEvent: cosmostationEvent,
-                });
-            }
-        };
+        if (localStorage.getItem('of_co_wallet') === 'keplr') {
+            window.addEventListener('keplr_keystorechange', () => {
+                if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                    this.handleChain();
+                }
+            });
+        }
+
+        if (localStorage.getItem('of_co_wallet') === 'cosmostation') {
+            window.onload = () => {
+                if (window.cosmostation && window.cosmostation.cosmos) {
+                    const cosmostationEvent = window.cosmostation.cosmos.on('accountChanged', () => {
+                        if (localStorage.getItem('of_co_address') || this.props.address !== '') {
+                            this.handleCosmoStation();
+                        }
+                    });
+
+                    this.setState({
+                        cosmostationEvent: cosmostationEvent,
+                    });
+                }
+            };
+        }
     }
 
     componentDidUpdate (pp, ps, ss) {
-        if ((!pp.proposals.length && (pp.proposals !== this.props.proposals) &&
+        if ((pp.proposals && !pp.proposals.length && (pp.proposals !== this.props.proposals) &&
                 this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
+            this.props.proposals && this.props.proposals.length &&
             this.props.proposals.map((val) => {
-                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.proposal_id &&
-                    this.props.voteDetails.filter((vote) => vote.proposal_id === val.proposal_id)[0];
+                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.id &&
+                    this.props.voteDetails.filter((vote) => vote.id === val.id)[0];
 
                 if ((val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
                     !votedOption && this.props.address) {
-                    this.props.fetchVoteDetails(val.proposal_id, this.props.address);
+                    this.props.fetchVoteDetails(val.id, this.props.address);
                 }
 
                 return null;
@@ -168,17 +188,17 @@ class NavBar extends Component {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
                         if (!filter) {
                             if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
                             }
 
-                            array.push(val.proposal_id);
+                            array.push(val.id);
                         }
                         if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
-                            this.props.fetchProposalTally(val.proposal_id);
-                            this.props.fetchVoteDetails(val.proposal_id, this.props.address);
+                            this.props.fetchProposalTally(val.id);
+                            this.props.fetchVoteDetails(val.id, this.props.address);
                         }
 
                         return null;
@@ -367,9 +387,11 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
+    aprInProgress: PropTypes.bool.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
     delegatedValidatorListInProgress: PropTypes.bool.isRequired,
     delegationsInProgress: PropTypes.bool.isRequired,
+    fetchAPR: PropTypes.func.isRequired,
     fetchProposalDetails: PropTypes.func.isRequired,
     fetchProposalTally: PropTypes.func.isRequired,
     fetchRewards: PropTypes.func.isRequired,
@@ -380,13 +402,13 @@ NavBar.propTypes = {
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
+    getInActiveValidators: PropTypes.func.isRequired,
     getProposals: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     getValidators: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
+    inActiveValidatorsInProgress: PropTypes.bool.isRequired,
+    inActiveValidatorsList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     proposalDetails: PropTypes.object.isRequired,
     proposals: PropTypes.array.isRequired,
@@ -403,6 +425,7 @@ NavBar.propTypes = {
     vestingBalanceInProgress: PropTypes.bool.isRequired,
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
+    actualAPR: PropTypes.number,
     address: PropTypes.string,
     balance: PropTypes.array,
     delegatedValidatorList: PropTypes.array,
@@ -416,13 +439,14 @@ NavBar.propTypes = {
         }),
     ),
     home: PropTypes.bool,
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            proposalID: PropTypes.string,
-        }),
-    }),
     proposalTab: PropTypes.bool,
     proposalsInProgress: PropTypes.bool,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+        params: PropTypes.shape({
+            proposalID: PropTypes.string,
+        }).isRequired,
+    }),
     stake: PropTypes.bool,
     unBondingDelegations: PropTypes.arrayOf(
         PropTypes.shape({
@@ -438,6 +462,8 @@ NavBar.propTypes = {
 const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
+        aprInProgress: state.stake.apr.inProgress,
+        actualAPR: state.stake.apr.actualAPR,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,
         delegations: state.accounts.delegations.result,
@@ -458,6 +484,8 @@ const stateToProps = (state) => {
         vestingBalanceInProgress: state.accounts.vestingBalance.inProgress,
         voteDetails: state.proposals.voteDetails.value,
         voteDetailsInProgress: state.proposals.voteDetails.inProgress,
+        inActiveValidatorsList: state.stake.inActiveValidators.list,
+        inActiveValidatorsInProgress: state.stake.inActiveValidators.inProgress,
     };
 };
 
@@ -471,6 +499,7 @@ const actionToProps = {
     showDialog: showSelectAccountDialog,
     getUnBondingDelegations,
     getValidators,
+    fetchAPR,
     fetchRewards,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
@@ -479,6 +508,7 @@ const actionToProps = {
     fetchVoteDetails,
     fetchProposalTally,
     fetchProposalDetails,
+    getInActiveValidators,
     showConnectDialog,
 };
 

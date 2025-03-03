@@ -3,8 +3,8 @@ import { Button } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import variables from '../../utils/variables';
-import { withRouter } from 'react-router';
 import { disconnectSet } from '../../actions/accounts';
+import withRouter from '../../components/WithRouter';
 
 const DisconnectButton = (props) => {
     const handleClick = () => {
@@ -25,10 +25,10 @@ const DisconnectButton = (props) => {
 
 DisconnectButton.propTypes = {
     disconnectSet: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     lang: PropTypes.string.isRequired,
+    router: PropTypes.shape({
+        navigate: PropTypes.func.isRequired,
+    }),
 };
 
 const stateToProps = (state) => {

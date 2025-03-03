@@ -168,3 +168,121 @@
 .pending img {
     width: 100px;
 }
+
+.mv_formControl {
+    width: 100%;
+}
+
+.mv_select {
+    border: solid #696969 0.3px;
+    height: 48px;
+}
+
+.mv_select .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+}
+
+.mv_select em {
+    color : #696969;
+    padding-left: 5px;
+    font-size: 16px;
+    font-family: 'Blinker', sans-serif;
+    font-style: normal;
+}
+
+.image {
+    background: #696969;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+div[role=tooltip] .image_small {
+    background: #696969;
+    width: 26px;
+    height: 26px;
+    border-radius: 50px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+div[role=presentation] .mv_menuItem {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 130%;
+    color: #FFFFFF;
+    padding: 8px 40px;
+}
+
+div[role=tooltip] .mv_menuItem_small {
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 130%;
+    color: #FFFFFF;
+    padding: 8px 0 8px 4px;
+}
+
+div[role=tooltip] .name_small,
+div[role=tooltip] .hash_text_small {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+div[role=tooltip] .name_cut {
+    max-width: 130px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+div[role=tooltip] .hash_text_small {
+    margin-left: 10px;
+}
+
+div[role=presentation] .mv_menuItem:hover {
+    background-color: #070707;
+}
+
+div[role=presentation] .mv_menuItem .checkbox {
+    color: pink;
+}
+
+div[role=presentation] .divider {
+    background-color: #545454;
+}
+
+.content .row .validator .popover_button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2px;
+    padding-left: 1px;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    min-width: unset;
+    border: solid #676768;
+    margin-left: 10px;
+    color: white;
+}
+
+div[role=tooltip] .validator_popover,
+div[role=presentation] .validator_popover {
+    color: white;
+    text-align: start;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-weight: 350;
+    line-height: 160%;
+    margin-right: 15px;
+}
