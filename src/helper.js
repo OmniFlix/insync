@@ -626,7 +626,7 @@ export const claimTransaction = (Tx, txs, type, cb) => {
             const newTxs = [];
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
             let address;
-            if (Tx && Tx.length > 1) {
+            if (Tx && Tx.length) {
                 for (let i = 0; i < Tx.length; i++) {
                     const newTx = Tx[i];
                     const bondMsgValue = new ClaimRewardsMsgValue({
