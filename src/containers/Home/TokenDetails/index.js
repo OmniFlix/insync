@@ -39,7 +39,7 @@ const TokenDetails = (props) => {
 
         return null;
     });
-
+    
     const available = balance && balance / 10 ** config.COIN_DECIMALS;
     let unStaked = 0;
     props.unBondingDelegations && props.unBondingDelegations.length &&
