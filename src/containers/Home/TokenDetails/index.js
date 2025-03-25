@@ -16,6 +16,9 @@ import { config } from '../../../config';
 // import { gas } from '../../../defaultGasValues';
 
 const TokenDetails = (props) => {
+
+    console.log('testing details ', props.details)
+
     let staked = props.delegatedValidatorList && props.delegatedValidatorList.reduce((accumulator, currentValue) => {
         if (currentValue && currentValue.minDenomAmount) {
             return accumulator + Number(currentValue.minDenomAmount);
@@ -40,7 +43,21 @@ const TokenDetails = (props) => {
         return null;
     });
 
+    let shieldedBalance = null;
+    props.shieldedBalance && props.shieldedBalance.length && props.shieldedBalance.map((val) => {
+        if (val && val.length) {
+            val.map((value) => {
+                if (value === config.TOKEN_ADDRESS) {
+                    shieldedBalance = val[1];
+                }
+            });
+        }
+
+        return null;
+    });
+
     const available = balance && balance / 10 ** config.COIN_DECIMALS;
+    const shieldedAvailable = shieldedBalance && shieldedBalance / 10 ** config.COIN_DECIMALS;
     let unStaked = 0;
     props.unBondingDelegations && props.unBondingDelegations.length &&
     props.unBondingDelegations.map((delegation) => {
@@ -71,13 +88,13 @@ const TokenDetails = (props) => {
                 </div>
                 <StakeTokensButton/>
             </div>
-            {/* <div className="chip_info">
+            <div className="chip_info">
                 <p>{variables[props.lang]['shielded_available_tokens']}</p>
                 <div className="chip">
                     <img alt="available tokens" src={totalTokens}/>
-                    <p>0</p>
+                    <p>{shieldedAvailable || 0}</p>
                 </div>
-            </div> */}
+            </div>
             <div className="chip_info">
                 <p>{variables[props.lang]['staked_tokens']}</p>
                 <div className="chip">
@@ -116,6 +133,8 @@ const TokenDetails = (props) => {
 TokenDetails.propTypes = {
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
+    shieldedBalance: PropTypes.array,
+    shieldedBalanceInProgress: PropTypes.bool,
     delegatedValidatorList: PropTypes.array.isRequired,
     delegations: PropTypes.array.isRequired,
     delegationsInProgress: PropTypes.bool.isRequired,
@@ -144,6 +163,8 @@ const stateToProps = (state) => {
         delegationsInProgress: state.accounts.delegations.inProgress,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,
+        shieldedBalance: state.accounts.shieldedBalance.result,
+        shieldedBalanceInProgress: state.accounts.shieldedBalance.inProgress,
         unBondingDelegations: state.accounts.unBondingDelegations.result,
         unBondingDelegationsInProgress: state.accounts.unBondingDelegations.inProgress,
         rewards: state.accounts.rewards.result,

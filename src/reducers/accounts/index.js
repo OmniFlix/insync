@@ -24,6 +24,9 @@ import {
     VESTING_BALANCE_FETCH_ERROR,
     VESTING_BALANCE_FETCH_IN_PROGRESS,
     VESTING_BALANCE_FETCH_SUCCESS,
+    FETCH_SHIELDED_BALANCE_IN_PROGRESS,
+    FETCH_SHIELDED_BALANCE_SUCCESS,
+    FETCH_SHIELDED_BALANCE_ERROR,
 } from '../../constants/accounts';
 
 const address = (state = {
@@ -102,6 +105,37 @@ const balance = (state = {
             result: action.value,
         };
     case BALANCE_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            result: [],
+        };
+    default:
+        return state;
+    }
+};
+
+export const shieldedBalance = (state = {
+    result: [],
+    inProgress: false,
+}, action) => {
+    switch (action.type) {
+    case FETCH_SHIELDED_BALANCE_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case FETCH_SHIELDED_BALANCE_SUCCESS:
+        return {
+            ...state,
+            inProgress: false,
+            result: action.value,
+        };
+    case FETCH_SHIELDED_BALANCE_ERROR:
         return {
             ...state,
             inProgress: false,
@@ -269,4 +303,5 @@ export default combineReducers({
     stakeAccountAddress,
     rewards,
     revealPublicKey,
+    shieldedBalance,
 });

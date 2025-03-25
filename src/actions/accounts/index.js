@@ -23,6 +23,9 @@ import {
     VESTING_BALANCE_FETCH_ERROR,
     VESTING_BALANCE_FETCH_IN_PROGRESS,
     VESTING_BALANCE_FETCH_SUCCESS,
+    FETCH_SHIELDED_BALANCE_IN_PROGRESS,
+    FETCH_SHIELDED_BALANCE_SUCCESS,
+    FETCH_SHIELDED_BALANCE_ERROR,
 } from '../../constants/accounts';
 import Axios from 'axios';
 import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance } from '../../constants/url';
@@ -364,4 +367,62 @@ export const disconnectSet = () => {
     return {
         type: DISCONNECT_SET,
     };
+};
+
+export const fetchShieldedBalanceInProgress = () => {
+    return {
+        type: FETCH_SHIELDED_BALANCE_IN_PROGRESS,
+    };
+};
+
+export const fetchShieldedBalanceSuccess = (result) => {
+    return {
+        type: FETCH_SHIELDED_BALANCE_SUCCESS,
+        value: result,
+    };
+};
+
+export const fetchShieldedBalanceError = (message) => {
+    return {
+        type: FETCH_SHIELDED_BALANCE_ERROR,
+        message,
+    };
+};
+
+export const getShieldedBalance = (viewingKey, address, cb) => (dispatch) => {
+    dispatch(fetchShieldedBalanceInProgress());
+    (async () => {
+        try {
+            const { cryptoMemory } = await init();
+            const sdk = getSdk(
+                cryptoMemory,
+                config.RPC_URL,
+                config.MAPS_REST_URL,
+                '',
+                config.TOKEN_ADDRESS,
+            );
+
+            const { rpc } = sdk;
+            // First, sync shielded data
+            await rpc.shieldedSync();
+            // Then query the shielded balance
+            const array = [config.TOKEN_ADDRESS];
+            const result = await rpc.queryBalance(viewingKey, array, config.CHAIN_ID);
+            dispatch(fetchShieldedBalanceSuccess(result));
+            if (cb) {
+                cb(result);
+            }
+        } catch (error) {
+            dispatch(fetchShieldedBalanceError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed to fetch shielded balance!',
+            ));
+            if (cb) {
+                cb(null);
+            }
+        }
+    })();
 };
