@@ -6,6 +6,7 @@ import {
     fetchRewards,
     fetchVestingBalance,
     getBalance,
+    getShieldedBalance,
     getDelegations,
     getUnBondingDelegations,
     setAccountAddress, setAccountDetails,
@@ -45,6 +46,8 @@ const KeplrConnectButton = (props) => {
                 props.getDelegations(addressList && addressList.address);
             }
             props.getBalance(addressList && addressList.address);
+            console.log('testing shielded details ', shieldedAddress[1]);
+            // props.getShieldedBalance(shieldedAddress[1].viewingKey, shieldedAddress[1].address);
             // props.fetchVestingBalance(addressList && addressList.address);
             // if (!props.proposalTab) {
             //     props.getDelegatedValidatorsDetails(addressList && addressList.address);
@@ -98,6 +101,7 @@ const actionsToProps = {
     fetchVestingBalance,
     hideConnectDialog,
     getBalance,
+    getShieldedBalance,
     getUnBondingDelegations,
     fetchRewards,
     setAccountDetails,

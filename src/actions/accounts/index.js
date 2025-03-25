@@ -390,6 +390,7 @@ export const fetchShieldedBalanceError = (message) => {
 };
 
 export const getShieldedBalance = (viewingKey, address, cb) => (dispatch) => {
+    console.log('shielded balance called');
     dispatch(fetchShieldedBalanceInProgress());
     (async () => {
         try {
@@ -401,18 +402,35 @@ export const getShieldedBalance = (viewingKey, address, cb) => (dispatch) => {
                 '',
                 config.TOKEN_ADDRESS,
             );
+            console.log('testing windows namada ', window.namada.accounts)
+            console.log('testing address ', config.TOKEN_ADDRESS)
+            console.log('testing view key ', viewingKey);
 
             const { rpc } = sdk;
-            // First, sync shielded data
-            await rpc.shieldedSync();
-            // Then query the shielded balance
+            
+            // Create the proper DatedViewingKey structure
+            const datedViewingKeys = [
+                {
+                    key: viewingKey,
+                    birthday: 0 // Use 0 or another appropriate default birthday
+                }
+            ];
+            
+            // First, sync shielded data with the proper format
+            await rpc.shieldedSync(datedViewingKeys, config.CHAIN_ID);
+            
+            // Then query the balance
             const array = [config.TOKEN_ADDRESS];
             const result = await rpc.queryBalance(viewingKey, array, config.CHAIN_ID);
+            
+            console.log('testing result ', result);
             dispatch(fetchShieldedBalanceSuccess(result));
+            
             if (cb) {
                 cb(result);
             }
         } catch (error) {
+            console.error("Full error:", error);
             dispatch(fetchShieldedBalanceError(
                 error.response &&
                 error.response.data &&

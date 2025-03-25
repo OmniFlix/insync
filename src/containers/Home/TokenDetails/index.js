@@ -17,8 +17,6 @@ import { config } from '../../../config';
 
 const TokenDetails = (props) => {
 
-    console.log('testing details ', props.details)
-
     let staked = props.delegatedValidatorList && props.delegatedValidatorList.reduce((accumulator, currentValue) => {
         if (currentValue && currentValue.minDenomAmount) {
             return accumulator + Number(currentValue.minDenomAmount);
