@@ -48,10 +48,10 @@ const KeplrConnectButton = (props) => {
                 props.getDelegations(addressList && addressList.address);
             }
             props.getBalance(addressList && addressList.address);
-            console.log('testing shielded details ', shieldedAddress[1]);
-            const address1 = `${addressList?.address ?? ""}`;
-            const address2 = `${shieldedAddress?.[1]?.address ?? ""}`;
-            props.getShieldedBalance(shieldedAddress[1].viewingKey, shieldedAddress[1].timestamp, addressList.address, shieldedAddress[1].address);
+            // console.log('testing shielded details ', shieldedAddress[1]);
+            // const address1 = `${addressList?.address ?? ""}`;
+            // const address2 = `${shieldedAddress?.[1]?.address ?? ""}`;
+            // props.getShieldedBalance(shieldedAddress[1].viewingKey, shieldedAddress[1].timestamp, addressList.address, shieldedAddress[1].address);
             // props.fetchVestingBalance(addressList && addressList.address);
             // if (!props.proposalTab) {
             //     props.getDelegatedValidatorsDetails(addressList && addressList.address);

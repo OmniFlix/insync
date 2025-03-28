@@ -816,8 +816,6 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, c
             config.TOKEN_ADDRESS,
         );
 
-        console.log('sdk ', sdk);
-
         const { rpc, tx } = sdk;
 
         const masp = await fetchMaspParams(sdk, chainId);

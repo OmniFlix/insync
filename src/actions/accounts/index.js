@@ -153,13 +153,9 @@ export const getBalance = (address, cb) => (dispatch) => {
 
         const { rpc } = sdk;
         const query = rpc.query;
-        console.log('testing query ', query)
         // const tokens = await query.query_native_token();
-        console.log('og address ', address);
-        console.log('og array  ', array);
         query.query_balance(address, array, config.CHAIN_ID)
             .then((res) => {
-                console.log('og balance ', res);
                 dispatch(fetchBalanceSuccess(res));
                 if (cb) {
                     cb(res);
@@ -394,10 +390,12 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
 
         try {
             const url = urlFetchBlockHeight(timestamp);
-            const response = await axios.get(url);
-            console.log('response ', response)
+            let response = 0;
+            if (timestamp > 0) {
+                response = await Axios.get(url);
+            }
 
-            const birthday = response.data.height;
+            const birthday = response?.data?.height || 0;
             const { cryptoMemory } = await init();
             const sdk = getSdk(
                 cryptoMemory,
@@ -412,13 +410,11 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
                 birthday: birthday,
             }];
             await sdk.rpc.shieldedSync(datedViewingKeys, chainId)
-
             const balance = await sdk.rpc.queryBalance(
                 viewingKey,
                 [config.TOKEN_ADDRESS],
                 chainId,
             );
-
             dispatch(fetchBalanceSuccess(balance));
         } catch (error) {
             console.error('❌ Shielded balance error:', {

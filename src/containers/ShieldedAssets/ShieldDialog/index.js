@@ -16,6 +16,8 @@ import CircularProgress from 'components/CircularProgress';
 import { ShieldingTransferDataMsgValue } from '@namada/types';
 import variables from 'utils/variables';
 import { getBalance } from 'actions/accounts';
+import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';
+import { showMessage } from 'actions/snackbar';
 
 const ShieldDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -48,8 +50,62 @@ const ShieldDialog = (props) => {
         maspTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
     };
 
-    const handleFetch = () => {
-        props.getBalance(props.address);
+    const handleFetch = (error, value) => {
+        if (error) {
+            setInProgress(false);
+            if (error.indexOf('not yet found on the chain') > -1) {
+                props.pendingDialog();
+                return;
+            }
+            props.failedDialog();
+            props.showMessage(error);
+            return;
+        }
+        let balance = null;
+        props.balance && props.balance.length && props.balance.map((val) => {
+            if (val && val.length) {
+                val.map((value) => {
+                    if (value === config.TOKEN_ADDRESS) {
+                        balance = val[1];
+                    }
+                });
+            }
+
+            return null;
+        });
+
+        const available = balance;
+        const intervalTime = setInterval(() => {
+            props.getBalance(props.address, (result) => {
+                if (result && result.length) {
+                    let localBalance = null;
+                    result && result.length && result.map((val) => {
+                        if (val && val.length) {
+                            val.map((value) => {
+                                if (value === config.TOKEN_ADDRESS) {
+                                    localBalance = val[1];
+                                }
+                            });
+                        }
+
+                        return null;
+                    });
+
+                    if (localBalance !== available) {
+                        setInProgress(false);
+                        clearInterval(intervalTime);
+                        props.successDialog(value && value.hash);
+                    }
+                }
+            });
+        }, 2000);
+
+        if (intervalTime) {
+            setTimeout(() => {
+                setInProgress(false);
+                clearInterval(intervalTime);
+            }, 60000);
+        }
     };
 
     let balance = null;
@@ -122,10 +178,14 @@ const ShieldDialog = (props) => {
 ShieldDialog.propTypes = {
     balance: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
+    failedDialog: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    pendingDialog: PropTypes.func.isRequired,
     setAmount: PropTypes.func.isRequired,
+    showMessage: PropTypes.func.isRequired,
+    successDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
     revealPublicKey: PropTypes.object,
     shieldedAddress: PropTypes.string,
@@ -146,6 +206,10 @@ const stateToProps = (state) => {
 const actionToProps = {
     setAmount,
     getBalance,
+    successDialog: showDelegateSuccessDialog,
+    failedDialog: showDelegateFailedDialog,
+    pendingDialog: showDelegateProcessingDialog,
+    showMessage,
 };
 
 export default connect(stateToProps, actionToProps)(ShieldDialog);

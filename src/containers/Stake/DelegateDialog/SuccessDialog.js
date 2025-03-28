@@ -65,15 +65,17 @@ const SuccessDialog = (props) => {
             <DialogContent className="content">
                 <div className="heading">
                     <img alt="success" src={success}/>
-                    {props.name && props.name !== 'Multi-Delegate'
-                        ? <h1>{props.name + 'd Successfully'}</h1>
-                        : props.name
-                            ? <h1>{variables[props.lang].delegate + 'd Successfully'}</h1>
-                            : props.router && props.router.params && props.router.params.proposalID
-                                ? <h1>{variables[props.lang].vote_success}</h1>
-                                : props.claimValidator && props.claimValidator !== 'none'
-                                    ? <h1>{variables[props.lang].claimed_success}</h1>
-                                    : <h1>{variables[props.lang].success}</h1>}
+                    {props.shielded
+                        ? <h1>Tokens Shielded Successfully</h1>
+                        : props.name && props.name !== 'Multi-Delegate'
+                            ? <h1>{props.name + 'd Successfully'}</h1>
+                            : props.name
+                                ? <h1>{variables[props.lang].delegate + 'd Successfully'}</h1>
+                                : props.router && props.router.params && props.router.params.proposalID
+                                    ? <h1>{variables[props.lang].vote_success}</h1>
+                                    : props.claimValidator && props.claimValidator !== 'none'
+                                        ? <h1>{variables[props.lang].claimed_success}</h1>
+                                        : <h1>{variables[props.lang].success}</h1>}
                 </div>
                 {props.router && props.router.params && (props.router.params.proposalID || (props.router.params.proposalID === 0)) && props.hash
                     ? <div className="row">
@@ -101,9 +103,11 @@ const SuccessDialog = (props) => {
                                 </div>
                                 <div className="row">
                                     <p>{variables[props.lang].tokens}</p>
-                                    <p>{props.tokens
-                                        ? Number(props.tokens).toFixed(4) + ' ' + config.COIN_DENOM
-                                        : null}</p>
+                                    <p>{props.shielded && props.shieldedTokens
+                                        ? Number(props.shieldedTokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                        : props.tokens
+                                            ? Number(props.tokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                            : null}</p>
                                 </div>
                             </> : null
                         : <>
@@ -230,9 +234,11 @@ const SuccessDialog = (props) => {
                                     </div>}
                             <div className="row">
                                 <p>{variables[props.lang].tokens}</p>
-                                <p>{props.tokens
-                                    ? Number(props.tokens).toFixed(4) + ' ' + config.COIN_DENOM
-                                    : null}</p>
+                                <p>{props.shielded && props.shieldedTokens
+                                    ? Number(props.shieldedTokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                    : props.tokens
+                                        ? Number(props.tokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                        : null}</p>
                             </div>
                         </>}
             </DialogContent>
@@ -263,6 +269,8 @@ SuccessDialog.propTypes = {
             proposalID: PropTypes.string,
         }).isRequired,
     }),
+    shielded: PropTypes.bool,
+    shieldedTokens: PropTypes.any,
     tokens: PropTypes.any,
     validatorList: PropTypes.array,
 };
@@ -271,6 +279,7 @@ const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         tokens: state.stake.tokens,
+        shieldedTokens: state.shieldedAssets.amount.value,
         lang: state.language,
         open: state.stake.successDialog.open,
         hash: state.stake.successDialog.hash,
