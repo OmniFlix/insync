@@ -39,8 +39,22 @@ const TokenDetails = (props) => {
 
         return null;
     });
-    
+
+    // let shieldedBalance = null;
+    // props.shieldedBalance && props.shieldedBalance.length && props.shieldedBalance.map((val) => {
+    //     if (val && val.length) {
+    //         val.map((value) => {
+    //             if (value === config.TOKEN_ADDRESS) {
+    //                 shieldedBalance = val[1];
+    //             }
+    //         });
+    //     }
+
+    //     return null;
+    // });
+
     const available = balance && balance / 10 ** config.COIN_DECIMALS;
+    // const shieldedAvailable = shieldedBalance && shieldedBalance / 10 ** config.COIN_DECIMALS;
     let unStaked = 0;
     props.unBondingDelegations && props.unBondingDelegations.length &&
     props.unBondingDelegations.map((delegation) => {
@@ -75,7 +89,7 @@ const TokenDetails = (props) => {
                 <p>{variables[props.lang]['shielded_available_tokens']}</p>
                 <div className="chip">
                     <img alt="available tokens" src={totalTokens}/>
-                    <p>0</p>
+                    <p>{shieldedAvailable || 0}</p>
                 </div>
             </div> */}
             <div className="chip_info">
@@ -126,6 +140,8 @@ TokenDetails.propTypes = {
     }).isRequired,
     rewardsInProgress: PropTypes.bool.isRequired,
     unBondingDelegationsInProgress: PropTypes.bool.isRequired,
+    shieldedBalance: PropTypes.array,
+    shieldedBalanceInProgress: PropTypes.bool,
     unBondingDelegations: PropTypes.arrayOf(
         PropTypes.shape({
             entries: PropTypes.arrayOf(
@@ -144,6 +160,8 @@ const stateToProps = (state) => {
         delegationsInProgress: state.accounts.delegations.inProgress,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,
+        shieldedBalance: state.accounts.shieldedBalance.result,
+        shieldedBalanceInProgress: state.accounts.shieldedBalance.inProgress,
         unBondingDelegations: state.accounts.unBondingDelegations.result,
         unBondingDelegationsInProgress: state.accounts.unBondingDelegations.inProgress,
         rewards: state.accounts.rewards.result,

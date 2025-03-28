@@ -6,6 +6,7 @@ import {
     fetchRewards,
     fetchVestingBalance,
     getBalance,
+    getShieldedBalance,
     getDelegations,
     getUnBondingDelegations,
     setAccountAddress, setAccountDetails,
@@ -18,6 +19,7 @@ import { getDelegatedValidatorsDetails } from '../../../actions/stake';
 import { ReactComponent as NamadaLogo } from '../../../assets/namadaLogo.svg';
 import { hideConnectDialog } from '../../../actions/navBar';
 import variables from '../../../utils/variables';
+import { config } from 'process';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -26,6 +28,7 @@ const KeplrConnectButton = (props) => {
         setInProgress(true);
         initializeNamadaChain((error, addressList, shieldedAddress) => {
             const shieldedDetails = shieldedAddress && shieldedAddress.find((item) => item.type === 'shielded-keys');
+            console.log('raw shielded details ', shieldedDetails)
             setInProgress(false);
             if (error) {
                 localStorage.removeItem('of_co_address');
@@ -45,6 +48,10 @@ const KeplrConnectButton = (props) => {
                 props.getDelegations(addressList && addressList.address);
             }
             props.getBalance(addressList && addressList.address);
+            // console.log('testing shielded details ', shieldedAddress[1]);
+            // const address1 = `${addressList?.address ?? ""}`;
+            // const address2 = `${shieldedAddress?.[1]?.address ?? ""}`;
+            // props.getShieldedBalance(shieldedAddress[1].viewingKey, shieldedAddress[1].timestamp, addressList.address, shieldedAddress[1].address);
             // props.fetchVestingBalance(addressList && addressList.address);
             // if (!props.proposalTab) {
             //     props.getDelegatedValidatorsDetails(addressList && addressList.address);
@@ -98,6 +105,7 @@ const actionsToProps = {
     fetchVestingBalance,
     hideConnectDialog,
     getBalance,
+    getShieldedBalance,
     getUnBondingDelegations,
     fetchRewards,
     setAccountDetails,

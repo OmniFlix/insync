@@ -19,7 +19,6 @@ import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
 import withRouter from '../../components/WithRouter';
 // import SendButton from './SendButton';
 import cvIcon from '../../assets/cv.png';
-
 class Home extends Component {
     constructor (props) {
         super(props);

@@ -146,6 +146,7 @@ const DelegateDialog = (props) => {
 
     const handleFetch = (error, value) => {
         if (error) {
+            setInProgress(false);
             if (error.indexOf('not yet found on the chain') > -1) {
                 props.pendingDialog();
                 return;

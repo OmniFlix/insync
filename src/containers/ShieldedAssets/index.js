@@ -6,6 +6,9 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from '../../components/WithRouter';
 import ShieldDialog from './ShieldDialog';
+import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
+import UnSuccessDialog from 'containers/Stake/DelegateDialog/UnSuccessDialog';
+import PendingDialog from 'containers/Stake/DelegateDialog/PendingDialog';
 
 class ShieldedAssets extends Component {
     render () {
@@ -18,6 +21,9 @@ class ShieldedAssets extends Component {
                         <ShieldDialog/>
                     </div>
                 </div>
+                <SuccessDialog shielded={true}/>
+                <UnSuccessDialog/>
+                <PendingDialog/>
             </>
         );
     }

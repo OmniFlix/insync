@@ -18,7 +18,7 @@ const ValidatorSelectField = (props) => {
         props.onChange(value);
     };
 
-    let total = 0;
+    const total = 0;
 
     // const totalRewards = props.rewards && props.rewards.length &&
     //     props.rewards.map((value) => {
