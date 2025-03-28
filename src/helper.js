@@ -13,8 +13,8 @@ import {
     ShieldingTransferMsgValue,
 } from '@namada/types';
 
-import { getSdk } from "@namada/sdk/web";
-import init from "@namada/sdk/web-init";
+import { getSdk } from '@namada/sdk/web';
+import init from '@namada/sdk/web-init';
 
 const chainId = config.CHAIN_ID;
 const chainName = config.CHAIN_NAME;
@@ -775,105 +775,99 @@ export const voteTransaction = (Tx, txs, type, cb) => {
     })();
 };
 
-const paramsUrl = "/params/";
+const paramsUrl = '/params/';
 
 const fetchMaspParams = async (sdk, chainId) => {
     const { masp } = sdk;
 
     return masp.hasMaspParams().then(async (hasMaspParams) => {
-      console.log('hasMaspParams', hasMaspParams);
-      if (hasMaspParams) {
-        await masp.loadMaspParams("", chainId).catch((e) => Promise.reject(e));
-        return true;
-      }
-      return masp
-        .fetchAndStoreMaspParams(paramsUrl)
-        .then(() => masp.loadMaspParams("", chainId).then(() => true))
-        .catch((e) => {
-              throw new Error(e);
-        });
+        console.log('hasMaspParams', hasMaspParams);
+        if (hasMaspParams) {
+            await masp.loadMaspParams('', chainId).catch((e) => Promise.reject(e));
+            return true;
+        }
+        return masp
+            .fetchAndStoreMaspParams(paramsUrl)
+            .then(() => masp.loadMaspParams('', chainId).then(() => true))
+            .catch((e) => {
+                throw new Error(e);
+            });
     });
 };
 
 export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, cb) => {
-        const isExtensionInstalled = typeof window.namada === 'object';
-        if (!isExtensionInstalled || !window.namada) {
-            const error = 'Download the Namada Extension';
-            cb(error);
+    const isExtensionInstalled = typeof window.namada === 'object';
+    if (!isExtensionInstalled || !window.namada) {
+        const error = 'Download the Namada Extension';
+        cb(error);
+    }
+
+    if (window.namada) {
+        const namada = window.namada;
+        const client = namada.getSigner();
+
+        const { cryptoMemory } = await init();
+
+        const sdk = getSdk(
+            cryptoMemory,
+            config.RPC_URL,
+            config.MAPS_REST_URL,
+            '',
+            config.TOKEN_ADDRESS,
+        );
+
+        console.log('sdk ', sdk);
+
+        const { rpc, tx } = sdk;
+
+        const masp = await fetchMaspParams(sdk, chainId);
+        const checksums = await rpc.queryChecksums();
+        if (checksums && Object.keys(checksums).length) {
+            Object.keys(checksums).map((key) => {
+                if (key && checksums[key]) {
+                    checksums[key] = checksums[key].toLowerCase();
+                }
+            });
         }
 
-        if (window.namada) {
-            const namada = window.namada;
-            const client = namada.getSigner();
+        const shieldingTransfer = new ShieldingTransferMsgValue({
+            target: Tx.target,
+            data: Tx.data,
+        });
 
-            const { cryptoMemory } = await init();
+        const wrapperProps = {
+            token: txs.token,
+            feeAmount: txs.feeAmount,
+            gasLimit: txs.gasLimit,
+            chainId: txs.chainId,
+            publicKey: txs.publicKey,
+            memo: '',
+        };
 
-            const sdk = getSdk(
-                cryptoMemory,
-                config.RPC_URL,
-                config.MAPS_REST_URL,
-                '',
-                config.TOKEN_ADDRESS,
-            );
+        const newTxs = [];
+        if (revealPublicKey && !revealPublicKey.publicKey) {
+            const revealPkTx = await tx.buildRevealPk(wrapperProps);
+            newTxs.push(revealPkTx);
+        }
+        const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        console.log(await tx.buildShieldingTransfer.toString());
+        const encoded = await tx.buildShieldingTransfer(wrapperTxValue, shieldingTransfer);
+        newTxs.push(encoded);
 
-            const { rpc, tx } = sdk;
+        let updateDate;
+        if (type === 'ledger') {
+            updateDate = newTxs;
+        } else {
+            updateDate = tx.buildBatch(newTxs);
+        }
 
-            const masp = await fetchMaspParams(sdk, chainId);
-            const checksums = await rpc.queryChecksums();
-            if (checksums && Object.keys(checksums).length) {
-                Object.keys(checksums).map((key) => {
-                    if (key && checksums[key]) {
-                        checksums[key] = checksums[key].toLowerCase();
-                    }
-                });
-            }
-
-            const shieldingTransfer = new ShieldingTransferMsgValue({
-                target: Tx.target,
-                data: Tx.data,
-            });
-
-            const wrapperProps = {
-                token: txs.token,
-                feeAmount: txs.feeAmount,
-                gasLimit: txs.gasLimit,
-                chainId: txs.chainId,
-                publicKey: txs.publicKey,
-                memo: '',
-            };
-
-            const newTxs = [];
-            if (revealPublicKey && !revealPublicKey.publicKey) {
-                const revealPkTx = await tx.buildRevealPk(wrapperProps);
-                newTxs.push(revealPkTx);
-            }
-            const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-            console.log(await tx.buildShieldingTransfer.toString());
-            const encoded = await tx.buildShieldingTransfer(wrapperTxValue, shieldingTransfer);
-            newTxs.push(encoded);
-
-            let updateDate;
-            if (type === 'ledger') {
-                updateDate = newTxs;
-            } else {
-                updateDate = tx.buildBatch(newTxs);
-            }
-
-            client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
-                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
-                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                        cb(result.info || result.log || result.rawLog);
-                    } else {
-                        cb(null, result);
-                    }
-                }).catch((error) => {
-                    const message = 'success';
-                    if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                        cb(null, message);
-                    } else {
-                        cb(error && error.message);
-                    }
-                });
+        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+            rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
+                if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                    cb(result.info || result.log || result.rawLog);
+                } else {
+                    cb(null, result);
+                }
             }).catch((error) => {
                 const message = 'success';
                 if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
@@ -882,7 +876,15 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, c
                     cb(error && error.message);
                 }
             });
-        } else {
-            return null;
-        }
+        }).catch((error) => {
+            const message = 'success';
+            if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                cb(null, message);
+            } else {
+                cb(error && error.message);
+            }
+        });
+    } else {
+        return null;
+    }
 };

@@ -108,7 +108,7 @@ const ShieldDialog = (props) => {
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
             {inProgress && <CircularProgress className="full_screen"/>}
-            <Button 
+            <Button
                 disabled={disable}
                 onClick={handleSubmit}>
                 {inProgress
@@ -122,13 +122,13 @@ const ShieldDialog = (props) => {
 ShieldDialog.propTypes = {
     balance: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
+    getBalance: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     setAmount: PropTypes.func.isRequired,
-    getBalance: PropTypes.func.isRequired,
     address: PropTypes.string,
-    shieldedAddress: PropTypes.string,
     revealPublicKey: PropTypes.object,
+    shieldedAddress: PropTypes.string,
 };
 
 const stateToProps = (state) => {

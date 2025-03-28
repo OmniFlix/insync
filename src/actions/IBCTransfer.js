@@ -56,4 +56,3 @@ export const setFromNamadaSelectedAsset = (value) => {
         value,
     };
 };
-

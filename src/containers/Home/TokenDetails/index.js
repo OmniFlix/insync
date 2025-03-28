@@ -16,7 +16,6 @@ import { config } from '../../../config';
 // import { gas } from '../../../defaultGasValues';
 
 const TokenDetails = (props) => {
-
     let staked = props.delegatedValidatorList && props.delegatedValidatorList.reduce((accumulator, currentValue) => {
         if (currentValue && currentValue.minDenomAmount) {
             return accumulator + Number(currentValue.minDenomAmount);
@@ -131,8 +130,6 @@ const TokenDetails = (props) => {
 TokenDetails.propTypes = {
     balance: PropTypes.array.isRequired,
     balanceInProgress: PropTypes.bool.isRequired,
-    shieldedBalance: PropTypes.array,
-    shieldedBalanceInProgress: PropTypes.bool,
     delegatedValidatorList: PropTypes.array.isRequired,
     delegations: PropTypes.array.isRequired,
     delegationsInProgress: PropTypes.bool.isRequired,
@@ -143,6 +140,8 @@ TokenDetails.propTypes = {
     }).isRequired,
     rewardsInProgress: PropTypes.bool.isRequired,
     unBondingDelegationsInProgress: PropTypes.bool.isRequired,
+    shieldedBalance: PropTypes.array,
+    shieldedBalanceInProgress: PropTypes.bool,
     unBondingDelegations: PropTypes.arrayOf(
         PropTypes.shape({
             entries: PropTypes.arrayOf(

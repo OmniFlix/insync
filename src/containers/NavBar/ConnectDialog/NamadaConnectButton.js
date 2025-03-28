@@ -19,6 +19,7 @@ import { getDelegatedValidatorsDetails } from '../../../actions/stake';
 import { ReactComponent as NamadaLogo } from '../../../assets/namadaLogo.svg';
 import { hideConnectDialog } from '../../../actions/navBar';
 import variables from '../../../utils/variables';
+import { config } from 'process';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -27,6 +28,7 @@ const KeplrConnectButton = (props) => {
         setInProgress(true);
         initializeNamadaChain((error, addressList, shieldedAddress) => {
             const shieldedDetails = shieldedAddress && shieldedAddress.find((item) => item.type === 'shielded-keys');
+            console.log('raw shielded details ', shieldedDetails)
             setInProgress(false);
             if (error) {
                 localStorage.removeItem('of_co_address');
@@ -47,7 +49,9 @@ const KeplrConnectButton = (props) => {
             }
             props.getBalance(addressList && addressList.address);
             console.log('testing shielded details ', shieldedAddress[1]);
-            // props.getShieldedBalance(shieldedAddress[1].viewingKey, shieldedAddress[1].address);
+            const address1 = `${addressList?.address ?? ""}`;
+            const address2 = `${shieldedAddress?.[1]?.address ?? ""}`;
+            props.getShieldedBalance(shieldedAddress[1].viewingKey, shieldedAddress[1].timestamp, addressList.address, shieldedAddress[1].address);
             // props.fetchVestingBalance(addressList && addressList.address);
             // if (!props.proposalTab) {
             //     props.getDelegatedValidatorsDetails(addressList && addressList.address);

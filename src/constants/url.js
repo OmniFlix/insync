@@ -23,5 +23,6 @@ export const getDelegatedValidatorsURL = (address) => `${REST_URL}/api/v1/pos/bo
 export const urlFetchProposalVotes = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/votes`;
 export const urlFetchTallyDetails = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/tally`;
 export const urlFetchProposalDetails = (id) => `${REST_URL}/api/v1/gov/proposal/${id}`;
+export const urlFetchBlockHeight = (timestamp) => `${REST_URL}/api/v1/block/timestamp/${timestamp}`;
 
 export const validatorImageURL = (id) => `https://keybase.io/_/api/1.0/user/lookup.json?fields=pictures&key_suffix=${id}`;

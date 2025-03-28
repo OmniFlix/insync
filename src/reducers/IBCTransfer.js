@@ -93,13 +93,13 @@ const fromNamadaSelectedAsset = (state = {
     value: '',
 }, action) => {
     switch (action.type) {
-        case FROM_NAMADA_SELECT_ASSET_SET:
-            return {
-                ...state,
-                value: action.value,
-            };
-        default:
-            return state;
+    case FROM_NAMADA_SELECT_ASSET_SET:
+        return {
+            ...state,
+            value: action.value,
+        };
+    default:
+        return state;
     }
 };
 

@@ -28,15 +28,15 @@ import {
     FETCH_SHIELDED_BALANCE_ERROR,
 } from '../../constants/accounts';
 import Axios from 'axios';
-import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance } from '../../constants/url';
+import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance, urlFetchBlockHeight } from '../../constants/url';
 // import { Query } from '@namada/shared';
 import { config } from '../../config';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
 // import { Sdk, getSdk } from '@heliaxdev/namada-sdk/web';
 // import init from '@heliaxdev/namada-sdk/web-init';
 
-import { Sdk, getSdk } from "@namada/sdk/web";
-import init from "@namada/sdk/web-init";
+import { getSdk } from '@namada/sdk/web';
+import init from '@namada/sdk/web-init';
 // import { Tokens } from '@namada/types';
 
 export const setAccountAddress = (value, shieldedAddress) => {
@@ -153,9 +153,13 @@ export const getBalance = (address, cb) => (dispatch) => {
 
         const { rpc } = sdk;
         const query = rpc.query;
+        console.log('testing query ', query)
         // const tokens = await query.query_native_token();
+        console.log('og address ', address);
+        console.log('og array  ', array);
         query.query_balance(address, array, config.CHAIN_ID)
             .then((res) => {
+                console.log('og balance ', res);
                 dispatch(fetchBalanceSuccess(res));
                 if (cb) {
                     cb(res);
@@ -369,31 +373,31 @@ export const disconnectSet = () => {
     };
 };
 
-export const fetchShieldedBalanceInProgress = () => {
-    return {
-        type: FETCH_SHIELDED_BALANCE_IN_PROGRESS,
-    };
-};
+export const shieldedBalanceFetchInProgress = () => ({
+    type: FETCH_SHIELDED_BALANCE_IN_PROGRESS,
+});
 
-export const fetchShieldedBalanceSuccess = (result) => {
-    return {
-        type: FETCH_SHIELDED_BALANCE_SUCCESS,
-        value: result,
-    };
-};
+export const shieldedBalanceFetchSuccess = (balance) => ({
+    type: FETCH_SHIELDED_BALANCE_SUCCESS,
+    balance, // Format: { [asset]: string } (e.g., { "NAM": "100" })
+});
 
-export const fetchShieldedBalanceError = (message) => {
-    return {
-        type: FETCH_SHIELDED_BALANCE_ERROR,
-        message,
-    };
-};
+export const shieldedBalanceFetchError = (error) => ({
+    type: FETCH_SHIELDED_BALANCE_ERROR,
+    error: error.message || 'Failed to fetch shielded balance',
+});
 
-export const getShieldedBalance = (viewingKey, address, cb) => (dispatch) => {
-    console.log('shielded balance called');
-    dispatch(fetchShieldedBalanceInProgress());
-    (async () => {
+
+export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = config.CHAIN_ID, cb) =>
+    async (dispatch) => {
+        dispatch({ type: FETCH_SHIELDED_BALANCE_IN_PROGRESS });
+
         try {
+            const url = urlFetchBlockHeight(timestamp);
+            const response = await axios.get(url);
+            console.log('response ', response)
+
+            const birthday = response.data.height;
             const { cryptoMemory } = await init();
             const sdk = getSdk(
                 cryptoMemory,
@@ -402,45 +406,28 @@ export const getShieldedBalance = (viewingKey, address, cb) => (dispatch) => {
                 '',
                 config.TOKEN_ADDRESS,
             );
-            console.log('testing windows namada ', window.namada.accounts)
-            console.log('testing address ', config.TOKEN_ADDRESS)
-            console.log('testing view key ', viewingKey);
 
-            const { rpc } = sdk;
-            
-            // Create the proper DatedViewingKey structure
-            const datedViewingKeys = [
-                {
-                    key: viewingKey,
-                    birthday: 0 // Use 0 or another appropriate default birthday
-                }
-            ];
-            
-            // First, sync shielded data with the proper format
-            await rpc.shieldedSync(datedViewingKeys, config.CHAIN_ID);
-            
-            // Then query the balance
-            const array = [config.TOKEN_ADDRESS];
-            const result = await rpc.queryBalance(viewingKey, array, config.CHAIN_ID);
-            
-            console.log('testing result ', result);
-            dispatch(fetchShieldedBalanceSuccess(result));
-            
-            if (cb) {
-                cb(result);
-            }
+            const datedViewingKeys = [{
+                key: viewingKey,
+                birthday: birthday,
+            }];
+            await sdk.rpc.shieldedSync(datedViewingKeys, chainId)
+
+            const balance = await sdk.rpc.queryBalance(
+                viewingKey,
+                [config.TOKEN_ADDRESS],
+                chainId,
+            );
+
+            dispatch(fetchBalanceSuccess(balance));
         } catch (error) {
-            console.error("Full error:", error);
-            dispatch(fetchShieldedBalanceError(
-                error.response &&
-                error.response.data &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : 'Failed to fetch shielded balance!',
-            ));
-            if (cb) {
-                cb(null);
-            }
+            console.error('❌ Shielded balance error:', {
+                message: error.message || 'Unknown error',
+                error,
+                chainId,
+            });
+            dispatch(fetchBalanceError(error.message || 'Unknown error'));
+        } finally {
+            dispatch({ type: FETCH_SHIELDED_BALANCE_SUCCESS });
         }
-    })();
-};
+    };
