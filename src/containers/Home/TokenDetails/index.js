@@ -40,18 +40,18 @@ const TokenDetails = (props) => {
         return null;
     });
 
-    let shieldedBalance = null;
-    props.shieldedBalance && props.shieldedBalance.length && props.shieldedBalance.map((val) => {
-        if (val && val.length) {
-            val.map((value) => {
-                if (value === config.TOKEN_ADDRESS) {
-                    shieldedBalance = val[1];
-                }
-            });
-        }
+    // let shieldedBalance = null;
+    // props.shieldedBalance && props.shieldedBalance.length && props.shieldedBalance.map((val) => {
+    //     if (val && val.length) {
+    //         val.map((value) => {
+    //             if (value === config.TOKEN_ADDRESS) {
+    //                 shieldedBalance = val[1];
+    //             }
+    //         });
+    //     }
 
-        return null;
-    });
+    //     return null;
+    // });
 
     const available = balance && balance / 10 ** config.COIN_DECIMALS;
     // const shieldedAvailable = shieldedBalance && shieldedBalance / 10 ** config.COIN_DECIMALS;

@@ -174,6 +174,10 @@ class NavBar extends Component {
     }
 
     componentDidUpdate (pp, ps, ss) {
+        if ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== '')) {
+            this.props.getDelegatedValidatorsDetails(this.props.address);
+            this.props.fetchRewards(this.props.address);
+        }
         if ((pp.proposals && !pp.proposals.length && (pp.proposals !== this.props.proposals) &&
                 this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
