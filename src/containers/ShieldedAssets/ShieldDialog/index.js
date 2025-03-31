@@ -42,7 +42,7 @@ const ShieldDialog = (props) => {
         const txs = {
             token: config.TOKEN_ADDRESS,
             feeAmount: new BigNumber(0.000001),
-            gasLimit: new BigNumber(50000),
+            gasLimit: new BigNumber(100000),
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
         };
