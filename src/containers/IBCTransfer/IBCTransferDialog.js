@@ -4,8 +4,8 @@ import { Button } from '@material-ui/core';
 import './index.css';
 import { connect } from 'react-redux';
 import AmountTextField from './AmountTextField';
-import { setIBCSwapType, setIBCTransferAmount, setIBCTransferType } from '../../actions/IBCTransfer';
-import { config } from '../../config';
+import { setIBCSwapType, setIBCTransferAmount, setIBCTransferType, fetchTimeoutHeight, executeIBCTransfer } from '../../actions/IBCTransfer';
+import { config, osmosisChainConfig } from '../../config';
 import TransferIcon from '../../assets/transfer.svg';
 import AssetSelectField from './AssetSelectField';
 import NamadaLogo from '../../assets/masp/namada_logo.svg';
@@ -13,6 +13,8 @@ import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
 import AddressTextField from './AddressTextField';
 import SourceChainSelectField from './SourceChainSelectField';
 import SourceSelectField from './SourceSelectField';
+import Long from 'long';
+// import { showMessage } from '../../actions/IBCTransfer';
 
 const IBCTransferDialog = (props) => {
     let balance = null;
@@ -29,6 +31,30 @@ const IBCTransferDialog = (props) => {
     });
 
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
+
+    const handleSubmit = () => {
+        if (!props.address) {
+            props.showMessage('Please connect your wallet first');
+            return;
+        }
+
+        props.fetchTimeoutHeight(osmosisChainConfig.REST_URL, 'channel-98451', (result) => {
+            console.log('Timeout Height:', result);
+            const revisionNumber = result && result.proof_height && result.proof_height.revision_number &&
+                Long.fromNumber(result.proof_height.revision_number);
+            const revisionHeight = result && result.proof_height && result.proof_height.revision_height;
+
+            // Now call executeIBCTransfer only after timeoutHeight is fetched
+            props.executeIBCTransfer(revisionHeight, revisionNumber)
+                .then((res) => {
+                    console.log('IBC Transfer Result:', res);
+                })
+                .catch((err) => {
+                    console.error('IBC Transfer Error:', err);
+                });
+        });
+    };
+
     return (
         <div className="transfer_dialog">
             {props.ibcSwapType === 'to_namada'
@@ -120,7 +146,9 @@ const IBCTransferDialog = (props) => {
                         <AddressTextField/>
                     </div>
                 </>}
-            <Button>
+            <Button
+                className="submit_button"
+                onClick={handleSubmit}>
                 Submit
             </Button>
         </div>
@@ -137,6 +165,13 @@ IBCTransferDialog.propTypes = {
     address: PropTypes.string,
     ibcTransferType: PropTypes.string,
     shieldedAddress: PropTypes.string,
+    executeIBCTransfer: PropTypes.func.isRequired,
+    showMessage: PropTypes.func.isRequired,
+    amount: PropTypes.string,
+    selectedChain: PropTypes.string,
+    selectedAsset: PropTypes.string,
+    ibcTransferAddress: PropTypes.string,
+    fetchTimeoutHeight: PropTypes.func.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -144,10 +179,13 @@ const stateToProps = (state) => {
         balance: state.accounts.balance.result,
         lang: state.language,
         address: state.accounts.address.value,
-        amount: state.stake.tokens,
+        amount: state.ibcTransfer.ibcTransferAmount.value,
         shieldedAddress: state.accounts.address.shieldedDetails,
         ibcTransferType: state.ibcTransfer.ibcTransferType.value,
         ibcSwapType: state.ibcTransfer.ibcSwapType.value,
+        selectedChain: state.ibcTransfer.selectedChain.value,
+        selectedAsset: state.ibcTransfer.selectedAsset.value,
+        ibcTransferAddress: state.ibcTransfer.ibcTransferAddress.value,
     };
 };
 
@@ -155,6 +193,9 @@ const actionToProps = {
     setIBCTransferAmount,
     setIBCTransferType,
     setIBCSwapType,
+    executeIBCTransfer,
+    fetchTimeoutHeight,
+    // showMessage,
 };
 
 export default connect(stateToProps, actionToProps)(IBCTransferDialog);

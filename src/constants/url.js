@@ -26,3 +26,12 @@ export const urlFetchProposalDetails = (id) => `${REST_URL}/api/v1/gov/proposal/
 export const urlFetchBlockHeight = (timestamp) => `${REST_URL}/api/v1/block/timestamp/${timestamp}`;
 
 export const validatorImageURL = (id) => `https://keybase.io/_/api/1.0/user/lookup.json?fields=pictures&key_suffix=${id}`;
+
+export const urlFetchTimeoutHeight = (url, channel) => {
+    let version = 'v1';
+    if (url.indexOf('bluenet') > -1) {
+        version = 'v1beta1';
+    }
+
+    return `${url}/ibc/core/channel/${version}/channels/${channel}/ports/transfer`;
+};

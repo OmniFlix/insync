@@ -156,6 +156,7 @@ export const getBalance = (address, cb) => (dispatch) => {
         // const tokens = await query.query_native_token();
         query.query_balance(address, array, config.CHAIN_ID)
             .then((res) => {
+                console.log('balance response ', res);
                 dispatch(fetchBalanceSuccess(res));
                 if (cb) {
                     cb(res);
@@ -387,7 +388,6 @@ export const shieldedBalanceFetchError = (error) => ({
 export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = config.CHAIN_ID, cb) =>
     async (dispatch) => {
         dispatch({ type: FETCH_SHIELDED_BALANCE_IN_PROGRESS });
-
         try {
             const url = urlFetchBlockHeight(timestamp);
             let response = 0;
@@ -396,7 +396,9 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
             }
 
             const birthday = response?.data?.height || 0;
+            console.log('birthday ', birthday);
             const { cryptoMemory } = await init();
+            console.log('cryptoMemory ', cryptoMemory);
             const sdk = getSdk(
                 cryptoMemory,
                 config.RPC_URL,
@@ -404,17 +406,21 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
                 '',
                 config.TOKEN_ADDRESS,
             );
+            console.log('sdk ', sdk);
 
             const datedViewingKeys = [{
                 key: viewingKey,
                 birthday: birthday,
             }];
-            await sdk.rpc.shieldedSync(datedViewingKeys, chainId)
+            console.log('datedViewingKeys ', datedViewingKeys);
+            const sdbalance = await sdk.rpc.shieldedSync(datedViewingKeys, chainId)
+            console.log('sdbalance ', sdbalance)
             const balance = await sdk.rpc.queryBalance(
                 viewingKey,
                 [config.TOKEN_ADDRESS],
                 chainId,
             );
+            console.log('checking final balcnce ', balance);
             dispatch(fetchBalanceSuccess(balance));
         } catch (error) {
             console.error('❌ Shielded balance error:', {

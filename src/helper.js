@@ -1,6 +1,6 @@
 import { REST_URL, RPC_URL } from './constants/url';
 import { SigningStargateClient } from '@cosmjs/stargate';
-import { config } from './config';
+import { config, osmosisChainConfig, osmosischainConfig } from './config';
 import { cosmos, InstallError } from '@cosmostation/extension-client';
 import { getOfflineSigner } from '@cosmostation/cosmos-client';
 import {
@@ -72,36 +72,161 @@ const chainConfig = {
     walletUrlForStaking: config.STAKING_URL,
 };
 
-export const initializeChain = (cb) => {
+const kchainConfig = {
+    chainId: osmosisChainConfig.CHAIN_ID,
+    chainName,
+    rpc: osmosisChainConfig.RPC_URL,
+    rest: osmosisChainConfig.REST_URL,
+    stakeCurrency: {
+        coinDenom,
+        coinMinimalDenom,
+        coinDecimals,
+        coinGeckoId,
+    },
+    bip44: {
+        coinType: 118,
+    },
+    bech32Config: {
+        bech32PrefixAccAddr: `${prefix}`,
+        bech32PrefixAccPub: `${prefix}pub`,
+        bech32PrefixValAddr: `${prefix}valoper`,
+        bech32PrefixValPub: `${prefix}valoperpub`,
+        bech32PrefixConsAddr: `${prefix}valcons`,
+        bech32PrefixConsPub: `${prefix}valconspub`,
+    },
+    currencies: [
+        {
+            coinDenom,
+            coinMinimalDenom,
+            coinDecimals,
+            coinGeckoId,
+        },
+    ],
+    feeCurrencies: [
+        {
+            coinDenom,
+            coinMinimalDenom,
+            coinDecimals,
+            coinGeckoId,
+            gasPriceStep: {
+                low: osmosisChainConfig.GAS_PRICE_STEP_LOW,
+                average: config.GAS_PRICE_STEP_AVERAGE,
+                high: config.GAS_PRICE_STEP_HIGH,
+            },
+        },
+    ],
+    coinType: config.COIN_TYPE,
+    features: config.FEATURES,
+    walletUrlForStaking: config.STAKING_URL,
+};
+
+const KeplrSuccess = (value) => {
+    return {
+        type: KEPLR_SUCCESS,
+        value,
+    };
+};
+
+export const initializeChain = (cb) => (dispatch) => {
+    console.log('keplr main connect is called');
+    console.log('window', window.keplr);
     (async () => {
+        console.log('started keplr connect');
         if (!window.getOfflineSignerOnlyAmino || !window.keplr) {
+            console.log('step 1')
             const error = 'Download the Keplr Extension';
             cb(error);
         } else {
+            console.log('step 2')
             if (window.keplr.experimentalSuggestChain) {
                 try {
-                    await window.keplr.experimentalSuggestChain(chainConfig);
+                    console.log('step 3')
+                    await window.keplr.experimentalSuggestChain(kchainConfig);
                 } catch (error) {
+                    console.log('step 4')
                     const chainError = 'Failed to suggest the chain';
+                    console.log('chainError', chainError);
                     cb(chainError);
                 }
             } else {
+                console.log('step 5')
                 const versionError = 'Please use the recent version of keplr extension';
                 cb(versionError);
             }
         }
 
         if (window.keplr) {
-            await window.keplr.enable(chainId);
+            console.log('step 6')
+            await window.keplr.enable(osmosisChainConfig.CHAIN_ID);
 
-            const offlineSigner = window.getOfflineSignerOnlyAmino(chainId);
+            const offlineSigner = window.getOfflineSignerOnlyAmino(osmosisChainConfig.CHAIN_ID);
             const accounts = await offlineSigner.getAccounts();
+            dispatch(KeplrSuccess(accounts[0].address));
+            dispatch()
             cb(null, accounts);
         } else {
+            console.log('step 7')
             return null;
         }
     })();
 };
+
+// export const initializeChain = (kchainConfig, cb) => (dispatch) => {
+//     dispatch(connectKeplrAccountInProgress());
+//     let newConfig = config;
+//     // if (networkConfig) {
+//     //     newConfig = networkConfig;
+//     // }
+
+//     (async () => {
+//         if (!window.getOfflineSigner || !window.keplr) {
+//             const error = 'Please install keplr extension';
+//             if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+//                 // Take the user to a different screen here.
+//                 window.open('keplrwallet://wcV1');
+//             } else if (/Android/i.test(navigator.userAgent)) {
+//                 window.open('intent://wcV1#Intent;package=com.chainapsis.keplr;scheme=keplrwallet;end;');
+//             } else {
+//                 window.open(walletExtensions.KEPLR);
+//             }
+//             dispatch(connectKeplrAccountError(error));
+//         } else {
+//             if (window.keplr.experimentalSuggestChain) {
+//                 try {
+//                     await window.keplr && window.keplr.experimentalSuggestChain(kchainConfig || chainConfig);
+//                 } catch (error) {
+//                     const chainError = 'Failed to suggest the chain';
+//                     // dispatch(connectKeplrAccountError(chainError));
+//                 }
+//             } else {
+//                 const versionError = 'Please use the recent version of keplr extension';
+//                 dispatch(connectKeplrAccountError(versionError));
+//             }
+//         }
+
+//         if (window.keplr) {
+//             window.keplr.enable(newConfig.CHAIN_ID)
+//                 .then(async () => {
+//                     const offlineSigner = window.getOfflineSigner(newConfig.CHAIN_ID);
+//                     const accounts = await offlineSigner.getAccounts();
+//                     localStorage.setItem('stream_swap_address', accounts && accounts.length &&
+//                         accounts[0] && accounts[0].address);
+//                     dispatch(connectKeplrAccountSuccess(accounts));
+//                     cb(accounts);
+//                 }).catch((error) => {
+//                     dispatch(connectKeplrAccountError(error.toString()));
+//                 });
+//             window.keplr && window.keplr.getKey(newConfig.CHAIN_ID)
+//                 .then((res) => {
+//                     dispatch(setKeplrAccountKeys(res));
+//                 }).catch(() => {
+
+//                 });
+//         } else {
+//             return null;
+//         }
+//     })();
+// };
 
 export const initializeCosmoStation = (cb) => {
     (async () => {
@@ -292,6 +417,7 @@ export const initializeNamadaChain = (cb) => {
 
 export const delegateTransaction = (Tx, txs, revealPublicKey, type, cb) => {
     (async () => {
+        console.log('delegation is called from helper js');
         const isExtensionInstalled = typeof window.namada === 'object';
         if (!isExtensionInstalled || !window.namada) {
             const error = 'Download the Namada Extension';

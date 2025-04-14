@@ -18,37 +18,50 @@ import { getDelegatedValidatorsDetails } from '../../../actions/stake';
 import keplrIcon from '../../../assets/keplr.png';
 import { hideConnectDialog } from '../../../actions/navBar';
 import variables from '../../../utils/variables';
+import { config } from '../../../config';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
     const initKeplr = () => {
         setInProgress(true);
+        console.log('keplr connect is called');
+        // initializeChain((error, addressList) => {
+        //     setInProgress(false);
+        //     if (error) {
+        //         localStorage.removeItem('of_co_address');
+        //         props.showMessage(error);
+
+        //         return;
+        //     }
+
+        //     props.setAccountAddress(addressList[0] && addressList[0].address);
+        //     props.hideConnectDialog();
+        //     if (!props.proposalTab && !props.stake) {
+        //         props.getUnBondingDelegations(addressList[0] && addressList[0].address);
+        //         props.fetchRewards(addressList[0] && addressList[0].address);
+        //     }
+        //     if (!props.proposalTab) {
+        //         props.getDelegations(addressList[0] && addressList[0].address);
+        //     }
+        //     props.getBalance(addressList[0] && addressList[0].address);
+        //     props.fetchVestingBalance(addressList[0] && addressList[0].address);
+        //     if (!props.proposalTab) {
+        //         props.getDelegatedValidatorsDetails(addressList[0] && addressList[0].address);
+        //     }
+        //     localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
+        //     localStorage.setItem('of_co_wallet', 'keplr');
+        // });
         initializeChain((error, addressList) => {
-            setInProgress(false);
             if (error) {
+                setInProgress(false);
                 localStorage.removeItem('of_co_address');
                 props.showMessage(error);
-
                 return;
             }
 
-            props.setAccountAddress(addressList[0] && addressList[0].address);
-            props.hideConnectDialog();
-            if (!props.proposalTab && !props.stake) {
-                props.getUnBondingDelegations(addressList[0] && addressList[0].address);
-                props.fetchRewards(addressList[0] && addressList[0].address);
-            }
-            if (!props.proposalTab) {
-                props.getDelegations(addressList[0] && addressList[0].address);
-            }
             props.getBalance(addressList[0] && addressList[0].address);
-            props.fetchVestingBalance(addressList[0] && addressList[0].address);
-            if (!props.proposalTab) {
-                props.getDelegatedValidatorsDetails(addressList[0] && addressList[0].address);
-            }
-            localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
-            localStorage.setItem('of_co_wallet', 'keplr');
+            console.log('addressList', addressList);
         });
     };
 
