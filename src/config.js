@@ -1,13 +1,13 @@
 export const config = {
-    RPC_URL: 'https://rpc.campfire.tududes.com',
-    REST_URL: 'https://indexer.campfire.tududes.com',
-    MAPS_REST_URL: 'https://masp.campfire.tududes.com',
-    EXPLORER_URL: 'https://testnet.namada.tududes.com/omniflix',
+    RPC_URL: 'https://namada-mainnet-rpc.mellifera.network',
+    REST_URL: 'https://namada-mainnet-indexer.mellifera.network',
+    MAPS_REST_URL: 'https://namada-mainnet-masp.mellifera.network',
+    EXPLORER_URL: 'https://explorer75.org/namada',
     STAKING_URL: 'https://namada.omniflix.co/stake',
     NETWORK_NAME: 'Namada',
-    NETWORK_TYPE: 'testnet',
-    CHAIN_ID: 'campfire-square.ff09671d333707',
-    TOKEN_ADDRESS: 'tnam1qy440ynh9fwrx8aewjvvmu38zxqgukgc259fzp6h',
+    NETWORK_TYPE: 'mainnet',
+    CHAIN_ID: 'namada.5f5de2dd1b88cba30586420',
+    TOKEN_ADDRESS: 'tnam1q9gr66cvu4hrzm0sd5kmlnjje82gs3xlfg3v6nu7',
     // CHAIN_NAME: 'OmniFlix Hub',
     COIN_DENOM: 'NAM',
     // COIN_MINIMAL_DENOM: 'uflix',
@@ -23,11 +23,11 @@ export const config = {
 };
 
 export const osmosisChainConfig = {
-    RPC_URL: 'https://osmosis-testnet-rpc.polkachu.com',
-    REST_URL: 'https://osmosis-testnet-api.polkachu.com',
-    CHAIN_ID: 'osmo-test-5',
-    CHAIN_NAME: 'Osmosis Testnet',
-    NETWORK: 'testnet',
+    RPC_URL: 'https://rpc-osmosis.streamswap.io',
+    REST_URL: 'https://lcd-osmosis.streamswap.io',
+    CHAIN_ID: 'osmosis-1',
+    CHAIN_NAME: 'Osmosis',
+    NETWORK: 'mainnet',
     COIN_DENOM: 'OSMO',
     COIN_MINIMAL_DENOM: 'uosmo',
     COIN_DECIMALS: 6,
@@ -38,7 +38,6 @@ export const osmosisChainConfig = {
         high: 0.04,
     },
     AVG_GAS_STEP: 0.010,
-    CONTRACT_ADDRESS: 'osmo10rukl0l79ysqzxqrzpj825u6qf90v69xnvvr2z02dlk092nq0m8slr3uly',
 };
 
 export const DEFAULT_PAGE = 1;
