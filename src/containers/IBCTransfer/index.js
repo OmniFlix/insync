@@ -13,13 +13,15 @@ class IBCTransfer extends Component {
             <>
                 <NavBar home={true}/>
                 <div className="ibc_content padding">
-                    {this.props.ibcSwapType === 'to_namada'
-                        ? <p>IBC Transfer to Namada</p>
-                        : <>
-                            <p>Withdraw assets from Namada via IBC</p>
-                            <span>To withdraw shielded assets please unshield them to your transparent account</span>
-                        </>}
-                    <KeplrConnectButton/>
+                    <div className="header">
+                        {this.props.ibcSwapType === 'to_namada'
+                            ? <p>IBC Transfer to Namada</p>
+                            : <>
+                                <p>Withdraw assets from Namada via IBC</p>
+                                <span>To withdraw shielded assets please unshield them to your transparent account</span>
+                            </>}
+                        <KeplrConnectButton/>
+                    </div>
                     <IBCTransferDialog/>
                 </div>
             </>

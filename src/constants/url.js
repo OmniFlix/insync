@@ -35,3 +35,4 @@ export const urlFetchTimeoutHeight = (url, channel) => {
 
     return `${url}/ibc/core/channel/${version}/channels/${channel}/ports/transfer`;
 };
+export const urlFetchIBCBalance = (url, address) => `${url}/cosmos/bank/v1beta1/balances/${address}`;

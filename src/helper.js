@@ -1,6 +1,6 @@
-import { REST_URL, RPC_URL } from './constants/url';
+import { RPC_URL } from './constants/url';
 import { SigningStargateClient } from '@cosmjs/stargate';
-import { config, osmosisChainConfig, osmosischainConfig } from './config';
+import { config, osmosisChainConfig } from './config';
 import { cosmos, InstallError } from '@cosmostation/extension-client';
 import { getOfflineSigner } from '@cosmostation/cosmos-client';
 import {
@@ -11,66 +11,19 @@ import {
     ClaimRewardsMsgValue,
     VoteProposalMsgValue,
     ShieldingTransferMsgValue,
+    IbcTransferMsgValue,
 } from '@namada/types';
 
 import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
 
-const chainId = config.CHAIN_ID;
-const chainName = config.CHAIN_NAME;
-const coinDenom = config.COIN_DENOM;
-const coinMinimalDenom = config.COIN_MINIMAL_DENOM;
-const coinDecimals = config.COIN_DECIMALS;
-const prefix = config.PREFIX;
-const coinGeckoId = config.COINGECKO_ID;
-
-const chainConfig = {
-    chainId: chainId,
-    chainName,
-    rpc: RPC_URL,
-    rest: REST_URL,
-    stakeCurrency: {
-        coinDenom,
-        coinMinimalDenom,
-        coinDecimals,
-        coinGeckoId,
-    },
-    bip44: {
-        coinType: 118,
-    },
-    bech32Config: {
-        bech32PrefixAccAddr: `${prefix}`,
-        bech32PrefixAccPub: `${prefix}pub`,
-        bech32PrefixValAddr: `${prefix}valoper`,
-        bech32PrefixValPub: `${prefix}valoperpub`,
-        bech32PrefixConsAddr: `${prefix}valcons`,
-        bech32PrefixConsPub: `${prefix}valconspub`,
-    },
-    currencies: [
-        {
-            coinDenom,
-            coinMinimalDenom,
-            coinDecimals,
-            coinGeckoId,
-        },
-    ],
-    feeCurrencies: [
-        {
-            coinDenom,
-            coinMinimalDenom,
-            coinDecimals,
-            coinGeckoId,
-            gasPriceStep: {
-                low: config.GAS_PRICE_STEP_LOW,
-                average: config.GAS_PRICE_STEP_AVERAGE,
-                high: config.GAS_PRICE_STEP_HIGH,
-            },
-        },
-    ],
-    coinType: config.COIN_TYPE,
-    features: config.FEATURES,
-    walletUrlForStaking: config.STAKING_URL,
-};
+const chainId = osmosisChainConfig.CHAIN_ID;
+const chainName = osmosisChainConfig.CHAIN_NAME;
+const coinDenom = osmosisChainConfig.COIN_DENOM;
+const coinMinimalDenom = osmosisChainConfig.COIN_MINIMAL_DENOM;
+const coinDecimals = osmosisChainConfig.COIN_DECIMALS;
+const prefix = osmosisChainConfig.PREFIX;
+const coinGeckoId = osmosisChainConfig.COINGECKO_ID;
 
 const kchainConfig = {
     chainId: osmosisChainConfig.CHAIN_ID,
@@ -120,52 +73,33 @@ const kchainConfig = {
     walletUrlForStaking: config.STAKING_URL,
 };
 
-const KeplrSuccess = (value) => {
-    return {
-        type: KEPLR_SUCCESS,
-        value,
-    };
-};
-
-export const initializeChain = (cb) => (dispatch) => {
-    console.log('keplr main connect is called');
-    console.log('window', window.keplr);
+export const initializeChain = (cb) => {
     (async () => {
-        console.log('started keplr connect');
         if (!window.getOfflineSignerOnlyAmino || !window.keplr) {
-            console.log('step 1')
             const error = 'Download the Keplr Extension';
             cb(error);
         } else {
-            console.log('step 2')
             if (window.keplr.experimentalSuggestChain) {
                 try {
-                    console.log('step 3')
                     await window.keplr.experimentalSuggestChain(kchainConfig);
                 } catch (error) {
-                    console.log('step 4')
                     const chainError = 'Failed to suggest the chain';
                     console.log('chainError', chainError);
                     cb(chainError);
                 }
             } else {
-                console.log('step 5')
                 const versionError = 'Please use the recent version of keplr extension';
                 cb(versionError);
             }
         }
 
         if (window.keplr) {
-            console.log('step 6')
             await window.keplr.enable(osmosisChainConfig.CHAIN_ID);
 
             const offlineSigner = window.getOfflineSignerOnlyAmino(osmosisChainConfig.CHAIN_ID);
             const accounts = await offlineSigner.getAccounts();
-            dispatch(KeplrSuccess(accounts[0].address));
-            dispatch()
             cb(null, accounts);
         } else {
-            console.log('step 7')
             return null;
         }
     })();
@@ -976,6 +910,101 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, c
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
         console.log(await tx.buildShieldingTransfer.toString());
         const encoded = await tx.buildShieldingTransfer(wrapperTxValue, shieldingTransfer);
+        newTxs.push(encoded);
+
+        let updateDate;
+        if (type === 'ledger') {
+            updateDate = newTxs;
+        } else {
+            updateDate = tx.buildBatch(newTxs);
+        }
+
+        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+            rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
+                if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                    cb(result.info || result.log || result.rawLog);
+                } else {
+                    cb(null, result);
+                }
+            }).catch((error) => {
+                const message = 'success';
+                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                    cb(null, message);
+                } else {
+                    cb(error && error.message);
+                }
+            });
+        }).catch((error) => {
+            const message = 'success';
+            if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                cb(null, message);
+            } else {
+                cb(error && error.message);
+            }
+        });
+    } else {
+        return null;
+    }
+};
+
+export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb) => {
+    const isExtensionInstalled = typeof window.namada === 'object';
+    if (!isExtensionInstalled || !window.namada) {
+        const error = 'Download the Namada Extension';
+        cb(error);
+    }
+
+    if (window.namada) {
+        const namada = window.namada;
+        const client = namada.getSigner();
+
+        const { cryptoMemory } = await init();
+
+        const sdk = getSdk(
+            cryptoMemory,
+            config.RPC_URL,
+            config.MAPS_REST_URL,
+            '',
+            config.TOKEN_ADDRESS,
+        );
+
+        const { rpc, tx } = sdk;
+
+        const checksums = await rpc.queryChecksums();
+        if (checksums && Object.keys(checksums).length) {
+            Object.keys(checksums).map((key) => {
+                if (key && checksums[key]) {
+                    checksums[key] = checksums[key].toLowerCase();
+                }
+            });
+        }
+
+        const shieldingTransfer = new IbcTransferMsgValue({
+            source: Tx.source,
+            receiver: Tx.receiver,
+            token: Tx.token,
+            amountInBaseDenom: Tx.amountInBaseDenom,
+            portId: Tx.portId,
+            channelId: Tx.channelId,
+        });
+
+        const wrapperProps = {
+            token: txs.token,
+            feeAmount: txs.feeAmount,
+            gasLimit: txs.gasLimit,
+            chainId: txs.chainId,
+            publicKey: txs.publicKey,
+            memo: '',
+        };
+
+        const newTxs = [];
+        if (revealPublicKey && !revealPublicKey.publicKey) {
+            const revealPkTx = await tx.buildRevealPk(wrapperProps);
+            newTxs.push(revealPkTx);
+        }
+        const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        console.log(await tx.buildIbcTransfer.toString());
+        const encoded = await tx.buildIbcTransfer(wrapperTxValue, shieldingTransfer);
         newTxs.push(encoded);
 
         let updateDate;

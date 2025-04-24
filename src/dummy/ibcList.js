@@ -1,0 +1,43 @@
+export const IBCList = [{
+    name: 'Osmosis',
+    value: 'osmosis',
+    config: {
+        RPC_URL: 'https://osmosis-testnet-rpc.polkachu.com',
+        REST_URL: 'https://osmosis-testnet-api.polkachu.com',
+        CHAIN_ID: 'osmo-test-5',
+        CHAIN_NAME: 'Osmosis Testnet',
+        NETWORK: 'testnet',
+        COIN_DENOM: 'OSMO',
+        COIN_MINIMAL_DENOM: 'uosmo',
+        COIN_DECIMALS: 6,
+        PREFIX: 'osmo',
+        gasPriceStep: {
+            low: 0.01,
+            average: 0.025,
+            high: 0.04,
+        },
+        AVG_GAS_STEP: 0.010,
+    },
+    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_testnets/_IBC/namadacampfire-osmosis.json',
+}, {
+    name: 'Cosmos Hub',
+    value: 'cosmos',
+    config: {
+        RPC_URL: 'https://rpc.provider-sentry-02.ics-testnet.polypore.xyz',
+        REST_URL: 'https://rest.provider-sentry-02.ics-testnet.polypore.xyz',
+        CHAIN_ID: 'provider',
+        CHAIN_NAME: 'Cosmoshub Provider Testnet',
+        NETWORK: 'testnet',
+        COIN_DENOM: 'ATOM',
+        COIN_MINIMAL_DENOM: 'uatom',
+        COIN_DECIMALS: 6,
+        PREFIX: 'cosmos',
+        gasPriceStep: {
+            low: 0.01,
+            average: 0.025,
+            high: 0.04,
+        },
+        AVG_GAS_STEP: 0.010,
+    },
+    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_testnets/_IBC/namadacampfire-cosmoshub.json',
+}];

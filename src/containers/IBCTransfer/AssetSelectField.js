@@ -16,7 +16,7 @@ const AssetSelectField = (props) => {
         props.onChange(value);
     };
 
-    const filteredAssets = props.selectedChain && assets && assets.find((item) => item && item.chain_name === props.selectedChain.chain_name);
+    const filteredAssets = props.selectedChain && assets && assets.find((item) => item && item.chain_name === props.selectedChain.value);
 
     return (
         <SelectField

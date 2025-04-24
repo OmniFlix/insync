@@ -1,93 +1,59 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
-import { initializeChain } from '../../../helper';
-import {
-    fetchRewards,
-    fetchVestingBalance,
-    getBalance,
-    getDelegations,
-    getUnBondingDelegations,
-    setAccountAddress,
-    showSelectAccountDialog,
-} from '../../../actions/accounts';
 import { connect } from 'react-redux';
 import { showMessage } from '../../../actions/snackbar';
-import { encode } from 'js-base64';
-import { getDelegatedValidatorsDetails } from '../../../actions/stake';
 import keplrIcon from '../../../assets/keplr.png';
-import { hideConnectDialog } from '../../../actions/navBar';
 import variables from '../../../utils/variables';
-import { config } from '../../../config';
+import { connectIBCAccount, fetchIBCBalance, fetchIBCChannel } from 'actions/IBCTransfer';
+import { IBCList } from 'dummy/ibcList';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
     const initKeplr = () => {
+        const selectedChain = props.selectedChain || IBCList[0];
+
+        const config = {
+            RPC_URL: selectedChain && selectedChain.config && selectedChain.config.RPC_URL,
+            REST_URL: selectedChain && selectedChain.config && selectedChain.config.REST_URL,
+            CHAIN_ID: selectedChain && selectedChain.config && selectedChain.config.CHAIN_ID,
+            CHAIN_NAME: selectedChain && selectedChain.config && selectedChain.config.CHAIN_NAME,
+            COIN_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_DENOM,
+            COIN_MINIMAL_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_MINIMAL_DENOM,
+            COIN_DECIMALS: selectedChain && selectedChain.config && selectedChain.config.COIN_DECIMALS,
+            PREFIX: selectedChain && selectedChain.config && selectedChain.config.PREFIX,
+        };
+
         setInProgress(true);
-        console.log('keplr connect is called');
-        // initializeChain((error, addressList) => {
-        //     setInProgress(false);
-        //     if (error) {
-        //         localStorage.removeItem('of_co_address');
-        //         props.showMessage(error);
-
-        //         return;
-        //     }
-
-        //     props.setAccountAddress(addressList[0] && addressList[0].address);
-        //     props.hideConnectDialog();
-        //     if (!props.proposalTab && !props.stake) {
-        //         props.getUnBondingDelegations(addressList[0] && addressList[0].address);
-        //         props.fetchRewards(addressList[0] && addressList[0].address);
-        //     }
-        //     if (!props.proposalTab) {
-        //         props.getDelegations(addressList[0] && addressList[0].address);
-        //     }
-        //     props.getBalance(addressList[0] && addressList[0].address);
-        //     props.fetchVestingBalance(addressList[0] && addressList[0].address);
-        //     if (!props.proposalTab) {
-        //         props.getDelegatedValidatorsDetails(addressList[0] && addressList[0].address);
-        //     }
-        //     localStorage.setItem('of_co_address', encode(addressList[0] && addressList[0].address));
-        //     localStorage.setItem('of_co_wallet', 'keplr');
-        // });
-        initializeChain((error, addressList) => {
-            if (error) {
-                setInProgress(false);
-                localStorage.removeItem('of_co_address');
-                props.showMessage(error);
-                return;
-            }
-
-            props.getBalance(addressList[0] && addressList[0].address);
-            console.log('addressList', addressList);
+        props.connectIBCAccount(config, (address) => {
+            setInProgress(false);
+            props.fetchIBCBalance(config.REST_URL, address[0].address);
+            props.fetchIBCChannel(selectedChain.channel_link);
         });
     };
 
     return (
-        <Button
-            className="disconnect_button"
-            disabled={inProgress}
-            variant="contained"
-            onClick={initKeplr}>
-            <img alt="logo" src={keplrIcon}/>
-            {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].keplr}
-        </Button>
+        props.address
+            ? <p>Connected</p>
+            : <Button
+                className="disconnect_button"
+                disabled={inProgress}
+                variant="contained"
+                onClick={initKeplr}>
+                <img alt="logo" src={keplrIcon}/>
+                {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].keplr}
+            </Button>
     );
 };
 
 KeplrConnectButton.propTypes = {
-    fetchRewards: PropTypes.func.isRequired,
-    fetchVestingBalance: PropTypes.func.isRequired,
-    getBalance: PropTypes.func.isRequired,
-    getDelegatedValidatorsDetails: PropTypes.func.isRequired,
-    getDelegations: PropTypes.func.isRequired,
-    getUnBondingDelegations: PropTypes.func.isRequired,
-    hideConnectDialog: PropTypes.func.isRequired,
+    address: PropTypes.string.isRequired,
+    connectIBCAccount: PropTypes.func.isRequired,
+    fetchIBCBalance: PropTypes.func.isRequired,
+    fetchIBCChannel: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
-    setAccountAddress: PropTypes.func.isRequired,
-    showDialog: PropTypes.func.isRequired,
+    selectedChain: PropTypes.string.isRequired,
     showMessage: PropTypes.func.isRequired,
     proposalTab: PropTypes.bool,
     stake: PropTypes.bool,
@@ -95,21 +61,17 @@ KeplrConnectButton.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        address: state.ibcTransfer.connection.address,
         lang: state.language,
+        selectedChain: state.ibcTransfer.selectedChain.value,
     };
 };
 
 const actionsToProps = {
     showMessage,
-    setAccountAddress,
-    showDialog: showSelectAccountDialog,
-    getDelegations,
-    getDelegatedValidatorsDetails,
-    fetchVestingBalance,
-    hideConnectDialog,
-    getBalance,
-    getUnBondingDelegations,
-    fetchRewards,
+    connectIBCAccount,
+    fetchIBCBalance,
+    fetchIBCChannel,
 };
 
 export default connect(stateToProps, actionsToProps)(KeplrConnectButton);
