@@ -3,7 +3,7 @@
     backdrop-filter: blur(50px);
     padding: 40px;
     width: max-content;
-    margin: 0 auto;
+    margin: 40px auto;
     background: #FFFF46;
 }
 
@@ -91,7 +91,7 @@
     color: #696969;
     text-align: left;
     flex: 1 1;
-    display: flex  ;
+    display: flex;
     max-width: 150px;
 }
 

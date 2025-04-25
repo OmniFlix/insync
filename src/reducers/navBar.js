@@ -15,6 +15,7 @@ const show = (state = false, action) => {
 const connectDialog = (state = {
     open: false,
     proposalTab: false,
+    ibc: false,
     stake: false,
     value: {},
 }, action) => {
@@ -25,11 +26,13 @@ const connectDialog = (state = {
             value: action.value,
             proposalTab: action.proposalTab,
             stake: action.stake,
+            ibc: action.ibc,
         };
     case CONNECT_DIALOG_HIDE:
         return {
             ...state,
             open: false,
+            ibc: false,
         };
     default:
         return state;

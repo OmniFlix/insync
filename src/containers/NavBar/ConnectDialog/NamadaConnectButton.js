@@ -19,7 +19,7 @@ import { getDelegatedValidatorsDetails } from '../../../actions/stake';
 import { ReactComponent as NamadaLogo } from '../../../assets/namadaLogo.svg';
 import { hideConnectDialog } from '../../../actions/navBar';
 import variables from '../../../utils/variables';
-import { config } from 'process';
+// import { config } from 'process';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -28,7 +28,7 @@ const KeplrConnectButton = (props) => {
         setInProgress(true);
         initializeNamadaChain((error, addressList, shieldedAddress) => {
             const shieldedDetails = shieldedAddress && shieldedAddress.find((item) => item.type === 'shielded-keys');
-            console.log('raw shielded details ', shieldedDetails)
+            console.log('raw shielded details ', shieldedDetails);
             setInProgress(false);
             if (error) {
                 localStorage.removeItem('of_co_address');
@@ -37,7 +37,7 @@ const KeplrConnectButton = (props) => {
                 return;
             }
 
-            props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[1]?.address);
+            props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[1].address);
             props.setAccountDetails(addressList);
             props.hideConnectDialog();
             // if (!props.proposalTab && !props.stake) {
@@ -79,6 +79,7 @@ KeplrConnectButton.propTypes = {
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
+    getShieldedBalance: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     hideConnectDialog: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,

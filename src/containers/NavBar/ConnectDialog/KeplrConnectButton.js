@@ -7,6 +7,7 @@ import keplrIcon from '../../../assets/keplr.png';
 import variables from '../../../utils/variables';
 import { connectIBCAccount, fetchIBCBalance, fetchIBCChannel } from 'actions/IBCTransfer';
 import { IBCList } from 'dummy/ibcList';
+import { hideConnectDialog } from '../../../actions/navBar';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -30,20 +31,19 @@ const KeplrConnectButton = (props) => {
             setInProgress(false);
             props.fetchIBCBalance(config.REST_URL, address[0].address);
             props.fetchIBCChannel(selectedChain.channel_link);
+            props.hideConnectDialog();
         });
     };
 
     return (
-        props.address
-            ? <p>Connected</p>
-            : <Button
-                className="disconnect_button"
-                disabled={inProgress}
-                variant="contained"
-                onClick={initKeplr}>
-                <img alt="logo" src={keplrIcon}/>
-                {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].keplr}
-            </Button>
+        <Button
+            className="disconnect_button"
+            disabled={inProgress}
+            variant="contained"
+            onClick={initKeplr}>
+            <img alt="logo" src={keplrIcon}/>
+            {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].keplr}
+        </Button>
     );
 };
 
@@ -52,6 +52,7 @@ KeplrConnectButton.propTypes = {
     connectIBCAccount: PropTypes.func.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
     fetchIBCChannel: PropTypes.func.isRequired,
+    hideConnectDialog: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     selectedChain: PropTypes.string.isRequired,
     showMessage: PropTypes.func.isRequired,
@@ -72,6 +73,7 @@ const actionsToProps = {
     connectIBCAccount,
     fetchIBCBalance,
     fetchIBCChannel,
+    hideConnectDialog,
 };
 
 export default connect(stateToProps, actionsToProps)(KeplrConnectButton);

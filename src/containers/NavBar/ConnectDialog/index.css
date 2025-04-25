@@ -5,11 +5,11 @@
 
 .connect_wallets {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
-    width: max-content;
-    margin: 40px auto 60px;
+    margin: 20px auto;
+    gap: 16px;
 }
 
 .connect_dialog h2 {
@@ -29,7 +29,7 @@
     margin: 0 10px;
 }
 
-.connect_wallets > div > button:first-child {
+.connect_wallets > button {
     background: #222222;
     border-radius: 10px;
     width: 100%;
@@ -42,13 +42,14 @@
     box-shadow: 0 4px 20px rgb(0 0 0 / 25%);
     text-transform: unset;
     min-width: 240px;
+    max-width: 300px;
 }
 
-.connect_wallets > div > button:first-child:hover {
+.connect_wallets > button:hover {
     background: #222222;
 }
 
-.connect_wallets > div > button:first-child:hover:before {
+.connect_wallets > button:hover:before {
     content: "";
     position: absolute;
     background: #222222;
@@ -60,7 +61,7 @@
     border-radius: 10px;
 }
 
-.connect_wallets > div > button:first-child:hover:after {
+.connect_wallets > button:hover:after {
     content: "";
     background: #ff0;
     position: absolute;
@@ -72,11 +73,11 @@
     border-radius: 10px;
 }
 
-.connect_wallets > div > button:first-child > span:first-child {
+.connect_wallets > button > span:first-child {
     justify-content: flex-start;
 }
 
-.connect_wallets > div > button:first-child img {
+.connect_wallets > button img {
     width: 30px;
     margin-right: 10px;
 }
@@ -145,7 +146,7 @@
         width: 100%;
     }
 
-    .connect_wallets > div > button:first-child {
+    .connect_wallets > button {
         min-width: auto;
     }
 }

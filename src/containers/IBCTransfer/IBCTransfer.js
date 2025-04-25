@@ -14,9 +14,9 @@ import AddressTextField from './AddressTextField';
 import SourceChainSelectField from './SourceChainSelectField';
 import SourceSelectField from './SourceSelectField';
 import { showMessage } from 'actions/snackbar';
-import Long from 'long';
+// import Long from 'long';
 
-const IBCTransferDialog = (props) => {
+const IBCTransfer = (props) => {
     let balance = null;
     props.balance && props.balance.length && props.balance.map((val) => {
         if (val && val.length) {
@@ -33,10 +33,21 @@ const IBCTransferDialog = (props) => {
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
 
     const getChannelIdForChain = (ibcData, targetChain) => {
-        return ibcData.channels.find((ch) => {
-          return (ibcData.chain_1.chain_name === targetChain && ch.chain_1?.channel_id) ||
-                 (ibcData.chain_2.chain_name === targetChain && ch.chain_2?.channel_id);
-        })?.[ibcData.chain_1.chain_name === targetChain ? 'chain_1' : 'chain_2']?.channel_id;
+        if (!ibcData || !ibcData.channels) {
+            return undefined;
+        }
+
+        const channel = ibcData.channels.find((ch) => {
+            if (!ch) { return false; }
+
+            return (ibcData.chain_1 && ibcData.chain_1.chain_name === targetChain && ch.chain_1 && ch.chain_1.channel_id) ||
+                (ibcData.chain_2 && ibcData.chain_2.chain_name === targetChain && ch.chain_2 && ch.chain_2.channel_id);
+        });
+
+        if (!channel) { return undefined; }
+
+        const chainKey = ibcData.chain_1 && ibcData.chain_1.chain_name === targetChain ? 'chain_1' : 'chain_2';
+        return channel[chainKey] && channel[chainKey].channel_id;
     };
 
     const handleSubmit = () => {
@@ -79,13 +90,13 @@ const IBCTransferDialog = (props) => {
         const channelId = getChannelIdForChain(props.ibcChannel, targetChain);
 
         props.fetchTimeoutHeight(config.REST_URL, channelId, (result) => {
-            let revisionNumber = null;
-            let revisionHeight = null;
-            if (result && result.length) {
-                revisionNumber = result && result.proof_height && result.proof_height.revision_number &&
-                    Long.fromNumber(result.proof_height.revision_number);
-                revisionHeight = result && result.proof_height && result.proof_height.revision_height;
-            }
+            // let revisionNumber = null;
+            // let revisionHeight = null;
+            // if (result && result.length) {
+            //     revisionNumber = result && result.proof_height && result.proof_height.revision_number &&
+            //         Long.fromNumber(result.proof_height.revision_number);
+            //     revisionHeight = result && result.proof_height && result.proof_height.revision_height;
+            // }
 
             const Tx = {
                 msg: {
@@ -160,7 +171,7 @@ const IBCTransferDialog = (props) => {
             //         memo: '',
             //     };
 
-            //     props.aminoSignTx(Tx, props.ibcAddress, (result) => {
+            //     props.aminoSignTx(Tx, props.ibcTransferAddress, (result) => {
             //         if (result && result.transactionHash) {
             //             if (result && result.code !== undefined && result.code !== 0) {
             //                 props.showMessage(result.logs || result.raw_log, 'error', result && result.hash);
@@ -168,7 +179,7 @@ const IBCTransferDialog = (props) => {
             //                 return;
             //             }
 
-            //             props.fetchIBCBalance(config.REST_URL, props.ibcAddress);
+            //             props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
             //         }
             //     });
 
@@ -183,7 +194,7 @@ const IBCTransferDialog = (props) => {
                         return;
                     }
 
-                    props.fetchIBCBalance(config.REST_URL, props.ibcAddress);
+                    props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                 }
             });
         });
@@ -211,7 +222,7 @@ const IBCTransferDialog = (props) => {
                             <Button onClick={() => props.setIBCTransferAmount(balance)}>Max</Button>
                         </div>
                     </div>
-                    <div className="arrow" disabled>
+                    <div disabled className="arrow">
                         {/* onClick={() => props.setIBCSwapType('from_namada')}> */}
                         <img alt="TransferIcon" src={TransferIcon}/>
                     </div>
@@ -290,29 +301,29 @@ const IBCTransferDialog = (props) => {
     );
 };
 
-IBCTransferDialog.propTypes = {
+IBCTransfer.propTypes = {
     aminoSignIBCTx: PropTypes.func.isRequired,
     balance: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
+    executeIBCTransfer: PropTypes.func.isRequired,
+    fetchIBCBalance: PropTypes.func.isRequired,
+    fetchTimeoutHeight: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setIBCSwapType: PropTypes.func.isRequired,
     setIBCTransferAmount: PropTypes.func.isRequired,
     setIBCTransferType: PropTypes.func.isRequired,
-    fetchIBCBalance: PropTypes.func.isRequired,
-    address: PropTypes.string,
-    keys: PropTypes.object,
-    ibcTransferType: PropTypes.string,
-    ibcChannel: PropTypes.object,
-    shieldedAddress: PropTypes.string,
-    executeIBCTransfer: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
+    address: PropTypes.string,
     amount: PropTypes.string,
-    revealPublicKey: PropTypes.object,
-    selectedChain: PropTypes.string,
-    selectedAsset: PropTypes.string,
+    ibcChannel: PropTypes.object,
     ibcTransferAddress: PropTypes.string,
-    fetchTimeoutHeight: PropTypes.func.isRequired,
+    ibcTransferType: PropTypes.string,
+    keys: PropTypes.object,
+    revealPublicKey: PropTypes.object,
+    selectedAsset: PropTypes.string,
+    selectedChain: PropTypes.string,
+    shieldedAddress: PropTypes.string,
 };
 
 const stateToProps = (state) => {
@@ -345,4 +356,4 @@ const actionToProps = {
     showMessage,
 };
 
-export default connect(stateToProps, actionToProps)(IBCTransferDialog);
+export default connect(stateToProps, actionToProps)(IBCTransfer);
