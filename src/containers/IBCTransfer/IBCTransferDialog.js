@@ -14,9 +14,11 @@ import AddressTextField from './AddressTextField';
 import SourceChainSelectField from './SourceChainSelectField';
 import SourceSelectField from './SourceSelectField';
 import { showMessage } from 'actions/snackbar';
+import { showConnectDialog } from 'actions/navBar';
+import { getWrapAddress } from '../../utils/strings';
 // import Long from 'long';
 
-const IBCTransfer = (props) => {
+const IBCTransferDialog = (props) => {
     let balance = null;
     props.balance && props.balance.length && props.balance.map((val) => {
         if (val && val.length) {
@@ -207,10 +209,11 @@ const IBCTransfer = (props) => {
                     <div className="transfer_source">
                         <div className="header">
                             <SourceChainSelectField/>
-                            <div className="address">
-                                <span>{props.ibcTransferAddress}</span>
-                                {props.ibcTransferAddress && props.ibcTransferAddress.slice(props.ibcTransferAddress.length - 6, props.ibcTransferAddress.length)}
-                            </div>
+                            <Button onClick={() => props.showConnectDialog(false, false, true)}>
+                                {props.ibcTransferAddress
+                                    ? getWrapAddress(props.ibcTransferAddress, 6, 6)
+                                    : 'Connect'}
+                            </Button>
                         </div>
                         <div className="border"></div>
                         <div className="select_section">
@@ -301,7 +304,7 @@ const IBCTransfer = (props) => {
     );
 };
 
-IBCTransfer.propTypes = {
+IBCTransferDialog.propTypes = {
     aminoSignIBCTx: PropTypes.func.isRequired,
     balance: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
@@ -313,6 +316,7 @@ IBCTransfer.propTypes = {
     setIBCSwapType: PropTypes.func.isRequired,
     setIBCTransferAmount: PropTypes.func.isRequired,
     setIBCTransferType: PropTypes.func.isRequired,
+    showConnectDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
@@ -354,6 +358,7 @@ const actionToProps = {
     fetchTimeoutHeight,
     fetchIBCBalance,
     showMessage,
+    showConnectDialog,
 };
 
-export default connect(stateToProps, actionToProps)(IBCTransfer);
+export default connect(stateToProps, actionToProps)(IBCTransferDialog);
