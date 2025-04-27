@@ -19,6 +19,7 @@ import { getWrapAddress } from '../../utils/strings';
 import keplrIcon from '../../assets/keplr.png';
 import Long from 'long';
 import { getBalance } from '../../actions/accounts';
+import { showDelegateSuccessDialog } from '../../actions/stake';
 
 const IBCTransferDialog = (props) => {
     let balance = null;
@@ -190,6 +191,7 @@ const IBCTransferDialog = (props) => {
 
                     props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                     props.getBalance(props.address);
+                    props.showDelegateSuccessDialog(result.transactionHash);
                 }
             });
         });
@@ -313,6 +315,7 @@ IBCTransferDialog.propTypes = {
     setIBCTransferAmount: PropTypes.func.isRequired,
     setIBCTransferType: PropTypes.func.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
+    showDelegateSuccessDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
@@ -358,6 +361,7 @@ const actionToProps = {
     showMessage,
     showConnectDialog,
     getBalance,
+    showDelegateSuccessDialog,
 };
 
 export default connect(stateToProps, actionToProps)(IBCTransferDialog);
