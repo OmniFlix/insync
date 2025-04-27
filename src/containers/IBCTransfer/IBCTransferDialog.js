@@ -223,7 +223,7 @@ const IBCTransferDialog = (props) => {
                             <Button onClick={() => props.setIBCTransferAmount(balance)}>Max</Button>
                         </div>
                     </div>
-                    <div disabled className="arrow">
+                    <div disabled className="arrow" onClick={() => props.setIBCSwapType('from_namada')}>
                         <img alt="TransferIcon" src={TransferIcon}/>
                     </div>
                     <div className="transfer_destination">
