@@ -25,7 +25,7 @@
     font-style: normal;
     font-weight: 500;
     line-height: 130%;
-    max-width: 500px;
+    max-width: 400px;
     display: block;
     margin: 0 auto;
 }
@@ -39,6 +39,33 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    min-width: 450px;
+}
+
+.transfer_source .header > button {
+    background: #262626;
+    color: #fff;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+    text-transform: none;
+    border: 1px solid transparent;
+}
+
+.transfer_source .header > button img {
+    width: 20px;
+    height: auto;
+}
+
+.transfer_source .header > button > span:first-child {
+    gap: 6px;
+}
+
+.transfer_source .header > .select_field {
+    width: 45%;
 }
 
 .transfer_dialog > div {
@@ -127,47 +154,62 @@
     cursor: pointer;
 }
 
-.arrow > img {
+.transfer_dialog .arrow > img {
     width: 100%;
     height: auto;
 }
 
-.transfer_source .border {
-    border-bottom: 1px solid #696969;
-    margin: 10px 0;
-    opacity: 0.4;
-}
-
-.transfer_source .select_section > div {
+.transfer_dialog .transfer_source .select_section > div {
     width: 45%;
     margin: 20px 0;
 }
 
-.select_field > div > div {
-    align-items: center;
-    border: 1px solid #696969;
-    border-radius: 5px;
-    box-sizing: border-box;
-    color: #696969;
+.transfer_dialog .transfer_source .text_field.amount_text_field input::placeholder,
+.transfer_dialog .transfer_source .text_field.amount_text_field input {
+    color: #b1b1b1;
     display: flex;
     font-family: 'Blinker', sans-serif;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     line-height: 22px;
 }
 
-.select_field input {
+.transfer_dialog .transfer_source .text_field.amount_text_field fieldset {
+    border-color: #777777;
+}
+
+.transfer_dialog .select_field > div > div,
+.transfer_dialog .select_section .select_field > div > div {
+    align-items: center;
+    border: 1px solid #696969;
+    border-radius: 5px;
     box-sizing: border-box;
-    color: #696969;
-    font-family: Blinker, sans-serif;
+    color: #b1b1b1;
+    display: flex;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+    height: 46px;
+}
+
+.select_field > div > div > img {
+    height: 24px;
+    width: auto;
+}
+
+.transfer_dialog .select_field input {
+    box-sizing: border-box;
+    color: #b1b1b1;
+    font-family: 'Blinker', sans-serif;
     font-size: 24px;
     font-weight: 600;
     height: 100%;
     line-height: 130%;
-    padding: .429rem 1rem;
+    padding: .5rem 1rem;
 }
 
-.select_field img {
+.transfer_dialog .select_field img {
     align-items: center;
     background: #696969;
     border-radius: 50px;
@@ -222,12 +264,12 @@
     height: 28px;
 }
 
-.address_text_field > div,
-.from_namada .select_field > div {
+.transfer_dialog .address_text_field > div,
+.transfer_dialog .from_namada .select_field > div {
     width: 100%;
 }
 
-.from_namada .select_field {
+.transfer_dialog .from_namada .select_field {
     width: 50%;
 }
 
@@ -235,16 +277,8 @@
     top: 41%;
 }
 
-
-.transfer_source .header > button {
-    background: #262626;
-    color: #fff;
-    text-align: center;
-    font-family: 'Blinker', sans-serif;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 130%;
-    text-transform: none;
-    border: 1px solid transparent;
+.transfer_dialog .transfer_source .border {
+    border-bottom: 1px solid #696969;
+    margin: 10px 0;
+    opacity: 0.4;
 }

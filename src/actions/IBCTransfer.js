@@ -24,6 +24,7 @@ import {
     IBC_CHANNEL_FETCH_IN_PROGRESS,
     IBC_CHANNEL_FETCH_SUCCESS,
     IBC_CHANNEL_FETCH_ERROR,
+    KEPLR_ACCOUNT_KEYS_SET,
 } from '../constants/IBCTransfer';
 import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
@@ -32,6 +33,7 @@ import BigNumber from 'bignumber.js';
 import { urlFetchIBCBalance, urlFetchTimeoutHeight } from 'constants/url';
 import Axios from 'axios';
 import { SigningStargateClient } from '@cosmjs/stargate';
+import { handleErrorMessage } from '../utils/errorMessages';
 
 export const setIBCTransferAmount = (value) => {
     return {
@@ -308,8 +310,8 @@ export const aminoSignIBCTx = (config, tx, cb) => (dispatch) => {
             tx.msg && tx.msg.value && tx.msg.value.token,
             tx.msg && tx.msg.value && tx.msg.value.source_port,
             tx.msg && tx.msg.value && tx.msg.value.source_channel,
-            tx.msg && tx.msg.value && tx.msg.value.timeout_height || undefined,
-            tx.msg && tx.msg.value && tx.msg.value.timeout_timestamp || undefined,
+            (tx.msg && tx.msg.value && tx.msg.value.timeout_height) || undefined,
+            (tx.msg && tx.msg.value && tx.msg.value.timeout_timestamp) || undefined,
             tx.fee,
             tx.memo,
         ).then((result) => {
@@ -393,7 +395,7 @@ const IBCTransferError = (message) => {
     };
 };
 
-export const executeIBCTransfer = (revisionHeight, revisionNumber) => async (dispatch) => {
+export const executeIBCTransfer = (revisionHeight, revisionNumber, cb) => async (dispatch) => {
     dispatch(IBCTransferInProgress());
     try {
         const { cryptoMemory } = await init();
@@ -426,7 +428,6 @@ export const executeIBCTransfer = (revisionHeight, revisionNumber) => async (dis
         };
 
         const result = await rpc.tx.buildIbcTransfer(transferParams, txs);
-        console.log('result :', result);
         if (result) {
             dispatch(IBCTransferSuccess(result));
             if (cb) {
@@ -437,4 +438,11 @@ export const executeIBCTransfer = (revisionHeight, revisionNumber) => async (dis
         console.error('IBC Transfer Error:', error);
         dispatch(IBCTransferError(error));
     }
+};
+
+const showSuccessDialog = () => {
+    return {
+        type: SHOW_SUCCESS_TX_DIALOG,
+        message,
+    };
 };

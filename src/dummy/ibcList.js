@@ -1,12 +1,12 @@
-export const IBCList = [{
+export const ibcList = [{
     name: 'Osmosis',
     value: 'osmosis',
     config: {
-        RPC_URL: 'https://osmosis-testnet-rpc.polkachu.com',
-        REST_URL: 'https://osmosis-testnet-api.polkachu.com',
-        CHAIN_ID: 'osmo-test-5',
-        CHAIN_NAME: 'Osmosis Testnet',
-        NETWORK: 'testnet',
+        RPC_URL: 'https://osmosis-rpc.polkachu.com',
+        REST_URL: 'https://osmosis-api.polkachu.com',
+        CHAIN_ID: 'osmosis-1',
+        CHAIN_NAME: 'Osmosis',
+        NETWORK: 'mainnet',
         COIN_DENOM: 'OSMO',
         COIN_MINIMAL_DENOM: 'uosmo',
         COIN_DECIMALS: 6,
@@ -19,15 +19,29 @@ export const IBCList = [{
         AVG_GAS_STEP: 0.010,
     },
     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_testnets/_IBC/namadacampfire-osmosis.json',
+    image_URL: 'https://ipfs.omniflix.studio/ipfs/QmXY8o1DkYXABWFvhTfVRcnnviRT6ZgWsmPEkiKLWmstws',
+    assets: [
+        {
+            base: 'uosmo',
+            name: 'Osmosis',
+            display: 'osmo',
+            symbol: 'OSMO',
+            logo_URIs: {
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg',
+            },
+            coingecko_id: 'osmosis',
+        },
+    ],
 }, {
     name: 'Cosmos Hub',
     value: 'cosmos',
     config: {
-        RPC_URL: 'https://rpc.provider-sentry-02.ics-testnet.polypore.xyz',
-        REST_URL: 'https://rest.provider-sentry-02.ics-testnet.polypore.xyz',
-        CHAIN_ID: 'provider',
-        CHAIN_NAME: 'Cosmoshub Provider Testnet',
-        NETWORK: 'testnet',
+        RPC_URL: 'https://cosmos-rpc.polkachu.com',
+        REST_URL: 'https://cosmos-api.polkachu.com',
+        CHAIN_ID: 'cosmoshub-4',
+        CHAIN_NAME: 'Cosmos Hub',
+        NETWORK: 'mainnet',
         COIN_DENOM: 'ATOM',
         COIN_MINIMAL_DENOM: 'uatom',
         COIN_DECIMALS: 6,
@@ -40,4 +54,18 @@ export const IBCList = [{
         AVG_GAS_STEP: 0.010,
     },
     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_testnets/_IBC/namadacampfire-cosmoshub.json',
+    image_URL: 'https://ipfs.omniflix.studio/ipfs/QmQdHBE8x8H6cQ85CUgUaGEKToCgG6EhomnEV9VAeyBJhg',
+    assets: [
+        {
+            base: 'uatom',
+            name: 'Cosmos Hub Atom',
+            display: 'atom',
+            symbol: 'ATOM',
+            logo_URIs: {
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.svg',
+            },
+            coingecko_id: 'cosmos',
+        },
+    ],
 }];

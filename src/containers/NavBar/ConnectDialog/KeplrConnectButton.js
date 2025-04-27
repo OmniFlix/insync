@@ -6,14 +6,14 @@ import { showMessage } from '../../../actions/snackbar';
 import keplrIcon from '../../../assets/keplr.png';
 import variables from '../../../utils/variables';
 import { connectIBCAccount, fetchIBCBalance, fetchIBCChannel } from 'actions/IBCTransfer';
-import { IBCList } from 'dummy/ibcList';
+import { ibcList } from 'dummy/ibcList';
 import { hideConnectDialog } from '../../../actions/navBar';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
     const initKeplr = () => {
-        const selectedChain = props.selectedChain || IBCList[0];
+        const selectedChain = props.selectedChain || ibcList[0];
 
         const config = {
             RPC_URL: selectedChain && selectedChain.config && selectedChain.config.RPC_URL,

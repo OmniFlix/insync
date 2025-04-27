@@ -60,7 +60,7 @@ const SuccessDialog = (props) => {
             aria-describedby="delegate-dialog-description"
             aria-labelledby="delegate-dialog-title"
             className="dialog delegate_dialog result"
-            open={props.open}
+            open={props.open || true}
             onClose={handleClose}>
             <DialogContent className="content">
                 <div className="heading">

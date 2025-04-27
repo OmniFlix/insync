@@ -16,10 +16,13 @@ import SourceSelectField from './SourceSelectField';
 import { showMessage } from 'actions/snackbar';
 import { showConnectDialog } from 'actions/navBar';
 import { getWrapAddress } from '../../utils/strings';
-// import Long from 'long';
+import keplrIcon from '../../assets/keplr.png';
+import Long from 'long';
+import { getBalance } from '../../actions/accounts';
 
 const IBCTransferDialog = (props) => {
     let balance = null;
+    let ibcBalance = null;
     props.balance && props.balance.length && props.balance.map((val) => {
         if (val && val.length) {
             val.map((value) => {
@@ -31,8 +34,16 @@ const IBCTransferDialog = (props) => {
 
         return null;
     });
+    props.ibcBalance && props.ibcBalance.length && props.ibcBalance.map((val) => {
+        if (val) {
+            ibcBalance = val && val.amount;
+        }
+
+        return null;
+    });
 
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
+    ibcBalance = ibcBalance && ibcBalance / 10 ** (props.selectedChain && props.selectedChain.config && props.selectedChain.config.COIN_DECIMALS);
 
     const getChannelIdForChain = (ibcData, targetChain) => {
         if (!ibcData || !ibcData.channels) {
@@ -69,36 +80,17 @@ const IBCTransferDialog = (props) => {
             COIN_DECIMALS: selectedChain && selectedChain.config && selectedChain.config.COIN_DECIMALS,
             PREFIX: selectedChain && selectedChain.config && selectedChain.config.PREFIX,
         };
-
-        // const tx = {
-        //     source: "osmo14jnzh8wnurw5dk4h9rgmsnd5wt5ddusdxj80md",
-        //     receiver: "tnam1qr5q7a5st2tj0ltdzfm42225zn55ftgt7qmsl3dn",
-        //     token: "uosmo",
-        //     amountInBaseDenom: BigNumber(1000000),
-        //     portId: "transfer",
-        //     channelId: "channel-98451",
-        // };
-
-        // const txs = {
-        //     token: config.TOKEN_ADDRESS,
-        //     feeAmount: new BigNumber(0.000001),
-        //     gasLimit: new BigNumber(100000),
-        //     chainId: config.CHAIN_ID,
-        //     publicKey: props.details && props.details.publicKey,
-        // };
-
-        // ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type);
         const targetChain = selectedChain && selectedChain.value;
         const channelId = getChannelIdForChain(props.ibcChannel, targetChain);
 
         props.fetchTimeoutHeight(config.REST_URL, channelId, (result) => {
-            // let revisionNumber = null;
-            // let revisionHeight = null;
-            // if (result && result.length) {
-            //     revisionNumber = result && result.proof_height && result.proof_height.revision_number &&
-            //         Long.fromNumber(result.proof_height.revision_number);
-            //     revisionHeight = result && result.proof_height && result.proof_height.revision_height;
-            // }
+            let revisionNumber = null;
+            let revisionHeight = null;
+            if (result) {
+                revisionNumber = result && result.proof_height && result.proof_height.revision_number &&
+                    Long.fromNumber(result.proof_height.revision_number);
+                revisionHeight = result && result.proof_height && result.proof_height.revision_height;
+            }
 
             const Tx = {
                 msg: {
@@ -112,10 +104,10 @@ const IBCTransferDialog = (props) => {
                         },
                         sender: props.ibcTransferAddress,
                         receiver: props.ibcTransferType === 'shielded' ? props.shieldedAddress : props.address,
-                        // timeout_height: {
-                        //     revisionNumber: revisionNumber || undefined,
-                        //     revisionHeight: Long.fromNumber(parseInt(revisionHeight) + 150) || undefined,
-                        // } || undefined,
+                        timeout_height: {
+                            revisionNumber: revisionNumber || undefined,
+                            revisionHeight: Long.fromNumber(parseInt(revisionHeight) + 150) || undefined,
+                        } || undefined,
                         timeout_timestamp: undefined,
                     },
                 },
@@ -197,6 +189,7 @@ const IBCTransferDialog = (props) => {
                     }
 
                     props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
+                    props.getBalance(props.address);
                 }
             });
         });
@@ -209,9 +202,12 @@ const IBCTransferDialog = (props) => {
                     <div className="transfer_source">
                         <div className="header">
                             <SourceChainSelectField/>
-                            <Button onClick={() => props.showConnectDialog(false, false, true)}>
+                            <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
                                 {props.ibcTransferAddress
-                                    ? getWrapAddress(props.ibcTransferAddress, 6, 6)
+                                    ? <>
+                                        <img alt="keplr" src={keplrIcon}/>
+                                        {getWrapAddress(props.ibcTransferAddress, 6, 6)}
+                                    </>
                                     : 'Connect'}
                             </Button>
                         </div>
@@ -221,12 +217,11 @@ const IBCTransferDialog = (props) => {
                             <AmountTextField/>
                         </div>
                         <div className="tokens_secion">
-                            <p>Available: {balance || 0} NAM</p>
+                            <p>Available: {ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
                             <Button onClick={() => props.setIBCTransferAmount(balance)}>Max</Button>
                         </div>
                     </div>
                     <div disabled className="arrow">
-                        {/* onClick={() => props.setIBCSwapType('from_namada')}> */}
                         <img alt="TransferIcon" src={TransferIcon}/>
                     </div>
                     <div className="transfer_destination">
@@ -311,6 +306,7 @@ IBCTransferDialog.propTypes = {
     executeIBCTransfer: PropTypes.func.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
     fetchTimeoutHeight: PropTypes.func.isRequired,
+    getBalance: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setIBCSwapType: PropTypes.func.isRequired,
@@ -320,6 +316,7 @@ IBCTransferDialog.propTypes = {
     showMessage: PropTypes.func.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
+    ibcBalance: PropTypes.number,
     ibcChannel: PropTypes.object,
     ibcTransferAddress: PropTypes.string,
     ibcTransferType: PropTypes.string,
@@ -333,6 +330,7 @@ IBCTransferDialog.propTypes = {
 const stateToProps = (state) => {
     return {
         balance: state.accounts.balance.result,
+        ibcBalance: state.ibcTransfer.balance.value,
         lang: state.language,
         address: state.accounts.address.value,
         amount: state.ibcTransfer.ibcTransferAmount.value,
@@ -359,6 +357,7 @@ const actionToProps = {
     fetchIBCBalance,
     showMessage,
     showConnectDialog,
+    getBalance,
 };
 
 export default connect(stateToProps, actionToProps)(IBCTransferDialog);
