@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
 import './index.css';
@@ -20,8 +20,10 @@ import keplrIcon from '../../assets/keplr.png';
 import Long from 'long';
 import { getBalance } from '../../actions/accounts';
 import { showDelegateSuccessDialog } from '../../actions/stake';
+import CircularProgress from '../../components/CircularProgress';
 
 const IBCTransferDialog = (props) => {
+    const [inProgress, setInProgress] = useState(false);
     let balance = null;
     let ibcBalance = null;
     props.balance && props.balance.length && props.balance.map((val) => {
@@ -67,9 +69,16 @@ const IBCTransferDialog = (props) => {
     const handleSubmit = () => {
         if (!props.address) {
             props.showMessage('Please connect your wallet first');
+            props.showConnectDialog();
+            return;
+        }
+        if (!props.ibcTransferAddress) {
+            props.showMessage('Please connect your wallet first');
+            props.showConnectDialog(false, false, true);
             return;
         }
 
+        setInProgress(true);
         const selectedChain = props.selectedChain;
         const config = {
             RPC_URL: selectedChain && selectedChain.config && selectedChain.config.RPC_URL,
@@ -192,6 +201,7 @@ const IBCTransferDialog = (props) => {
                     props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                     props.getBalance(props.address);
                     props.showDelegateSuccessDialog(result.transactionHash);
+                    setInProgress(false);
                 }
             });
         });
@@ -295,8 +305,11 @@ const IBCTransferDialog = (props) => {
             <Button
                 className="submit_button"
                 onClick={handleSubmit}>
-                Submit
+                {inProgress
+                    ? 'InProgress...'
+                    : 'Submit'}
             </Button>
+            {inProgress && <CircularProgress className="full_screen"/>}
         </div>
     );
 };

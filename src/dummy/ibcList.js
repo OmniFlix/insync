@@ -18,7 +18,7 @@ export const ibcList = [{
         },
         AVG_GAS_STEP: 0.010,
     },
-    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_testnets/_IBC/namadacampfire-osmosis.json',
+    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-osmosis.json',
     image_URL: 'https://ipfs.omniflix.studio/ipfs/QmXY8o1DkYXABWFvhTfVRcnnviRT6ZgWsmPEkiKLWmstws',
     assets: [
         {
@@ -53,7 +53,7 @@ export const ibcList = [{
         },
         AVG_GAS_STEP: 0.010,
     },
-    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_testnets/_IBC/namadacampfire-cosmoshub.json',
+    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-cosmoshub.json',
     image_URL: 'https://ipfs.omniflix.studio/ipfs/QmQdHBE8x8H6cQ85CUgUaGEKToCgG6EhomnEV9VAeyBJhg',
     assets: [
         {
