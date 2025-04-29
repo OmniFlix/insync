@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from '../../components/WithRouter';
 import IBCTransferDialog from './IBCTransferDialog';
-import KeplrConnectButton from 'containers/NavBar/ConnectDialog/KeplrConnectButton';
+import SuccessDialog from '../../containers/Stake/DelegateDialog/SuccessDialog';
 
 class IBCTransfer extends Component {
     render () {
@@ -13,16 +13,14 @@ class IBCTransfer extends Component {
             <>
                 <NavBar home={true}/>
                 <div className="ibc_content padding">
-                    <div className="header">
-                        {this.props.ibcSwapType === 'to_namada'
-                            ? <p>IBC Transfer to Namada</p>
-                            : <>
-                                <p>Withdraw assets from Namada via IBC</p>
-                                <span>To withdraw shielded assets please unshield them to your transparent account</span>
-                            </>}
-                        <KeplrConnectButton/>
-                    </div>
+                    {this.props.ibcSwapType === 'to_namada'
+                        ? <p>IBC Transfer to Namada</p>
+                        : <>
+                            <p>Withdraw assets from Namada via IBC</p>
+                            <span>To withdraw shielded assets please unshield them to your transparent account</span>
+                        </>}
                     <IBCTransferDialog/>
+                    <SuccessDialog/>
                 </div>
             </>
         );
@@ -32,6 +30,7 @@ class IBCTransfer extends Component {
 IBCTransfer.propTypes = {
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
+    showConnectDialog: PropTypes.func.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }),

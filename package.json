@@ -7,6 +7,7 @@
   "private": true,
   "dependencies": {
     "@cosmjs/amino": "0.32.2",
+    "@cosmjs/encoding": "0.32.3",
     "@cosmjs/launchpad": "0.27.1",
     "@cosmjs/proto-signing": "0.32.2",
     "@cosmjs/stargate": "0.32.2",
@@ -24,7 +25,9 @@
     "buffer": "^6.0.3",
     "chain-registry": "^1.63.100",
     "classnames": "2.5.1",
+    "comlink": "^4.4.2",
     "copy-webpack-plugin": "^13.0.0",
+    "cosmjs-types": "^0.9.0",
     "crypto-browserify": "^3.12.0",
     "customize-cra": "^1.0.0",
     "history": "^5.0.0",

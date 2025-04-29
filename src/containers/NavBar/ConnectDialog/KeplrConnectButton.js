@@ -6,13 +6,14 @@ import { showMessage } from '../../../actions/snackbar';
 import keplrIcon from '../../../assets/keplr.png';
 import variables from '../../../utils/variables';
 import { connectIBCAccount, fetchIBCBalance, fetchIBCChannel } from 'actions/IBCTransfer';
-import { IBCList } from 'dummy/ibcList';
+import { ibcList } from 'dummy/ibcList';
+import { hideConnectDialog } from '../../../actions/navBar';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
     const initKeplr = () => {
-        const selectedChain = props.selectedChain || IBCList[0];
+        const selectedChain = props.selectedChain || ibcList[0];
 
         const config = {
             RPC_URL: selectedChain && selectedChain.config && selectedChain.config.RPC_URL,
@@ -28,22 +29,22 @@ const KeplrConnectButton = (props) => {
         setInProgress(true);
         props.connectIBCAccount(config, (address) => {
             setInProgress(false);
+            localStorage.setItem('namada_keplr_address', address[0].address);
             props.fetchIBCBalance(config.REST_URL, address[0].address);
             props.fetchIBCChannel(selectedChain.channel_link);
+            props.hideConnectDialog();
         });
     };
 
     return (
-        props.address
-            ? <p>Connected</p>
-            : <Button
-                className="disconnect_button"
-                disabled={inProgress}
-                variant="contained"
-                onClick={initKeplr}>
-                <img alt="logo" src={keplrIcon}/>
-                {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].keplr}
-            </Button>
+        <Button
+            className="disconnect_button"
+            disabled={inProgress}
+            variant="contained"
+            onClick={initKeplr}>
+            <img alt="logo" src={keplrIcon}/>
+            {inProgress ? variables[props.lang].connecting + '...' : variables[props.lang].keplr}
+        </Button>
     );
 };
 
@@ -52,6 +53,7 @@ KeplrConnectButton.propTypes = {
     connectIBCAccount: PropTypes.func.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
     fetchIBCChannel: PropTypes.func.isRequired,
+    hideConnectDialog: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     selectedChain: PropTypes.string.isRequired,
     showMessage: PropTypes.func.isRequired,
@@ -72,6 +74,7 @@ const actionsToProps = {
     connectIBCAccount,
     fetchIBCBalance,
     fetchIBCChannel,
+    hideConnectDialog,
 };
 
 export default connect(stateToProps, actionsToProps)(KeplrConnectButton);

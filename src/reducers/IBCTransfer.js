@@ -23,6 +23,9 @@ import {
     TIMEOUT_HEIGHT_FETCH_ERROR,
     TIMEOUT_HEIGHT_FETCH_IN_PROGRESS,
     TIMEOUT_HEIGHT_FETCH_SUCCESS,
+    TX_SIGN_AND_BROAD_CAST_ERROR,
+    TX_SIGN_AND_BROAD_CAST_IN_PROGRESS,
+    TX_SIGN_AND_BROAD_CAST_SUCCESS,
 } from '../constants/IBCTransfer';
 
 const connection = (state = {
@@ -249,6 +252,31 @@ const fromNamadaSelectedAsset = (state = {
     }
 };
 
+const broadCast = (state = {
+    inProgress: false,
+    value: {},
+}, action) => {
+    switch (action.type) {
+    case TX_SIGN_AND_BROAD_CAST_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case TX_SIGN_AND_BROAD_CAST_SUCCESS:
+        return {
+            inProgress: false,
+            value: action.value,
+        };
+    case TX_SIGN_AND_BROAD_CAST_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     connection,
     balance,
@@ -261,4 +289,5 @@ export default combineReducers({
     selectedAsset,
     ibcTransferAddress,
     fromNamadaSelectedAsset,
+    broadCast,
 });

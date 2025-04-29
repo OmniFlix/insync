@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SelectField from '../../components/SelectField/WithChildren';
@@ -6,11 +6,15 @@ import { MenuItem } from '@material-ui/core';
 import variables from '../../utils/variables';
 import { chains } from 'chain-registry';
 import { connectIBCAccount, fetchIBCBalance, fetchIBCChannel, setSelectedChain } from '../../actions/IBCTransfer';
-import { IBCList } from 'dummy/ibcList';
+import { ibcList } from 'dummy/ibcList';
 import CircularProgress from 'components/CircularProgress';
 
 const SourceChainSelectField = (props) => {
     const [inProgress, setInProgress] = useState(false);
+
+    useEffect(() => {
+        props.onChange(ibcList && ibcList[0]);
+    }, []);
 
     const handleChange = (value) => {
         if (props.value === value) {
@@ -50,12 +54,17 @@ const SourceChainSelectField = (props) => {
             value={props.value}
             onChange={handleChange}>
             {inProgress ? <CircularProgress className="full_screen"/> : null}
-            {IBCList && IBCList.map((item, index) => {
-                const filterData = chains.find((val) => val?.chain_name === item.value);
-                const image = filterData && filterData.images && filterData.images[0] && (filterData.images[0].svg || filterData.images[0].png);
+            {ibcList && ibcList.map((item, index) => {
+                let image;
+                const filterData = chains.find((val) => val.chain_name === item.value);
+                if (filterData) {
+                    image = filterData && filterData.images && filterData.images[0] && (filterData.images[0].svg || filterData.images[0].png);
+                } else {
+                    image = item.image_URL;
+                }
                 return (
                     <MenuItem key={index} value={item}>
-                        <img alt="NamadaLogo" src={image} />
+                        <img alt="chain_logo" src={image} />
                         {item.name}
                     </MenuItem>
                 );
@@ -66,11 +75,11 @@ const SourceChainSelectField = (props) => {
 
 SourceChainSelectField.propTypes = {
     connectIBCAccount: PropTypes.func.isRequired,
+    fetchIBCBalance: PropTypes.func.isRequired,
+    fetchIBCChannel: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    fetchIBCBalance: PropTypes.func.isRequired,
-    fetchIBCChannel: PropTypes.func.isRequired,
 };
 
 const stateToProps = (state) => {

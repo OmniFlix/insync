@@ -841,7 +841,6 @@ const fetchMaspParams = async (sdk, chainId) => {
     const { masp } = sdk;
 
     return masp.hasMaspParams().then(async (hasMaspParams) => {
-        console.log('hasMaspParams', hasMaspParams);
         if (hasMaspParams) {
             await masp.loadMaspParams('', chainId).catch((e) => Promise.reject(e));
             return true;
@@ -908,7 +907,6 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, c
             newTxs.push(revealPkTx);
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-        console.log(await tx.buildShieldingTransfer.toString());
         const encoded = await tx.buildShieldingTransfer(wrapperTxValue, shieldingTransfer);
         newTxs.push(encoded);
 
@@ -1037,6 +1035,52 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
                 cb(error && error.message);
             }
         });
+    } else {
+        return null;
+    }
+};
+
+export const getShieldedArgs = async (
+    target,
+    token,
+    amount,
+    destinationChannelId,
+) => {
+    const isExtensionInstalled = typeof window.namada === 'object';
+    if (!isExtensionInstalled || !window.namada) {
+        const error = 'Download the Namada Extension';
+        cb(error);
+    }
+
+    if (window.namada) {
+        const { cryptoMemory } = await init();
+
+        const sdk = getSdk(
+            cryptoMemory,
+            config.RPC_URL,
+            config.MAPS_REST_URL,
+            '',
+            config.TOKEN_ADDRESS,
+        );
+
+        const { rpc, tx } = sdk;
+
+        const masp = await fetchMaspParams(sdk, chainId);
+        const checksums = await rpc.queryChecksums();
+        if (checksums && Object.keys(checksums).length) {
+            Object.keys(checksums).map((key) => {
+                if (key && checksums[key]) {
+                    checksums[key] = checksums[key].toLowerCase();
+                }
+            });
+        }
+
+        const memo = await tx.generateIbcShieldingMemo(target,
+            token,
+            amount,
+            destinationChannelId);
+        const receiver = sdk.masp.maspAddress();
+        return { memo, receiver };
     } else {
         return null;
     }

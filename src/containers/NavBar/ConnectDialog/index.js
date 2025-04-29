@@ -1,23 +1,12 @@
 import React from 'react';
-import { Dialog, DialogContent, IconButton, Tooltip } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { Dialog, DialogContent } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import '../../Stake/DelegateDialog/index.css';
 import { hideConnectDialog } from '../../../actions/navBar';
 import NamadaConnectButton from './NamadaConnectButton';
-import GetAppRoundedIcon from '@material-ui/icons/GetAppRounded';
-// import insync from '../../../assets/insync.png';
+import KeplrConnectButton from './KeplrConnectButton';
 import './index.css';
-
-const LightTooltip = withStyles((theme) => ({
-    tooltip: {
-        backgroundColor: theme.palette.common.white,
-        color: 'rgba(0, 0, 0, 0.87)',
-        boxShadow: theme.shadows[1],
-        fontSize: 11,
-    },
-}))(Tooltip);
 
 const ConnectDialog = (props) => {
     return (
@@ -29,20 +18,12 @@ const ConnectDialog = (props) => {
             onClose={props.handleClose}>
             <DialogContent className="content">
                 <h2 className="heading">
-                    {/* <img alt="insync" src={insync}/> */}
-                    supported wallets
+                    Supported Wallets
                 </h2>
                 <div className="connect_wallets">
-                    <div className="button_div">
-                        <NamadaConnectButton proposalTab={props.proposalTab} stake={props.stake}/>
-                        <LightTooltip title="Download the Keplr Extension">
-                            <IconButton
-                                className="download_button"
-                                onClick={() => window.open('https://chromewebstore.google.com/detail/namada-keychain/hnebcbhjpeejiclgbohcijljcnjdofek?hl=en')}>
-                                <GetAppRoundedIcon/>
-                            </IconButton>
-                        </LightTooltip>
-                    </div>
+                    {props.ibc
+                        ? <KeplrConnectButton/>
+                        : <NamadaConnectButton proposalTab={props.proposalTab} stake={props.stake}/>}
                 </div>
             </DialogContent>
         </Dialog>
@@ -54,6 +35,7 @@ ConnectDialog.propTypes = {
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     address: PropTypes.string,
+    ibc: PropTypes.bool,
     proposalTab: PropTypes.bool,
     stake: PropTypes.bool,
 };
@@ -63,6 +45,7 @@ const stateToProps = (state) => {
         address: state.accounts.address.value,
         lang: state.language,
         open: state.navBar.connectDialog.open,
+        ibc: state.navBar.connectDialog.ibc,
         proposalTab: state.navBar.connectDialog.proposalTab,
         stake: state.navBar.connectDialog.stake,
     };
