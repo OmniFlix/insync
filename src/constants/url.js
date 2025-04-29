@@ -6,6 +6,8 @@ export const RPC_URL = config.RPC_URL;
 export const urlFetchDelegations = (address) => `${REST_URL}/cosmos/staking/v1beta1/delegations/${address}`;
 export const urlFetchBalance = (address) => `${REST_URL}/cosmos/bank/v1beta1/balances/${address}`;
 export const urlFetchVestingBalance = (address) => `${REST_URL}/cosmos/auth/v1beta1/accounts/${address}`;
+export const urlFetchTokensList = () => `${REST_URL}/api/v1/chain/token`;
+export const urlFetchBalanceList = (address) => `${REST_URL}/api/v1/account/${address}`;
 export const urlFetchUnBondingDelegations = (address) => `${REST_URL}/cosmos/staking/v1beta1/delegators/${address}/unbonding_delegations`;
 
 export const urlFetchRewards = (address) => `${REST_URL}/api/v1/pos/reward/${address}`;

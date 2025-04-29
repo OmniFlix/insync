@@ -26,9 +26,15 @@ import {
     FETCH_SHIELDED_BALANCE_IN_PROGRESS,
     FETCH_SHIELDED_BALANCE_SUCCESS,
     FETCH_SHIELDED_BALANCE_ERROR,
+    TOKENS_LIST_FETCH_IN_PROGRESS,
+    TOKENS_LIST_FETCH_SUCCESS,
+    TOKENS_LIST_FETCH_ERROR,
+    BALANCE_LIST_FETCH_IN_PROGRESS,
+    BALANCE_LIST_FETCH_SUCCESS,
+    BALANCE_LIST_FETCH_ERROR,
 } from '../../constants/accounts';
 import Axios from 'axios';
-import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance, urlFetchBlockHeight } from '../../constants/url';
+import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance, urlFetchBlockHeight, urlFetchTokensList, urlFetchBalanceList } from '../../constants/url';
 // import { Query } from '@namada/shared';
 import { config } from '../../config';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
@@ -175,6 +181,90 @@ export const getBalance = (address, cb) => (dispatch) => {
                 }
             });
     })();
+};
+
+const fetchTokensListInProgress = () => {
+    return {
+        type: TOKENS_LIST_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchTokensListSuccess = (value) => {
+    return {
+        type: TOKENS_LIST_FETCH_SUCCESS,
+        value,
+    };
+};
+
+const fetchTokensListError = (message) => {
+    return {
+        type: TOKENS_LIST_FETCH_ERROR,
+        message,
+    };
+};
+
+export const fetchTokensList = () => (dispatch) => {
+    dispatch(fetchTokensListInProgress());
+    const url = urlFetchTokensList();
+    Axios.get(url, {
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+        },
+    })
+        .then((res) => {
+            dispatch(fetchTokensListSuccess(res.data));
+        })
+        .catch((error) => {
+            dispatch(fetchTokensListError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+        });
+};
+
+const fetchBalanceListInProgress = () => {
+    return {
+        type: BALANCE_LIST_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchBalanceListSuccess = (value) => {
+    return {
+        type: BALANCE_LIST_FETCH_SUCCESS,
+        value,
+    };
+};
+
+const fetchBalanceListError = (message) => {
+    return {
+        type: BALANCE_LIST_FETCH_ERROR,
+        message,
+    };
+};
+
+export const fetchBalanceList = (address) => (dispatch) => {
+    dispatch(fetchBalanceListInProgress());
+    const url = urlFetchBalanceList(address);
+    Axios.get(url, {
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+        },
+    })
+        .then((res) => {
+            dispatch(fetchBalanceListSuccess(res.data));
+        })
+        .catch((error) => {
+            dispatch(fetchBalanceListError(
+                error.response &&
+                error.response.data &&
+                error.response.data.message
+                    ? error.response.data.message
+                    : 'Failed!',
+            ));
+        });
 };
 
 const fetchVestingBalanceInProgress = () => {

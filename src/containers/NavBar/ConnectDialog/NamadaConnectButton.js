@@ -11,6 +11,8 @@ import {
     getUnBondingDelegations,
     setAccountAddress, setAccountDetails,
     showSelectAccountDialog,
+    fetchTokensList,
+    fetchBalanceList,
 } from '../../../actions/accounts';
 import { connect } from 'react-redux';
 import { showMessage } from '../../../actions/snackbar';
@@ -48,6 +50,8 @@ const KeplrConnectButton = (props) => {
                 props.getDelegations(addressList && addressList.address);
             }
             props.getBalance(addressList && addressList.address);
+            props.fetchTokensList();
+            props.fetchBalanceList(addressList && addressList.address);
             // console.log('testing shielded details ', shieldedAddress[1]);
             // const address1 = `${addressList?.address ?? ""}`;
             // const address2 = `${shieldedAddress?.[1]?.address ?? ""}`;
@@ -76,6 +80,8 @@ const KeplrConnectButton = (props) => {
 KeplrConnectButton.propTypes = {
     fetchRewards: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
+    fetchTokensList: PropTypes.func.isRequired,
+    fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
@@ -110,6 +116,8 @@ const actionsToProps = {
     getUnBondingDelegations,
     fetchRewards,
     setAccountDetails,
+    fetchTokensList,
+    fetchBalanceList,
 };
 
 export default connect(stateToProps, actionsToProps)(KeplrConnectButton);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import { Button, Tooltip } from '@material-ui/core';
 import './index.css';
 import { connect } from 'react-redux';
 import AmountTextField from './AmountTextField';
@@ -17,8 +17,7 @@ import { showMessage } from 'actions/snackbar';
 import { showConnectDialog } from 'actions/navBar';
 import { getWrapAddress } from '../../utils/strings';
 import keplrIcon from '../../assets/keplr.png';
-import Long from 'long';
-import { getBalance } from '../../actions/accounts';
+import { fetchBalanceList, fetchTokensList, getBalance } from '../../actions/accounts';
 import { showDelegateSuccessDialog } from '../../actions/stake';
 import CircularProgress from '../../components/CircularProgress';
 import { ibcList } from 'dummy/ibcList';
@@ -77,6 +76,9 @@ const IBCTransferDialog = (props) => {
 
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
     ibcBalance = ibcBalance && ibcBalance / 10 ** (props.selectedChain && props.selectedChain.config && props.selectedChain.config.COIN_DECIMALS);
+    if (ibcBalance > 0.5) {
+        ibcBalance = ibcBalance - 0.05;
+    }
 
     const getChannelIdForChain = (ibcData, targetChain) => {
         if (!ibcData || !ibcData.channels) {
@@ -185,11 +187,15 @@ const IBCTransferDialog = (props) => {
 
                         props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                         props.getBalance(props.address);
+                        // props.fetchTokensList();
+                        props.fetchBalanceList(props.address);
                         props.showDelegateSuccessDialog(res1.txhash, config);
                         props.setIBCTransferAmount('');
                         setTimeout(() => {
                             props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                             props.getBalance(props.address);
+                            // props.fetchTokensList();
+                            props.fetchBalanceList(props.address);
                         }, 5000);
                         setInProgress(false);
                     });
@@ -230,12 +236,15 @@ const IBCTransferDialog = (props) => {
                         </div>
                         <div className="tokens_secion">
                             <p>Available: {ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
-                            <Button onClick={() => props.setIBCTransferAmount(balance)}>Max</Button>
+                            <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>
                         </div>
                     </div>
-                    <div disabled className="arrow" onClick={() => props.setIBCSwapType('from_namada')}>
-                        <img alt="TransferIcon" src={TransferIcon}/>
-                    </div>
+                    <Tooltip arrow title={'Coming soon'}>
+                        <div disabled className="arrow">
+                        {/* <div disabled className="arrow" onClick={() => props.setIBCSwapType('from_namada')}> */}
+                            <img alt="TransferIcon" src={TransferIcon}/>
+                        </div>
+                    </Tooltip>
                     <div className="transfer_destination">
                         <div className="transfer_type">
                             <Button
@@ -324,6 +333,8 @@ IBCTransferDialog.propTypes = {
     fetchIBCBalance: PropTypes.func.isRequired,
     fetchTimeoutHeight: PropTypes.func.isRequired,
     fetchIBCChannel: PropTypes.func.isRequired,
+    fetchTokensList: PropTypes.func.isRequired,
+    fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
@@ -387,6 +398,8 @@ const actionToProps = {
     connectIBCAccountSuccess,
     fetchIBCChannel,
     setIBCTransferAmount,
+    fetchTokensList,
+    fetchBalanceList,
 };
 
 export default connect(stateToProps, actionToProps)(IBCTransferDialog);
