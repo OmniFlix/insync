@@ -165,7 +165,7 @@ const ShieldDialog = (props) => {
             </div>
             {inProgress && <CircularProgress className="full_screen"/>}
             <Button
-                disabled={disable}
+                disabled={disable || true}
                 onClick={handleSubmit}>
                 {inProgress
                     ? variables[props.lang]['approval_pending']

@@ -41,6 +41,7 @@ import {
 } from '../constants/stake';
 import { DISCONNECT_SET } from '../constants/accounts';
 import { DEFAULT_PAGE } from '../config';
+import { config } from 'process';
 
 const search = (state = '', action) => {
     if (action.type === SEARCH_LIST_SET) {
@@ -158,17 +159,20 @@ const delegateDialog = (state = {
 const successDialog = (state = {
     open: false,
     hash: '',
+    config: {},
 }, action) => {
     switch (action.type) {
     case DELEGATE_SUCCESS_DIALOG_SHOW:
         return {
             open: true,
             hash: action.value,
+            config: action.config,
         };
     case DELEGATE_SUCCESS_DIALOG_HIDE:
         return {
             open: false,
             hash: '',
+            config: {},
         };
     default:
         return state;

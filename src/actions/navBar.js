@@ -12,11 +12,12 @@ export const hideSideBar = () => {
     };
 };
 
-export const showConnectDialog = (proposalTab, stake) => {
+export const showConnectDialog = (proposalTab, stake, ibc) => {
     return {
         type: CONNECT_DIALOG_SHOW,
         proposalTab,
         stake,
+        ibc,
     };
 };
 

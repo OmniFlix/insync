@@ -27,6 +27,12 @@ import {
     FETCH_SHIELDED_BALANCE_IN_PROGRESS,
     FETCH_SHIELDED_BALANCE_SUCCESS,
     FETCH_SHIELDED_BALANCE_ERROR,
+    TOKENS_LIST_FETCH_IN_PROGRESS,
+    TOKENS_LIST_FETCH_SUCCESS,
+    TOKENS_LIST_FETCH_ERROR,
+    BALANCE_LIST_FETCH_IN_PROGRESS,
+    BALANCE_LIST_FETCH_SUCCESS,
+    BALANCE_LIST_FETCH_ERROR,
 } from '../../constants/accounts';
 
 const address = (state = {
@@ -136,6 +142,68 @@ export const shieldedBalance = (state = {
             result: action.value,
         };
     case FETCH_SHIELDED_BALANCE_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            result: [],
+        };
+    default:
+        return state;
+    }
+};
+
+export const tokensList = (state = {
+    result: [],
+    inProgress: false,
+}, action) => {
+    switch (action.type) {
+    case TOKENS_LIST_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case TOKENS_LIST_FETCH_SUCCESS:
+        return {
+            ...state,
+            inProgress: false,
+            result: action.value,
+        };
+    case TOKENS_LIST_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            result: [],
+        };
+    default:
+        return state;
+    }
+};
+
+export const balanceList = (state = {
+    result: [],
+    inProgress: false,
+}, action) => {
+    switch (action.type) {
+    case BALANCE_LIST_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case BALANCE_LIST_FETCH_SUCCESS:
+        return {
+            ...state,
+            inProgress: false,
+            result: action.value,
+        };
+    case BALANCE_LIST_FETCH_ERROR:
         return {
             ...state,
             inProgress: false,
@@ -297,6 +365,8 @@ export default combineReducers({
     address,
     delegations,
     balance,
+    tokensList,
+    balanceList,
     vestingBalance,
     selectDialog,
     unBondingDelegations,

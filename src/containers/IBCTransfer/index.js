@@ -5,6 +5,7 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from '../../components/WithRouter';
 import IBCTransferDialog from './IBCTransferDialog';
+import SuccessDialog from '../../containers/Stake/DelegateDialog/SuccessDialog';
 
 class IBCTransfer extends Component {
     render () {
@@ -19,6 +20,7 @@ class IBCTransfer extends Component {
                             <span>To withdraw shielded assets please unshield them to your transparent account</span>
                         </>}
                     <IBCTransferDialog/>
+                    <SuccessDialog/>
                 </div>
             </>
         );
@@ -28,6 +30,7 @@ class IBCTransfer extends Component {
 IBCTransfer.propTypes = {
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
+    showConnectDialog: PropTypes.func.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }),

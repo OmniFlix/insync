@@ -14,8 +14,10 @@ import { decode, encode } from 'js-base64';
 import { config, DEFAULT_PAGE } from '../../config';
 import { showMessage } from '../../actions/snackbar';
 import {
+    fetchBalanceList,
     fetchRevealedPubKey,
     fetchRewards,
+    fetchTokensList,
     fetchVestingBalance,
     getBalance,
     getDelegations,
@@ -228,8 +230,10 @@ class NavBar extends Component {
                     this.props.getDelegations(this.props.address);
                 }
             });
+            this.props.fetchTokensList();
+            this.props.fetchBalanceList(this.props.address);
             this.props.fetchRevealedPubKey(this.props.address);
-            this.props.fetchVestingBalance(this.props.address);
+            // this.props.fetchVestingBalance(this.props.address);
             this.props.fetchRewards(this.props.address);
             this.props.getUnBondingDelegations(this.props.address);
             this.props.getDelegatedValidatorsDetails(this.props.address);
@@ -306,6 +310,8 @@ class NavBar extends Component {
                     }
                 }
             });
+            this.props.fetchTokensList();
+            this.props.fetchBalanceList(address);
         } else if (this.props.delegations && !this.props.delegations.length &&
             !this.props.delegationsInProgress && !this.props.proposalTab) {
             this.props.getDelegations(address);
@@ -465,6 +471,8 @@ NavBar.propTypes = {
     fetchValidatorImageSuccess: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
     fetchVoteDetails: PropTypes.func.isRequired,
+    fetchTokensList: PropTypes.func.isRequired,
+    fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
@@ -580,6 +588,8 @@ const actionToProps = {
     getInActiveValidators,
     showConnectDialog,
     setAccountDetails,
+    fetchTokensList,
+    fetchBalanceList,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));

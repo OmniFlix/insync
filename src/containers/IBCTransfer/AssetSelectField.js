@@ -1,13 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SelectField from '../../components/SelectField/WithChildren';
 import { MenuItem } from '@material-ui/core';
 import variables from '../../utils/variables';
-import { assets } from 'chain-registry';
 import { setSelectedAsset } from '../../actions/IBCTransfer';
 
 const AssetSelectField = (props) => {
+    useEffect(() => {
+        if (props.selectedChain && props.selectedChain.assets && props.selectedChain.assets.length) {
+            props.onChange(props.selectedChain.assets[0]);
+        }
+    }, [props.selectedChain]);
+
     const handleChange = (value) => {
         if (props.value === value) {
             return;
@@ -16,7 +21,7 @@ const AssetSelectField = (props) => {
         props.onChange(value);
     };
 
-    const filteredAssets = props.selectedChain && assets && assets.find((item) => item && item.chain_name === props.selectedChain.chain_name);
+    const assets = props.selectedChain && props.selectedChain.assets;
 
     return (
         <SelectField
@@ -26,12 +31,12 @@ const AssetSelectField = (props) => {
             placeholder={variables[props.lang]['select_asset']}
             value={props.value}
             onChange={handleChange}>
-            {filteredAssets && filteredAssets.assets && filteredAssets.assets.map((item, index) => {
-                const image = item.images && item.images[0] && (item.images[0].svg || item.images[0].png);
+            {assets && assets.map((asset, index) => {
+                const image = asset.logo_URIs && (asset.logo_URIs.svg || asset.logo_URIs.png);
                 return (
-                    <MenuItem key={index} value={item}>
-                        <img alt="NamadaLogo" src={image} />
-                        {item.name}
+                    <MenuItem key={index} value={asset}>
+                        {image && <img alt={asset.name} src={image} style={{ width: '24px', height: '24px', marginRight: '8px' }} />}
+                        {asset.symbol || asset.display}
                     </MenuItem>
                 );
             })}
@@ -41,9 +46,9 @@ const AssetSelectField = (props) => {
 
 AssetSelectField.propTypes = {
     lang: PropTypes.string.isRequired,
-    selectedChain: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    selectedChain: PropTypes.object,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 const stateToProps = (state) => {

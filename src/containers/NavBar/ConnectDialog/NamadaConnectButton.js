@@ -11,6 +11,8 @@ import {
     getUnBondingDelegations,
     setAccountAddress, setAccountDetails,
     showSelectAccountDialog,
+    fetchTokensList,
+    fetchBalanceList,
 } from '../../../actions/accounts';
 import { connect } from 'react-redux';
 import { showMessage } from '../../../actions/snackbar';
@@ -19,7 +21,7 @@ import { getDelegatedValidatorsDetails } from '../../../actions/stake';
 import { ReactComponent as NamadaLogo } from '../../../assets/namadaLogo.svg';
 import { hideConnectDialog } from '../../../actions/navBar';
 import variables from '../../../utils/variables';
-import { config } from 'process';
+// import { config } from 'process';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -28,7 +30,7 @@ const KeplrConnectButton = (props) => {
         setInProgress(true);
         initializeNamadaChain((error, addressList, shieldedAddress) => {
             const shieldedDetails = shieldedAddress && shieldedAddress.find((item) => item.type === 'shielded-keys');
-            console.log('raw shielded details ', shieldedDetails)
+            console.log('raw shielded details ', shieldedDetails);
             setInProgress(false);
             if (error) {
                 localStorage.removeItem('of_co_address');
@@ -37,7 +39,7 @@ const KeplrConnectButton = (props) => {
                 return;
             }
 
-            props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[1]?.address);
+            props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[1].address);
             props.setAccountDetails(addressList);
             props.hideConnectDialog();
             // if (!props.proposalTab && !props.stake) {
@@ -48,10 +50,12 @@ const KeplrConnectButton = (props) => {
                 props.getDelegations(addressList && addressList.address);
             }
             props.getBalance(addressList && addressList.address);
+            props.fetchTokensList();
+            props.fetchBalanceList(addressList && addressList.address);
             // console.log('testing shielded details ', shieldedAddress[1]);
             // const address1 = `${addressList?.address ?? ""}`;
             // const address2 = `${shieldedAddress?.[1]?.address ?? ""}`;
-            // props.getShieldedBalance(shieldedAddress[1].viewingKey, shieldedAddress[1].timestamp, addressList.address, shieldedAddress[1].address);
+            props.getShieldedBalance(shieldedAddress[1].viewingKey, shieldedAddress[1].timestamp, addressList.address, shieldedAddress[1].address);
             // props.fetchVestingBalance(addressList && addressList.address);
             // if (!props.proposalTab) {
             //     props.getDelegatedValidatorsDetails(addressList && addressList.address);
@@ -76,9 +80,12 @@ const KeplrConnectButton = (props) => {
 KeplrConnectButton.propTypes = {
     fetchRewards: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
+    fetchTokensList: PropTypes.func.isRequired,
+    fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
+    getShieldedBalance: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     hideConnectDialog: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
@@ -109,6 +116,8 @@ const actionsToProps = {
     getUnBondingDelegations,
     fetchRewards,
     setAccountDetails,
+    fetchTokensList,
+    fetchBalanceList,
 };
 
 export default connect(stateToProps, actionsToProps)(KeplrConnectButton);

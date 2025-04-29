@@ -1,0 +1,73 @@
+export const ibcList = [{
+    name: 'Osmosis',
+    value: 'osmosis',
+    config: {
+        RPC_URL: 'https://osmosis-rpc.polkachu.com',
+        REST_URL: 'https://osmosis-api.polkachu.com',
+        CHAIN_ID: 'osmosis-1',
+        CHAIN_NAME: 'Osmosis',
+        NETWORK: 'mainnet',
+        COIN_DENOM: 'OSMO',
+        COIN_MINIMAL_DENOM: 'uosmo',
+        COIN_DECIMALS: 6,
+        PREFIX: 'osmo',
+        gasPriceStep: {
+            low: 0.01,
+            average: 0.025,
+            high: 0.04,
+        },
+        AVG_GAS_STEP: 0.010,
+        EXPLORER_URL: 'https://www.mintscan.io/osmosis',
+    },
+    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-osmosis.json',
+    image_URL: 'https://ipfs.omniflix.studio/ipfs/QmXY8o1DkYXABWFvhTfVRcnnviRT6ZgWsmPEkiKLWmstws',
+    assets: [
+        {
+            base: 'uosmo',
+            name: 'Osmosis',
+            display: 'osmo',
+            symbol: 'OSMO',
+            logo_URIs: {
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg',
+            },
+            coingecko_id: 'osmosis',
+        },
+    ],
+}, {
+    name: 'Cosmos Hub',
+    value: 'cosmos',
+    config: {
+        RPC_URL: 'https://cosmos-rpc.polkachu.com',
+        REST_URL: 'https://cosmos-api.polkachu.com',
+        CHAIN_ID: 'cosmoshub-4',
+        CHAIN_NAME: 'Cosmos Hub',
+        NETWORK: 'mainnet',
+        COIN_DENOM: 'ATOM',
+        COIN_MINIMAL_DENOM: 'uatom',
+        COIN_DECIMALS: 6,
+        PREFIX: 'cosmos',
+        gasPriceStep: {
+            low: 0.01,
+            average: 0.025,
+            high: 0.04,
+        },
+        AVG_GAS_STEP: 0.010,
+        EXPLORER_URL: 'https://www.mintscan.io/cosmos',
+    },
+    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-cosmoshub.json',
+    image_URL: 'https://ipfs.omniflix.studio/ipfs/QmQdHBE8x8H6cQ85CUgUaGEKToCgG6EhomnEV9VAeyBJhg',
+    assets: [
+        {
+            base: 'uatom',
+            name: 'Cosmos Hub Atom',
+            display: 'atom',
+            symbol: 'ATOM',
+            logo_URIs: {
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.svg',
+            },
+            coingecko_id: 'cosmos',
+        },
+    ],
+}];

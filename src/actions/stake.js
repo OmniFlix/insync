@@ -178,10 +178,11 @@ export const hideDelegateDialog = () => {
     };
 };
 
-export const showDelegateSuccessDialog = (value) => {
+export const showDelegateSuccessDialog = (value, config) => {
     return {
         type: DELEGATE_SUCCESS_DIALOG_SHOW,
         value,
+        config,
     };
 };
 

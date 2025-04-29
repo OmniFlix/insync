@@ -6,6 +6,8 @@ export const RPC_URL = config.RPC_URL;
 export const urlFetchDelegations = (address) => `${REST_URL}/cosmos/staking/v1beta1/delegations/${address}`;
 export const urlFetchBalance = (address) => `${REST_URL}/cosmos/bank/v1beta1/balances/${address}`;
 export const urlFetchVestingBalance = (address) => `${REST_URL}/cosmos/auth/v1beta1/accounts/${address}`;
+export const urlFetchTokensList = () => `${REST_URL}/api/v1/chain/token`;
+export const urlFetchBalanceList = (address) => `${REST_URL}/api/v1/account/${address}`;
 export const urlFetchUnBondingDelegations = (address) => `${REST_URL}/cosmos/staking/v1beta1/delegators/${address}/unbonding_delegations`;
 
 export const urlFetchRewards = (address) => `${REST_URL}/api/v1/pos/reward/${address}`;
@@ -26,3 +28,13 @@ export const urlFetchProposalDetails = (id) => `${REST_URL}/api/v1/gov/proposal/
 export const urlFetchBlockHeight = (timestamp) => `${REST_URL}/api/v1/block/timestamp/${timestamp}`;
 
 export const validatorImageURL = (id) => `https://keybase.io/_/api/1.0/user/lookup.json?fields=pictures&key_suffix=${id}`;
+
+export const urlFetchTimeoutHeight = (url, channel) => {
+    let version = 'v1';
+    if (url.indexOf('bluenet') > -1) {
+        version = 'v1beta1';
+    }
+
+    return `${url}/ibc/core/channel/${version}/channels/${channel}/ports/transfer`;
+};
+export const urlFetchIBCBalance = (url, address) => `${url}/cosmos/bank/v1beta1/balances/${address}`;
