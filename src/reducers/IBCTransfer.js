@@ -27,6 +27,7 @@ import {
     TX_SIGN_AND_BROAD_CAST_IN_PROGRESS,
     TX_SIGN_AND_BROAD_CAST_SUCCESS,
 } from '../constants/IBCTransfer';
+import { DELEGATE_SUCCESS_DIALOG_HIDE } from 'constants/stake';
 
 const connection = (state = {
     inProgress: false,
@@ -166,6 +167,10 @@ const ibcTransferAmount = (state = {
         return {
             value: action.value,
         };
+    case DELEGATE_SUCCESS_DIALOG_HIDE:
+        return {
+            value: '',
+        };
     default:
         return state;
     }
@@ -185,7 +190,7 @@ const ibcTransferType = (state = {
 };
 
 const ibcSwapType = (state = {
-    value: 'to_namada',
+    value: 'to_namada', // to_namada, from_namada
 }, action) => {
     switch (action.type) {
     case IBC_SWAP_TYPE_SET:
@@ -240,12 +245,14 @@ const ibcTransferAddress = (state = {
 
 const fromNamadaSelectedAsset = (state = {
     value: '',
+    result: {},
 }, action) => {
     switch (action.type) {
     case FROM_NAMADA_SELECT_ASSET_SET:
         return {
             ...state,
             value: action.value,
+            result: action.result || {},
         };
     default:
         return state;

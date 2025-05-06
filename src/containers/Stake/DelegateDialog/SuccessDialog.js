@@ -102,8 +102,14 @@ const SuccessDialog = (props) => {
                                     onClick={handleRedirect}>
                                     <p className="name">{props.hash}</p>
                                     {props.hash &&
-                                props.hash.slice(props.hash.length - 6, props.hash.length)}
+                                    props.hash.slice(props.hash.length - 6, props.hash.length)}
                                 </div>
+                            </div>
+                            <div className="row">
+                                <p>{variables[props.lang].tokens}</p>
+                                <p>{props.ibcTokens
+                                        ? Number(props.ibcTokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                        : null}</p>
                             </div>
                         </>
                         : !props.name
@@ -292,6 +298,7 @@ SuccessDialog.propTypes = {
     shielded: PropTypes.bool,
     shieldedTokens: PropTypes.any,
     tokens: PropTypes.any,
+    ibcTokens: PropTypes.any,
     validatorList: PropTypes.array,
 };
 
@@ -299,6 +306,7 @@ const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         tokens: state.stake.tokens,
+        ibcTokens: state.ibcTransfer.ibcTransferAmount.value,
         shieldedTokens: state.shieldedAssets.amount.value,
         lang: state.language,
         open: state.stake.successDialog.open,
