@@ -10,7 +10,7 @@ import TransferIcon from '../../assets/transfer.svg';
 import AssetSelectField from './AssetSelectField';
 import NamadaLogo from '../../assets/masp/namada_logo.svg';
 import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
-import AddressTextField from './AddressTextField';
+// import AddressTextField from './AddressTextField';
 import SourceChainSelectField from './SourceChainSelectField';
 import SourceSelectField from './SourceSelectField';
 import { showMessage } from 'actions/snackbar';
@@ -22,7 +22,7 @@ import { showDelegateSuccessDialog } from '../../actions/stake';
 import CircularProgress from '../../components/CircularProgress';
 import { ibcList } from 'dummy/ibcList';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { getShieldedArgs } from 'helper';
+import { getShieldedArgs, ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
 
 const IBCTransferDialog = (props) => {
@@ -98,6 +98,36 @@ const IBCTransferDialog = (props) => {
         return channel[chainKey] && channel[chainKey].channel_id;
     };
 
+    const handleNamadaTransfer = () => {
+        setInProgress(true);
+
+        const source = props.address;
+        const token = fromNamadaSelectedConfig?.COIN_MINIMAL_DENOM;
+        const amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
+        // const amount = String(Number(props.amount) * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
+        const namadaChannelId = getChannelIdForChain(props.ibcChannel, 'namada');
+
+        const tx = {
+            source: source,
+            token: token,
+            amountInBaseDenom: amount,
+            receiver: props.ibcTransferAddress,
+            portId: 'transfer',
+            channelId: namadaChannelId,
+        };
+
+        const txs = {
+            token: props.fromNamadaSelectedAsset?.balance?.tokenAddress,
+            feeAmount: new BigNumber(0.000001),
+            gasLimit: new BigNumber(100000),
+            chainId: config.CHAIN_ID,
+            publicKey: props.details && props.details.publicKey,
+        };
+
+        console.log('msgValue', tx, props.fromNamadaSelectedAsset);
+        ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
+    };
+
     const handleSubmit = () => {
         if (!props.address) {
             props.showMessage('Please connect your wallet first');
@@ -107,6 +137,11 @@ const IBCTransferDialog = (props) => {
         if (!props.ibcTransferAddress) {
             props.showMessage('Please connect your wallet first');
             props.showConnectDialog(false, false, true);
+            return;
+        }
+
+        if (props.ibcSwapType === 'from_namada') {
+            handleNamadaTransfer();
             return;
         }
 
@@ -190,7 +225,7 @@ const IBCTransferDialog = (props) => {
                         // props.fetchTokensList();
                         props.fetchBalanceList(props.address);
                         props.showDelegateSuccessDialog(res1.txhash, config);
-                        props.setIBCTransferAmount('');
+                        // props.setIBCTransferAmount('');
                         setTimeout(() => {
                             props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                             props.getBalance(props.address);
@@ -206,6 +241,69 @@ const IBCTransferDialog = (props) => {
         });
     };
 
+    const handleFetch = (error, value) => {
+        if (error) {
+            setInProgress(false);
+            // if (error.indexOf('not yet found on the chain') > -1) {
+            //     props.pendingDialog();
+            //     return;
+            // }
+            // props.failedDialog();
+            props.showMessage(error);
+            return;
+        }
+        let balance = null;
+        props.balance && props.balance.length && props.balance.map((val) => {
+            if (val && val.length) {
+                val.map((value) => {
+                    if (value === config.TOKEN_ADDRESS) {
+                        balance = val[1];
+                    }
+                });
+            }
+
+            return null;
+        });
+
+        const available = balance;
+        const intervalTime = setInterval(() => {
+            props.getBalance(props.address, (result) => {
+                if (result && result.length) {
+                    let localBalance = null;
+                    result && result.length && result.map((val) => {
+                        if (val && val.length) {
+                            val.map((value) => {
+                                if (value === config.TOKEN_ADDRESS) {
+                                    localBalance = val[1];
+                                }
+                            });
+                        }
+
+                        return null;
+                    });
+
+                    if (localBalance !== available) {
+                        setInProgress(false);
+                        clearInterval(intervalTime);
+                        props.showDelegateSuccessDialog(value && value.hash);
+                    }
+                }
+            });
+        }, 2000);
+
+        if (intervalTime) {
+            setTimeout(() => {
+                setInProgress(false);
+                clearInterval(intervalTime);
+            }, 60000);
+        }
+    };
+
+    const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
+    const namadaBalance = props.fromNamadaSelectedAsset?.balance?.minDenomAmount && Number(props.fromNamadaSelectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    const image = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.logo_URIs && (props.fromNamadaSelectedAsset.logo_URIs.svg || props.fromNamadaSelectedAsset.logo_URIs.png);
+
+    const disable = !props.amount || props.amount === '';
     return (
         <div className="transfer_dialog">
             {props.ibcSwapType === 'to_namada'
@@ -298,21 +396,43 @@ const IBCTransferDialog = (props) => {
                             <SourceSelectField/>
                             <AmountTextField/>
                         </div>
-                        <div className="tokens_secion">
-                            <p>Available: {balance || 0} NAM</p>
-                            <Button onClick={() => props.setIBCTransferAmount(balance)}>Max</Button>
-                        </div>
+                        {fromNamadaSelectedConfig
+                            ? <div className="tokens_secion">
+                                <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                                <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
+                            </div> : null}
                     </div>
                     <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
                         <img alt="TransferIcon" src={TransferIcon}/>
                     </div>
-                    <div className="transfer_destination from_namada">
-                        <SourceChainSelectField/>
-                        <AddressTextField/>
+                    <div className="transfer_destination header">
+                        {fromNamadaSelectedConfig
+                        ? <div>
+                                <p>
+                                    {image && <img alt={props.fromNamadaSelectedAsset?.name} src={image} style={{ width: '24px', height: '24px', marginRight: '8px' }} />}
+                                    {fromNamadaSelectedConfig.COIN_DENOM}
+                                </p>
+                                <div className="header_right">
+                                    <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
+                                        {props.ibcTransferAddress
+                                            ? <>
+                                                <img alt="keplr" src={keplrIcon}/>
+                                                {getWrapAddress(props.ibcTransferAddress, 6, 6)}
+                                            </>
+                                            : 'Connect'}
+                                    </Button>
+                                    {props.ibcTransferAddress
+                                        ? <ExitToAppIcon className="logout_icon" onClick={() => {
+                                            localStorage.removeItem('namada_keplr_address');
+                                            props.connectIBCAccountSuccess('');
+                                        }}/> : null}
+                                </div>
+                            </div> : null}
                     </div>
                 </>}
             <Button
                 className="submit_button"
+                disabled={disable || inProgress}
                 onClick={handleSubmit}>
                 {inProgress
                     ? 'InProgress...'
@@ -346,7 +466,7 @@ IBCTransferDialog.propTypes = {
     showMessage: PropTypes.func.isRequired,
     protoBufSigning: PropTypes.func.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
-    setIBCTransferAmount: PropTypes.func.isRequired,
+    fromNamadaSelectedAsset: PropTypes.object.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
     ibcBalance: PropTypes.number,
@@ -377,6 +497,7 @@ const stateToProps = (state) => {
         ibcChannel: state.ibcTransfer.ibcChannel.value,
         keys: state.ibcTransfer.connection.keys,
         revealPublicKey: state.accounts.revealPublicKey.result,
+        fromNamadaSelectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.result,
     };
 };
 
@@ -397,7 +518,6 @@ const actionToProps = {
     connectIBCAccount,
     connectIBCAccountSuccess,
     fetchIBCChannel,
-    setIBCTransferAmount,
     fetchTokensList,
     fetchBalanceList,
 };

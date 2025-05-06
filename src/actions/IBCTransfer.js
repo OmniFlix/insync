@@ -87,10 +87,11 @@ export const setIBCTransferAddress = (value) => {
     };
 };
 
-export const setFromNamadaSelectedAsset = (value) => {
+export const setFromNamadaSelectedAsset = (value, result) => {
     return {
         type: FROM_NAMADA_SELECT_ASSET_SET,
         value,
+        result,
     };
 };
 

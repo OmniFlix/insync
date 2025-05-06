@@ -71,3 +71,10 @@ export const ibcList = [{
         },
     ],
 }];
+
+export const namadaAssets = ibcList.flatMap((chain) =>
+    chain.assets.map((asset) => ({
+      ...asset,
+      config: chain.config, // Attach the chain's config to each asset
+    }))
+);

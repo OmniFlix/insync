@@ -204,6 +204,22 @@
     height: 46px;
 }
 
+.phase5_disable > div {
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+}
+
+.phase5_disable > div > p {
+    color: #ef4444;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+}
+
 .select_field > div > div > img {
     height: 24px;
     width: auto;
@@ -218,6 +234,16 @@
     height: 100%;
     line-height: 130%;
     padding: .5rem 1rem;
+}
+
+.transfer_dialog .transfer_destination.header {
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+}
+
+.transfer_dialog .transfer_destination.header > div {
+    width: 100%;
 }
 
 .transfer_dialog .select_field img {

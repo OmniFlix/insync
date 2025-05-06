@@ -977,7 +977,7 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             });
         }
 
-        const shieldingTransfer = new IbcTransferMsgValue({
+        const ibcTransfer = new IbcTransferMsgValue({
             source: Tx.source,
             receiver: Tx.receiver,
             token: Tx.token,
@@ -1002,7 +1002,8 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
         console.log(await tx.buildIbcTransfer.toString());
-        const encoded = await tx.buildIbcTransfer(wrapperTxValue, shieldingTransfer);
+        console.log('2222222', ibcTransfer);
+        const encoded = await tx.buildIbcTransfer(wrapperTxValue, ibcTransfer);
         newTxs.push(encoded);
 
         let updateDate;
@@ -1012,6 +1013,7 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             updateDate = tx.buildBatch(newTxs);
         }
 
+        console.log('2222', updateDate, address, checksums);
         client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
