@@ -107,9 +107,13 @@ const SuccessDialog = (props) => {
                             </div>
                             <div className="row">
                                 <p>{variables[props.lang].tokens}</p>
-                                <p>{props.ibcTokens
-                                        ? Number(props.ibcTokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                {props.ibcConfig && props.ibcConfig.COIN_DENOM
+                                    ? <p>{props.ibcTokens
+                                        ? Number(props.ibcTokens).toFixed(4) + ' ' + props.ibcConfig.COIN_DENOM
                                         : null}</p>
+                                    : <p>{props.ibcTokens
+                                        ? Number(props.ibcTokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                        : null}</p>}
                             </div>
                         </>
                         : !props.name
