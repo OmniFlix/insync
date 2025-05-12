@@ -18,6 +18,8 @@ import variables from 'utils/variables';
 import { getBalance } from 'actions/accounts';
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';
 import { showMessage } from 'actions/snackbar';
+import { feeList } from 'dummy/ibcList';
+import { formatCount } from 'utils/numberFormats';
 
 const ShieldDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -25,8 +27,12 @@ const ShieldDialog = (props) => {
         setInProgress(true);
 
         const source = props.address;
-        const token = config.TOKEN_ADDRESS;
-        const amount = new BigNumber(props.amount);
+        let token = config.TOKEN_ADDRESS;
+        let amount = new BigNumber(props.amount);
+        if (props.selectedAsset?.balance?.minDenomAmount) {
+            amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
+            token = props.selectedAsset?.balance?.tokenAddress;
+        }
 
         const msgValue = new ShieldingTransferDataMsgValue({
             source: source,
@@ -42,10 +48,19 @@ const ShieldDialog = (props) => {
         const txs = {
             token: config.TOKEN_ADDRESS,
             feeAmount: new BigNumber(0.000001),
-            gasLimit: new BigNumber(100000),
+            gasLimit: new BigNumber(32032),
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
         };
+
+        if (props.selectedAsset?.balance?.minDenomAmount) {
+            txs.token = props.selectedAsset?.balance?.tokenAddress;
+            txs.feeAmount = new BigNumber(0.00001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
+            // txs.chainId = fromNamadaSelectedConfig.CHAIN_ID;
+            if (fromNamadaSelectedConfig?.COIN_DENOM === 'ATOM') {
+                txs.feeAmount = new BigNumber(0.000001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
+            }
+        }
 
         maspTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
     };
@@ -124,6 +139,10 @@ const ShieldDialog = (props) => {
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
     const disable = inProgress || !props.amount;
 
+    const fromNamadaSelectedConfig = props.selectedAsset?.config;
+    const namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
+
     return (
         <div className="shield_dialog">
             <div className="transfer_source">
@@ -142,10 +161,11 @@ const ShieldDialog = (props) => {
                     <SourceSelectField/>
                     <AmountTextField/>
                 </div>
-                <div className="tokens_secion">
-                    <p>Available: {balance || 0} NAM</p>
-                    <Button onClick={() => props.setAmount(balance)}>Max</Button>
-                </div>
+                {fromNamadaSelectedConfig
+                    ? <div className="tokens_secion">
+                        <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                        <Button onClick={() => props.setAmount(namadaBalance)}>Max</Button>
+                    </div> : null}
             </div>
             <div className="arrow">
                 <img alt="Arrow" src={DownArrowIcon}/>
@@ -161,11 +181,15 @@ const ShieldDialog = (props) => {
                         {props.shieldedAddress && props.shieldedAddress.slice(props.shieldedAddress.length - 6, props.shieldedAddress.length)}
                     </div>
                 </div>
+                {fee && fee.fee
+                ? <div className="fee">
+                    <p>fee:<b>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
+                </div> : null}
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
             {inProgress && <CircularProgress className="full_screen"/>}
             <Button
-                disabled={disable || true}
+                disabled={disable}
                 onClick={handleSubmit}>
                 {inProgress
                     ? variables[props.lang]['approval_pending']
@@ -188,6 +212,7 @@ ShieldDialog.propTypes = {
     successDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
     revealPublicKey: PropTypes.object,
+    selectedAsset: PropTypes.object,
     shieldedAddress: PropTypes.string,
 };
 
@@ -200,6 +225,7 @@ const stateToProps = (state) => {
         details: state.accounts.address.details,
         shieldedAddress: state.accounts.address.shieldedDetails,
         revealPublicKey: state.accounts.revealPublicKey.result,
+        selectedAsset: state.shieldedAssets.selectedAsset.result,
     };
 };
 

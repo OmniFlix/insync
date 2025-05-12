@@ -208,18 +208,19 @@ class Table extends Component {
         let newData = [];
         if (dataToMap && dataToMap.length) {
             dataToMap.map((val) => {
-                if (val && val.name && val.name.toLowerCase() === 'cosmic validator') {
-                    newData.splice(0, 0, val);
-                } else if (val && val.name && val.name.toLowerCase() === 'mandragora') {
-                    const find = newData.find((val1) => val1 && val1.name && val1.name.toLowerCase() === 'cosmic validator');
-                    if (!find) {
-                        newData.splice(0, 0, val);
-                    } else {
-                        newData.splice(1, 0, val);
-                    }
-                } else {
-                    newData.push(val);
-                }
+                // if (val && val.name && val.name.toLowerCase() === 'cosmic validator') {
+                //     newData.splice(0, 0, val);
+                // } else if (val && val.name && val.name.toLowerCase() === 'mandragora') {
+                //     const find = newData.find((val1) => val1 && val1.name && val1.name.toLowerCase() === 'cosmic validator');
+                //     if (!find) {
+                //         newData.splice(0, 0, val);
+                //     } else {
+                //         newData.splice(1, 0, val);
+                //     }
+                // } else {
+                //     newData.push(val);
+                // }
+                newData.push(val);
             });
         } else {
             newData = dataToMap;

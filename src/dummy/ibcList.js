@@ -72,6 +72,17 @@ export const ibcList = [{
     ],
 }];
 
+export const feeList = {
+    'OSMO': {
+        fee: 0.00001,
+        gas: 32032,
+    },
+    'ATOM': {
+        fee: 0.000001,
+        gas: 32032,
+    },
+};
+
 export const namadaAssets = ibcList.flatMap((chain) =>
     chain.assets.map((asset) => ({
       ...asset,

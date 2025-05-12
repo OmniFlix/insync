@@ -15,13 +15,14 @@ const amount = (state = {
 };
 
 const selectedAsset = (state = {
-    value: 'Namada',
+    value: '',
 }, action) => {
     switch (action.type) {
     case SELECT_SOURCE_SET:
         return {
             ...state,
             value: action.value,
+            result: action.result || {},
         };
     default:
         return state;

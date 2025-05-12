@@ -7,9 +7,10 @@ export const setAmount = (value) => {
     };
 };
 
-export const setSelectedSource = (value) => {
+export const setSelectedSource = (value, result) => {
     return {
         type: SELECT_SOURCE_SET,
         value,
+        result,
     };
 };

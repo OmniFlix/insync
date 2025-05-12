@@ -77,6 +77,8 @@ const variables = {
         ibc_transfer: 'IBC Transfer',
         shielded_available_tokens: 'Shielded Available Tokens',
         select_asset: 'Select Asset',
+        internal_namada_transfer: 'Internal Namada Transfer',
+        external_namada: 'External Namada',
     },
 };
 
