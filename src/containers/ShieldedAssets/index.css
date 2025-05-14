@@ -18,6 +18,35 @@
     margin-bottom: 20px;
 }
 
+.shielding_tabs {
+    background: #000;
+}
+
+.shielding_tabs > div > span {
+    display: none;
+}
+
+.shielding_tabs .tab {
+    height: 50px;
+    flex-shrink: 0;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    text-transform: capitalize;
+    min-width: auto;
+    max-width: 50%;
+    flex: 1;
+}
+
+.shielding_tabs .tab[aria-selected="true"] {
+    background: #FFFF46;
+    color: #000;
+}
+
 @media (max-width: 580px) {
     .shielded_content .shield_tranfer {
         width: 100%;

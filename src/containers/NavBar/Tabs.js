@@ -6,6 +6,9 @@ import variables from '../../utils/variables';
 import { hideSideBar } from '../../actions/navBar';
 import { hideProposalDialog } from '../../actions/proposals';
 import withRouter from '../../components/WithRouter';
+import ShieldedTab from './ShieldedTab';
+import TransferTab from './TransferTab';
+import { setIBCTransferType } from 'actions/IBCTransfer';
 
 class Tabs extends Component {
     constructor (props) {
@@ -24,6 +27,16 @@ class Tabs extends Component {
             this.setState({
                 value: route,
             });
+        } else if (this.state.value !== route && (route === 'internalShielding' || route === 'externalShielding')) {
+            this.props.setIBCTransferType('shielded');
+            this.setState({
+                value: 'shielding',
+            });
+        } else if (this.state.value !== route && (route === 'internalTransfer' || route === 'externalTransfer')) {
+            this.props.setIBCTransferType('transparent');
+            this.setState({
+                value: 'transfers',
+            });
         }
     }
 
@@ -36,21 +49,35 @@ class Tabs extends Component {
                 this.setState({
                     value: value,
                 });
+            } else if (value !== this.state.value && (value === 'internalShielding' || value === 'externalShielding')) {
+                this.props.setIBCTransferType('shielded');
+                this.setState({
+                    value: 'shielding',
+                });
+            } else if (value !== this.state.value && (value === 'internalTransfer' || value === 'externalTransfer')) {
+                this.props.setIBCTransferType('transparent');
+                this.setState({
+                    value: 'transfers',
+                });
             }
         }
     }
 
-    handleChange (newValue) {
+    handleChange (newValue, route) {
         this.props.handleClose();
         if (this.props.open) {
             this.props.hideProposalDialog();
         }
-        if ((newValue === this.state.value) && (this.props.router &&
-            this.props.router.params && !this.props.router.params.proposalID)) {
-            return;
-        }
+        // if ((newValue === this.state.value) && (this.props.router &&
+        //     this.props.router.params && !this.props.router.params.proposalID)) {
+        //     return;
+        // }
 
-        this.props.router.navigate('/' + newValue);
+        if (route) {
+            this.props.router.navigate('/' + route);
+        } else {
+            this.props.router.navigate('/' + newValue);
+        }
         this.setState({
             value: newValue,
         });
@@ -85,18 +112,37 @@ class Tabs extends Component {
                         value="proposals"
                         onClick={() => this.handleChange('proposals')}
                         {...a11yProps(2)} />
-                    <Tab
+                    <ShieldedTab value={this.state.value} handleChange={this.handleChange}/>
+                    <TransferTab value={this.state.value} handleChange={this.handleChange}/>
+                    {/* <Tab
                         className={'tab ' + (this.state.value === 'masp' ? 'active_tab' : '')}
-                        label={variables[this.props.lang].masp}
+                        label={variables[this.props.lang].shielding}
                         value="masp"
                         onClick={() => this.handleChange('masp')}
                         {...a11yProps(3)} />
                     <Tab
                         className={'tab ' + (this.state.value === 'ibc' ? 'active_tab' : '')}
-                        label={variables[this.props.lang].ibc_transfer}
+                        label={variables[this.props.lang].external_ibc_transparent}
                         value="ibc"
                         onClick={() => this.handleChange('ibc')}
-                        {...a11yProps(3)} />
+                        {...a11yProps(4)} />
+                    <Tab
+                        className={'tab ' + (this.state.value === 'external_ibc_shielding' ? 'active_tab' : '')}
+                        label={variables[this.props.lang].external_ibc_shielding}
+                        value="external_ibc_shielding"
+                        onClick={() => this.handleChange('external_ibc_shielding')}
+                        {...a11yProps(5)} />
+                    <Tooltip arrow title={'Coming soon'}>
+                        <span>
+                            <Tab
+                                className={'tab ' + (this.state.value === 'internal_transfer' ? 'active_tab' : '') + 'coming_soon'}
+                                disabled={true}
+                                label={variables[this.props.lang].internal_transfer}
+                                value="internal_transfer"
+                                onClick={() => this.handleChange('internal_transfer')}
+                                {...a11yProps(6)} />
+                        </span>
+                    </Tooltip> */}
                 </div>
             </AppBar>
         );
@@ -106,6 +152,7 @@ class Tabs extends Component {
 Tabs.propTypes = {
     handleClose: PropTypes.func.isRequired,
     hideProposalDialog: PropTypes.func.isRequired,
+    setIBCTransferType: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     router: PropTypes.shape({
@@ -129,6 +176,7 @@ const stateToProps = (state) => {
 const actionToProps = {
     handleClose: hideSideBar,
     hideProposalDialog,
+    setIBCTransferType,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(Tabs));

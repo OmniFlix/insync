@@ -161,8 +161,8 @@
     padding: 10px;
     position: absolute;
     left: 45%;
-    top: 44%;
-    cursor: pointer;
+    top: 53%;
+    /* cursor: pointer; */
 }
 
 .transfer_dialog .arrow > img {

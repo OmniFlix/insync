@@ -337,14 +337,14 @@ const IBCTransferDialog = (props) => {
                             <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>
                         </div>
                     </div>
-                    <Tooltip arrow title={'Coming soon'}>
+                    {/* <Tooltip arrow title={'Coming soon'}> */}
                         <div disabled className="arrow">
                         {/* <div disabled className="arrow" onClick={() => props.setIBCSwapType('from_namada')}> */}
                             <img alt="TransferIcon" src={TransferIcon}/>
                         </div>
-                    </Tooltip>
+                    {/* </Tooltip> */}
                     <div className="transfer_destination">
-                        <div className="transfer_type">
+                        {/* <div className="transfer_type">
                             <Button
                                 className={props.ibcTransferType === 'shielded' ? 'active_tab' : ''}
                                 onClick={() => props.setIBCTransferType('shielded')}>
@@ -355,7 +355,7 @@ const IBCTransferDialog = (props) => {
                                 onClick={() => props.setIBCTransferType('transparent')}>
                                 Transparent
                             </Button>
-                        </div>
+                        </div> */}
                         {props.ibcTransferType === 'shielded'
                             ? <div>
                                 <p>

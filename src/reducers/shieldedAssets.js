@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { AMOUNT_SET, SELECT_SOURCE_SET } from '../constants/shieldedAssets';
+import { AMOUNT_SET, EXTERNAL_SHIELDING_SUB_TABS_SET, SELECT_SOURCE_SET, SHIELDING_SUB_TABS_SET } from '../constants/shieldedAssets';
 
 const amount = (state = {
     value: '',
@@ -29,7 +29,35 @@ const selectedAsset = (state = {
     }
 };
 
+const subTabs = (state = {
+    value: 'transparent_to_shielding',
+}, action) => {
+    switch (action.type) {
+    case SHIELDING_SUB_TABS_SET:
+        return {
+            value: action.value,
+        };
+    default:
+        return state;
+    }
+};
+
+const externalShieldingSubTabs = (state = {
+    value: 'ibc_chain_to_namada_transparent_transfer',
+}, action) => {
+    switch (action.type) {
+    case EXTERNAL_SHIELDING_SUB_TABS_SET:
+        return {
+            value: action.value,
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     amount,
     selectedAsset,
+    subTabs,
+    externalShieldingSubTabs,
 });

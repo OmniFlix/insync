@@ -39,7 +39,6 @@ const SourceSelectField = (props) => {
         };
     }).filter((item) => item.balance);
 
-    console.log('5555555', props);
     return (
         <SelectField
             className="select_field"

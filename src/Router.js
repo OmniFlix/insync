@@ -20,10 +20,13 @@ const routes = [{
     path: '/proposals/:proposalID',
     component: ProposalDialog,
 }, {
-    path: '/masp',
+    path: '/internalShielding',
     component: ShieldedAssets,
 }, {
-    path: '/ibc',
+    path: '/externalShielding',
+    component: IBCTransfer,
+},  {
+    path: '/externalTransfer',
     component: IBCTransfer,
 }];
 
