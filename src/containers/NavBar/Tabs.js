@@ -112,37 +112,19 @@ class Tabs extends Component {
                         value="proposals"
                         onClick={() => this.handleChange('proposals')}
                         {...a11yProps(2)} />
-                    <ShieldedTab value={this.state.value} handleChange={this.handleChange}/>
-                    <TransferTab value={this.state.value} handleChange={this.handleChange}/>
-                    {/* <Tab
-                        className={'tab ' + (this.state.value === 'masp' ? 'active_tab' : '')}
-                        label={variables[this.props.lang].shielding}
-                        value="masp"
-                        onClick={() => this.handleChange('masp')}
-                        {...a11yProps(3)} />
-                    <Tab
-                        className={'tab ' + (this.state.value === 'ibc' ? 'active_tab' : '')}
-                        label={variables[this.props.lang].external_ibc_transparent}
-                        value="ibc"
-                        onClick={() => this.handleChange('ibc')}
-                        {...a11yProps(4)} />
-                    <Tab
-                        className={'tab ' + (this.state.value === 'external_ibc_shielding' ? 'active_tab' : '')}
-                        label={variables[this.props.lang].external_ibc_shielding}
-                        value="external_ibc_shielding"
-                        onClick={() => this.handleChange('external_ibc_shielding')}
-                        {...a11yProps(5)} />
                     <Tooltip arrow title={'Coming soon'}>
                         <span>
                             <Tab
-                                className={'tab ' + (this.state.value === 'internal_transfer' ? 'active_tab' : '') + 'coming_soon'}
+                                className={'tab ' + (this.state.value === 'assets' ? 'active_tab' : '')}
                                 disabled={true}
-                                label={variables[this.props.lang].internal_transfer}
-                                value="internal_transfer"
-                                onClick={() => this.handleChange('internal_transfer')}
-                                {...a11yProps(6)} />
+                                label={variables[this.props.lang].assets}
+                                value="assets"
+                                onClick={() => this.handleChange('assets')}
+                                {...a11yProps(3)} />
                         </span>
-                    </Tooltip> */}
+                    </Tooltip>
+                    <ShieldedTab value={this.state.value} handleChange={this.handleChange}/>
+                    <TransferTab value={this.state.value} handleChange={this.handleChange}/>
                 </div>
             </AppBar>
         );

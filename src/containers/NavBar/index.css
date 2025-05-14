@@ -111,6 +111,10 @@ table .disconnect_button {
     opacity: 1;
 }
 
+.nav_bar .right_content .tab:disabled {
+    opacity: 0.6;
+}
+
 .nav_bar .right_content .tab_label {
     display: flex;
     align-items: center;

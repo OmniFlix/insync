@@ -94,6 +94,7 @@ const variables = {
         external_shielding: 'External Shielding',
         internal_transfer: 'Internal Transfer',
         external_transfer: 'External Transfer',
+        assets: 'Assets',
     },
 };
 
