@@ -1,4 +1,4 @@
-import { AMOUNT_SET, EXTERNAL_SHIELDING_SUB_TABS_SET, SELECT_SOURCE_SET, SHIELDING_SUB_TABS_SET } from '../constants/shieldedAssets';
+import { AMOUNT_SET, EXTERNAL_SHIELDING_SUB_TABS_SET, EXTERNAL_TRANSFER_SUB_TABS_SET, SELECT_SOURCE_SET, SHIELDING_SUB_TABS_SET } from '../constants/shieldedAssets';
 
 export const setAmount = (value) => {
     return {
@@ -25,6 +25,13 @@ export const setShieldingSubTabs = (value) => {
 export const setExternalShieldingSubTabs = (value) => {
     return {
         type: EXTERNAL_SHIELDING_SUB_TABS_SET,
+        value,
+    };
+};
+
+export const setExternalTransferSubTabs = (value) => {
+    return {
+        type: EXTERNAL_TRANSFER_SUB_TABS_SET,
         value,
     };
 };
