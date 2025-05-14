@@ -87,15 +87,16 @@ table .disconnect_button {
 
 .nav_bar .tabs_content {
     display: flex;
+    align-items: center;
     gap: 20px;
 }
 
-.nav_bar .horizontal_tabs .tab {
+.nav_bar .right_content .tab {
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.10);
     background: rgba(255, 255, 255, 0.10);
     backdrop-filter: blur(10px);
-    height: 50px;
+    /* height: 50px; */
     flex-shrink: 0;
     color: #FFF;
     text-align: center;
@@ -110,20 +111,54 @@ table .disconnect_button {
     opacity: 1;
 }
 
-.nav_bar .horizontal_tabs .tab.coming_soon {
+.nav_bar .right_content .tab:disabled {
     opacity: 0.6;
 }
 
-.nav_bar .horizontal_tabs .tab:hover {
+.nav_bar .right_content .tab_label {
+    display: flex;
+    align-items: center;
+}
+
+.tab_popover > div:nth-child(3) {
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    background: rgba(0, 0, 0, 0.10);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+}
+
+.tab_popover .popover_tab {
+    color: #FFF;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    text-transform: capitalize;
+    min-width: auto;
+    padding: 10px 26px;
+    opacity: 1;
+    border: 1px solid transparent;
+    border-radius: 50px;
+}
+
+.nav_bar .right_content .tab.coming_soon {
+    opacity: 0.6;
+    height: 100%;
+}
+
+.tab_popover .popover_tab:hover,
+.nav_bar .right_content .tab:hover {
     border: 1px solid #C0C00D;
     background: rgba(255, 255, 70, 0.20);
 }
 
-.nav_bar .horizontal_tabs .tab:first-child {
+.nav_bar .right_content .tab:first-child {
     margin-left: 0;
 }
 
-.nav_bar .horizontal_tabs .tab.active_tab {
+.nav_bar .right_content .tab.active_tab {
     color: #000;
     border: 1px solid #C0C00D;
     background: #FFFF46;
@@ -178,7 +213,7 @@ table .disconnect_button {
 
 @media (max-width: 1441px) {
 
-    .nav_bar .horizontal_tabs .tab,
+    .nav_bar .right_content .tab,
     .nav_bar .select_field > div > div {
         font-size: 18px;
     }
@@ -198,7 +233,7 @@ table .disconnect_button {
         margin-bottom: 10px;
     }
 
-    .nav_bar.disconnected_nav .horizontal_tabs {
+    .nav_bar.disconnected_nav .right_content {
         margin: unset;
     }
 }
@@ -261,12 +296,12 @@ table .disconnect_button {
         margin-top: 60px;
     }
 
-    .nav_bar .horizontal_tabs .tabs_content {
+    .nav_bar .right_content .tabs_content {
         display: flex;
         flex-direction: column;
     }
 
-    .nav_bar .horizontal_tabs .tab {
+    .nav_bar .right_content .tab {
         margin: 0 0 10px;
         width: 200px;
     }
@@ -313,7 +348,7 @@ table .disconnect_button {
         width: 100%;
     }
 
-    .nav_bar .horizontal_tabs .tab {
+    .nav_bar .right_content .tab {
         min-width: 100%;
         width: 100%;
     }

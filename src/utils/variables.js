@@ -1,3 +1,4 @@
+import { transfer } from 'comlink';
 import { config } from '../config';
 
 const variables = {
@@ -77,6 +78,23 @@ const variables = {
         ibc_transfer: 'IBC Transfer',
         shielded_available_tokens: 'Shielded Available Tokens',
         select_asset: 'Select Asset',
+        internal_shielding: 'Internal Shielding',
+        transparent_to_shielding: 'Transparent to Shielding',
+        shielded_to_transparent: 'Shielded to Transparent',
+        external_ibc_shielding: 'External IBC Shielding',
+        ibc_shielding: 'IBC Shielding',
+        ibc_unshielding: 'IBC Unshielding',
+        external_ibc_transparent: 'External IBC Transparent',
+        ibc_chain_to_namada_transparent_transfer: 'IBC Chain to Namada Transparent Transfer',
+        namada_to_ibc_chain_transparent_transfer: 'Namada to IBC Chain Transparent Transfer',
+        internal_transfer: 'Internal Transfer',
+        shielding: 'Shielding',
+        transfers: 'Transfers',
+        internal_shielding: 'Internal Shielding',
+        external_shielding: 'External Shielding',
+        internal_transfer: 'Internal Transfer',
+        external_transfer: 'External Transfer',
+        assets: 'Assets',
     },
 };
 
