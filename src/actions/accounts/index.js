@@ -162,7 +162,6 @@ export const getBalance = (address, cb) => (dispatch) => {
         // const tokens = await query.query_native_token();
         query.query_balance(address, array, config.CHAIN_ID)
             .then((res) => {
-                console.log('balance response ', res);
                 dispatch(fetchBalanceSuccess(res));
                 if (cb) {
                     cb(res);
