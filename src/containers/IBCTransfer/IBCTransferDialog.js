@@ -24,6 +24,7 @@ import { ibcList } from 'dummy/ibcList';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getShieldedArgs, ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
+import DownArrowIcon from '../../assets/masp/downArrow.svg';
 
 const IBCTransferDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -124,7 +125,6 @@ const IBCTransferDialog = (props) => {
             publicKey: props.details && props.details.publicKey,
         };
 
-        console.log('msgValue', tx, props.fromNamadaSelectedAsset);
         ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
     };
 
@@ -222,8 +222,11 @@ const IBCTransferDialog = (props) => {
 
                         props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                         props.getBalance(props.address);
-                        // props.fetchTokensList();
+                        props.fetchTokensList();
                         props.fetchBalanceList(props.address);
+                        setTimeout(() => {
+                            props.fetchBalanceList(props.address);
+                        }, 10000);
                         props.showDelegateSuccessDialog(res1.txhash, config);
                         // props.setIBCTransferAmount('');
                         setTimeout(() => {
@@ -337,11 +340,14 @@ const IBCTransferDialog = (props) => {
                             <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>
                         </div>
                     </div>
+                    <div className="arrow">
+                        <img alt="Arrow" src={DownArrowIcon}/>
+                    </div>
                     {/* <Tooltip arrow title={'Coming soon'}> */}
-                        <div disabled className="arrow">
-                        {/* <div disabled className="arrow" onClick={() => props.setIBCSwapType('from_namada')}> */}
+                        {/* <div disabled className="arrow"> */}
+                        {/* <div disabled className="arrow" onClick={() => props.setIBCSwapType('from_namada')}>
                             <img alt="TransferIcon" src={TransferIcon}/>
-                        </div>
+                        </div> */}
                     {/* </Tooltip> */}
                     <div className="transfer_destination">
                         {/* <div className="transfer_type">
@@ -402,8 +408,8 @@ const IBCTransferDialog = (props) => {
                                 <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
                             </div> : null}
                     </div>
-                    <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
-                        <img alt="TransferIcon" src={TransferIcon}/>
+                    <div className="arrow">
+                        <img alt="Arrow" src={DownArrowIcon}/>
                     </div>
                     <div className="transfer_destination header">
                         {fromNamadaSelectedConfig
