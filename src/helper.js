@@ -351,7 +351,6 @@ export const initializeNamadaChain = (cb) => {
 
 export const delegateTransaction = (Tx, txs, revealPublicKey, type, cb) => {
     (async () => {
-        console.log('delegation is called from helper js');
         const isExtensionInstalled = typeof window.namada === 'object';
         if (!isExtensionInstalled || !window.namada) {
             const error = 'Download the Namada Extension';
@@ -1001,8 +1000,6 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             newTxs.push(revealPkTx);
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-        console.log(await tx.buildIbcTransfer.toString());
-        console.log('2222222', ibcTransfer);
         const encoded = await tx.buildIbcTransfer(wrapperTxValue, ibcTransfer);
         newTxs.push(encoded);
 
@@ -1013,7 +1010,6 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             updateDate = tx.buildBatch(newTxs);
         }
 
-        console.log('2222', updateDate, address, checksums);
         client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {

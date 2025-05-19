@@ -9,6 +9,7 @@ import withRouter from '../../components/WithRouter';
 import ShieldedTab from './ShieldedTab';
 import TransferTab from './TransferTab';
 import { setIBCTransferType } from 'actions/IBCTransfer';
+import { setExternalTransferSubTabs } from 'actions/shieldedAssets';
 
 class Tabs extends Component {
     constructor (props) {
@@ -37,6 +38,9 @@ class Tabs extends Component {
             this.setState({
                 value: 'transfers',
             });
+            if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
+                this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer')
+            }
         }
     }
 
@@ -45,7 +49,7 @@ class Tabs extends Component {
             pp.router.location.pathname !== this.props.router.location.pathname) {
             const value = this.props.router.location.pathname.split('/')[1];
 
-            if (value !== this.state.value && (value === '' || value === 'stake' || value === 'proposals' || value === 'masp' || value === 'ibc' || route === 'assets')) {
+            if (value !== this.state.value && (value === '' || value === 'stake' || value === 'proposals' || value === 'masp' || value === 'ibc' || value === 'assets')) {
                 this.setState({
                     value: value,
                 });
@@ -59,6 +63,9 @@ class Tabs extends Component {
                 this.setState({
                     value: 'transfers',
                 });
+                if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
+                    this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer')
+                }
             }
         }
     }
@@ -74,6 +81,14 @@ class Tabs extends Component {
         // }
 
         if (route) {
+            if (this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer') {
+                this.props.router.navigate('/' + route + '/withdraw');
+                this.setState({
+                    value: newValue,
+                });
+
+                return;
+            }
             this.props.router.navigate('/' + route);
         } else {
             this.props.router.navigate('/' + newValue);
@@ -129,9 +144,11 @@ class Tabs extends Component {
 Tabs.propTypes = {
     handleClose: PropTypes.func.isRequired,
     hideProposalDialog: PropTypes.func.isRequired,
+    setIBCTransferType: PropTypes.func.isRequired,
+    setExternalTransferSubTabs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
-    setIBCTransferType: PropTypes.func.isRequired,
+    externalTransferSubTabs: PropTypes.string,
     router: PropTypes.shape({
         location: PropTypes.shape({
             pathname: PropTypes.string.isRequired,
@@ -147,6 +164,7 @@ const stateToProps = (state) => {
     return {
         lang: state.language,
         open: state.proposals.dialog.open,
+        externalTransferSubTabs: state.shieldedAssets.externalTransferSubTabs.value,
     };
 };
 
@@ -154,6 +172,7 @@ const actionToProps = {
     handleClose: hideSideBar,
     hideProposalDialog,
     setIBCTransferType,
+    setExternalTransferSubTabs,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(Tabs));
