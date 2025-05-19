@@ -6,12 +6,14 @@ import { connect } from 'react-redux';
 
 const Assets = (props) => {
     return (
-        <div className="assets stake">
-            <NavBar proposalTab={true}/>
-            {props.tokensProgress || props.balanceProgress
-                ? <CircularProgress />
-                : <TokensListTable />}
-        </div>
+        <>
+            <NavBar/>
+            <div className="assets stake padding">
+                {props.tokensProgress || props.balanceProgress
+                    ? <CircularProgress />
+                    : <TokensListTable />}
+            </div>
+        </>
     );
 };
 

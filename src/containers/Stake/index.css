@@ -107,6 +107,13 @@
     line-height: 130%; /* 23.4px */
 }
 
+.stake .table .voting_power.token_name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 46px;
+}
+
 .stake .table .voting_power .percentage {
     color: hwb(0deg 100% 0% / 50%);
     font-size: 15px;
