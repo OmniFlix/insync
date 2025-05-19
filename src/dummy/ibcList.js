@@ -75,7 +75,7 @@ export const ibcList = [{
 export const feeList = {
     'OSMO': {
         fee: 0.00001,
-        gas: 32032,
+        gas: 42032,
     },
     'ATOM': {
         fee: 0.000001,

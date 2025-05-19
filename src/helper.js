@@ -253,9 +253,9 @@ export const initializeNamadaChain = (cb) => {
 
         if (window.namada) {
             const namada = window.namada;
-            await namada.connect(chainId);
+            await namada.connect(config.CHAIN_ID);
 
-            const offlineSigner = namada.getSigner(chainId);
+            const offlineSigner = namada.getSigner(config.CHAIN_ID);
             let accounts;
             let accountsList;
             if (offlineSigner.accounts) {
