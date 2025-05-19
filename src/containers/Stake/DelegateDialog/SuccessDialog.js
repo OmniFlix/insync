@@ -35,7 +35,10 @@ const CustomTooltip = withStyles(() => ({
 
 const SuccessDialog = (props) => {
     const handleRedirect = () => {
-        if (props.ibcConfig && props.ibcConfig.EXPLORER_URL) {
+        if (props.router.location.pathname === '/externalTransfer/withdraw' && config.EXPLORER_URL) {
+            const link = `${config.EXPLORER_URL}/tx/${props.hash}`;
+            window.open(link, '_blank');
+        } else if (props.ibcConfig && props.ibcConfig.EXPLORER_URL) {
             const link = `${props.ibcConfig.EXPLORER_URL}/tx/${props.hash}`;
             window.open(link, '_blank');
         } else if (config.EXPLORER_URL) {
@@ -74,7 +77,9 @@ const SuccessDialog = (props) => {
                             ? <h1>{props.name + 'd Successfully'}</h1>
                             : props.name
                                 ? <h1>{variables[props.lang].delegate + 'd Successfully'}</h1>
-                                : props.router && props.router.location && props.router.location.pathname === '/ibc'
+                                : props.router && props.router.location && (props.router.location.pathname === '/externalTransfer' ||
+                                props.router.location.pathname === '/internalTransfer' || props.router.location.pathname === '/externalTransfer/withdraw' ||
+                                props.router.location.pathname === '/externalShielding' || props.router.location.pathname === '/internalShielding')
                                     ? <h1>Token Transferred Successfully</h1>
                                     : props.router && props.router.params && props.router.params.proposalID
                                         ? <h1>{variables[props.lang].vote_success}</h1>
@@ -93,7 +98,9 @@ const SuccessDialog = (props) => {
                                 props.hash.slice(props.hash.length - 6, props.hash.length)}
                         </div>
                     </div>
-                    : props.router && props.router.location && props.router.location.pathname === '/ibc'
+                    : props.router && props.router.location && (props.router.location.pathname === '/externalTransfer' ||
+                    props.router.location.pathname === '/internalTransfer' || props.router.location.pathname === '/externalTransfer/withdraw' ||
+                    props.router.location.pathname === '/externalShielding' || props.router.location.pathname === '/internalShielding')
                         ? <>
                             <div className="row">
                                 <p>{variables[props.lang]['transaction_hash']}</p>

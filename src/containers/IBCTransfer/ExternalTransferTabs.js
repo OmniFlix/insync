@@ -7,6 +7,7 @@ import variables from 'utils/variables';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setExternalTransferSubTabs } from 'actions/shieldedAssets';
+import withRouter from '../../components/WithRouter';
 
 const useStyles = makeStyles({
   root: {
@@ -19,6 +20,11 @@ const ExternalTransferTabs = (props) => {
 
     const handleChange = (event, newValue) => {
         props.onChange(newValue);
+        if (newValue === 'namada_to_ibc_chain_transparent_transfer') {
+            props.router.navigate('/externalTransfer/withdraw');
+        } else {
+            props.router.navigate('/externalTransfer');
+        }
     };
 
     return (
@@ -42,6 +48,15 @@ ExternalTransferTabs.propTypes = {
     lang: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.number.isRequired,
+    router: PropTypes.shape({
+        location: PropTypes.shape({
+            pathname: PropTypes.string.isRequired,
+        }).isRequired,
+        navigate: PropTypes.func.isRequired,
+        params: PropTypes.shape({
+            proposalID: PropTypes.string,
+        }).isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
@@ -55,4 +70,4 @@ const actionToProps = {
     onChange: setExternalTransferSubTabs,
 };
 
-export default connect(stateToProps, actionToProps)(ExternalTransferTabs);
+export default withRouter(connect(stateToProps, actionToProps)(ExternalTransferTabs));

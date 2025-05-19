@@ -8,6 +8,7 @@ import IBCTransferDialog from './IBCTransferDialog';
 import SuccessDialog from '../../containers/Stake/DelegateDialog/SuccessDialog';
 import ExternalShieldingTabs from './ExternalShieldingTabs';
 import ExternalTransferTabs from './ExternalTransferTabs';
+import NamadaToIBCTransparentTransfer from './NamadaToIBCTransparentTransfer';
 
 class IBCTransfer extends Component {
     render () {
@@ -27,11 +28,18 @@ class IBCTransfer extends Component {
                             <span>To withdraw shielded assets please unshield them to your transparent account</span>
                         </>}
                     <IBCTransferDialog/>
-                    <SuccessDialog/>
                 </div>}
-                {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding') ||
-                (this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer' && route === 'externalTransfer')) &&
+                {(this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer' && route === 'externalTransfer') &&
+                <div className="ibc_content padding">
+                    <>
+                        <p>Withdraw assets from Namada via IBC</p>
+                        {/* <span>To withdraw shielded assets please unshield them to your transparent account</span> */}
+                    </>
+                    <NamadaToIBCTransparentTransfer/>
+                </div>}
+                {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding')) &&
                 <div style={{margin: '150px 0'}}>Coming Soon...</div>}
+                <SuccessDialog/>
             </>
         );
     }

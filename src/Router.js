@@ -28,6 +28,9 @@ const routes = [{
 },  {
     path: '/externalTransfer',
     component: IBCTransfer,
+},  {
+    path: '/externalTransfer/withdraw',
+    component: IBCTransfer,
 }];
 
 const Router = () => {

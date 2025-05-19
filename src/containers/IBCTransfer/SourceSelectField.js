@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SelectField from '../../components/SelectField/WithChildren';
@@ -9,19 +9,6 @@ import { setFromNamadaSelectedAsset } from '../../actions/IBCTransfer';
 import { namadaAssets } from 'dummy/ibcList';
 
 const SourceSelectField = (props) => {
-    const handleChange = (value) => {
-        if (props.value === value) {
-            return;
-        }
-
-        const find = enrichedAssets.find((item) => item.symbol === value);
-        if (find) {
-            props.onChange(value, find);
-        } else {
-            props.onChange(value);
-        }
-    };
-
     const enrichedAssets = (namadaAssets || []).map((asset) => {
         // Step 1: Safely find matching token
         const matchingToken = (props.tokensList || []).find(token =>
@@ -38,7 +25,32 @@ const SourceSelectField = (props) => {
           balance: matchingBalance || null,
         };
     }).filter((item) => item.balance);
-      
+
+    useEffect(() => {
+        if (enrichedAssets && enrichedAssets.length && enrichedAssets[0]) {
+            const value = enrichedAssets[0].symbol;
+            const find = enrichedAssets.find((item) => item.symbol === value);
+            if (find) {
+                props.onChange(value, find);
+            } else {
+                props.onChange(value);
+            }
+        }
+    }, [enrichedAssets]);
+
+    const handleChange = (value) => {
+        if (props.value === value) {
+            return;
+        }
+
+        const find = enrichedAssets.find((item) => item.symbol === value);
+        if (find) {
+            props.onChange(value, find);
+        } else {
+            props.onChange(value);
+        }
+    };
+
     return (
         <SelectField
             className="select_field"
@@ -47,13 +59,15 @@ const SourceSelectField = (props) => {
             placeholder={variables[props.lang]['select_asset']}
             value={props.value}
             onChange={handleChange}>
-            <MenuItem className="phase5_disable" value="Namada" disabled>
+            {props.ibcOnly
+            ? null
+            : <MenuItem className="phase5_disable" value="Namada" disabled>
                 <img alt="NamadaLogo" src={NamadaLogo}/>
                 <div>
                     Namada
                     <p>Enables in Phase 5</p>
                 </div>
-            </MenuItem>
+            </MenuItem>}
             {enrichedAssets && enrichedAssets.map((asset, index) => {
                 if (asset?.balance?.minDenomAmount === "0") {
                     return null;
@@ -76,6 +90,7 @@ SourceSelectField.propTypes = {
     onChange: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
     balanceList: PropTypes.array.isRequired,
+    ibcOnly: PropTypes.bool,
 };
 
 const stateToProps = (state) => {
