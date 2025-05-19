@@ -292,6 +292,7 @@ SuccessDialog.propTypes = {
     validator: PropTypes.string.isRequired,
     validatorImages: PropTypes.array.isRequired,
     address: PropTypes.string,
+    ibcTokens: PropTypes.any,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
         location: PropTypes.object.isRequired,
@@ -302,7 +303,6 @@ SuccessDialog.propTypes = {
     shielded: PropTypes.bool,
     shieldedTokens: PropTypes.any,
     tokens: PropTypes.any,
-    ibcTokens: PropTypes.any,
     validatorList: PropTypes.array,
 };
 

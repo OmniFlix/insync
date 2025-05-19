@@ -31,18 +31,18 @@ class IBCTransfer extends Component {
                 </div>}
                 {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding') ||
                 (this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer' && route === 'externalTransfer')) &&
-                <div style={{margin: '150px 0'}}>Coming Soon...</div>}
+                <div style={{ margin: '150px 0' }}>Coming Soon...</div>}
             </>
         );
     }
 }
 
 IBCTransfer.propTypes = {
+    externalTransferSubTabs: PropTypes.string.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
     subTabs: PropTypes.string.isRequired,
-    externalTransferSubTabs: PropTypes.string.isRequired,
     router: PropTypes.shape({
         location: PropTypes.shape({
             pathname: PropTypes.string.isRequired,

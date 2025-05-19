@@ -22,7 +22,7 @@ class ShieldedAssets extends Component {
                         <ShieldDialog/>
                     </div>
                 </div>}
-                {this.props.subTabs === 'shielded_to_transparent' && <div style={{margin: '150px 0'}}>Coming Soon...</div>}
+                {this.props.subTabs === 'shielded_to_transparent' && <div style={{ margin: '150px 0' }}>Coming Soon...</div>}
                 <SuccessDialog shielded={true}/>
                 <UnSuccessDialog/>
                 <PendingDialog/>

@@ -6,6 +6,7 @@ import Proposals from './containers/Proposals';
 import ProposalDialog from './containers/Proposals/ProposalDialog';
 import ShieldedAssets from './containers/ShieldedAssets';
 import IBCTransfer from './containers/IBCTransfer';
+import Assets from './containers/Assets';
 
 const routes = [{
     path: '/',
@@ -25,9 +26,12 @@ const routes = [{
 }, {
     path: '/externalShielding',
     component: IBCTransfer,
-},  {
+}, {
     path: '/externalTransfer',
     component: IBCTransfer,
+}, {
+    path: '/assets',
+    component: Assets,
 }];
 
 const Router = () => {

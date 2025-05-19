@@ -9,13 +9,13 @@ import { connect } from 'react-redux';
 import { setExternalShieldingSubTabs } from 'actions/shieldedAssets';
 
 const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
+    root: {
+        flexGrow: 1,
+    },
 });
 
 const ExternalShieldingTabs = (props) => {
-    const classes = useStyles();    
+    const classes = useStyles();
 
     const handleChange = (event, newValue) => {
         props.onChange(newValue);
@@ -23,25 +23,25 @@ const ExternalShieldingTabs = (props) => {
 
     return (
         <Paper className={classes.root}>
-        <Tabs
-            value={props.value}
-            className="shielding_tabs"
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            centered
-        >
-            <Tab className="tab" value='ibc_shielding' label={variables[props.lang].ibc_shielding}/>
-            <Tab className="tab" value='ibc_unshielding' label={variables[props.lang].ibc_unshielding}/>
-        </Tabs>
+            <Tabs
+                centered
+                className="shielding_tabs"
+                indicatorColor="primary"
+                textColor="primary"
+                value={props.value}
+                onChange={handleChange}
+            >
+                <Tab className="tab" label={variables[props.lang].ibc_shielding} value="ibc_shielding"/>
+                <Tab className="tab" label={variables[props.lang].ibc_unshielding} value="ibc_unshielding"/>
+            </Tabs>
         </Paper>
     );
-}
+};
 
 ExternalShieldingTabs.propTypes = {
     lang: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
     value: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
 };
 
 const stateToProps = (state) => {

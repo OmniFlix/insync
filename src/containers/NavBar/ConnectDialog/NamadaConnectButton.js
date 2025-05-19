@@ -78,10 +78,10 @@ const KeplrConnectButton = (props) => {
 };
 
 KeplrConnectButton.propTypes = {
-    fetchRewards: PropTypes.func.isRequired,
-    fetchVestingBalance: PropTypes.func.isRequired,
-    fetchTokensList: PropTypes.func.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
+    fetchRewards: PropTypes.func.isRequired,
+    fetchTokensList: PropTypes.func.isRequired,
+    fetchVestingBalance: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
