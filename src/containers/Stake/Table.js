@@ -7,7 +7,7 @@ import CircularProgress from '../../components/CircularProgress';
 import UnDelegateButton from '../Home/TokenDetails/UnDelegateButton';
 import ReDelegateButton from '../Home/TokenDetails/ReDelegateButton';
 import DelegateButton from './DelegateButton';
-import { formatCount } from '../../utils/numberFormats';
+import { floatCountWithoutABBRS, formatCount } from '../../utils/numberFormats';
 import ValidatorName from './ValidatorName';
 import { config } from '../../config';
 import { Button } from '@material-ui/core';
@@ -148,7 +148,7 @@ class Table extends Component {
 
                     return (
                         <div className={newValue ? 'tokens' : 'no_tokens'}>
-                            {Number(newValue) || 'no tokens'}
+                            {floatCountWithoutABBRS(newValue) || 'no tokens'}
                         </div>
                     );
                 },

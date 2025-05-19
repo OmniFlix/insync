@@ -301,26 +301,40 @@ const fetchDelegatedValidatorsError = (message) => {
     };
 };
 
-export const getDelegatedValidatorsDetails = (address) => (dispatch) => {
+export const getDelegatedValidatorsDetails = (address) => async (dispatch) => {
     dispatch(fetchDelegatedValidatorsInProgress());
-    const URL = getDelegatedValidatorsURL(address);
-    Axios.get(URL, {
-        headers: {
-            Accept: 'application/json, text/plain, */*',
-        },
-    })
-        .then((res) => {
-            dispatch(fetchDelegatedValidatorsSuccess(res.data && res.data.results));
-        })
-        .catch((error) => {
-            dispatch(fetchDelegatedValidatorsError(
-                error.response &&
-                error.response.data &&
-                error.response.data.message
-                    ? error.response.data.message
-                    : 'Failed!',
-            ));
-        });
+    const perPage = 100; // try maximum perPage allowed by the API
+    let currentPage = 1;
+    let totalPages = 1;
+    let allResults = [];
+
+    try {
+        do {
+            const URL = getDelegatedValidatorsURL(address);
+            const response = await Axios.get(URL, {
+                params: {
+                    page: currentPage,
+                    perPage,
+                },
+                headers: {
+                    Accept: 'application/json, text/plain, */*',
+                },
+            });
+
+            const data = response.data;
+            const pageResults = data?.results || [];
+            const pagination = data?.pagination;
+
+            allResults = [...allResults, ...pageResults];
+            totalPages = pagination?.totalPages || 1;
+            currentPage++;
+        } while (currentPage <= totalPages);
+
+        dispatch(fetchDelegatedValidatorsSuccess(allResults));
+    } catch (error) {
+        const errMsg = error.response?.data?.message || 'Failed!';
+        dispatch(fetchDelegatedValidatorsError(errMsg));
+    }
 };
 
 export const showClaimRewardsDialog = () => {
