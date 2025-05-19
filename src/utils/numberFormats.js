@@ -58,3 +58,35 @@ export const formatCount = (value, decimals) => {
 
     return formatCountAbbr(value, true, decimals || 2);
 };
+
+export const floatCountWithoutABBRS = (value, decimals) => {
+    if (value === 0) {
+        return value;
+    }
+
+    if (!value) {
+        return formatCountAbbr(value, false);
+    }
+
+    if (parseInt(value) === value) {
+        return formatCountAbbr(value, false);
+    }
+
+    if (value < 0.0001) {
+        return floatDecimals(value, 5);
+    }
+
+    if (value < 0.01) {
+        return floatDecimals(value, 4);
+    }
+
+    if (value < 0.1) {
+        return floatDecimals(value, 2);
+    }
+
+    if (value < 1000) {
+        return floatDecimals(value, decimals);
+    }
+
+    return floatDecimals(value, decimals || 2);
+};
