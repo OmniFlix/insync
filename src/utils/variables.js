@@ -95,6 +95,8 @@ const variables = {
         internal_transfer: 'Internal Transfer',
         external_transfer: 'External Transfer',
         assets: 'Assets',
+        transparent: 'Transparent',
+        shielded: 'Shielded',
     },
 };
 

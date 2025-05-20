@@ -1,0 +1,1 @@
+export const ASSETS_TABS_SET = 'ASSETS_TABS_SET';

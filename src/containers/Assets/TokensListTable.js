@@ -47,7 +47,7 @@ class TokensListTable extends React.Component {
                     return (
                         <div className="voting_power token_name">
                             {image && <img alt={value.name} src={image} style={{ width: '24px', height: '24px', marginRight: '8px' }} />}
-                            {(value.symbol === 'NAM' ? value.name : value.symbol) || value.name || value.display}
+                            {value.symbol || value.name || value.display}
                         </div>
                     );
                 },
@@ -111,16 +111,16 @@ class TokensListTable extends React.Component {
                 balance: matchingBalance || null,
                 };
         }).filter((item) => item.balance);
-        enrichedAssets.unshift({
-            name: 'Shielded Namada',
-            symbol: 'NAM',
-            logo_URIs: {
-                svg: NamadaShieldedLogo,
-            },
-            // balance: {
-            //     minDenomAmount: available
-            // }
-        });
+        // enrichedAssets.unshift({
+        //     name: 'Shielded Namada',
+        //     symbol: 'NAM',
+        //     logo_URIs: {
+        //         svg: NamadaShieldedLogo,
+        //     },
+        //     // balance: {
+        //     //     minDenomAmount: available
+        //     // }
+        // });
         enrichedAssets.unshift({
             name: 'Transparent Namada',
             symbol: 'NAM',
