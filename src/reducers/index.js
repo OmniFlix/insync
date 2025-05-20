@@ -7,6 +7,7 @@ import proposals from './proposals';
 import navBar from './navBar';
 import shieldedAssets from './shieldedAssets';
 import ibcTransfer from './IBCTransfer';
+import assets from './assets';
 
 const reduxObjects = combineReducers({
     accounts,
@@ -17,6 +18,7 @@ const reduxObjects = combineReducers({
     navBar,
     shieldedAssets,
     ibcTransfer,
+    assets,
 });
 
 const rootReducer = (state, action) => {

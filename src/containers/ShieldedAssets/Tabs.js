@@ -9,13 +9,13 @@ import { connect } from 'react-redux';
 import { setShieldingSubTabs } from 'actions/shieldedAssets';
 
 const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
+    root: {
+        flexGrow: 1,
+    },
 });
 
 const ShieldingTabs = (props) => {
-    const classes = useStyles();    
+    const classes = useStyles();
 
     const handleChange = (event, newValue) => {
         props.setShieldingSubTabs(newValue);
@@ -23,20 +23,20 @@ const ShieldingTabs = (props) => {
 
     return (
         <Paper className={classes.root}>
-        <Tabs
-            value={props.value}
-            className="shielding_tabs"
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            centered
-        >
-            <Tab className="tab" value='transparent_to_shielding' label={variables[props.lang].transparent_to_shielding}/>
-            <Tab className="tab" value='shielded_to_transparent' label={variables[props.lang].shielded_to_transparent}/>
-        </Tabs>
+            <Tabs
+                centered
+                className="shielding_tabs"
+                indicatorColor="primary"
+                textColor="primary"
+                value={props.value}
+                onChange={handleChange}
+            >
+                <Tab className="tab" label={variables[props.lang].transparent_to_shielding} value="transparent_to_shielding"/>
+                <Tab className="tab" label={variables[props.lang].shielded_to_transparent} value="shielded_to_transparent"/>
+            </Tabs>
         </Paper>
     );
-}
+};
 
 ShieldingTabs.propTypes = {
     lang: PropTypes.string.isRequired,

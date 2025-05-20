@@ -46,11 +46,11 @@ class IBCTransfer extends Component {
 }
 
 IBCTransfer.propTypes = {
+    externalTransferSubTabs: PropTypes.string.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
     subTabs: PropTypes.string.isRequired,
-    externalTransferSubTabs: PropTypes.string.isRequired,
     router: PropTypes.shape({
         location: PropTypes.shape({
             pathname: PropTypes.string.isRequired,

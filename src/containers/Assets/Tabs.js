@@ -6,7 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import variables from 'utils/variables';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setExternalShieldingSubTabs } from 'actions/shieldedAssets';
+import { setAssetsTabs } from 'actions/assets';
 
 const useStyles = makeStyles({
     root: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     },
 });
 
-const ExternalShieldingTabs = (props) => {
+const AssetTabs = (props) => {
     const classes = useStyles();
 
     const handleChange = (event, newValue) => {
@@ -31,14 +31,14 @@ const ExternalShieldingTabs = (props) => {
                 value={props.value}
                 onChange={handleChange}
             >
-                <Tab className="tab" label={variables[props.lang].ibc_shielding} value="ibc_shielding"/>
-                <Tab className="tab" label={variables[props.lang].ibc_unshielding} value="ibc_unshielding"/>
+                <Tab className="tab" label={variables[props.lang].transparent} value="transparent"/>
+                <Tab className="tab" label={variables[props.lang].shielded} value="shielded"/>
             </Tabs>
         </Paper>
     );
 };
 
-ExternalShieldingTabs.propTypes = {
+AssetTabs.propTypes = {
     lang: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -47,12 +47,12 @@ ExternalShieldingTabs.propTypes = {
 const stateToProps = (state) => {
     return {
         lang: state.language,
-        value: state.shieldedAssets.externalShieldingTabs.value,
+        value: state.assets.assetsTab.value,
     };
 };
 
 const actionToProps = {
-    onChange: setExternalShieldingSubTabs,
+    onChange: setAssetsTabs,
 };
 
-export default connect(stateToProps, actionToProps)(ExternalShieldingTabs);
+export default connect(stateToProps, actionToProps)(AssetTabs);

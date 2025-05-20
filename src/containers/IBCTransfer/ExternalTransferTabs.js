@@ -10,13 +10,13 @@ import { setExternalTransferSubTabs } from 'actions/shieldedAssets';
 import withRouter from '../../components/WithRouter';
 
 const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
+    root: {
+        flexGrow: 1,
+    },
 });
 
 const ExternalTransferTabs = (props) => {
-    const classes = useStyles();    
+    const classes = useStyles();
 
     const handleChange = (event, newValue) => {
         props.onChange(newValue);
@@ -29,25 +29,25 @@ const ExternalTransferTabs = (props) => {
 
     return (
         <Paper className={classes.root}>
-        <Tabs
-            value={props.value}
-            className="shielding_tabs"
-            onChange={handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            centered
-        >
-            <Tab className="tab" value='ibc_chain_to_namada_transparent_transfer' label={variables[props.lang].ibc_chain_to_namada_transparent_transfer}/>
-            <Tab className="tab" value='namada_to_ibc_chain_transparent_transfer' label={variables[props.lang].namada_to_ibc_chain_transparent_transfer}/>
-        </Tabs>
+            <Tabs
+                centered
+                className="shielding_tabs"
+                indicatorColor="primary"
+                textColor="primary"
+                value={props.value}
+                onChange={handleChange}
+            >
+                <Tab className="tab" label={variables[props.lang].ibc_chain_to_namada_transparent_transfer} value="ibc_chain_to_namada_transparent_transfer"/>
+                <Tab className="tab" label={variables[props.lang].namada_to_ibc_chain_transparent_transfer} value="namada_to_ibc_chain_transparent_transfer"/>
+            </Tabs>
         </Paper>
     );
-}
+};
 
 ExternalTransferTabs.propTypes = {
     lang: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
     value: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
     router: PropTypes.shape({
         location: PropTypes.shape({
             pathname: PropTypes.string.isRequired,

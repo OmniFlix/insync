@@ -24,7 +24,7 @@ class Tabs extends Component {
         const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
             this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
 
-        if (this.state.value !== route && (route === '' || route === 'stake' || route === 'proposals' || route === 'masp' || route === 'ibc')) {
+        if (this.state.value !== route && (route === '' || route === 'stake' || route === 'proposals' || route === 'masp' || route === 'ibc' || route === 'assets')) {
             this.setState({
                 value: route,
             });
@@ -49,7 +49,7 @@ class Tabs extends Component {
             pp.router.location.pathname !== this.props.router.location.pathname) {
             const value = this.props.router.location.pathname.split('/')[1];
 
-            if (value !== this.state.value && (value === '' || value === 'stake' || value === 'proposals' || value === 'masp' || value === 'ibc')) {
+            if (value !== this.state.value && (value === '' || value === 'stake' || value === 'proposals' || value === 'masp' || value === 'ibc' || value === 'assets')) {
                 this.setState({
                     value: value,
                 });
@@ -127,19 +127,14 @@ class Tabs extends Component {
                         value="proposals"
                         onClick={() => this.handleChange('proposals')}
                         {...a11yProps(2)} />
-                    <Tooltip arrow title={'Coming soon'}>
-                        <span>
-                            <Tab
-                                className={'tab ' + (this.state.value === 'assets' ? 'active_tab' : '')}
-                                disabled={true}
-                                label={variables[this.props.lang].assets}
-                                value="assets"
-                                onClick={() => this.handleChange('assets')}
-                                {...a11yProps(3)} />
-                        </span>
-                    </Tooltip>
-                    <ShieldedTab value={this.state.value} handleChange={this.handleChange}/>
-                    <TransferTab value={this.state.value} handleChange={this.handleChange}/>
+                    <Tab
+                        className={'tab ' + (this.state.value === 'assets' ? 'active_tab' : '')}
+                        label={variables[this.props.lang].assets}
+                        value="assets"
+                        onClick={() => this.handleChange('assets')}
+                        {...a11yProps(3)} />
+                    <ShieldedTab handleChange={this.handleChange} value={this.state.value}/>
+                    <TransferTab handleChange={this.handleChange} value={this.state.value}/>
                 </div>
             </AppBar>
         );
