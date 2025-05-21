@@ -1,25 +1,43 @@
 .shielded_content .shield_tranfer {
     border-radius: 32px;
     backdrop-filter: blur(50px);
-    padding: 60px 40px;
+    padding: 32px;
     width: 550px;
-    margin: 0 auto;
-    background: #FFFF46;
+    background: #000;
+    margin: 40px auto;
 }
 
 .shielded_content .shield_tranfer > p {
-    color: #000;
+    color: #fff;
     text-align: center;
     font-family: 'Blinker', sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 600;
     line-height: 130%;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+}
+
+.main_content .sub_tabs_section {
+    padding: 4px;
+    border-radius: 32px;
+    border: 1px solid #262626;
+    background: #000 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 550px;
+    margin: auto;
+}
+
+.main_content .sub_tabs_section.assets_tab {
+    width: calc(100% - 120px);
 }
 
 .shielding_tabs {
     background: #000;
+    width: 100%;
+    border-radius: 32px;
 }
 
 .shielding_tabs > div > span {
@@ -39,6 +57,7 @@
     text-transform: capitalize;
     min-width: auto;
     max-width: 50%;
+    border-radius: 32px;
     flex: 1;
 }
 

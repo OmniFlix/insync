@@ -16,7 +16,7 @@ class ShieldedAssets extends Component {
             <>
                 <NavBar home={true}/>
                 <ShieldingTabs/>
-                {this.props.subTabs === 'transparent_to_shielding' && <div className="shielded_content padding">
+                {this.props.subTabs === 'transparent_to_shielding' && <div className="shielded_content">
                     <div className="shield_tranfer">
                         <p>Namada Transparent to Namada Shielded</p>
                         <ShieldDialog/>

@@ -33,7 +33,24 @@ import {
     BALANCE_LIST_FETCH_IN_PROGRESS,
     BALANCE_LIST_FETCH_SUCCESS,
     BALANCE_LIST_FETCH_ERROR,
+    WEB_ASSEMBLY_INITIALIZE,
 } from '../../constants/accounts';
+
+const webAssembly = (state = {
+    cryptoMemory: null,
+    sdk: null,
+}, action) => {
+    switch (action.type) {
+    case WEB_ASSEMBLY_INITIALIZE:
+        return {
+            ...state,
+            cryptoMemory: action.cryptoMemory,
+            sdk: action.sdk,
+        };
+    default:
+        return state;
+    }
+};
 
 const address = (state = {
     value: '',
@@ -362,6 +379,7 @@ const revealPublicKey = (state = {
 };
 
 export default combineReducers({
+    webAssembly,
     address,
     delegations,
     balance,

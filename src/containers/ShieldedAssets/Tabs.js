@@ -7,6 +7,7 @@ import variables from 'utils/variables';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setShieldingSubTabs } from 'actions/shieldedAssets';
+import classNames from 'classnames';
 
 const useStyles = makeStyles({
     root: {
@@ -22,7 +23,7 @@ const ShieldingTabs = (props) => {
     };
 
     return (
-        <Paper className={classes.root}>
+        <Paper className={classNames(classes.root, 'sub_tabs_section')}>
             <Tabs
                 centered
                 className="shielding_tabs"
