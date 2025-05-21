@@ -164,9 +164,7 @@ class Table extends Component {
                             value && (item && item.length && item[1]) === value.address)
                             ? <div className="actions">
                                 <ReDelegateButton valAddress={value && value.address}/>
-                                <span/>
                                 <UnDelegateButton valAddress={value && value.address}/>
-                                <span/>
                                 <DelegateButton valAddress={value && value.address}/>
                             </div>
                             : value && value.address

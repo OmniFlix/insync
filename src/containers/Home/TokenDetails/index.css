@@ -78,7 +78,7 @@ flex-shrink: 0;
 
 .token_details .buttons_div > span {
     height: 20px;
-    border: .5px solid #FFFFFF;
+    border: .5px solid #000;
     margin: 0 10px;
 }
 

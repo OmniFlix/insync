@@ -8,9 +8,10 @@
 }
 
 .shield_dialog > div {
-    padding: 20px 16px;
-    background: #000;
+    padding: 24px 16px 20px;
+    background: #161616;
     border-radius: 14px;
+    border: 1px solid #232323;
 }
 
 .shield_dialog > div > div {
@@ -102,7 +103,7 @@
 
 .shield_dialog > button {
     background: #FFFF46 !important;
-    border-radius: 5px;
+    border-radius: 16px;
     font-family: 'Blinker', sans-serif;
     font-style: normal;
     font-weight: 600;
@@ -112,6 +113,10 @@
     text-transform: capitalize;
     padding: 10px 30px;
     border: 2px solid #000;
+}
+
+.shield_dialog > button:disabled {
+    opacity: 0.5;
 }
 
 .shield_dialog > .arrow {

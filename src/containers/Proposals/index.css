@@ -24,7 +24,7 @@
 }
 
 .proposals .tabs > p.active {
-    color: #00FFFE;
+    color: #fff;
     opacity: 1;
 }
 
@@ -42,7 +42,7 @@
 .proposals .cards_content {
     background: rgba(255, 255, 255, 0.14);
     backdrop-filter: blur(100px);
-    border-radius: 10px;
+    border-radius: 32px;
     margin-top: 16px;
     padding: 38px;
     color: #000;

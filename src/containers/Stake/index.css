@@ -21,7 +21,7 @@
 }
 
 .stake .tabs > p.active {
-    color: #00FFFE;
+    color: #FFF;
     opacity: 1;
 }
 
@@ -75,6 +75,12 @@
     text-overflow: ellipsis;
     width: 300px;
     text-align: left;
+    color: #FFF;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
 }
 
 .stake .table .validator .name_section .hash_text {
@@ -141,17 +147,21 @@
     line-height: 130%;
     color: #FFF;
     text-transform: capitalize;
+    background: rgb(255 255 255 / 30%);
 }
 
 .table .actions > button.delegate_button {
     border-color: #00FFFE;
     color: #00FFFE;
+    background: rgb(0 255 254 / 30%);
 }
 
 .table .actions > button.un_delegate {
     border-color: #FF6B6B;
+    background: rgb(255 107 107 / 30%);
     /* border: 1px solid #FF6B6B; */
     color: #FF6B6B;
+    margin: 0 10px;
 }
 
 .table .actions > span {
@@ -165,7 +175,6 @@
     font-weight: 600;
     font-size: 18px;
     line-height: 130%;
-    color: #FFF;
 }
 
 .table td .tokens {
