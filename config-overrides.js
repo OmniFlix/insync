@@ -40,8 +40,6 @@ module.exports = {
             }),
             new webpack.ProvidePlugin({
                 Buffer: ['buffer', 'Buffer'],
-            }),
-            new webpack.ProvidePlugin({
                 process: 'process/browser',
             }),
             new webpack.DefinePlugin({
@@ -82,6 +80,12 @@ module.exports = {
             ];
             config.compress = true;
             config.port = 9000;
+            config.historyApiFallback = {
+                disableDotRule: true,
+                rewrites: [
+                    { from: /\.wasm$/, to: (context) => context.parsedUrl.pathname },
+                ],
+            };
 
             // Return the modified configuration
             return config;

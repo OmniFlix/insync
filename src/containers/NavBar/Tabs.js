@@ -10,6 +10,7 @@ import ShieldedTab from './ShieldedTab';
 import TransferTab from './TransferTab';
 import { setIBCTransferType } from 'actions/IBCTransfer';
 import { setExternalTransferSubTabs } from 'actions/shieldedAssets';
+import { setAssetsTabs } from 'actions/assets';
 
 class Tabs extends Component {
     constructor (props) {
@@ -24,7 +25,7 @@ class Tabs extends Component {
         const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
             this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
 
-        if (this.state.value !== route && (route === '' || route === 'stake' || route === 'proposals' || route === 'masp' || route === 'ibc' || route === 'assets')) {
+        if (this.state.value !== route && (route === '' || route === 'stake' || route === 'proposals' || route === 'masp' || route === 'ibc' || route === 'tokens')) {
             this.setState({
                 value: route,
             });
@@ -41,6 +42,13 @@ class Tabs extends Component {
             if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
                 this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer')
             }
+        } else if (this.state.value !== route && (route === 'tokensShielded')) {
+            this.props.setAssetsTabs('shielded');
+            this.setState({
+                value: 'tokens',
+            });
+        } else if (this.state.value !== route && (route === 'tokens')) {
+            this.props.setAssetsTabs('transparent');
         }
     }
 
@@ -49,7 +57,7 @@ class Tabs extends Component {
             pp.router.location.pathname !== this.props.router.location.pathname) {
             const value = this.props.router.location.pathname.split('/')[1];
 
-            if (value !== this.state.value && (value === '' || value === 'stake' || value === 'proposals' || value === 'masp' || value === 'ibc' || value === 'assets')) {
+            if (value !== this.state.value && (value === '' || value === 'stake' || value === 'proposals' || value === 'masp' || value === 'ibc' || value === 'tokens')) {
                 this.setState({
                     value: value,
                 });
@@ -66,6 +74,13 @@ class Tabs extends Component {
                 if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
                     this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer')
                 }
+            } else if (value !== this.state.value && (value === 'tokensShielded')) {
+                this.props.setAssetsTabs('shielded');
+                this.setState({
+                    value: 'tokens',
+                });
+            } else if (value !== this.state.value && (value === 'tokens')) {
+                this.props.setAssetsTabs('transparent');
             }
         }
     }
@@ -128,10 +143,10 @@ class Tabs extends Component {
                         onClick={() => this.handleChange('proposals')}
                         {...a11yProps(2)} />
                     <Tab
-                        className={'tab ' + (this.state.value === 'assets' ? 'active_tab' : '')}
+                        className={'tab ' + (this.state.value === 'tokens' ? 'active_tab' : '')}
                         label={variables[this.props.lang].assets}
-                        value="assets"
-                        onClick={() => this.handleChange('assets')}
+                        value="tokens"
+                        onClick={() => this.handleChange('tokens')}
                         {...a11yProps(3)} />
                     <ShieldedTab handleChange={this.handleChange} value={this.state.value}/>
                     <TransferTab handleChange={this.handleChange} value={this.state.value}/>
@@ -146,6 +161,7 @@ Tabs.propTypes = {
     hideProposalDialog: PropTypes.func.isRequired,
     setIBCTransferType: PropTypes.func.isRequired,
     setExternalTransferSubTabs: PropTypes.func.isRequired,
+    setAssetsTabs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     externalTransferSubTabs: PropTypes.string,
@@ -173,6 +189,7 @@ const actionToProps = {
     hideProposalDialog,
     setIBCTransferType,
     setExternalTransferSubTabs,
+    setAssetsTabs,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(Tabs));
