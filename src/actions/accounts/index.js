@@ -32,7 +32,6 @@ import {
     BALANCE_LIST_FETCH_IN_PROGRESS,
     BALANCE_LIST_FETCH_SUCCESS,
     BALANCE_LIST_FETCH_ERROR,
-    WEB_ASSEMBLY_INITIALIZE,
 } from '../../constants/accounts';
 import Axios from 'axios';
 import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance, urlFetchBlockHeight, urlFetchTokensList, urlFetchBalanceList } from '../../constants/url';
@@ -45,25 +44,6 @@ import { config } from '../../config';
 import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
 // import { Tokens } from '@namada/types';
-
-export const webAssemblyInitialize = () => {
-    (async () => {
-        const { cryptoMemory } = await init();
-        const sdk = getSdk(
-            cryptoMemory,
-            config.RPC_URL,
-            config.MAPS_REST_URL,
-            '',
-            config.TOKEN_ADDRESS,
-        );
-
-        return {
-            type: WEB_ASSEMBLY_INITIALIZE,
-            cryptoMemory: cryptoMemory,
-            sdk: sdk,
-        }
-    })();
-};
 
 export const setAccountAddress = (value, shieldedAddress) => {
     return {
@@ -494,8 +474,7 @@ export const shieldedBalanceFetchError = (error) => ({
 });
 
 
-export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = config.CHAIN_ID, cb) =>
-    async (dispatch) => {
+export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = config.CHAIN_ID, cb) => async (dispatch) => {
         dispatch({ type: FETCH_SHIELDED_BALANCE_IN_PROGRESS });
         try {
             const url = urlFetchBlockHeight(timestamp);
@@ -505,40 +484,32 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
             }
 
             const birthday = response?.data?.height || 0;
-            console.log('birthday ', birthday);
             const { cryptoMemory } = await init();
-            console.log('cryptoMemory ', cryptoMemory);
-            // const sdk = getSdk(
-            //     cryptoMemory,
-            //     config.RPC_URL,
-            //     config.MAPS_REST_URL,
-            //     '',
-            //     config.TOKEN_ADDRESS,
-            // );
-            // console.log('sdk ', sdk);
+            const sdk = getSdk(
+                cryptoMemory,
+                config.RPC_URL,
+                config.MAPS_REST_URL,
+                '',
+                config.TOKEN_ADDRESS,
+            );
 
-            // const datedViewingKeys = [{
-            //     key: viewingKey,
-            //     birthday: birthday,
-            // }];
-            // console.log('datedViewingKeys ', datedViewingKeys);
-            // const sdbalance = await sdk.rpc.shieldedSync(datedViewingKeys, chainId)
-            // console.log('sdbalance ', sdbalance)
-            // const balance = await sdk.rpc.queryBalance(
-            //     viewingKey,
-            //     [config.TOKEN_ADDRESS],
-            //     chainId,
-            // );
-            // console.log('checking final balcnce ', balance);
-            // dispatch(fetchBalanceSuccess(balance));
+            const datedViewingKeys = [{
+                key: viewingKey,
+                birthday: birthday,
+            }];
+            await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
+            const balance = await sdk.rpc.queryBalance(
+                viewingKey,
+                [config.TOKEN_ADDRESS],
+                chainId,
+            );
+            dispatch(shieldedBalanceFetchSuccess(balance));
         } catch (error) {
             console.error('❌ Shielded balance error:', {
                 message: error.message || 'Unknown error',
                 error,
                 chainId,
             });
-            dispatch(fetchBalanceError(error.message || 'Unknown error'));
-        } finally {
-            dispatch({ type: FETCH_SHIELDED_BALANCE_SUCCESS });
+            dispatch(shieldedBalanceFetchError(error.message || 'Unknown error'));
         }
     };

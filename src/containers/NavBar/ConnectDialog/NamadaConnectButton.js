@@ -13,6 +13,7 @@ import {
     showSelectAccountDialog,
     fetchTokensList,
     fetchBalanceList,
+    shieldedBalanceFetchSuccess,
 } from '../../../actions/accounts';
 import { connect } from 'react-redux';
 import { showMessage } from '../../../actions/snackbar';
@@ -29,8 +30,8 @@ const KeplrConnectButton = (props) => {
     const initKeplr = () => {
         setInProgress(true);
         initializeNamadaChain((error, addressList, shieldedAddress) => {
-            const shieldedDetails = shieldedAddress && shieldedAddress.find((item) => item.type === 'shielded-keys');
-            console.log('raw shielded details ', shieldedDetails);
+            // const shieldedDetails = shieldedAddress && shieldedAddress.find((item) => item.type === 'shielded-keys');
+            // console.log('raw shielded details ', shieldedDetails);
             setInProgress(false);
             if (error) {
                 localStorage.removeItem('of_co_address');
@@ -55,7 +56,9 @@ const KeplrConnectButton = (props) => {
             // console.log('testing shielded details ', shieldedAddress[1]);
             // const address1 = `${addressList?.address ?? ""}`;
             // const address2 = `${shieldedAddress?.[1]?.address ?? ""}`;
-            props.getShieldedBalance(shieldedAddress[1].viewingKey, shieldedAddress[1].timestamp, addressList.address, shieldedAddress[1].address);
+            if (shieldedAddress && shieldedAddress.length && shieldedAddress[1]) {
+                props.getShieldedBalance(shieldedAddress[1]?.viewingKey, shieldedAddress[1]?.timestamp, addressList?.address, shieldedAddress[1]?.address);
+            }
             // props.fetchVestingBalance(addressList && addressList.address);
             // if (!props.proposalTab) {
             //     props.getDelegatedValidatorsDetails(addressList && addressList.address);
@@ -93,6 +96,7 @@ KeplrConnectButton.propTypes = {
     setAccountDetails: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
+    shieldedBalanceFetchSuccess: PropTypes.func.isRequired,
     proposalTab: PropTypes.bool,
     stake: PropTypes.bool,
 };
@@ -118,6 +122,7 @@ const actionsToProps = {
     setAccountDetails,
     fetchTokensList,
     fetchBalanceList,
+    shieldedBalanceFetchSuccess,
 };
 
 export default connect(stateToProps, actionsToProps)(KeplrConnectButton);

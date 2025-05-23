@@ -8,6 +8,7 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setAssetsTabs } from 'actions/assets';
 import classNames from 'classnames';
+import withRouter from 'components/WithRouter';
 
 const useStyles = makeStyles({
     root: {
@@ -20,6 +21,11 @@ const AssetTabs = (props) => {
 
     const handleChange = (event, newValue) => {
         props.onChange(newValue);
+        if (newValue === 'shielded') {
+            props.router.navigate('/tokensShielded');
+        } else {
+            props.router.navigate('/tokens');
+        }
     };
 
     return (
@@ -43,6 +49,15 @@ AssetTabs.propTypes = {
     lang: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
     onChange: PropTypes.func.isRequired,
+    router: PropTypes.shape({
+        location: PropTypes.shape({
+            pathname: PropTypes.string.isRequired,
+        }).isRequired,
+        navigate: PropTypes.func.isRequired,
+        params: PropTypes.shape({
+            proposalID: PropTypes.string,
+        }).isRequired,
+    }),
 };
 
 const stateToProps = (state) => {
@@ -56,4 +71,4 @@ const actionToProps = {
     onChange: setAssetsTabs,
 };
 
-export default connect(stateToProps, actionToProps)(AssetTabs);
+export default withRouter(connect(stateToProps, actionToProps)(AssetTabs));

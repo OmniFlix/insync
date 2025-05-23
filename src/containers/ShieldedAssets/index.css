@@ -30,9 +30,9 @@
     margin: auto;
 }
 
-.main_content .sub_tabs_section.assets_tab {
+/* .main_content .sub_tabs_section.assets_tab {
     width: calc(100% - 120px);
-}
+} */
 
 .shielding_tabs {
     background: #000;

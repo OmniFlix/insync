@@ -30,7 +30,10 @@ const routes = [{
     path: '/externalTransfer',
     component: IBCTransfer,
 }, {
-    path: '/assets',
+    path: '/tokens',
+    component: Assets,
+}, {
+    path: '/tokensShielded',
     component: Assets,
 },  {
     path: '/externalTransfer/withdraw',

@@ -21,9 +21,11 @@ import {
     fetchVestingBalance,
     getBalance,
     getDelegations,
+    getShieldedBalance,
     getUnBondingDelegations,
     setAccountAddress,
     setAccountDetails,
+    shieldedBalanceFetchSuccess,
     showSelectAccountDialog,
 } from '../../actions/accounts';
 import {
@@ -41,6 +43,7 @@ import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposal
 import { Button } from '@material-ui/core';
 import ConnectDialog from './ConnectDialog';
 import withRouter from '../../components/WithRouter';
+import ShieldedSyncPercentage from 'containers/ShieldedSyncPercentage';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
 // import { init as initShared } from '../../private_modules/namada/shared/init-inline';
 
@@ -299,7 +302,7 @@ class NavBar extends Component {
         }
     }
 
-    handleFetch (address) {
+    handleFetch (address, shieldedAddress) {
         if (this.props.balance && !this.props.balance.length &&
             !this.props.balanceInProgress) {
             this.props.getBalance(address, (result) => {
@@ -310,6 +313,12 @@ class NavBar extends Component {
                     }
                 }
             });
+            if (shieldedAddress && shieldedAddress.length) {
+                const index = shieldedAddress.findIndex((val) => val.address === address);
+                if (shieldedAddress[index + 1]) {
+                    this.props.getShieldedBalance(shieldedAddress[index + 1]?.viewingKey, shieldedAddress[index + 1]?.timestamp, address, shieldedAddress[index + 1]?.address);
+                }
+            }
             this.props.fetchTokensList();
             this.props.fetchBalanceList(address);
         } else if (this.props.delegations && !this.props.delegations.length &&
@@ -384,7 +393,7 @@ class NavBar extends Component {
             this.props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[1]?.address);
             this.props.setAccountDetails(addressList);
             if (fetch) {
-                this.handleFetch(addressList && addressList.address);
+                this.handleFetch(addressList && addressList.address, shieldedAddress);
             }
             if (addressList && previousAddress !== addressList.address) {
                 localStorage.setItem('of_co_address', encode(addressList && addressList.address));
@@ -416,42 +425,45 @@ class NavBar extends Component {
 
     render () {
         return (
-            <div className={ClassNames('nav_bar padding', localStorage.getItem('of_co_address') || this.props.address
-                ? '' : 'disconnected_nav')}>
-                <img
-                    alt="OmniFlix"
-                    src={logo}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => window.open('https://namada.omniflix.co', '_self')}/>
-                <ExpansionButton/>
-                <div className={ClassNames('right_content', this.props.show ? 'show' : '')}>
-                    <div className="back_button" onClick={this.props.handleClose}>
-                        <Icon className="cross" icon="cross"/>
+            <>
+                <div className={ClassNames('nav_bar padding', localStorage.getItem('of_co_address') || this.props.address
+                    ? '' : 'disconnected_nav')}>
+                    <img
+                        alt="OmniFlix"
+                        src={logo}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => window.open('https://namada.omniflix.co', '_self')}/>
+                    <ExpansionButton/>
+                    <div className={ClassNames('right_content', this.props.show ? 'show' : '')}>
+                        <div className="back_button" onClick={this.props.handleClose}>
+                            <Icon className="cross" icon="cross"/>
+                        </div>
+                        <Tabs/>
+                        {(localStorage.getItem('of_co_address') || this.props.address) &&
+                            <div className="select_fields">
+                                <p className="token_name">{config.NETWORK_NAME}</p>
+                                <span className="divider"/>
+                                <div className="hash_text" title={this.props.address}>
+                                    <p className="name">{this.props.address}</p>
+                                    {this.props.address &&
+                                        this.props.address.slice(this.props.address.length - 6, this.props.address.length)}
+                                </div>
+                                <CopyButton data={this.props.address}>
+                                    {variables[this.props.lang].copy}
+                                </CopyButton>
+                            </div>}
+                        {localStorage.getItem('of_co_address') || this.props.address
+                            ? <DisconnectButton/>
+                            : <Button
+                                className="connect_button"
+                                onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
+                                Connect
+                            </Button>}
                     </div>
-                    <Tabs/>
-                    {(localStorage.getItem('of_co_address') || this.props.address) &&
-                        <div className="select_fields">
-                            <p className="token_name">{config.NETWORK_NAME}</p>
-                            <span className="divider"/>
-                            <div className="hash_text" title={this.props.address}>
-                                <p className="name">{this.props.address}</p>
-                                {this.props.address &&
-                                    this.props.address.slice(this.props.address.length - 6, this.props.address.length)}
-                            </div>
-                            <CopyButton data={this.props.address}>
-                                {variables[this.props.lang].copy}
-                            </CopyButton>
-                        </div>}
-                    {localStorage.getItem('of_co_address') || this.props.address
-                        ? <DisconnectButton/>
-                        : <Button
-                            className="connect_button"
-                            onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
-                            Connect
-                        </Button>}
+                    <ConnectDialog/>
                 </div>
-                <ConnectDialog/>
-            </div>
+                <ShieldedSyncPercentage/>
+            </>
         );
     }
 }
@@ -480,6 +492,8 @@ NavBar.propTypes = {
     getProposals: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     getValidators: PropTypes.func.isRequired,
+    getShieldedBalance: PropTypes.func.isRequired,
+    shieldedBalanceFetchSuccess: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     inActiveValidatorsInProgress: PropTypes.bool.isRequired,
     inActiveValidatorsList: PropTypes.array.isRequired,
@@ -590,6 +604,8 @@ const actionToProps = {
     setAccountDetails,
     fetchTokensList,
     fetchBalanceList,
+    getShieldedBalance,
+    shieldedBalanceFetchSuccess,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));

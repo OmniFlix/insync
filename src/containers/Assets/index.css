@@ -1,0 +1,46 @@
+.assets.stake.padding {
+    position: relative;
+    width: 550px;
+    margin: auto;
+    padding: 26px 0;
+}
+
+.assets.stake .table {
+    padding: 30px;
+}
+
+.assets .leaner_progress {
+    width: calc(100% - 48px);
+    margin: auto;
+    position: absolute;
+    top: 42px;
+    left: 24px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.assets .leaner_progress > p {
+    text-align: left;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 130%;
+    color: #000;
+}
+
+.assets .leaner_progress > div {
+    border-radius: 50px;
+    height: 6px;
+    background: #000;
+    margin: unset;
+}
+
+.assets .leaner_progress > div > div {
+    background: #feff47;
+    border-radius: 50px;
+}
+
+.assets thead {
+    display: table-header-group;
+}
