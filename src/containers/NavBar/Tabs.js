@@ -40,7 +40,7 @@ class Tabs extends Component {
                 value: 'transfers',
             });
             if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
-                this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer')
+                this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer');
             }
         } else if (this.state.value !== route && (route === 'tokensShielded')) {
             this.props.setAssetsTabs('shielded');
@@ -72,7 +72,7 @@ class Tabs extends Component {
                     value: 'transfers',
                 });
                 if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
-                    this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer')
+                    this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer');
                 }
             } else if (value !== this.state.value && (value === 'tokensShielded')) {
                 this.props.setAssetsTabs('shielded');
@@ -96,7 +96,7 @@ class Tabs extends Component {
         // }
 
         if (route) {
-            if (this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer') {
+            if (this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer' && route === 'externalTransfer') {
                 this.props.router.navigate('/' + route + '/withdraw');
                 this.setState({
                     value: newValue,
@@ -159,11 +159,11 @@ class Tabs extends Component {
 Tabs.propTypes = {
     handleClose: PropTypes.func.isRequired,
     hideProposalDialog: PropTypes.func.isRequired,
-    setIBCTransferType: PropTypes.func.isRequired,
-    setExternalTransferSubTabs: PropTypes.func.isRequired,
-    setAssetsTabs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    setAssetsTabs: PropTypes.func.isRequired,
+    setExternalTransferSubTabs: PropTypes.func.isRequired,
+    setIBCTransferType: PropTypes.func.isRequired,
     externalTransferSubTabs: PropTypes.string,
     router: PropTypes.shape({
         location: PropTypes.shape({

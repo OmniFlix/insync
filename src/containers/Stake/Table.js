@@ -38,7 +38,11 @@ class Table extends Component {
                                 onClick={() => this.props.showConnectDialog()}>
                                 Connect
                             </Button>
-                            : <div className="no_data_table"> Stake with a Validator now! </div>,
+                            : <span
+                                className="no_data_table" onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                }}> Stake with a Validator now! </span>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {

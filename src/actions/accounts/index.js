@@ -45,11 +45,12 @@ import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
 // import { Tokens } from '@namada/types';
 
-export const setAccountAddress = (value, shieldedAddress) => {
+export const setAccountAddress = (value, shieldedAddress, shieldedDetails) => {
     return {
         type: ACCOUNT_ADDRESS_SET,
         value,
         shieldedAddress,
+        shieldedDetails,
     };
 };
 

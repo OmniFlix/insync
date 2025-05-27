@@ -18,12 +18,12 @@ import ShieldedTransferDialog from './ShieldedTransferDialog';
 import ShieldedConvertDialog from './ShieldedConvertDialog';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    '& > * + *': {
-      marginTop: theme.spacing(2),
+    root: {
+        width: '100%',
+        '& > * + *': {
+            marginTop: theme.spacing(2),
+        },
     },
-  },
 }));
 
 const Tokens = (props) => {
@@ -61,8 +61,8 @@ const Tokens = (props) => {
 Tokens.propTypes = {
     assetsTab: PropTypes.string.isRequired,
     balanceProgress: PropTypes.bool.isRequired,
-    shieldedBalanceProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
+    shieldedBalanceProgress: PropTypes.bool.isRequired,
     tokensProgress: PropTypes.bool.isRequired,
 };
 
