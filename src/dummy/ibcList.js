@@ -114,8 +114,8 @@ export const ibcList = [{
 //     value: 'neutron',
 //     chain_name: 'neutron',
 //     config: {
-//         RPC_URL: 'https://neutron-rpc.ibs.team',
-//         REST_URL: 'https://lcd-neutron.whispernode.com',
+//         RPC_URL: 'https://neutron-rpc.publicnode.com:443',
+//         REST_URL: 'https://neutron-rest.publicnode.com',
 //         CHAIN_ID: 'neutron-1',
 //         CHAIN_NAME: 'neutron',
 //         NETWORK: 'mainnet',
