@@ -39,6 +39,7 @@ const address = (state = {
     value: '',
     details: {},
     shieldedDetails: '',
+    shieldedData: {},
 }, action) => {
     switch (action.type) {
     case ACCOUNT_ADDRESS_SET:
@@ -46,6 +47,7 @@ const address = (state = {
             ...state,
             value: action.value,
             shieldedDetails: action.shieldedAddress,
+            shieldedData: action.shieldedDetails,
         };
     case ACCOUNT_DETAILS_SET:
         return {
@@ -56,6 +58,9 @@ const address = (state = {
         return {
             ...state,
             value: '',
+            details: {},
+            shieldedDetails: '',
+            shieldedData: {},
         };
 
     default:

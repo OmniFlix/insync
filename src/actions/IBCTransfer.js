@@ -28,6 +28,7 @@ import {
     TX_SIGN_AND_BROAD_CAST_IN_PROGRESS,
     TX_SIGN_AND_BROAD_CAST_SUCCESS,
     TX_SIGN_AND_BROAD_CAST_ERROR,
+    FROM_SHIELDED_NAMADA_SELECT_ASSET_SET,
 } from '../constants/IBCTransfer';
 import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
@@ -90,6 +91,14 @@ export const setIBCTransferAddress = (value) => {
 export const setFromNamadaSelectedAsset = (value, result) => {
     return {
         type: FROM_NAMADA_SELECT_ASSET_SET,
+        value,
+        result,
+    };
+};
+
+export const setFromShieldedNamadaSelectedAsset = (value, result) => {
+    return {
+        type: FROM_SHIELDED_NAMADA_SELECT_ASSET_SET,
         value,
         result,
     };

@@ -40,7 +40,8 @@ const KeplrConnectButton = (props) => {
                 return;
             }
 
-            props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[1].address);
+            const index = shieldedAddress.findIndex((val) => addressList && addressList.address === val.address);
+            props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1].address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1]);
             props.setAccountDetails(addressList);
             props.hideConnectDialog();
             // if (!props.proposalTab && !props.stake) {
