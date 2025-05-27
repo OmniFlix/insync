@@ -2,7 +2,7 @@ import { IconButton, Tooltip } from '@material-ui/core';
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import './index.css';
-import copy from '../../assets/userDetails/copy.png';
+import copy from '../../assets/userDetails/copy_right.png';
 
 const CopyButton = (props) => {
     const [open, setOpen] = React.useState(false);

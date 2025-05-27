@@ -64,6 +64,7 @@ table .disconnect_button {
     line-height: 130%;
     padding: 10px 20px;
     text-transform: unset;
+    width: 100%;
 }
 
 .nav_bar .disconnect_button:hover {
@@ -198,8 +199,8 @@ table .disconnect_button {
 
 .hash_text {
     font-family: 'Blinker', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
     line-height: 130%;
     color: #FFFFFF;
     max-width: 200px;
@@ -211,17 +212,6 @@ table .disconnect_button {
 }
 
 .hash_text > button {
-    width: max-content;
-    background: rgba(255, 255, 255, 0.3);
-    color: #000000;
-    border-radius: 50px;
-    font-family: 'Blinker', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 130%;
-    padding: 0 20px;
-    text-transform: unset;
-    height: 30px;
     margin-left: 10px;
 }
 
@@ -230,7 +220,8 @@ table .disconnect_button {
     overflow: hidden;
     text-overflow: ellipsis;
     margin-right: -1px;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 
@@ -257,13 +248,33 @@ table .disconnect_button {
 }
 
 .content {
-     margin: 8px 0px;
+    margin: 8px 0px;
     font-size: 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 10px;
+}
+
+.content > span {
+    border: 1px solid #FFFFFF3D;
+    width: 100%
+}
+
+.content .address_section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.address_section .address_heading {
+    font-size: 12px;
+    color: #9F9F9F;
+    font-weight: 400;
+    font-family: 'Blinker', sans-serif;
 }
 
 @keyframes fadeInDown {
