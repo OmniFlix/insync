@@ -111,8 +111,8 @@ const IBCUnShielding = (props) => {
     const handleNamadaTransfer = () => {
         setInProgress(true);
 
-        // const source = props.address;
-        const source = props.shieldedData?.pseudoExtendedKey;
+        const source = props.address;
+        // const source = props.shieldedData?.pseudoExtendedKey;
         let token = fromNamadaSelectedConfig?.COIN_MINIMAL_DENOM;
         let amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
         // const amount = String(Number(props.amount) * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));

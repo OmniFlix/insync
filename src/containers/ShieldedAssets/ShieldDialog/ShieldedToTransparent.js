@@ -43,6 +43,7 @@ const ShieldedToTransparent = (props) => {
 
         const tx = {
             source: props.shieldedData?.pseudoExtendedKey,
+            // gasSpendingKey: props.shieldedData?.pseudoExtendedKey,
             data: [msgValue],
         };
 
