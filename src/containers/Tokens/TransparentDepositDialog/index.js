@@ -8,7 +8,7 @@ import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 // import NamadaToIBCTransparentTransfer from "containers/IBCTransfer/NamadaToIBCTransparentTransfer";
 import IBCTransferDialog from "containers/IBCTransfer/IBCTransferDialog";
 
-class DepositDialog extends React.Component {
+class TransparentDepositDialog extends React.Component {
    render () {
     // const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
     // this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
@@ -36,7 +36,7 @@ class DepositDialog extends React.Component {
     }
 }
 
-DepositDialog.propTypes = {
+TransparentDepositDialog.propTypes = {
     externalTransferSubTabs: PropTypes.string.isRequired,
     handleClose: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
@@ -70,4 +70,4 @@ const actionToProps = {
     handleClose: hideTransparentTokensDepositDialog,
 };
 
-export default withRouter(connect(stateToProps, actionToProps)(DepositDialog));
+export default withRouter(connect(stateToProps, actionToProps)(TransparentDepositDialog));
