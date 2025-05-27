@@ -26,7 +26,11 @@ const Proposals = (props) => {
                 : value === 3 ? 'voting'
                     : value === 4 ? 'rejected' : null);
     };
-    const filteredProposals = filter ? props.proposals.filter((item) => item.status === filter) : props.proposals;
+    const filteredProposals = filter ? props.proposals.filter((item) => filter === 'passed'
+        ? filter === item.status || item.status === 'executedPassed'
+        : filter === 'rejected'
+            ? filter === item.status || item.status === 'executedRejected'
+            : item.status === filter) : props.proposals;
 
     return (
         <div className="proposals">

@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '../../components/CircularProgress';
 import { namadaAssets } from 'dummy/ibcList';
-// import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
+import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
 import TransferIcon from '../../assets/transactions/transfer.svg';
 import DepositIcon from '../../assets/transactions/deposit.svg';
 import WithdrawIcon from '../../assets/transactions/withdraw.svg';
@@ -144,13 +144,13 @@ class ShieldedTokensListTable extends React.Component {
                     if (value && value.config && value.config.COIN_DECIMALS) {
                         amount = amount ? (amount / 10 ** value.config.COIN_DECIMALS) : 0;
                     }
-                    if (value && value.name === 'Shielded Namada') {
-                        return (
-                            <div className="voting_power token_name">
-                                <p className="percentage">Coming Soon...</p>
-                            </div>
-                        )
-                    }
+                    // if (value && value.name === 'Shielded Namada') {
+                    //     return (
+                    //         <div className="voting_power token_name">
+                    //             <p className="percentage">Coming Soon...</p>
+                    //         </div>
+                    //     )
+                    // }
 
                     return (
                         <div className="voting_power token_name">
@@ -217,19 +217,17 @@ class ShieldedTokensListTable extends React.Component {
             
             return {
                 ...asset,
-                balance: matchingBalance && matchingBalance.length && matchingBalance[1] || null,
-                };
-        }).filter((item) => item.balance);
-        // enrichedAssets.unshift({
-        //     name: 'Shielded Namada',
-        //     symbol: 'NAM',
-        //     logo_URIs: {
-        //         svg: NamadaShieldedLogo,
-        //     },
-        //     balance: {
-        //         minDenomAmount: available
-        //     }
-        // });
+                balance: (matchingBalance && matchingBalance.length && matchingBalance[1]) || null,
+            };
+        }).filter((item) => item);
+        enrichedAssets.unshift({
+            name: 'Shielded Namada',
+            symbol: 'NAM',
+            logo_URIs: {
+                svg: NamadaShieldedLogo,
+            },
+            balance: 0,
+        });
 
         const tableData = enrichedAssets && enrichedAssets.length
             ? enrichedAssets.map((item) =>
