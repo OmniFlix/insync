@@ -5,13 +5,10 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
-// import NamadaToIBCTransparentTransfer from "containers/IBCTransfer/NamadaToIBCTransparentTransfer";
 import IBCTransferDialog from "containers/IBCTransfer/IBCTransferDialog";
 
-class DepositDialog extends React.Component {
+class TransparentDepositDialog extends React.Component {
    render () {
-    // const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
-    // this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
         return (
             <Dialog open={this.props.open}
             onClose={this.props.handleClose}
@@ -19,24 +16,16 @@ class DepositDialog extends React.Component {
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_deposit_dialog">
                 <div className="ibc_content padding">
-                    <p>IBC Transfer to Namada</p>
-                    <IBCTransferDialog/>
+                    <p>Deposit {' '}  {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                    <IBCTransferDialog from='transparent_deposit' depositData={this.props.value}/>
                 </div>
-                    {/* <div className="ibc_content padding">
-                        <>
-                            <p>Withdraw assets from Namada via IBC</p>
-                        </>
-                        <NamadaToIBCTransparentTransfer/>
-                    </div> */}
-                    {/* {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding')) &&
-                    <div style={{margin: '150px 0'}}>Coming Soon...</div>} */}
                     <SuccessDialog/>
             </Dialog>
         )
     }
 }
 
-DepositDialog.propTypes = {
+TransparentDepositDialog.propTypes = {
     externalTransferSubTabs: PropTypes.string.isRequired,
     handleClose: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
@@ -53,12 +42,14 @@ DepositDialog.propTypes = {
             proposalID: PropTypes.string,
         }).isRequired,
     }),
+    value: PropTypes.object,
 };
 
 const stateToProps = (state) => {
     return {
         lang: state.language,
         open: state.assets.transparentTokensDepositDialog.open,
+        value: state.assets.transparentTokensDepositDialog.value,
 
         ibcSwapType: state.ibcTransfer.ibcSwapType.value,
         subTabs: state.shieldedAssets.externalShieldingTabs.value,
@@ -70,4 +61,4 @@ const actionToProps = {
     handleClose: hideTransparentTokensDepositDialog,
 };
 
-export default withRouter(connect(stateToProps, actionToProps)(DepositDialog));
+export default withRouter(connect(stateToProps, actionToProps)(TransparentDepositDialog));

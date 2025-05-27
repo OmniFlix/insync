@@ -1,6 +1,7 @@
 export const ibcList = [{
     name: 'Osmosis',
     value: 'osmosis',
+    chain_name: 'osmosis',
     config: {
         RPC_URL: 'https://osmosis-rpc.polkachu.com',
         REST_URL: 'https://osmosis-api.polkachu.com',
@@ -35,8 +36,46 @@ export const ibcList = [{
         },
     ],
 }, {
+//     name: 'Celestia',
+//     value: 'celestia',
+//     chain_name: 'celestia',
+//     config: {
+//         RPC_URL: 'https://public-celestia-rpc.numia.xyz',
+//         REST_URL: 'https://public-celestia-lcd.numia.xyz',
+//         CHAIN_ID: 'celestia',
+//         CHAIN_NAME: 'celestia',
+//         NETWORK: 'mainnet',
+//         COIN_DENOM: 'TIA',
+//         COIN_MINIMAL_DENOM: 'utia',
+//         COIN_DECIMALS: 6,
+//         PREFIX: 'celestia',
+//         gasPriceStep: {
+//             low: 0.01,
+//             average: 0.025,
+//             high: 0.04,
+//         },
+//         AVG_GAS_STEP: 0.010,
+//         EXPLORER_URL: 'https://www.mintscan.io/celestia',
+//     },
+//     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-celestia.json',
+//     image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png',
+//     assets: [
+//         {
+//             base: 'utia',
+//             name: 'Celestia',
+//             display: 'tia',
+//             symbol: 'TIA',
+//             logo_URIs: {
+//                 png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png",
+//                 svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.svg"
+//             },
+//             coingecko_id: 'celestia',
+//         },
+//     ],
+// }, {
     name: 'Cosmos Hub',
     value: 'cosmos',
+    chain_name: 'cosmoshub',
     config: {
         RPC_URL: 'https://cosmos-rpc.polkachu.com',
         REST_URL: 'https://cosmos-api.polkachu.com',
@@ -70,6 +109,80 @@ export const ibcList = [{
             coingecko_id: 'cosmos',
         },
     ],
+// }, {
+//     name: 'Neutron',
+//     value: 'neutron',
+//     chain_name: 'neutron',
+//     config: {
+//         RPC_URL: 'https://neutron-rpc.ibs.team',
+//         REST_URL: 'https://lcd-neutron.whispernode.com',
+//         CHAIN_ID: 'neutron-1',
+//         CHAIN_NAME: 'neutron',
+//         NETWORK: 'mainnet',
+//         COIN_DENOM: 'NTRN',
+//         COIN_MINIMAL_DENOM: 'untrn',
+//         COIN_DECIMALS: 6,
+//         PREFIX: 'neutron',
+//         gasPriceStep: {
+//             low: 0.01,
+//             average: 0.025,
+//             high: 0.04,
+//         },
+//         AVG_GAS_STEP: 0.010,
+//         EXPLORER_URL: 'https://www.mintscan.io/neutron',
+//     },
+//     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-neutron.json',
+//     image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/ntrn.png',
+//     assets: [
+//         {
+//             base: 'untrn',
+//             name: 'neutron',
+//             display: 'ntrn',
+//             symbol: 'NTRN',
+//             logo_URIs: {
+//                 png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/ntrn.png",
+//                 svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/ntrn.svg"
+//             },
+//             coingecko_id: 'neutron',
+//         },
+//     ],
+// }, {
+//     name: 'Stride',
+//     value: 'stride',
+//     chain_name: 'stride',
+//     config: {
+//         RPC_URL: 'https://stride-rpc.ibs.team',
+//         REST_URL: 'https://lcd-stride.whispernode.com',
+//         CHAIN_ID: 'stride-1',
+//         CHAIN_NAME: 'stride',
+//         NETWORK: 'mainnet',
+//         COIN_DENOM: 'STRD',
+//         COIN_MINIMAL_DENOM: 'ustrd',
+//         COIN_DECIMALS: 6,
+//         PREFIX: 'stride',
+//         gasPriceStep: {
+//             low: 0.005,
+//             average: 0.005,
+//             high: 0.05,
+//         },
+//         AVG_GAS_STEP: 0.0005,
+//         EXPLORER_URL: 'https://explorer.bccnodes.com/stride-M',
+//     },
+//     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-stride.json',
+//     image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png',
+//     assets: [
+//         {
+//             base: 'ustrd',
+//             name: 'stride',
+//             display: 'statom',
+//             symbol: 'stATOM',
+//             logo_URIs: {
+//                 png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png",
+//                 svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.svg"
+//             },
+//             coingecko_id: 'stride',
+//         },
+//     ],
 }];
 
 export const feeList = {

@@ -7,13 +7,42 @@ import CircularProgress from '../../components/CircularProgress';
 import { ibcList, namadaAssets } from 'dummy/ibcList';
 import { config } from '../../config';
 import NamadaLogo from '../../assets/masp/namada_logo.svg';
-import { Button } from '@material-ui/core';
-import { showTransparentTokensDepositDialog, showTransparentTokensWithdrawDialog } from 'actions/assets';
-import { connectIBCAccount, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
+import { showTransparentTokensConvertDialog, showTransparentTokensDepositDialog, showTransparentTokensTransferDialog, showTransparentTokensWithdrawDialog } from 'actions/assets';
+import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
+import TransferIcon from '../../assets/transactions/transfer.svg';
+import DepositIcon from '../../assets/transactions/deposit.svg';
+import WithdrawIcon from '../../assets/transactions/withdraw.svg';
+import ConvertIcon from '../../assets/transactions/convert.svg';
+import { Button, withStyles, Tooltip } from '@material-ui/core';
+
+const CustomTooltip = withStyles({
+    tooltip: {
+      maxWidth: '650px',
+      maxHeight: '180px',
+      backgroundColor: '#1E1E1E',
+      color: '#ffffff',
+      overflow: 'auto',
+      scrollbarWidth: 'thin',
+      '&::-webkit-scrollbar': {
+        width: '4px',
+      },
+      '&::-webkit-scrollbar-track': {
+        backgroundColor: '#1E1E1E',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#ffffff',
+        borderRadius: '1px',
+      },
+    },
+})(Tooltip);
 
 class TokensListTable extends React.Component {
     constructor (props) {
         super(props);
+
+        this.handleWithdraw = this.handleWithdraw.bind(this);
+        this.handleTransfer = this.handleTransfer.bind(this);
+        this.handleConvert = this.handleConvert.bind(this);
         this.handleDeposit = this.handleDeposit.bind(this);
         this.initKeplr = this.initKeplr.bind(this);
     }
@@ -22,6 +51,24 @@ class TokensListTable extends React.Component {
         this.props.setIBCTransferType('transparent');
         this.initKeplr(value);
         this.props.showTransparentTokensDepositDialog(value);
+    }
+
+    handleWithdraw (value) {
+        this.props.setIBCTransferType('transparent');
+        // this.initKeplr(value);
+        this.props.showTransparentTokensWithdrawDialog(value);
+    }
+
+    handleTransfer (value) {
+        this.props.setIBCTransferType('transparent');
+        // this.initKeplr(value);
+        this.props.showTransparentTokensTransferDialog(value);
+    }
+
+    handleConvert (value) {
+        this.props.setIBCTransferType('transparent');
+        // this.initKeplr(value);
+        this.props.showTransparentTokensConvertDialog(value);
     }
 
     initKeplr (value) {
@@ -37,7 +84,10 @@ class TokensListTable extends React.Component {
         };
 
         // setInProgress(true);
+        console.log('config', config);
         this.props.connectIBCAccount(config, (address) => {
+            console.log('config2', config, address);
+            // this.props.connectIBCAccountSuccess(address);
             // setInProgress(false);
             this.props.fetchIBCBalance(config.REST_URL, address[0].address);
             this.props.fetchIBCChannel(value.channel_link);
@@ -126,19 +176,29 @@ class TokensListTable extends React.Component {
                               {token === 'NAM'
                             ? null 
                             : <Button onClick={() => this.handleDeposit(value)}>
+                            <img src={DepositIcon} alt="Deposit"/>
                                 Deposit
                             </Button>}
                             {token === 'NAM'
                                 ? null 
-                                : <Button>
+                                : <Button onClick={() => this.handleWithdraw(value)}>
+                                <img src={WithdrawIcon} alt="Withdraw"/>
                                     Withdraw
                                 </Button>}
-                            <Button>
-                                Transfer
-                            </Button>
-                            <Button>
-                                Convert
-                            </Button>
+                                <CustomTooltip  title={token === 'NAM' ? 'Enables in Phase 5' : "Coming Soon"}>
+                                    <span className='disabled_tx_button'>
+                                        <Button  disabled={true} onClick={() => this.handleTransfer(value)}>
+                                            <img src={TransferIcon} alt="Transfer"/>
+                                            Transfer
+                                        </Button>
+                                    </span>
+                                </CustomTooltip>
+                                <CustomTooltip  title="Convert to Shielded">
+                                    <Button onClick={() => this.handleConvert(value)}>
+                                        <img src={ConvertIcon} alt="Convert"/>
+                                        Shield
+                                    </Button>
+                                </CustomTooltip>
                         </div>
                     );
                 },
@@ -222,11 +282,14 @@ TokensListTable.propTypes = {
     balance: PropTypes.array.isRequired,
     balanceList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
+    showTransparentTokensConvertDialog: PropTypes.func.isRequired,
     showTransparentTokensDepositDialog: PropTypes.func.isRequired,
+    showTransparentTokensTransferDialog: PropTypes.func.isRequired,
     showTransparentTokensWithdrawDialog: PropTypes.func.isRequired,
     setIBCTransferType: PropTypes.func.isRequired,
     setSelectedChain: PropTypes.func.isRequired,
     connectIBCAccount: PropTypes.func.isRequired,
+    connectIBCAccountSuccess: PropTypes.func.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
     fetchIBCChannel: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
@@ -247,9 +310,13 @@ const stateToProps = (state) => {
 const actionToProps = {
     showTransparentTokensDepositDialog,
     showTransparentTokensWithdrawDialog,
+    showTransparentTokensTransferDialog,
+    showTransparentTokensConvertDialog,
+
     setIBCTransferType,
     setSelectedChain,
     connectIBCAccount,
+    connectIBCAccountSuccess,
     fetchIBCBalance,
     fetchIBCChannel,
 };

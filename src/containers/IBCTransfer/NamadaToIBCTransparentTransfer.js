@@ -34,6 +34,7 @@ import { ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/masp/downArrow.svg';
 import { formatCount } from 'utils/numberFormats';
+import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
 
 const NamadaToIBCTransparentTransfer = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -212,6 +213,9 @@ const NamadaToIBCTransparentTransfer = (props) => {
                         props.showDelegateSuccessDialog(value && value.hash, fromNamadaSelectedConfig);
                         props.fetchTokensList();
                         props.fetchBalanceList(props.address);
+                        if(props.from === 'transparent_withdraw') {
+                            props.hideTransparentTokensWithdrawDialog();
+                        }
                     }
                 }
             });
@@ -246,7 +250,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
                 </div>
                 <div className="border"></div>
                 <div className="select_section">
-                    <SourceSelectField ibcOnly={true}/>
+                    <SourceSelectField ibcOnly={true} from={props.from} data={props.transparentWithdrawData}/>
                     <AmountTextField/>
                 </div>
                 {fromNamadaSelectedConfig
@@ -315,6 +319,7 @@ NamadaToIBCTransparentTransfer.propTypes = {
     fetchTokensList: PropTypes.func.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    hideTransparentTokensWithdrawDialog: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setIBCSwapType: PropTypes.func.isRequired,
@@ -328,6 +333,7 @@ NamadaToIBCTransparentTransfer.propTypes = {
     fromNamadaSelectedAsset: PropTypes.object.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
+    from: PropTypes.string,
     ibcBalance: PropTypes.number,
     ibcChannel: PropTypes.object,
     ibcTransferAddress: PropTypes.string,
@@ -337,6 +343,7 @@ NamadaToIBCTransparentTransfer.propTypes = {
     selectedAsset: PropTypes.string,
     selectedChain: PropTypes.string,
     shieldedAddress: PropTypes.string,
+    transparentWithdrawData: PropTypes.object,
 };
 
 const stateToProps = (state) => {
@@ -379,6 +386,8 @@ const actionToProps = {
     fetchIBCChannel,
     fetchTokensList,
     fetchBalanceList,
+
+    hideTransparentTokensWithdrawDialog,
 };
 
 export default connect(stateToProps, actionToProps)(NamadaToIBCTransparentTransfer);

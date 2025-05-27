@@ -505,7 +505,6 @@ export const txSignAndBroadCast = (config, data, cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            console.log('response :', res);
             if (res.data && res.data.tx_response && (res.data.tx_response.code !== undefined) && (res.data.tx_response.code !== 0)) {
                 dispatch(txSignAndBroadCastError(res.data.tx_response.logs && res.data.tx_response.logs.length
                     ? res.data.tx_response.logs
@@ -519,7 +518,6 @@ export const txSignAndBroadCast = (config, data, cb) => (dispatch) => {
             }
         })
         .catch((error) => {
-            console.log('error :', error);
             dispatch(txSignAndBroadCastError(
                 error.response &&
                 error.response.data &&
@@ -619,8 +617,6 @@ export const executeIBCTransfer = (revisionHeight, revisionNumber, cb) => async 
             portId: 'transfer',
             channelId: 'channel-98451',
         };
-
-        console.log('transer paramas :', transferParams);
 
         const txs = {
             token: config.TOKEN_ADDRESS,

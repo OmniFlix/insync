@@ -5,10 +5,92 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '../../components/CircularProgress';
 import { namadaAssets } from 'dummy/ibcList';
-import { Button } from '@material-ui/core';
 // import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
+import TransferIcon from '../../assets/transactions/transfer.svg';
+import DepositIcon from '../../assets/transactions/deposit.svg';
+import WithdrawIcon from '../../assets/transactions/withdraw.svg';
+import ConvertIcon from '../../assets/transactions/convert.svg';
+import { showShieldedTokensConvertDialog, showShieldedTokensDepositDialog, showShieldedTokensTransferDialog, showShieldedTokensWithdrawDialog } from 'actions/assets';
+import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
+import { Button, withStyles, Tooltip } from '@material-ui/core';
+
+const CustomTooltip = withStyles({
+    tooltip: {
+      maxWidth: '650px',
+      maxHeight: '180px',
+      backgroundColor: '#1E1E1E',
+      color: '#ffffff',
+      overflow: 'auto',
+      scrollbarWidth: 'thin',
+      '&::-webkit-scrollbar': {
+        width: '4px',
+      },
+      '&::-webkit-scrollbar-track': {
+        backgroundColor: '#1E1E1E',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#ffffff',
+        borderRadius: '1px',
+      },
+    },
+})(Tooltip);
 
 class ShieldedTokensListTable extends React.Component {
+    constructor (props) {
+        super(props);
+
+        this.handleWithdraw = this.handleWithdraw.bind(this);
+        this.handleTransfer = this.handleTransfer.bind(this);
+        this.handleConvert = this.handleConvert.bind(this);
+        this.handleDeposit = this.handleDeposit.bind(this);
+        this.initKeplr = this.initKeplr.bind(this);
+    }
+
+    handleDeposit (value) {
+        this.props.setIBCTransferType('shielded');
+        this.initKeplr(value);
+        this.props.showShieldedTokensDepositDialog(value);
+    }
+
+    handleWithdraw (value) {
+        this.props.setIBCTransferType('shielded');
+        // this.initKeplr(value);
+        this.props.showShieldedTokensWithdrawDialog(value);
+    }
+
+    handleTransfer (value) {
+        this.props.setIBCTransferType('shielded');
+        // this.initKeplr(value);
+        this.props.showShieldedTokensTransferDialog(value);
+    }
+
+    handleConvert (value) {
+        this.props.setIBCTransferType('shielded');
+        // this.initKeplr(value);
+        this.props.showShieldedTokensConvertDialog(value);
+    }
+
+    initKeplr (value) {
+        const config = {
+            RPC_URL: value && value.config && value.config.RPC_URL,
+            REST_URL: value && value.config && value.config.REST_URL,
+            CHAIN_ID: value && value.config && value.config.CHAIN_ID,
+            CHAIN_NAME: value && value.config && value.config.CHAIN_NAME,
+            COIN_DENOM: value && value.config && value.config.COIN_DENOM,
+            COIN_MINIMAL_DENOM: value && value.config && value.config.COIN_MINIMAL_DENOM,
+            COIN_DECIMALS: value && value.config && value.config.COIN_DECIMALS,
+            PREFIX: value && value.config && value.config.PREFIX,
+        };
+
+        // setInProgress(true);
+        this.props.connectIBCAccount(config, (address) => {
+            this.props.fetchIBCBalance(config.REST_URL, address[0].address);
+            this.props.fetchIBCChannel(value.channel_link);
+            const find = ibcList.find((item) => item.value === value.coingecko_id);
+            this.props.setSelectedChain(find);
+        });
+    }
+
     render () {
         const options = {
             serverSide: false,
@@ -86,18 +168,38 @@ class ShieldedTokensListTable extends React.Component {
                     const token = value.symbol || value.name || value.display;
                     return (
                         <div className="tokens_actions">
-                           <Button>
-                            Deposit
-                            </Button>
-                            <Button>
-                            Withdraw
-                            </Button>
-                            <Button>
-                            Transfer
-                            </Button>
-                            <Button>
-                            Convert
-                            </Button>
+                              {token === 'NAM'
+                            ? null 
+                            : <Button onClick={() => this.handleDeposit(value)}>
+                                <img src={DepositIcon} alt="Deposit"/>
+                                Deposit
+                            </Button>}
+                            {token === 'NAM'
+                                ? null 
+                                : <CustomTooltip  title="Coming Soon">
+                                    <span className='disabled_tx_button'>
+                                        <Button disabled={true} onClick={() => this.handleWithdraw(value)}> 
+                                            <img src={WithdrawIcon} alt="Withdraw"/>
+                                            Withdraw
+                                        </Button>
+                                    </span>
+                                </CustomTooltip>}
+                                <CustomTooltip  title="Coming Soon">
+                                    <span className='disabled_tx_button'>
+                                        <Button disabled={true} onClick={() => this.handleTransfer(value)}>
+                                            <img src={TransferIcon} alt="Transfer"/>
+                                            Transfer
+                                        </Button>
+                                    </span>
+                                </CustomTooltip>
+                                <CustomTooltip  title="Coming Soon">
+                                    <span className='disabled_tx_button'>
+                                        <Button disabled={true} onClick={() => this.handleConvert(value)}>
+                                            <img src={ConvertIcon} alt="Convert"/>
+                                            Unshield
+                                        </Button>
+                                    </span>
+                                </CustomTooltip>
                         </div>
                     );
                 },
@@ -153,6 +255,17 @@ class ShieldedTokensListTable extends React.Component {
 ShieldedTokensListTable.propTypes = {
     balanceList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
+    setIBCTransferType: PropTypes.func.isRequired,
+    showShieldedTokensTransferDialog: PropTypes.func.isRequired,
+    showShieldedTokensDepositDialog: PropTypes.func.isRequired, 
+    showShieldedTokensWithdrawDialog: PropTypes.func.isRequired,
+    showShieldedTokensConvertDialog: PropTypes.func.isRequired,
+    setIBCTransferType: PropTypes.func.isRequired,
+    setSelectedChain: PropTypes.func.isRequired,
+    connectIBCAccount: PropTypes.func.isRequired,
+    connectIBCAccountSuccess: PropTypes.func.isRequired,
+    fetchIBCBalance: PropTypes.func.isRequired,
+    fetchIBCChannel: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
     address: PropTypes.string,
 };
@@ -167,4 +280,19 @@ const stateToProps = (state) => {
     };
 };
 
-export default connect(stateToProps)(ShieldedTokensListTable);
+const actionToProps = {
+    showShieldedTokensTransferDialog,
+    showShieldedTokensDepositDialog,
+    showShieldedTokensWithdrawDialog,
+    showShieldedTokensConvertDialog,
+
+    setIBCTransferType,
+    setSelectedChain: setSelectedChain,
+    connectIBCAccount: connectIBCAccount,
+    connectIBCAccountSuccess: connectIBCAccountSuccess,
+    fetchIBCBalance: fetchIBCBalance,
+    fetchIBCChannel: fetchIBCChannel,
+};
+
+
+export default connect(stateToProps, actionToProps)(ShieldedTokensListTable);
