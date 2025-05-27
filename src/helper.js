@@ -990,12 +990,6 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
             data: Tx.data,
         });
 
-        console.log('TransparentTransfer', TransparentTransfer);
-        console.log('Tx', Tx);
-        console.log('txs', txs);
-        console.log('revealPublicKey', revealPublicKey);
-        console.log('type', type);
-        console.log('address', address);
         const wrapperProps = {
             token: txs.token,
             feeAmount: txs.feeAmount,
@@ -1006,8 +1000,10 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
         };
 
         const newTxs = [];
-        console.log('wrapperProps', wrapperProps);
-        console.log('newTxs', newTxs);
+        if (revealPublicKey && !revealPublicKey.publicKey) {
+            const revealPkTx = await tx.buildRevealPk(wrapperProps);
+            newTxs.push(revealPkTx);
+        }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
         const encoded = await tx.buildUnshieldingTransfer(wrapperTxValue, TransparentTransfer);
         newTxs.push(encoded);

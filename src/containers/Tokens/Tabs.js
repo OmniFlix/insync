@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { setAssetsTabs } from 'actions/assets';
 import classNames from 'classnames';
 import withRouter from 'components/WithRouter';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles({
     root: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
 const AssetTabs = (props) => {
     const classes = useStyles();
 
-    const handleChange = (event, newValue) => {
+    const handleChange = (newValue) => {
         props.onChange(newValue);
         if (newValue === 'shielded') {
             props.router.navigate('/tokensShielded');
@@ -29,19 +30,15 @@ const AssetTabs = (props) => {
     };
 
     return (
-        <Paper className={classNames(classes.root, 'sub_tabs_section assets_tab')}>
-            <Tabs
-                centered
-                className="shielding_tabs"
-                indicatorColor="primary"
-                textColor="primary"
-                value={props.value}
-                onChange={handleChange}
-            >
-                <Tab className="tab" label={variables[props.lang].transparent} value="transparent"/>
-                <Tab className="tab" label={variables[props.lang].shielded} value="shielded"/>
-            </Tabs>
-        </Paper>
+        <div className='tokens_section_tabs'>
+            <Button className={props.value === 'transparent' ? 'active tab' : "tab"} onClick={() => handleChange('transparent')}>
+                {variables[props.lang].transparent}
+            </Button>
+            <span />
+            <Button className={props.value === 'shielded' ? 'active tab' : "tab"} onClick={() => handleChange('shielded')}>
+                {variables[props.lang].shielded}
+            </Button>
+        </div>
     );
 };
 

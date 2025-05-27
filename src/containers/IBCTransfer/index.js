@@ -38,6 +38,13 @@ class IBCTransfer extends Component {
                     </>
                     <NamadaToIBCTransparentTransfer/>
                 </div>}
+                {/* {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding')) &&
+                <div className="ibc_content padding">
+                    <>
+                        <p>Withdraw shielded assets from Namada via IBC</p>
+                    </>
+                    <IBCUnShielding/>
+                </div>} */}
                 {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding')) &&
                 <div className="ibc_content padding">
                     <>

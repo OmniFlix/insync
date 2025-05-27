@@ -67,7 +67,7 @@ const Cards = (props) => {
             <div className="cards">
                 {reversedItems.length &&
                     reversedItems.map((proposal, index) => {
-                        if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
+                        // if (index < (page * rowsPerPage) && index >= (page - 1) * rowsPerPage) {
                             let votedOption = props.voteDetails && props.voteDetails.length &&
                                 proposal && proposal.id &&
                                 props.voteDetails.filter((vote) => vote && ((String(vote.proposalId) === String(proposal.id)) || (String(vote.proposalId) === '0' && String(proposal.id) === '0')));
@@ -92,7 +92,7 @@ const Cards = (props) => {
                                         <h2 onClick={() => props.handleShow(proposal)}> {
                                             content?.title
                                         }</h2>
-                                        {proposal.status === 3 || proposal.status === 'passed'
+                                        {proposal.status === 3 || proposal.status === 'passed' || proposal.status === 'executedPassed'
                                             ? <Icon className="success" icon="success"/>
                                             : (proposal.status === 2 || proposal.status === 'voting') &&
                                             votedOption
@@ -155,7 +155,7 @@ const Cards = (props) => {
                                         proposal.status === 'voting')
                                         ? 'voting_period'
                                         : (proposal.status === 4 ||
-                                            proposal.status === 'rejected')
+                                            proposal.status === 'rejected' || proposal.status === 'executedRejected')
                                             ? 'rejected'
                                             : null)}>
                                         <p>Proposal Status: {
@@ -167,8 +167,9 @@ const Cards = (props) => {
                                                     proposal.status === 'voting' ? 'VotingPeriod'
                                                         : proposal.status === 3 ||
                                                         proposal.status === 'passed' ? 'Passed'
+                                                            : proposal.status === 'executedPassed' ? 'Executed'
                                                             : proposal.status === 4 ||
-                                                            proposal.status === 'rejected' ? 'Rejected'
+                                                            proposal.status === 'rejected' || proposal.status === 'executedRejected' ? 'Rejected'
                                                                 : proposal.status === 5 ||
                                                                 proposal.status === 'PROPOSAL_STATUS_FAILED' ? 'Failed' : ''
                                         }</p>
@@ -202,9 +203,9 @@ const Cards = (props) => {
                                     </div>
                                 </div>
                             );
-                        }
+                        // }
 
-                        return null;
+                        // return null;
                     })}
             </div>
             {/* {!props.home && <div className="pagination">

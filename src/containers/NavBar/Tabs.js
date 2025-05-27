@@ -40,7 +40,7 @@ class Tabs extends Component {
                 value: 'transfers',
             });
             if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
-                this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer')
+                this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer');
             }
         } else if (this.state.value !== route && (route === 'tokensShielded')) {
             this.props.setAssetsTabs('shielded');
@@ -72,7 +72,7 @@ class Tabs extends Component {
                     value: 'transfers',
                 });
                 if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
-                    this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer')
+                    this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer');
                 }
             } else if (value !== this.state.value && (value === 'tokensShielded')) {
                 this.props.setAssetsTabs('shielded');
@@ -144,12 +144,12 @@ class Tabs extends Component {
                         {...a11yProps(2)} />
                     <Tab
                         className={'tab ' + (this.state.value === 'tokens' ? 'active_tab' : '')}
-                        label={variables[this.props.lang].assets}
+                        label={variables[this.props.lang].tokens}
                         value="tokens"
                         onClick={() => this.handleChange('tokens')}
                         {...a11yProps(3)} />
-                    <ShieldedTab handleChange={this.handleChange} value={this.state.value}/>
-                    <TransferTab handleChange={this.handleChange} value={this.state.value}/>
+                     {/* <ShieldedTab handleChange={this.handleChange} value={this.state.value}/> */}
+                     {/* <TransferTab handleChange={this.handleChange} value={this.state.value}/> */}
                 </div>
             </AppBar>
         );
@@ -159,11 +159,11 @@ class Tabs extends Component {
 Tabs.propTypes = {
     handleClose: PropTypes.func.isRequired,
     hideProposalDialog: PropTypes.func.isRequired,
-    setIBCTransferType: PropTypes.func.isRequired,
-    setExternalTransferSubTabs: PropTypes.func.isRequired,
-    setAssetsTabs: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    setAssetsTabs: PropTypes.func.isRequired,
+    setExternalTransferSubTabs: PropTypes.func.isRequired,
+    setIBCTransferType: PropTypes.func.isRequired,
     externalTransferSubTabs: PropTypes.string,
     router: PropTypes.shape({
         location: PropTypes.shape({
