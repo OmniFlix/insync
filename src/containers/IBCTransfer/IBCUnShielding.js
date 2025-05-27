@@ -111,7 +111,8 @@ const IBCUnShielding = (props) => {
     const handleNamadaTransfer = () => {
         setInProgress(true);
 
-        const source = props.address;
+        // const source = props.address;
+        const source = props.shieldedData?.pseudoExtendedKey;
         let token = fromNamadaSelectedConfig?.COIN_MINIMAL_DENOM;
         let amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
         // const amount = String(Number(props.amount) * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
@@ -335,6 +336,8 @@ IBCUnShielding.propTypes = {
     ibcTransferType: PropTypes.string,
     keys: PropTypes.object,
     revealPublicKey: PropTypes.object,
+    disposableSigner: PropTypes.object,
+    shieldedData: PropTypes.object,
     selectedAsset: PropTypes.string,
     selectedChain: PropTypes.string,
     shieldedAddress: PropTypes.string,
@@ -348,6 +351,7 @@ const stateToProps = (state) => {
         address: state.accounts.address.value,
         amount: state.ibcTransfer.ibcTransferAmount.value,
         details: state.accounts.address.details,
+        disposableSigner: state.accounts.address.disposableSigner,
         shieldedAddress: state.accounts.address.shieldedDetails,
         ibcTransferType: state.ibcTransfer.ibcTransferType.value,
         ibcSwapType: state.ibcTransfer.ibcSwapType.value,
@@ -358,6 +362,7 @@ const stateToProps = (state) => {
         keys: state.ibcTransfer.connection.keys,
         revealPublicKey: state.accounts.revealPublicKey.result,
         fromNamadaSelectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.shieldedResult,
+        shieldedData: state.accounts.address.shieldedData,
     };
 };
 

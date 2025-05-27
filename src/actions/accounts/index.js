@@ -54,10 +54,11 @@ export const setAccountAddress = (value, shieldedAddress, shieldedDetails) => {
     };
 };
 
-export const setAccountDetails = (value) => {
+export const setAccountDetails = (value, disposableSigner) => {
     return {
         type: ACCOUNT_DETAILS_SET,
         value,
+        disposableSigner,
     };
 };
 

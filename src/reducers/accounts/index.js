@@ -40,6 +40,7 @@ const address = (state = {
     details: {},
     shieldedDetails: '',
     shieldedData: {},
+    disposableSigner: null,
 }, action) => {
     switch (action.type) {
     case ACCOUNT_ADDRESS_SET:
@@ -53,6 +54,7 @@ const address = (state = {
         return {
             ...state,
             details: action.value,
+            disposableSigner: action.disposableSigner,
         };
     case DISCONNECT_SET:
         return {
