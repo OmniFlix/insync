@@ -16,7 +16,7 @@ class TransparentDepositDialog extends React.Component {
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_deposit_dialog">
                 <div className="ibc_content padding">
-                    <p>Deposit {' '}  {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                    <p>Deposit {' '}  {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' to Namada'}</p>
                     <IBCTransferDialog from='transparent_deposit' depositData={this.props.value}/>
                 </div>
                     <SuccessDialog/>
