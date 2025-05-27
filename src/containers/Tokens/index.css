@@ -119,17 +119,4 @@
 
 .table .tokens_actions .disabled_tx_button {
     width: 100%;
-    background: #000;
-    border-color: #262626;
-    color: #ffff46;
-    border: 1px solid #262626;
-    border-radius: 50px;
-    box-sizing: border-box;
-    font-family: Blinker, sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 130%;
-    text-transform: capitalize;
-    padding: 8px 2px;
-    height: unset;
 }

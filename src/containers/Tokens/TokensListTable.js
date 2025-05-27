@@ -84,9 +84,7 @@ class TokensListTable extends React.Component {
         };
 
         // setInProgress(true);
-        console.log('config', config);
         this.props.connectIBCAccount(config, (address) => {
-            console.log('config2', config, address);
             // this.props.connectIBCAccountSuccess(address);
             // setInProgress(false);
             this.props.fetchIBCBalance(config.REST_URL, address[0].address);
@@ -185,20 +183,29 @@ class TokensListTable extends React.Component {
                                 <img src={WithdrawIcon} alt="Withdraw"/>
                                     Withdraw
                                 </Button>}
-                                <CustomTooltip  title={token === 'NAM' ? 'Enables in Phase 5' : "Coming Soon"}>
+                                <CustomTooltip title={token === 'NAM' ? 'Enables in Phase 5' : "Coming Soon"}>
                                     <span className='disabled_tx_button'>
-                                        <Button  disabled={true} onClick={() => this.handleTransfer(value)}>
+                                        <Button disabled={true} onClick={() => this.handleTransfer(value)}>
                                             <img src={TransferIcon} alt="Transfer"/>
                                             Transfer
                                         </Button>
                                     </span>
                                 </CustomTooltip>
-                                <CustomTooltip  title="Convert to Shielded">
-                                    <Button onClick={() => this.handleConvert(value)}>
-                                        <img src={ConvertIcon} alt="Convert"/>
-                                        Shield
-                                    </Button>
-                                </CustomTooltip>
+                                {token === 'NAM'
+                                    ? <CustomTooltip title="Enables in Phase 5">
+                                        <span className='disabled_tx_button'>
+                                            <Button disabled={true} onClick={() => this.handleConvert(value)}>
+                                                <img src={ConvertIcon} alt="Convert"/>
+                                                Shield
+                                            </Button>
+                                        </span>
+                                    </CustomTooltip> 
+                                    : <CustomTooltip title="Convert to Shielded">
+                                        <Button onClick={() => this.handleConvert(value)}>
+                                            <img src={ConvertIcon} alt="Convert"/>
+                                            Shield
+                                        </Button>
+                                    </CustomTooltip>}
                         </div>
                     );
                 },
