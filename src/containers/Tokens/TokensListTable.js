@@ -242,7 +242,7 @@ class TokensListTable extends React.Component {
                 ...asset,
                 balance: matchingBalance || null,
                 };
-        }).filter((item) => item.balance);
+        }).filter((item) => item);
         // enrichedAssets.unshift({
         //     name: 'Shielded Namada',
         //     symbol: 'NAM',
@@ -263,6 +263,7 @@ class TokensListTable extends React.Component {
                 minDenomAmount: available
             }
         });
+        console.log('enrichedAssets', enrichedAssets, this.props);
 
         const tableData = enrichedAssets && enrichedAssets.length
             ? enrichedAssets.map((item) =>

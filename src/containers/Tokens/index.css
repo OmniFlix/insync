@@ -1,6 +1,6 @@
 .assets.stake.padding {
     position: relative;
-    width: 800px;
+    width: 1000px;
     margin: auto;
     padding: 26px 0;
 }
@@ -119,4 +119,10 @@
 
 .table .tokens_actions .disabled_tx_button {
     width: 100%;
+}
+
+@media (max-width: 1000px) {
+    .assets.stake.padding {
+        width: 100%;
+    }
 }

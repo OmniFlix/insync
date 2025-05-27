@@ -136,7 +136,7 @@ class ProposalDialog extends Component {
                                         (this.props.proposal.status === 2 || this.props.proposal.status === 'voting')
                                             ? 'voting_period'
                                             : this.props.proposal && (this.props.proposal.status === 4 ||
-                                                this.props.proposal.status === 'rejected')
+                                                this.props.proposal.status === 'rejected' || this.props.proposal.status === 'executedRejected')
                                                 ? 'rejected'
                                                 : null)}> Proposal
                                         Status: &nbsp;{this.props.proposal && this.props.proposal.status
@@ -148,8 +148,9 @@ class ProposalDialog extends Component {
                                                     this.props.proposal.status === 'voting' ? 'VotingPeriod'
                                                         : this.props.proposal.status === 3 ||
                                                         this.props.proposal.status === 'passed' ? 'Passed'
+                                                            : this.props.proposal.status === 'executedPassed' ? 'Executed'
                                                             : this.props.proposal.status === 4 ||
-                                                            this.props.proposal.status === 'rejected' ? 'Rejected'
+                                                            this.props.proposal.status === 'rejected' || this.props.proposal.status === 'executedRejected' ? 'Rejected'
                                                                 : this.props.proposal.status === 5 ||
                                                                 this.props.proposal.status === 'PROPOSAL_STATUS_FAILED' ? 'Failed' : ''
                                             : ''}</div>

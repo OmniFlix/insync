@@ -80,7 +80,7 @@ const SuccessDialog = (props) => {
                                 : props.router && props.router.location && (props.router.location.pathname === '/externalTransfer' ||
                                 props.router.location.pathname === '/internalTransfer' || props.router.location.pathname === '/externalTransfer/withdraw' ||
                                 props.router.location.pathname === '/externalShielding' || props.router.location.pathname === '/internalShielding' ||
-                                props.router.location.pathname === '/tokens')
+                                props.router.location.pathname === '/tokens' || props.router.location.pathname === '/tokensShielded')
                                     ? <h1>Token Transferred Successfully</h1>
                                     : props.router && props.router.params && props.router.params.proposalID
                                         ? <h1>{variables[props.lang].vote_success}</h1>
@@ -102,7 +102,7 @@ const SuccessDialog = (props) => {
                     : props.router && props.router.location && (props.router.location.pathname === '/externalTransfer' ||
                     props.router.location.pathname === '/internalTransfer' || props.router.location.pathname === '/externalTransfer/withdraw' ||
                     props.router.location.pathname === '/externalShielding' || props.router.location.pathname === '/internalShielding' ||
-                    props.router.location.pathname === '/tokens')
+                    props.router.location.pathname === '/tokens' || props.router.location.pathname === '/tokensShielded')
                         ? <>
                             <div className="row">
                                 <p>{variables[props.lang]['transaction_hash']}</p>
