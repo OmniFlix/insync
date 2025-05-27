@@ -5,10 +5,10 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '../../components/CircularProgress';
 import { namadaAssets } from 'dummy/ibcList';
-import { config } from '../../config';
-import NamadaLogo from '../../assets/masp/namada_logo.svg';
+import { Button } from '@material-ui/core';
+// import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
 
-class TokensListTable extends React.Component {
+class ShieldedTokensListTable extends React.Component {
     render () {
         const options = {
             serverSide: false,
@@ -58,7 +58,7 @@ class TokensListTable extends React.Component {
             options: {
                 sort: false,
                 customBodyRender: (value, index) => {
-                    let amount = value && value.balance && value.balance.minDenomAmount;
+                    let amount = value && value.balance;
                     if (value && value.config && value.config.COIN_DECIMALS) {
                         amount = amount ? (amount / 10 ** value.config.COIN_DECIMALS) : 0;
                     }
@@ -77,37 +77,45 @@ class TokensListTable extends React.Component {
                     );
                 },
             },
+        }, {
+            name: 'actions',
+            label: 'Actions',
+            options: {
+                sort: false,
+                customBodyRender: (value, index) => {
+                    const token = value.symbol || value.name || value.display;
+                    return (
+                        <div className="tokens_actions">
+                           <Button>
+                            Deposit
+                            </Button>
+                            <Button>
+                            Withdraw
+                            </Button>
+                            <Button>
+                            Transfer
+                            </Button>
+                            <Button>
+                            Convert
+                            </Button>
+                        </div>
+                    );
+                },
+            },
         }];
 
-        let balance = null;
-        this.props.balance && this.props.balance.length && this.props.balance.map((val) => {
-            if (val && val.length) {
-                val.map((value) => {
-                    if (value === config.TOKEN_ADDRESS) {
-                        balance = val[1];
-                    }
-                });
-            }
-        
-            return null;
-        });
-        let available = balance && balance / 10 ** config.COIN_DECIMALS;
-        available = available ? available : 0;
-
         let enrichedAssets = (namadaAssets || []).map((asset) => {
-            // Step 1: Safely find matching token
             const matchingToken = (this.props.tokensList || []).find(token =>
             token.trace?.includes(`/${asset.base}`)
             );
         
-            // Step 2: Safely find matching balance
             const matchingBalance = matchingToken
-            ? (this.props.balanceList || []).find(b => b.tokenAddress === matchingToken.address)
-            : null;
+                ? (this.props.balanceList || []).find(([address]) => address === matchingToken.address)
+                : null;
             
             return {
                 ...asset,
-                balance: matchingBalance || null,
+                balance: matchingBalance && matchingBalance.length && matchingBalance[1] || null,
                 };
         }).filter((item) => item.balance);
         // enrichedAssets.unshift({
@@ -116,24 +124,15 @@ class TokensListTable extends React.Component {
         //     logo_URIs: {
         //         svg: NamadaShieldedLogo,
         //     },
-        //     // balance: {
-        //     //     minDenomAmount: available
-        //     // }
+        //     balance: {
+        //         minDenomAmount: available
+        //     }
         // });
-        enrichedAssets.unshift({
-            name: 'Transparent Namada',
-            symbol: 'NAM',
-            logo_URIs: {
-                svg: NamadaLogo,
-            },
-            balance: {
-                minDenomAmount: available
-            }
-        });
 
         const tableData = enrichedAssets && enrichedAssets.length
             ? enrichedAssets.map((item) =>
                 [
+                    item,
                     item,
                     item,
                 ])
@@ -151,8 +150,7 @@ class TokensListTable extends React.Component {
     }
 }
 
-TokensListTable.propTypes = {
-    balance: PropTypes.array.isRequired,
+ShieldedTokensListTable.propTypes = {
     balanceList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     tokensList: PropTypes.array.isRequired,
@@ -165,9 +163,8 @@ const stateToProps = (state) => {
         lang: state.language,
 
         tokensList: state.accounts.tokensList.result,
-        balanceList: state.accounts.balanceList.result,
-        balance: state.accounts.balance.result,
+        balanceList: state.accounts.shieldedBalance.result,
     };
 };
 
-export default connect(stateToProps)(TokensListTable);
+export default connect(stateToProps)(ShieldedTokensListTable);

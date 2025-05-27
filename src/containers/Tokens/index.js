@@ -8,6 +8,8 @@ import ShieldedTokensListTable from './ShieldedTokensListTable';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ClassNames from 'classnames';
+import IBCTransferDialog from 'containers/IBCTransfer/IBCTransferDialog';
+import DepositDialog from './DepositDialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Assets = (props) => {
+const Tokens = (props) => {
     const classes = useStyles();
 
     return (
@@ -38,11 +40,12 @@ const Assets = (props) => {
                     : null}
                 <ShieldedTokensListTable/>
             </div>}
+            <DepositDialog />
         </>
     );
 };
 
-TokensListTable.propTypes = {
+Tokens.propTypes = {
     assetsTab: PropTypes.string.isRequired,
     balanceProgress: PropTypes.bool.isRequired,
     shieldedBalanceProgress: PropTypes.bool.isRequired,
@@ -60,4 +63,4 @@ const stateToProps = (state) => {
     };
 };
 
-export default connect(stateToProps)(Assets);
+export default connect(stateToProps)(Tokens);
