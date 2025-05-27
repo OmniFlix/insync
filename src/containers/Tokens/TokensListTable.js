@@ -4,13 +4,48 @@ import './index.css';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '../../components/CircularProgress';
-import { namadaAssets } from 'dummy/ibcList';
+import { ibcList, namadaAssets } from 'dummy/ibcList';
 import { config } from '../../config';
 import NamadaLogo from '../../assets/masp/namada_logo.svg';
 import { Button } from '@material-ui/core';
-import { showTokensDepositDialog } from 'actions/assets';
+import { showTransparentTokensDepositDialog, showTransparentTokensWithdrawDialog } from 'actions/assets';
+import { connectIBCAccount, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
 
 class TokensListTable extends React.Component {
+    constructor (props) {
+        super(props);
+        this.handleDeposit = this.handleDeposit.bind(this);
+        this.initKeplr = this.initKeplr.bind(this);
+    }
+
+    handleDeposit (value) {
+        this.props.setIBCTransferType('transparent');
+        this.initKeplr(value);
+        this.props.showTransparentTokensDepositDialog(value);
+    }
+
+    initKeplr (value) {
+        const config = {
+            RPC_URL: value && value.config && value.config.RPC_URL,
+            REST_URL: value && value.config && value.config.REST_URL,
+            CHAIN_ID: value && value.config && value.config.CHAIN_ID,
+            CHAIN_NAME: value && value.config && value.config.CHAIN_NAME,
+            COIN_DENOM: value && value.config && value.config.COIN_DENOM,
+            COIN_MINIMAL_DENOM: value && value.config && value.config.COIN_MINIMAL_DENOM,
+            COIN_DECIMALS: value && value.config && value.config.COIN_DECIMALS,
+            PREFIX: value && value.config && value.config.PREFIX,
+        };
+
+        // setInProgress(true);
+        this.props.connectIBCAccount(config, (address) => {
+            // setInProgress(false);
+            this.props.fetchIBCBalance(config.REST_URL, address[0].address);
+            this.props.fetchIBCChannel(value.channel_link);
+            const find = ibcList.find((item) => item.value === value.coingecko_id);
+            this.props.setSelectedChain(find);
+        });
+    }
+
     render () {
         const options = {
             serverSide: false,
@@ -85,25 +120,24 @@ class TokensListTable extends React.Component {
             options: {
                 sort: false,
                 customBodyRender: (value, index) => {
-                    console.log('asdkjgaskdasd', value)
                     const token = value.symbol || value.name || value.display;
                     return (
                         <div className="tokens_actions">
                               {token === 'NAM'
                             ? null 
-                        : <Button onClick={() => this.props.showTokensDepositDialog(value)}>
-                        Deposit
-                        </Button>}
-                        {token === 'NAM'
-                            ? null 
-                        : <Button>
-                        Withdraw
-                        </Button>}
+                            : <Button onClick={() => this.handleDeposit(value)}>
+                                Deposit
+                            </Button>}
+                            {token === 'NAM'
+                                ? null 
+                                : <Button>
+                                    Withdraw
+                                </Button>}
                             <Button>
-                            Transfer
+                                Transfer
                             </Button>
                             <Button>
-                            Convert
+                                Convert
                             </Button>
                         </div>
                     );
@@ -188,7 +222,13 @@ TokensListTable.propTypes = {
     balance: PropTypes.array.isRequired,
     balanceList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
-    showTokensDepositDialog: PropTypes.func.isRequired,
+    showTransparentTokensDepositDialog: PropTypes.func.isRequired,
+    showTransparentTokensWithdrawDialog: PropTypes.func.isRequired,
+    setIBCTransferType: PropTypes.func.isRequired,
+    setSelectedChain: PropTypes.func.isRequired,
+    connectIBCAccount: PropTypes.func.isRequired,
+    fetchIBCBalance: PropTypes.func.isRequired,
+    fetchIBCChannel: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
     address: PropTypes.string,
 };
@@ -205,7 +245,13 @@ const stateToProps = (state) => {
 };
 
 const actionToProps = {
-    showTokensDepositDialog,
+    showTransparentTokensDepositDialog,
+    showTransparentTokensWithdrawDialog,
+    setIBCTransferType,
+    setSelectedChain,
+    connectIBCAccount,
+    fetchIBCBalance,
+    fetchIBCChannel,
 };
 
 

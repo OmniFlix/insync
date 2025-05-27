@@ -1,17 +1,17 @@
 import { Dialog } from "@material-ui/core";
-import { hideTokensDepositDialog } from "actions/assets";
+import { hideTransparentTokensDepositDialog } from "actions/assets";
 import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
-import NamadaToIBCTransparentTransfer from "containers/IBCTransfer/NamadaToIBCTransparentTransfer";
+// import NamadaToIBCTransparentTransfer from "containers/IBCTransfer/NamadaToIBCTransparentTransfer";
 import IBCTransferDialog from "containers/IBCTransfer/IBCTransferDialog";
 
 class DepositDialog extends React.Component {
    render () {
-    const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
-    this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
+    // const route = this.props.router && this.props.router.location && this.props.router.location.pathname &&
+    // this.props.router.location.pathname.split('/') && this.props.router.location.pathname.split('/')[1];
         return (
             <Dialog open={this.props.open}
             onClose={this.props.handleClose}
@@ -28,8 +28,8 @@ class DepositDialog extends React.Component {
                         </>
                         <NamadaToIBCTransparentTransfer/>
                     </div> */}
-                    {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding')) &&
-                    <div style={{margin: '150px 0'}}>Coming Soon...</div>}
+                    {/* {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding')) &&
+                    <div style={{margin: '150px 0'}}>Coming Soon...</div>} */}
                     <SuccessDialog/>
             </Dialog>
         )
@@ -58,7 +58,7 @@ DepositDialog.propTypes = {
 const stateToProps = (state) => {
     return {
         lang: state.language,
-        open: state.assets.tokensDepositDialog.open,
+        open: state.assets.transparentTokensDepositDialog.open,
 
         ibcSwapType: state.ibcTransfer.ibcSwapType.value,
         subTabs: state.shieldedAssets.externalShieldingTabs.value,
@@ -67,7 +67,7 @@ const stateToProps = (state) => {
 };
 
 const actionToProps = {
-    handleClose: hideTokensDepositDialog,
+    handleClose: hideTransparentTokensDepositDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(DepositDialog));

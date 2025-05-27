@@ -177,7 +177,7 @@ const ibcTransferAmount = (state = {
 };
 
 const ibcTransferType = (state = {
-    value: 'shielded',
+    value: 'shielded', // shielded, transparent
 }, action) => {
     switch (action.type) {
     case IBC_TRANSFER_TYPE_SET:

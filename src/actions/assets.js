@@ -1,4 +1,4 @@
-import { ASSETS_TABS_SET, TOKENS_DEPOSIT_DIALOG_HIDE, TOKENS_DEPOSIT_DIALOG_SHOW } from "constants/assets";
+import { ASSETS_TABS_SET, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_HIDE, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_SHOW, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_SHOW } from "constants/assets";
 
 export const setAssetsTabs = (value) => {
     return {
@@ -8,15 +8,28 @@ export const setAssetsTabs = (value) => {
 };
 
 
-export const showTokensDepositDialog = (value) => {
+export const showTransparentTokensDepositDialog = (value) => {
     return {
-        type: TOKENS_DEPOSIT_DIALOG_SHOW,
+        type: TRANSPARENT_TOKENS_DEPOSIT_DIALOG_SHOW,
         value,
     };
 }
 
-export const hideTokensDepositDialog = () => {
+export const hideTransparentTokensDepositDialog = () => {
     return {
-        type: TOKENS_DEPOSIT_DIALOG_HIDE,
+        type: TRANSPARENT_TOKENS_DEPOSIT_DIALOG_HIDE,
+    };
+}
+
+export const showTransparentTokensWithdrawDialog = (value) => {
+    return {
+        type: TRANSPARENT_TOKENS_WITHDRAW_DIALOG_SHOW,
+        value,
+    };
+}
+
+export const hideTransparentTokensWithdrawDialog = () => {
+    return {
+        type: TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE,
     };
 }
