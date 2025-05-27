@@ -1,5 +1,5 @@
-import { ASSETS_TABS_SET } from "constants/assets";
-import { combineReducers } from "redux";
+import { ASSETS_TABS_SET } from 'constants/assets';
+import { combineReducers } from 'redux';
 
 const assetsTab = (state = {
     value: 'transparent',

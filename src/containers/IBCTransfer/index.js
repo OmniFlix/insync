@@ -38,7 +38,7 @@ class IBCTransfer extends Component {
                     <NamadaToIBCTransparentTransfer/>
                 </div>}
                 {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding')) &&
-                <div style={{margin: '150px 0'}}>Coming Soon...</div>}
+                <div style={{ margin: '150px 0' }}>Coming Soon...</div>}
                 <SuccessDialog/>
             </>
         );

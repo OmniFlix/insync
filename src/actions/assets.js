@@ -1,4 +1,4 @@
-import { ASSETS_TABS_SET } from "constants/assets";
+import { ASSETS_TABS_SET } from 'constants/assets';
 
 export const setAssetsTabs = (value) => {
     return {
