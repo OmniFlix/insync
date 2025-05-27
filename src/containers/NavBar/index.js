@@ -44,6 +44,7 @@ import { Button } from '@material-ui/core';
 import ConnectDialog from './ConnectDialog';
 import withRouter from '../../components/WithRouter';
 import ShieldedSyncPercentage from 'containers/ShieldedSyncPercentage';
+import ProfilePopover from './ProfilePopover';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
 // import { init as initShared } from '../../private_modules/namada/shared/init-inline';
 
@@ -53,6 +54,7 @@ class NavBar extends Component {
 
         this.state = {
             cosmostationEvent: null,
+            profileAnchorEl: null,
         };
 
         this.initKeplr = this.initKeplr.bind(this);
@@ -63,6 +65,8 @@ class NavBar extends Component {
         this.getValidatorImage = this.getValidatorImage.bind(this);
         this.getProposalDetails = this.getProposalDetails.bind(this);
         this.handleCosmoStation = this.handleCosmoStation.bind(this);
+        this.handleProfilePopoverOpen = this.handleProfilePopoverOpen.bind(this);
+        this.handleProfilePopoverClose = this.handleProfilePopoverClose.bind(this);
     }
 
     componentDidMount () {
@@ -423,7 +427,34 @@ class NavBar extends Component {
         });
     }
 
+    handleProfilePopoverOpen = (event) => {
+        this.setState({
+            profileAnchorEl: event.currentTarget,
+        });
+    };
+
+    handleProfilePopoverClose = () => {
+        this.setState({
+            profileAnchorEl: null,
+        });
+    };
+
     render () {
+        const { profileAnchorEl } = this.state;
+        const profileOpen = Boolean(profileAnchorEl);
+        let balance = null;
+            this.props.balance && this.props.balance.length && this.props.balance.map((val) => {
+                if (val && val.length) {
+                    val.map((value) => {
+                        if (value === config.TOKEN_ADDRESS) {
+                            balance = val[1];
+                        }
+                    });
+                }
+        
+                return null;
+            });
+        const available = balance && balance / 10 ** config.COIN_DECIMALS;
         return (
             <>
                 <div className={ClassNames('nav_bar padding', localStorage.getItem('of_co_address') || this.props.address
@@ -439,21 +470,22 @@ class NavBar extends Component {
                             <Icon className="cross" icon="cross"/>
                         </div>
                         <Tabs/>
-                        {(localStorage.getItem('of_co_address') || this.props.address) &&
-                            <div className="select_fields">
-                                <p className="token_name">{config.NETWORK_NAME}</p>
-                                <span className="divider"/>
-                                <div className="hash_text" title={this.props.address}>
-                                    <p className="name">{this.props.address}</p>
-                                    {this.props.address &&
-                                        this.props.address.slice(this.props.address.length - 6, this.props.address.length)}
-                                </div>
-                                <CopyButton data={this.props.address}>
-                                    {variables[this.props.lang].copy}
-                                </CopyButton>
-                            </div>}
                         {localStorage.getItem('of_co_address') || this.props.address
-                            ? <DisconnectButton/>
+                            ? (<div 
+                                onMouseEnter={this.handleProfilePopoverOpen}
+                                onMouseLeave={this.handleProfilePopoverClose}
+                                className="profile_button"
+                                style={{ cursor: 'pointer', position: 'relative' }}
+                            >
+                                <div>{available}{' '}{config.COIN_DENOM}</div>
+                                {profileOpen && (
+                                    <ProfilePopover
+                                        anchorEl={profileAnchorEl}
+                                        open={profileOpen}
+                                        onClose={this.handleProfilePopoverClose}
+                                    />
+                                )}
+                            </div>)
                             : <Button
                                 className="connect_button"
                                 onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
