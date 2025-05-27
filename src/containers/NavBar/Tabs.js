@@ -96,7 +96,7 @@ class Tabs extends Component {
         // }
 
         if (route) {
-            if (this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer') {
+            if (this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer' && route === 'externalTransfer') {
                 this.props.router.navigate('/' + route + '/withdraw');
                 this.setState({
                     value: newValue,
