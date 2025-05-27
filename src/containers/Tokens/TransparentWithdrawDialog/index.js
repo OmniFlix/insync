@@ -4,6 +4,8 @@ import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
+import NamadaToIBCTransparentTransfer from "containers/IBCTransfer/NamadaToIBCTransparentTransfer";
+import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 
 class TransparentWithdrawDialog extends React.Component {
    render () {
@@ -13,9 +15,11 @@ class TransparentWithdrawDialog extends React.Component {
             aria-describedby="claim-dialog-description"
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_withdraw_dialog">
-                <div className="ibc_content padding">
-
+                 <div className="ibc_content padding">
+                    <p>Withdraw {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                    <NamadaToIBCTransparentTransfer from="transparent_withdraw" transparentWithdrawData={this.props.value}/>
                 </div>
+                <SuccessDialog/>
             </Dialog>
         )
     }
@@ -34,12 +38,14 @@ TransparentWithdrawDialog.propTypes = {
             proposalID: PropTypes.string,
         }).isRequired,
     }),
+    value: PropTypes.object,
 };
 
 const stateToProps = (state) => {
     return {
         lang: state.language,
         open: state.assets.transparentTokensWithdrawDialog.open,
+        value: state.assets.transparentTokensWithdrawDialog.value,
     };
 };
 

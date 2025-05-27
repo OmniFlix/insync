@@ -42,6 +42,7 @@ const connection = (state = {
             inProgress: true,
         };
     case CONNECT_IBC_ACCOUNT_SUCCESS:
+        console.log('asdkjhgaskdads', action.value)
         return {
             ...state,
             inProgress: false,

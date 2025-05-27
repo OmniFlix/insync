@@ -27,6 +27,16 @@ const SourceSelectField = (props) => {
     }).filter((item) => item.balance);
 
     useEffect(() => {
+        if (props.from === 'transparent_withdraw' && props.data && enrichedAssets && enrichedAssets.length) {
+            const matchedItem = enrichedAssets.find(item => item.symbol === props.data?.symbol);
+            console.log('asdkjagsdads', matchedItem)
+
+            if (matchedItem) {
+                const value = matchedItem.symbol;
+                props.onChange(value, matchedItem);
+                return;
+            }
+        }
         if (enrichedAssets && enrichedAssets.length && enrichedAssets[0]) {
             const value = enrichedAssets[0].symbol;
             const find = enrichedAssets.find((item) => item.symbol === value);
@@ -90,6 +100,8 @@ SourceSelectField.propTypes = {
     onChange: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
     balanceList: PropTypes.array.isRequired,
+    data: PropTypes.object,
+    from: PropTypes.string,
     ibcOnly: PropTypes.bool,
 };
 

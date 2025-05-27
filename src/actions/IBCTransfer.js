@@ -102,6 +102,7 @@ const connectIBCAccountInProgress = () => {
 };
 
 export const connectIBCAccountSuccess = (value) => {
+    console.log('IBC Success', value)
     return {
         type: CONNECT_IBC_ACCOUNT_SUCCESS,
         value,
@@ -189,6 +190,7 @@ export const connectIBCAccount = (data, cb) => (dispatch) => {
                     const offlineSigner = window.getOfflineSigner(data.CHAIN_ID);
                     const accounts = await offlineSigner.getAccounts();
                     dispatch(connectIBCAccountSuccess(accounts));
+                    console.log('Connected IBC Account:', accounts);
                     cb(accounts);
                 }).catch((error) => {
                     dispatch(connectIBCAccountError(error.toString()));

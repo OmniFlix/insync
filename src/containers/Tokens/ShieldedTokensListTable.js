@@ -12,7 +12,7 @@ import DepositIcon from '../../assets/transactions/deposit.svg';
 import WithdrawIcon from '../../assets/transactions/withdraw.svg';
 import ConvertIcon from '../../assets/transactions/convert.svg';
 import { showShieldedTokensConvertDialog, showShieldedTokensDepositDialog, showShieldedTokensTransferDialog, showShieldedTokensWithdrawDialog } from 'actions/assets';
-import { setIBCTransferType } from 'actions/IBCTransfer';
+import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
 
 class ShieldedTokensListTable extends React.Component {
     constructor (props) {
@@ -22,31 +22,52 @@ class ShieldedTokensListTable extends React.Component {
         this.handleTransfer = this.handleTransfer.bind(this);
         this.handleConvert = this.handleConvert.bind(this);
         this.handleDeposit = this.handleDeposit.bind(this);
-        // this.initKeplr = this.initKeplr.bind(this);
+        this.initKeplr = this.initKeplr.bind(this);
     }
 
     handleDeposit (value) {
-        this.props.setIBCTransferType('transparent');
-        // this.initKeplr(value);
+        this.props.setIBCTransferType('shielded');
+        this.initKeplr(value);
         this.props.showShieldedTokensDepositDialog(value);
     }
 
     handleWithdraw (value) {
-        this.props.setIBCTransferType('transparent');
+        this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
         this.props.showShieldedTokensWithdrawDialog(value);
     }
 
     handleTransfer (value) {
-        this.props.setIBCTransferType('transparent');
+        this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
         this.props.showShieldedTokensTransferDialog(value);
     }
 
     handleConvert (value) {
-        this.props.setIBCTransferType('transparent');
+        this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
         this.props.showShieldedTokensConvertDialog(value);
+    }
+
+    initKeplr (value) {
+        const config = {
+            RPC_URL: value && value.config && value.config.RPC_URL,
+            REST_URL: value && value.config && value.config.REST_URL,
+            CHAIN_ID: value && value.config && value.config.CHAIN_ID,
+            CHAIN_NAME: value && value.config && value.config.CHAIN_NAME,
+            COIN_DENOM: value && value.config && value.config.COIN_DENOM,
+            COIN_MINIMAL_DENOM: value && value.config && value.config.COIN_MINIMAL_DENOM,
+            COIN_DECIMALS: value && value.config && value.config.COIN_DECIMALS,
+            PREFIX: value && value.config && value.config.PREFIX,
+        };
+
+        // setInProgress(true);
+        this.props.connectIBCAccount(config, (address) => {
+            this.props.fetchIBCBalance(config.REST_URL, address[0].address);
+            this.props.fetchIBCChannel(value.channel_link);
+            const find = ibcList.find((item) => item.value === value.coingecko_id);
+            this.props.setSelectedChain(find);
+        });
     }
 
     render () {
@@ -134,15 +155,15 @@ class ShieldedTokensListTable extends React.Component {
                             </Button>}
                             {token === 'NAM'
                                 ? null 
-                                : <Button onClick={() => this.handleWithdraw(value)}> 
+                                : <Button disabled={true} onClick={() => this.handleWithdraw(value)}> 
                                 <img src={WithdrawIcon} alt="Withdraw"/>
                                     Withdraw
                                 </Button>}
-                            <Button onClick={() => this.handleTransfer(value)}>
+                            <Button disabled={true} onClick={() => this.handleTransfer(value)}>
                                 <img src={TransferIcon} alt="Transfer"/>
                                 Transfer
                             </Button>
-                            <Button onClick={() => this.handleConvert(value)}>
+                            <Button disabled={true} onClick={() => this.handleConvert(value)}>
                                 <img src={ConvertIcon} alt="Convert"/>
                                 Convert
                             </Button>
@@ -206,6 +227,12 @@ ShieldedTokensListTable.propTypes = {
     showShieldedTokensDepositDialog: PropTypes.func.isRequired, 
     showShieldedTokensWithdrawDialog: PropTypes.func.isRequired,
     showShieldedTokensConvertDialog: PropTypes.func.isRequired,
+    setIBCTransferType: PropTypes.func.isRequired,
+    setSelectedChain: PropTypes.func.isRequired,
+    connectIBCAccount: PropTypes.func.isRequired,
+    connectIBCAccountSuccess: PropTypes.func.isRequired,
+    fetchIBCBalance: PropTypes.func.isRequired,
+    fetchIBCChannel: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
     address: PropTypes.string,
 };
@@ -227,6 +254,11 @@ const actionToProps = {
     showShieldedTokensConvertDialog,
 
     setIBCTransferType,
+    setSelectedChain: setSelectedChain,
+    connectIBCAccount: connectIBCAccount,
+    connectIBCAccountSuccess: connectIBCAccountSuccess,
+    fetchIBCBalance: fetchIBCBalance,
+    fetchIBCChannel: fetchIBCChannel,
 };
 
 

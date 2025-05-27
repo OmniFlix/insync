@@ -9,11 +9,12 @@ import { config } from '../../config';
 import NamadaLogo from '../../assets/masp/namada_logo.svg';
 import { Button } from '@material-ui/core';
 import { showTransparentTokensConvertDialog, showTransparentTokensDepositDialog, showTransparentTokensTransferDialog, showTransparentTokensWithdrawDialog } from 'actions/assets';
-import { connectIBCAccount, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
+import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
 import TransferIcon from '../../assets/transactions/transfer.svg';
 import DepositIcon from '../../assets/transactions/deposit.svg';
 import WithdrawIcon from '../../assets/transactions/withdraw.svg';
 import ConvertIcon from '../../assets/transactions/convert.svg';
+import { chains } from 'chain-registry';
 
 class TokensListTable extends React.Component {
     constructor (props) {
@@ -51,6 +52,7 @@ class TokensListTable extends React.Component {
     }
 
     initKeplr (value) {
+        console.log('Init Keplr', value,ibcList)
         const config = {
             RPC_URL: value && value.config && value.config.RPC_URL,
             REST_URL: value && value.config && value.config.REST_URL,
@@ -64,6 +66,8 @@ class TokensListTable extends React.Component {
 
         // setInProgress(true);
         this.props.connectIBCAccount(config, (address) => {
+            console.log('connectIBCAccount', config, address)
+            // this.props.connectIBCAccountSuccess(address);
             // setInProgress(false);
             this.props.fetchIBCBalance(config.REST_URL, address[0].address);
             this.props.fetchIBCChannel(value.channel_link);
@@ -161,7 +165,7 @@ class TokensListTable extends React.Component {
                                 <img src={WithdrawIcon} alt="Withdraw"/>
                                     Withdraw
                                 </Button>}
-                            <Button onClick={() => this.handleTransfer(value)}>
+                            <Button  disabled={true} onClick={() => this.handleTransfer(value)}>
                                 <img src={TransferIcon} alt="Transfer"/>
                                 Transfer
                             </Button>
@@ -259,6 +263,7 @@ TokensListTable.propTypes = {
     setIBCTransferType: PropTypes.func.isRequired,
     setSelectedChain: PropTypes.func.isRequired,
     connectIBCAccount: PropTypes.func.isRequired,
+    connectIBCAccountSuccess: PropTypes.func.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
     fetchIBCChannel: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
@@ -285,6 +290,7 @@ const actionToProps = {
     setIBCTransferType,
     setSelectedChain,
     connectIBCAccount,
+    connectIBCAccountSuccess,
     fetchIBCBalance,
     fetchIBCChannel,
 };

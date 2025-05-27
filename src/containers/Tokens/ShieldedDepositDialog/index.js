@@ -4,6 +4,7 @@ import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
+import IBCTransferDialog from "containers/IBCTransfer/IBCTransferDialog";
 
 class ShieldedDepositDialog extends React.Component {
    render () {
@@ -13,8 +14,9 @@ class ShieldedDepositDialog extends React.Component {
             aria-describedby="claim-dialog-description"
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_deposit_dialog">
-                <div className="ibc_content padding">
-
+               <div className="ibc_content padding">
+                    <p>Deposit {' '}  {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                    <IBCTransferDialog from='shielded_deposit' depositData={this.props.value}/>
                 </div>
             </Dialog>
         )
@@ -34,12 +36,14 @@ ShieldedDepositDialog.propTypes = {
             proposalID: PropTypes.string,
         }).isRequired,
     }),
+    value: PropTypes.object,
 };
 
 const stateToProps = (state) => {
     return {
         lang: state.language,
         open: state.assets.shieldedTokensDepositDialog.open,
+        value: state.assets.shieldedTokensDepositDialog.value,
     };
 };
 

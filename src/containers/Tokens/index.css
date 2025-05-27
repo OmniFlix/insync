@@ -107,6 +107,10 @@
     height: unset;
 }
 
+.table .tokens_actions button:disabled {
+    opacity: 0.6;
+}
+
 .table .tokens_actions button img {
     width: 14px;
     height: 14px;

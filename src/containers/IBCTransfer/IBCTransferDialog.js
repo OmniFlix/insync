@@ -25,6 +25,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getShieldedArgs, ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/masp/downArrow.svg';
+import { hideShieldedTokensDepositDialog, hideTransparentTokensDepositDialog } from 'actions/assets';
 
 const IBCTransferDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -224,6 +225,11 @@ const IBCTransferDialog = (props) => {
                         props.getBalance(props.address);
                         props.fetchTokensList();
                         props.fetchBalanceList(props.address);
+                        if(props.from === 'shielded_deposit') {
+                            props.hideShieldedTokensDepositDialog();
+                        } else if (props.from === 'transparent_deposit') {
+                            props.hideTransparentTokensDepositDialog();
+                        }
                         setTimeout(() => {
                             props.fetchBalanceList(props.address);
                         }, 10000);
@@ -313,7 +319,7 @@ const IBCTransferDialog = (props) => {
                 ? <>
                     <div className="transfer_source">
                         <div className="header">
-                            <SourceChainSelectField/>
+                            <SourceChainSelectField from={props.from} data={props.depositData}/>
                             <div className="header_right">
                                 <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
                                     {props.ibcTransferAddress
@@ -462,6 +468,8 @@ IBCTransferDialog.propTypes = {
     fetchTokensList: PropTypes.func.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    hideShieldedTokensDepositDialog: PropTypes.func.isRequired,
+    hideTransparentTokensDepositDialog: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setIBCSwapType: PropTypes.func.isRequired,
@@ -475,6 +483,7 @@ IBCTransferDialog.propTypes = {
     fromNamadaSelectedAsset: PropTypes.object.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
+    from: PropTypes.string,
     ibcBalance: PropTypes.number,
     ibcChannel: PropTypes.object,
     ibcTransferAddress: PropTypes.string,
@@ -484,6 +493,7 @@ IBCTransferDialog.propTypes = {
     selectedAsset: PropTypes.string,
     selectedChain: PropTypes.string,
     shieldedAddress: PropTypes.string,
+    depositData: PropTypes.object,
 };
 
 const stateToProps = (state) => {
@@ -526,6 +536,9 @@ const actionToProps = {
     fetchIBCChannel,
     fetchTokensList,
     fetchBalanceList,
+
+    hideTransparentTokensDepositDialog,
+    hideShieldedTokensDepositDialog,
 };
 
 export default connect(stateToProps, actionToProps)(IBCTransferDialog);

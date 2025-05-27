@@ -13,10 +13,30 @@ const SourceChainSelectField = (props) => {
     const [inProgress, setInProgress] = useState(false);
 
     useEffect(() => {
-        props.onChange(ibcList && ibcList[0]);
-    }, []);
+        if (props.from === 'transparent_deposit' && props.data?.coingecko_id) {
+            const matchedItem = ibcList.find(item => item.value === props.data?.coingecko_id);
+            console.log('asdkjagsdads', matchedItem)
+
+            if (matchedItem) {
+                // props.onChange(matchedItem);
+                initKeplr(matchedItem);
+                return;
+            }
+        } else if (props.from === 'shielded_deposit' && props.data) {
+            const matchedItem = ibcList.find(item => item.value === props.data?.coingecko_id);
+
+            if (matchedItem) {
+                // props.onChange(matchedItem);
+                initKeplr(matchedItem);
+                return;
+            }
+        } 
+        // Fallback to default (first item)
+            props.onChange(ibcList && ibcList[0]);
+    }, [props.from, props.data]);
 
     const handleChange = (value) => {
+        console.log('asdkgajsdkads', value, props.value)
         if (props.value === value) {
             return;
         }
@@ -25,6 +45,7 @@ const SourceChainSelectField = (props) => {
     };
 
     const initKeplr = (value) => {
+        console.log('asdjagskdasd', value)
         const config = {
             RPC_URL: value && value.config && value.config.RPC_URL,
             REST_URL: value && value.config && value.config.REST_URL,
@@ -75,11 +96,13 @@ const SourceChainSelectField = (props) => {
 
 SourceChainSelectField.propTypes = {
     connectIBCAccount: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
     fetchIBCChannel: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
+    from: PropTypes.string,
 };
 
 const stateToProps = (state) => {
