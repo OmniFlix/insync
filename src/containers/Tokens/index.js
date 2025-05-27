@@ -8,6 +8,14 @@ import ShieldedTokensListTable from './ShieldedTokensListTable';
 import { makeStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ClassNames from 'classnames';
+import TransparentDepositDialog from './TransparentDepositDialog';
+import TransparentWithdrawDialog from './TransparentWithdrawDialog';
+import TransparentTransferDialog from './TransparentTransferDialog';
+import TransparentConvertDialog from './TransparentConvertDialog';
+import ShieldedDepositDialog from './ShieldedDepositDialog';
+import ShieldedWithdrawDialog from './ShieldedWithdrawDialog';
+import ShieldedTransferDialog from './ShieldedTransferDialog';
+import ShieldedConvertDialog from './ShieldedConvertDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Assets = (props) => {
+const Tokens = (props) => {
     const classes = useStyles();
 
     return (
@@ -38,11 +46,19 @@ const Assets = (props) => {
                     : null}
                 <ShieldedTokensListTable/>
             </div>}
+            <TransparentDepositDialog />
+            <TransparentWithdrawDialog />
+            <TransparentTransferDialog />
+            <TransparentConvertDialog />
+            <ShieldedDepositDialog />
+            <ShieldedWithdrawDialog />
+            <ShieldedTransferDialog />
+            <ShieldedConvertDialog />
         </>
     );
 };
 
-TokensListTable.propTypes = {
+Tokens.propTypes = {
     assetsTab: PropTypes.string.isRequired,
     balanceProgress: PropTypes.bool.isRequired,
     lang: PropTypes.string.isRequired,
@@ -60,4 +76,4 @@ const stateToProps = (state) => {
     };
 };
 
-export default connect(stateToProps)(Assets);
+export default connect(stateToProps)(Tokens);

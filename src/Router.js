@@ -6,7 +6,7 @@ import Proposals from './containers/Proposals';
 import ProposalDialog from './containers/Proposals/ProposalDialog';
 import ShieldedAssets from './containers/ShieldedAssets';
 import IBCTransfer from './containers/IBCTransfer';
-import Assets from './containers/Assets';
+import Tokens from './containers/Tokens';
 
 const routes = [{
     path: '/',
@@ -31,11 +31,11 @@ const routes = [{
     component: IBCTransfer,
 }, {
     path: '/tokens',
-    component: Assets,
+    component: Tokens,
 }, {
     path: '/tokensShielded',
-    component: Assets,
-}, {
+    component: Tokens,
+},  {
     path: '/externalTransfer/withdraw',
     component: IBCTransfer,
 }];

@@ -1,0 +1,135 @@
+.assets.stake.padding {
+    position: relative;
+    width: 800px;
+    margin: auto;
+    padding: 26px 0;
+}
+
+.assets.stake .table {
+    padding: 20px;
+}
+
+.assets .leaner_progress {
+    width: calc(100% - 48px);
+    margin: auto;
+    position: absolute;
+    top: 42px;
+    left: 24px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.assets .leaner_progress > p {
+    text-align: left;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 130%;
+    color: #000;
+}
+
+.assets .leaner_progress > div {
+    border-radius: 50px;
+    height: 6px;
+    background: #000;
+    margin: unset;
+}
+
+.assets .leaner_progress > div > div {
+    background: #feff47;
+    border-radius: 50px;
+}
+
+.assets thead {
+    display: table-header-group;
+}
+
+/* Tabs Section */
+.main_content .content_div .tokens_section_tabs {
+    display: flex;
+    align-items: center;
+    max-width: 800px;
+    margin: auto;
+    justify-content: center;
+
+    background: #000 !important;
+    border: 1px solid #262626;
+    border-radius: 32px;
+    padding: 4px;
+    width: fit-content;
+}
+
+.tokens_section_tabs .tab {
+    cursor: pointer;
+    font-family: 'Blinker', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #FFF;
+    height: 50px;
+    max-width: 50%;
+    min-width: auto;
+    text-align: center;
+    text-transform: capitalize;
+    border-radius: 32px;
+    width: 200px;
+}
+
+.tokens_section_tabs .tab.active {
+    background: #ffff46;
+    color: #000;
+}
+
+/* table css */
+.table .tokens_actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+}
+
+.table .tokens_actions button {
+    width: 100%;
+    background: #ffff4640;
+    border-color: #ffff46;
+    color: #00fffe;
+    border: 1px solid #ffff46;
+    border-radius: 50px;
+    box-sizing: border-box;
+    color: #ffff46;
+    font-family: Blinker, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 130%;
+    text-transform: capitalize;
+    padding: 8px 2px;
+    height: unset;
+}
+
+.table .tokens_actions button:disabled {
+    opacity: 0.6;
+}
+
+.table .tokens_actions button img {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+}
+
+.table .tokens_actions .disabled_tx_button {
+    width: 100%;
+    background: #000;
+    border-color: #262626;
+    color: #ffff46;
+    border: 1px solid #262626;
+    border-radius: 50px;
+    box-sizing: border-box;
+    font-family: Blinker, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 130%;
+    text-transform: capitalize;
+    padding: 8px 2px;
+    height: unset;
+}

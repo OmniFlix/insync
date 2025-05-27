@@ -20,6 +20,7 @@ import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuc
 import { showMessage } from 'actions/snackbar';
 import { feeList } from 'dummy/ibcList';
 import { formatCount } from 'utils/numberFormats';
+import { hideTransparentTokensConvertDialog } from 'actions/assets';
 
 const ShieldDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -110,6 +111,7 @@ const ShieldDialog = (props) => {
                         setInProgress(false);
                         clearInterval(intervalTime);
                         props.successDialog(value && value.hash);
+                        props.hideTransparentTokensConvertDialog();
                     }
                 }
             });
@@ -204,6 +206,7 @@ ShieldDialog.propTypes = {
     details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    hideTransparentTokensConvertDialog: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     pendingDialog: PropTypes.func.isRequired,
@@ -236,6 +239,8 @@ const actionToProps = {
     failedDialog: showDelegateFailedDialog,
     pendingDialog: showDelegateProcessingDialog,
     showMessage,
+
+    hideTransparentTokensConvertDialog,
 };
 
 export default connect(stateToProps, actionToProps)(ShieldDialog);
