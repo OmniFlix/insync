@@ -8,12 +8,14 @@ const CircularProgress = (props) => {
     return (
         <div className={ClassNames('circular_progress', props.className ? props.className : '')}>
             <MaterialCircularProgress/>
+            {props.text || null}
         </div>
     );
 };
 
 CircularProgress.propTypes = {
     className: PropTypes.string,
+    text: PropTypes.string,
 };
 
 export default CircularProgress;
