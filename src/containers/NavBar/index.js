@@ -394,7 +394,8 @@ class NavBar extends Component {
 
             const previousAddress = localStorage.getItem('of_co_address') &&
                 decode(localStorage.getItem('of_co_address'));
-            this.props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[1]?.address);
+            const index = shieldedAddress.findIndex((val) => addressList && addressList.address === val.address);
+            this.props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1]?.address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1]);
             this.props.setAccountDetails(addressList);
             if (fetch) {
                 this.handleFetch(addressList && addressList.address, shieldedAddress);

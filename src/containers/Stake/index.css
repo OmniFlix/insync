@@ -238,6 +238,11 @@
 @media (max-width: 958px) {
     .stake .heading {
         margin-top: unset;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
     }
 
     .stake .table .validator {
@@ -249,7 +254,7 @@
     }
 
     .stake .table .voting_power {
-        justify-content: flex-end;
+        align-items: flex-end;
     }
 
     .table td .tokens {
@@ -286,6 +291,10 @@
     .stake .tabs > p {
         width: max-content;
     }
+
+    .stake .tabs > p {
+        font-size: 20px;
+    }
 }
 
 @media (max-width: 426px) {
@@ -305,6 +314,10 @@
     .stake .table .validator .name_section > p {
         width: 200px;
     }
+
+    .stake .tabs > p {
+        font-size: 18px;
+    }
 }
 
 @media (max-width: 375px) {
@@ -319,5 +332,9 @@
 
     .stake .table .validator .name_section > p {
         width: 150px;
+    }
+
+    .stake .tabs > p {
+        font-size: 16px;
     }
 }

@@ -96,7 +96,7 @@ class Tabs extends Component {
         // }
 
         if (route) {
-            if (this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer') {
+            if (this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer' && route === 'externalTransfer') {
                 this.props.router.navigate('/' + route + '/withdraw');
                 this.setState({
                     value: newValue,
@@ -144,12 +144,12 @@ class Tabs extends Component {
                         {...a11yProps(2)} />
                     <Tab
                         className={'tab ' + (this.state.value === 'tokens' ? 'active_tab' : '')}
-                        label={variables[this.props.lang].assets}
+                        label={variables[this.props.lang].tokens}
                         value="tokens"
                         onClick={() => this.handleChange('tokens')}
                         {...a11yProps(3)} />
-                    <ShieldedTab handleChange={this.handleChange} value={this.state.value}/>
-                    <TransferTab handleChange={this.handleChange} value={this.state.value}/>
+                     {/* <ShieldedTab handleChange={this.handleChange} value={this.state.value}/> */}
+                     {/* <TransferTab handleChange={this.handleChange} value={this.state.value}/> */}
                 </div>
             </AppBar>
         );

@@ -28,6 +28,7 @@ import {
     TX_SIGN_AND_BROAD_CAST_IN_PROGRESS,
     TX_SIGN_AND_BROAD_CAST_SUCCESS,
     TX_SIGN_AND_BROAD_CAST_ERROR,
+    FROM_SHIELDED_NAMADA_SELECT_ASSET_SET,
 } from '../constants/IBCTransfer';
 import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
@@ -90,6 +91,14 @@ export const setIBCTransferAddress = (value) => {
 export const setFromNamadaSelectedAsset = (value, result) => {
     return {
         type: FROM_NAMADA_SELECT_ASSET_SET,
+        value,
+        result,
+    };
+};
+
+export const setFromShieldedNamadaSelectedAsset = (value, result) => {
+    return {
+        type: FROM_SHIELDED_NAMADA_SELECT_ASSET_SET,
         value,
         result,
     };
@@ -505,7 +514,6 @@ export const txSignAndBroadCast = (config, data, cb) => (dispatch) => {
         },
     })
         .then((res) => {
-            console.log('response :', res);
             if (res.data && res.data.tx_response && (res.data.tx_response.code !== undefined) && (res.data.tx_response.code !== 0)) {
                 dispatch(txSignAndBroadCastError(res.data.tx_response.logs && res.data.tx_response.logs.length
                     ? res.data.tx_response.logs
@@ -519,7 +527,6 @@ export const txSignAndBroadCast = (config, data, cb) => (dispatch) => {
             }
         })
         .catch((error) => {
-            console.log('error :', error);
             dispatch(txSignAndBroadCastError(
                 error.response &&
                 error.response.data &&
@@ -619,8 +626,6 @@ export const executeIBCTransfer = (revisionHeight, revisionNumber, cb) => async 
             portId: 'transfer',
             channelId: 'channel-98451',
         };
-
-        console.log('transer paramas :', transferParams);
 
         const txs = {
             token: config.TOKEN_ADDRESS,

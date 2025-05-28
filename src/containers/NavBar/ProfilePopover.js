@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
         color: '#FFFFFF',
         fontFamily: 'Blinker, sans-serif',
         minWidth: '200px',
-        
     },
 }));
 
@@ -60,7 +59,6 @@ const ProfilePopover = (props) => {
                         </CopyButton>
                     </div>
                 </div>
-                
                 <span></span>
                 <DisconnectButton />
             </div>

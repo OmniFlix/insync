@@ -7,6 +7,7 @@ import {
     CONNECT_IBC_ACCOUNT_IN_PROGRESS,
     CONNECT_IBC_ACCOUNT_SUCCESS,
     FROM_NAMADA_SELECT_ASSET_SET,
+    FROM_SHIELDED_NAMADA_SELECT_ASSET_SET,
     IBC_BALANCE_FETCH_ERROR,
     IBC_BALANCE_FETCH_IN_PROGRESS,
     IBC_BALANCE_FETCH_SUCCESS,
@@ -177,7 +178,7 @@ const ibcTransferAmount = (state = {
 };
 
 const ibcTransferType = (state = {
-    value: 'shielded',
+    value: 'shielded', // shielded, transparent
 }, action) => {
     switch (action.type) {
     case IBC_TRANSFER_TYPE_SET:
@@ -246,6 +247,8 @@ const ibcTransferAddress = (state = {
 const fromNamadaSelectedAsset = (state = {
     value: '',
     result: {},
+    shielded: '',
+    shieldedResult: {},
 }, action) => {
     switch (action.type) {
     case FROM_NAMADA_SELECT_ASSET_SET:
@@ -253,6 +256,12 @@ const fromNamadaSelectedAsset = (state = {
             ...state,
             value: action.value,
             result: action.result || {},
+        };
+    case FROM_SHIELDED_NAMADA_SELECT_ASSET_SET:
+        return {
+            ...state,
+            shielded: action.value,
+            shieldedResult: action.result || {},
         };
     default:
         return state;

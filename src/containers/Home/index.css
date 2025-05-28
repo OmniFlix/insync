@@ -3,7 +3,7 @@
     background: #FFFF46;
     backdrop-filter: blur(50px);
 
-    padding: 80px 100px;
+    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -187,6 +187,17 @@ margin-bottom: 0;
 
 .content_div .view_all:hover {
     background: #FFFFFF;
+}
+
+.stake .nodata_table_div {
+    background: black;
+    height: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    margin-top: 20px;
 }
 
 @media (max-width: 2000px) {

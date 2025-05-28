@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import AmountTextField from './AmountTextField';
 import { setIBCSwapType, setIBCTransferAmount, setIBCTransferType, fetchTimeoutHeight, executeIBCTransfer, fetchIBCBalance, aminoSignIBCTx, protoBufSigning, txSignAndBroadCast, connectIBCAccount, connectIBCAccountSuccess, fetchIBCChannel } from '../../actions/IBCTransfer';
 import { config } from '../../config';
-import TransferIcon from '../../assets/transfer.svg';
+// import TransferIcon from '../../assets/transfer.svg';
 import AssetSelectField from './AssetSelectField';
 import NamadaLogo from '../../assets/masp/namada_logo.svg';
 import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
@@ -17,7 +17,7 @@ import { showMessage } from 'actions/snackbar';
 import { showConnectDialog } from 'actions/navBar';
 import { getWrapAddress } from '../../utils/strings';
 import keplrIcon from '../../assets/keplr.png';
-import { fetchBalanceList, fetchTokensList, getBalance } from '../../actions/accounts';
+import { fetchBalanceList, fetchTokensList, getBalance, getShieldedBalance } from '../../actions/accounts';
 import { showDelegateSuccessDialog } from '../../actions/stake';
 import CircularProgress from '../../components/CircularProgress';
 import { ibcList } from 'dummy/ibcList';
@@ -25,9 +25,11 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getShieldedArgs, ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/masp/downArrow.svg';
+import { hideShieldedTokensDepositDialog, hideTransparentTokensDepositDialog } from 'actions/assets';
 
 const IBCTransferDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
+    const [transactionCompleted, setTransactionCompleted] = useState(false);
     useEffect(() => {
         const address = localStorage.getItem('namada_keplr_address');
         if (address) {
@@ -44,13 +46,14 @@ const IBCTransferDialog = (props) => {
                 PREFIX: selectedChain && selectedChain.config && selectedChain.config.PREFIX,
             };
     
-            setInProgress(true);
-            props.connectIBCAccount(config, (address) => {
-                setInProgress(false);
-                localStorage.setItem('namada_keplr_address', address[0].address);
-                props.fetchIBCBalance(config.REST_URL, address[0].address);
-                props.fetchIBCChannel(selectedChain.channel_link);
-            });
+            props.fetchIBCChannel(selectedChain.channel_link);
+            // setInProgress(true);
+            // props.connectIBCAccount(config, (address) => {
+            //     setInProgress(false);
+            //     localStorage.setItem('namada_keplr_address', address[0].address);
+            //     props.fetchIBCBalance(config.REST_URL, address[0].address);
+            //     props.fetchIBCChannel(selectedChain.channel_link);
+            // });
         }
     }, []);
 
@@ -146,6 +149,7 @@ const IBCTransferDialog = (props) => {
         }
 
         setInProgress(true);
+        setTransactionCompleted(false);
         const selectedChain = props.selectedChain;
         const config = {
             RPC_URL: selectedChain && selectedChain.config && selectedChain.config.RPC_URL,
@@ -158,7 +162,7 @@ const IBCTransferDialog = (props) => {
             PREFIX: selectedChain && selectedChain.config && selectedChain.config.PREFIX,
             EXPLORER_URL: selectedChain && selectedChain.config && selectedChain.config.EXPLORER_URL,
         };
-        const targetChain = selectedChain && selectedChain.value;
+        const targetChain = selectedChain && selectedChain.chain_name || selectedChain.value;
         const channelId = getChannelIdForChain(props.ibcChannel, targetChain);
         const namadaChannelId = getChannelIdForChain(props.ibcChannel, 'namada');
 
@@ -220,10 +224,69 @@ const IBCTransferDialog = (props) => {
                             return;
                         }
 
+                        setTransactionCompleted(true);
+                        if (props.from === 'transparent_deposit') {
+                            props.fetchBalanceList(props.address);
+                            const tokenAddress = props.transparentTokensDepositDialogValue && props.transparentTokensDepositDialogValue.balance &&
+                                props.transparentTokensDepositDialogValue.balance.tokenAddress;
+                            const balance = props.transparentTokensDepositDialogValue && props.transparentTokensDepositDialogValue.balance &&
+                                props.transparentTokensDepositDialogValue.balance.minDenomAmount && Number(props.transparentTokensDepositDialogValue.balance.minDenomAmount);
+                            if (tokenAddress) {
+                                const time = setInterval(() => {
+                                    (async () => {
+                                        props.fetchBalanceList(props.address, (resBalance) => {
+                                            let resultBalance = resBalance && resBalance.length && tokenAddress &&
+                                                    resBalance.find((val) => val.tokenAddress === tokenAddress);
+                                            resultBalance = resultBalance && resultBalance.minDenomAmount && Number(resultBalance.minDenomAmount);
+                                            if (resultBalance !== balance) {
+                                                props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
+                                                props.getBalance(props.address);
+                                                props.showDelegateSuccessDialog(res1.txhash, config);
+                                                setInProgress(false);
+                                                clearInterval(time);
+                                            }
+                                        });
+                                    })();
+                                }, 5000);
+
+                                return;
+                            }
+                        }
+                        if (props.from === 'shielded_deposit') {
+                            // props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address);
+                            const tokenAddress = props.shieldedTokensDepositDialogValue && props.shieldedTokensDepositDialogValue.tokenAddress;
+                            const balance = props.shieldedTokensDepositDialogValue && props.shieldedTokensDepositDialogValue.balance && Number(props.shieldedTokensDepositDialogValue.balance);
+                            console.log('111111', tokenAddress, balance, props.shieldedData);
+                            handleFetchShieldedBalance(tokenAddress, balance);
+                            // const time = setInterval(() => {
+                            //     (async () => {
+                            //         props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
+                            //             let resultBalance = resBalance && resBalance.length && tokenAddress &&
+                            //                     resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
+                            //             resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
+                            //             console.log('2222222', resultBalance, resBalance);
+                            //             if (resultBalance !== balance) {
+                            //                 props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
+                            //                 props.getBalance(props.address);
+                            //                 props.showDelegateSuccessDialog(res1.txhash, config);
+                            //                 setInProgress(false);
+                            //                 clearInterval(time);
+                            //             }
+                            //         });
+                            //     })();
+                            // }, 5000);
+
+                            return;
+                        }
                         props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                         props.getBalance(props.address);
                         props.fetchTokensList();
                         props.fetchBalanceList(props.address);
+                        // if(props.from === 'shielded_deposit') {
+                        //     props.hideShieldedTokensDepositDialog();
+                        // } else if (props.from === 'transparent_deposit') {
+                        //     props.hideTransparentTokensDepositDialog();
+                        // }
                         setTimeout(() => {
                             props.fetchBalanceList(props.address);
                         }, 10000);
@@ -302,6 +365,23 @@ const IBCTransferDialog = (props) => {
         }
     };
 
+    const handleFetchShieldedBalance = (tokenAddress, balance) => {
+        props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
+            let resultBalance = resBalance && resBalance.length && tokenAddress &&
+                    resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
+            resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
+            console.log('2222222', resultBalance, resBalance);
+            if (resultBalance !== balance) {
+                props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
+                props.getBalance(props.address);
+                props.showDelegateSuccessDialog(res1.txhash, config);
+                setInProgress(false);
+            } else {
+                handleFetchShieldedBalance(tokenAddress, balance);
+            }
+        });
+    };
+
     const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
     const namadaBalance = props.fromNamadaSelectedAsset?.balance?.minDenomAmount && Number(props.fromNamadaSelectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
     const image = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.logo_URIs && (props.fromNamadaSelectedAsset.logo_URIs.svg || props.fromNamadaSelectedAsset.logo_URIs.png);
@@ -313,7 +393,7 @@ const IBCTransferDialog = (props) => {
                 ? <>
                     <div className="transfer_source">
                         <div className="header">
-                            <SourceChainSelectField/>
+                            <SourceChainSelectField from={props.from} data={props.depositData}/>
                             <div className="header_right">
                                 <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
                                     {props.ibcTransferAddress
@@ -444,7 +524,7 @@ const IBCTransferDialog = (props) => {
                     ? 'InProgress...'
                     : 'Submit'}
             </Button>
-            {inProgress && <CircularProgress className="full_screen"/>}
+            {inProgress && <CircularProgress className="full_screen" text={props.transactionCompleted ? 'Transaction is in progress...' : null}/>}
         </div>
     );
 };
@@ -462,6 +542,8 @@ IBCTransferDialog.propTypes = {
     fetchTokensList: PropTypes.func.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    hideShieldedTokensDepositDialog: PropTypes.func.isRequired,
+    hideTransparentTokensDepositDialog: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setIBCSwapType: PropTypes.func.isRequired,
@@ -469,12 +551,16 @@ IBCTransferDialog.propTypes = {
     setIBCTransferType: PropTypes.func.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
     showDelegateSuccessDialog: PropTypes.func.isRequired,
+    getShieldedBalance: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     protoBufSigning: PropTypes.func.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
     fromNamadaSelectedAsset: PropTypes.object.isRequired,
+    transparentTokensDepositDialogValue: PropTypes.object,
+    shieldedTokensDepositDialogValue: PropTypes.object,
     address: PropTypes.string,
     amount: PropTypes.string,
+    from: PropTypes.string,
     ibcBalance: PropTypes.number,
     ibcChannel: PropTypes.object,
     ibcTransferAddress: PropTypes.string,
@@ -484,6 +570,8 @@ IBCTransferDialog.propTypes = {
     selectedAsset: PropTypes.string,
     selectedChain: PropTypes.string,
     shieldedAddress: PropTypes.string,
+    depositData: PropTypes.object,
+    shieldedData: PropTypes.object,
 };
 
 const stateToProps = (state) => {
@@ -492,6 +580,7 @@ const stateToProps = (state) => {
         ibcBalance: state.ibcTransfer.balance.value,
         lang: state.language,
         address: state.accounts.address.value,
+        shieldedData: state.accounts.address.shieldedData,
         amount: state.ibcTransfer.ibcTransferAmount.value,
         details: state.accounts.address.details,
         shieldedAddress: state.accounts.address.shieldedDetails,
@@ -504,6 +593,9 @@ const stateToProps = (state) => {
         keys: state.ibcTransfer.connection.keys,
         revealPublicKey: state.accounts.revealPublicKey.result,
         fromNamadaSelectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.result,
+
+        transparentTokensDepositDialogValue: state.assets.transparentTokensDepositDialog.value,
+        shieldedTokensDepositDialogValue: state.assets.shieldedTokensDepositDialog.value,
     };
 };
 
@@ -526,6 +618,10 @@ const actionToProps = {
     fetchIBCChannel,
     fetchTokensList,
     fetchBalanceList,
+    getShieldedBalance,
+
+    hideTransparentTokensDepositDialog,
+    hideShieldedTokensDepositDialog,
 };
 
 export default connect(stateToProps, actionToProps)(IBCTransferDialog);

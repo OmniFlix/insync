@@ -8,6 +8,7 @@ import { hideDelegateSuccessDialog } from '../../../actions/stake';
 import success from '../../../assets/stake/success.svg';
 import { config } from '../../../config';
 import withRouter from '../../../components/WithRouter';
+import { hideShieldedTokensConvertDialog, hideShieldedTokensDepositDialog, hideShieldedTokensTransferDialog, hideShieldedTokensWithdrawDialog, hideTransparentTokensConvertDialog, hideTransparentTokensDepositDialog, hideTransparentTokensTransferDialog, hideTransparentTokensWithdrawDialog } from 'actions/assets';
 
 const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
     '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
@@ -51,6 +52,30 @@ const SuccessDialog = (props) => {
         if (props.router && props.router.params && props.router.params.proposalID) {
             props.router.navigate('/proposals');
         }
+        if (props.transparentTokensDepositDialog) {
+            props.hideTransparentTokensDepositDialog();
+        }
+        if (props.transparentTokensWithdrawDialog) {
+            props.hideTransparentTokensWithdrawDialog();
+        }
+        if (props.transparentTokensTransferDialog) {
+            props.hideTransparentTokensTransferDialog();
+        }
+        if (props.transparentTokensConvertDialog) {
+            props.hideTransparentTokensConvertDialog();
+        }
+        if (props.shieldedTokensDepositDialog) {
+            props.hideShieldedTokensDepositDialog();
+        }
+        if (props.shieldedTokensWithdrawDialog) {
+            props.hideShieldedTokensWithdrawDialog();
+        }
+        if (props.shieldedTokensTransferDialog) {
+            props.hideShieldedTokensTransferDialog();
+        }
+        if (props.shieldedTokensConvertDialog) {
+            props.hideShieldedTokensConvertDialog();
+        }
 
         props.handleClose();
     };
@@ -79,7 +104,8 @@ const SuccessDialog = (props) => {
                                 ? <h1>{variables[props.lang].delegate + 'd Successfully'}</h1>
                                 : props.router && props.router.location && (props.router.location.pathname === '/externalTransfer' ||
                                 props.router.location.pathname === '/internalTransfer' || props.router.location.pathname === '/externalTransfer/withdraw' ||
-                                props.router.location.pathname === '/externalShielding' || props.router.location.pathname === '/internalShielding')
+                                props.router.location.pathname === '/externalShielding' || props.router.location.pathname === '/internalShielding' ||
+                                props.router.location.pathname === '/tokens' || props.router.location.pathname === '/tokensShielded')
                                     ? <h1>Token Transferred Successfully</h1>
                                     : props.router && props.router.params && props.router.params.proposalID
                                         ? <h1>{variables[props.lang].vote_success}</h1>
@@ -100,7 +126,8 @@ const SuccessDialog = (props) => {
                     </div>
                     : props.router && props.router.location && (props.router.location.pathname === '/externalTransfer' ||
                     props.router.location.pathname === '/internalTransfer' || props.router.location.pathname === '/externalTransfer/withdraw' ||
-                    props.router.location.pathname === '/externalShielding' || props.router.location.pathname === '/internalShielding')
+                    props.router.location.pathname === '/externalShielding' || props.router.location.pathname === '/internalShielding' ||
+                    props.router.location.pathname === '/tokens' || props.router.location.pathname === '/tokensShielded')
                         ? <>
                             <div className="row">
                                 <p>{variables[props.lang]['transaction_hash']}</p>
@@ -295,6 +322,14 @@ SuccessDialog.propTypes = {
     name: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     selectedMultiValidatorArray: PropTypes.array.isRequired,
+    hideTransparentTokensDepositDialog: PropTypes.func.isRequired,
+    hideTransparentTokensWithdrawDialog: PropTypes.func.isRequired,
+    hideTransparentTokensTransferDialog: PropTypes.func.isRequired,
+    hideTransparentTokensConvertDialog: PropTypes.func.isRequired,
+    hideShieldedTokensDepositDialog: PropTypes.func.isRequired,
+    hideShieldedTokensTransferDialog: PropTypes.func.isRequired,
+    hideShieldedTokensConvertDialog: PropTypes.func.isRequired,
+    hideShieldedTokensWithdrawDialog: PropTypes.func.isRequired,
     toValidator: PropTypes.string.isRequired,
     validator: PropTypes.string.isRequired,
     validatorImages: PropTypes.array.isRequired,
@@ -311,6 +346,14 @@ SuccessDialog.propTypes = {
     shieldedTokens: PropTypes.any,
     tokens: PropTypes.any,
     validatorList: PropTypes.array,
+    transparentTokensDepositDialog: PropTypes.bool,
+    transparentTokensWithdrawDialog: PropTypes.bool,
+    transparentTokensTransferDialog: PropTypes.bool,
+    transparentTokensConvertDialog: PropTypes.bool,
+    shieldedTokensDepositDialog: PropTypes.bool,
+    shieldedTokensWithdrawDialog: PropTypes.bool,
+    shieldedTokensTransferDialog: PropTypes.bool,
+    shieldedTokensConvertDialog: PropTypes.bool,
 };
 
 const stateToProps = (state) => {
@@ -330,11 +373,28 @@ const stateToProps = (state) => {
         validatorImages: state.stake.validators.images,
         claimValidator: state.stake.claimDialog.validator,
         selectedMultiValidatorArray: state.stake.selectMultiValidators.list,
+
+        transparentTokensDepositDialog: state.assets.transparentTokensDepositDialog.open,
+        transparentTokensWithdrawDialog: state.assets.transparentTokensWithdrawDialog.open,
+        transparentTokensTransferDialog: state.assets.transparentTokensTransferDialog.open,
+        transparentTokensConvertDialog: state.assets.transparentTokensConvertDialog.open,
+        shieldedTokensDepositDialog: state.assets.shieldedTokensDepositDialog.open,
+        shieldedTokensWithdrawDialog: state.assets.shieldedTokensWithdrawDialog.open,
+        shieldedTokensTransferDialog: state.assets.shieldedTokensTransferDialog.open,
+        shieldedTokensConvertDialog: state.assets.shieldedTokensConvertDialog.open,
     };
 };
 
 const actionToProps = {
     handleClose: hideDelegateSuccessDialog,
+    hideTransparentTokensDepositDialog,
+    hideTransparentTokensWithdrawDialog,
+    hideTransparentTokensTransferDialog,
+    hideTransparentTokensConvertDialog,
+    hideShieldedTokensDepositDialog,
+    hideShieldedTokensWithdrawDialog,
+    hideShieldedTokensTransferDialog,
+    hideShieldedTokensConvertDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(SuccessDialog));
