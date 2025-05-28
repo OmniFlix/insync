@@ -153,19 +153,7 @@ class Home extends Component {
                                 </Button>
                             </div>
                         </div>
-                        {active === 2 ? (
-                            this.props.delegatedValidatorList && this.props.delegatedValidatorList.length > 0 ? (
-                                <Table active={active} />
-                            ) : (
-                                <div className="nodata_table_div">Stake with a Validator now!</div>
-                            )
-                        ) : (
-                            this.props.validatorList && this.props.validatorList.length > 0 ? (
-                                <Table active={active} />
-                            ) : (
-                                <div className="nodata_table_div">No active validators available</div>
-                            )
-                        )}
+                        <Table active={active}/>
                     </div>
                 </div>
                 <div className="proposals">

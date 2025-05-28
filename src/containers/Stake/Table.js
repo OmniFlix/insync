@@ -30,7 +30,7 @@ class Table extends Component {
             // },
             textLabels: {
                 body: {
-                    noMatch: this.props.inProgress
+                    noMatch: (this.props.active === 2 && this.props.inProgress) || (this.props.active === 1 && this.props.delegatedValidatorListInProgress)
                         ? <CircularProgress/>
                         : !this.props.address
                             ? <Button
@@ -42,7 +42,13 @@ class Table extends Component {
                                 className="no_data_table" onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                }}> Stake with a Validator now! </span>,
+                                }}>
+                                    {this.props.active === 2 && !this.props.delegatedValidatorListInProgress && (!this.props.delegatedValidatorList || this.props.delegatedValidatorList.length === 0)
+                                        ? 'Stake with a Validator now!'
+                                        : this.props.active === 1 && !this.props.inProgress && (!this.props.validatorList || this.props.validatorList.length === 0)
+                                            ? 'No Active Validators'
+                                            : null}
+                                </span>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {
@@ -242,7 +248,9 @@ class Table extends Component {
                     item,
                 ])
             : [];
-
+console.log('active ', this.props.active)
+console.log(' delegated progress ', this.props.delegatedValidatorListInProgress)
+console.log(' delgated result ', this.props.delegatedValidatorList)
         return (
             <div className="table">
                 <DataTable
@@ -319,6 +327,7 @@ const stateToProps = (state) => {
         inProgress: state.stake.validators.inProgress,
         delegations: state.accounts.delegations.result,
         delegatedValidatorList: state.stake.delegatedValidators.list,
+        delegatedValidatorListInProgress: state.stake.delegatedValidators.inProgress,
         inActiveValidators: state.stake.inActiveValidators.list,
     };
 };

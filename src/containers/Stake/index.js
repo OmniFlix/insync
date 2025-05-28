@@ -75,16 +75,7 @@ const Stake = (props) => {
                     </div>
                     <p>Unbonding Period: 14 Days</p>
                 </div>
-                {active === 2 ? (
-                    props.delegatedValidatorListInProgress && props.delegatedValidatorList && props.delegatedValidatorList.length > 0 ? (
-                        <Table active={active} />
-                    ) : (
-                        <div className="nodata_table_div">Stake with a Validator now!</div>
-                    )) : (props.validatorList && props.validatorList.length > 0 ? (
-                            <Table active={active} />
-                        ) : (
-                            <div className="nodata_table_div">No active validators available</div>
-                        ))}
+                <Table active={active}/>
             </div>
             <DelegateDialog/>
             <SuccessDialog/>
