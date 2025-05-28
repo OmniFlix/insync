@@ -16,7 +16,7 @@ import {
     UnshieldingTransferDataMsgValue,
     AccountType,
     TransparentTransferMsgValue,
-} from '@namada/types';
+} from '@harish551/namada-types';
 
 import { getSdk } from '@harish551/namada-sdk/web';
 import init from '@harish551/namada-sdk/web-init';
@@ -1077,6 +1077,7 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
 
         const ibcTransfer = new IbcTransferMsgValue({
             source: Tx.source,
+            // gasSpendingKey: Tx.gasSpendingKey,
             receiver: Tx.receiver,
             token: Tx.token,
             amountInBaseDenom: Tx.amountInBaseDenom,
@@ -1084,7 +1085,6 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             channelId: Tx.channelId,
         });
 
-        console.log('ibcTransaction', ibcTransfer, txs, tx);
         const wrapperProps = {
             token: txs.token,
             feeAmount: txs.feeAmount,
@@ -1176,6 +1176,7 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
             data: Tx.data,
         });
 
+        console.log('ibcTransparentTransfer', ibcTransfer, txs, tx);
         const wrapperProps = {
             token: txs.token,
             feeAmount: txs.feeAmount,
@@ -1185,6 +1186,7 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
             memo: txs.memo || '',
         };
 
+        console.log('wrapperProps', wrapperProps);
         const newTxs = [];
         if (revealPublicKey && !revealPublicKey.publicKey) {
             const revealPkTx = await tx.buildRevealPk(wrapperProps);
@@ -1194,6 +1196,8 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
         const encoded = await tx.buildTransparentTransfer(wrapperTxValue, ibcTransfer);
         newTxs.push(encoded);
 
+        console.log('encoded', encoded);
+        console.log('newTxs', newTxs);
         let updateDate;
         if (type === 'ledger') {
             updateDate = newTxs;
@@ -1201,14 +1205,21 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
             updateDate = tx.buildBatch(newTxs);
         }
 
+        console.log('updateDate', updateDate);
+        console.log('address', address);
+        console.log('checksums', checksums);
         client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+            console.log('signedBondTxBytes', signedBondTxBytes);
+            console.log('wrapperProps', wrapperProps);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0], wrapperProps).then((result) => {
+                console.log('result', result);
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
                     cb(result.info || result.log || result.rawLog);
                 } else {
                     cb(null, result);
                 }
             }).catch((error) => {
+                console.error(`broadcast error: ${error}`);
                 const message = 'success';
                 if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                     cb(null, message);
@@ -1217,6 +1228,7 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
                 }
             });
         }).catch((error) => {
+            console.error(`Transaction was rejected: ${error}`);
             const message = 'success';
             if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                 cb(null, message);

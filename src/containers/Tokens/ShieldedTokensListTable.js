@@ -13,6 +13,7 @@ import ConvertIcon from '../../assets/transactions/convert.svg';
 import { showShieldedTokensConvertDialog, showShieldedTokensDepositDialog, showShieldedTokensTransferDialog, showShieldedTokensWithdrawDialog } from 'actions/assets';
 import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
+import classNames from 'classnames';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -240,7 +241,7 @@ class ShieldedTokensListTable extends React.Component {
             : [];
 
         return (
-            <div className="table shielded_table">
+            <div className={classNames(this.props.inProgress ? "table shielded_table" : 'table')}>
                 <DataTable
                     columns={columns}
                     data={tableData}
@@ -267,6 +268,7 @@ ShieldedTokensListTable.propTypes = {
     fetchIBCChannel: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
     address: PropTypes.string,
+    inProgress: PropTypes.bool,
 };
 
 const stateToProps = (state) => {

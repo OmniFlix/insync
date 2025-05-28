@@ -15,7 +15,7 @@ import { getBalance } from "actions/accounts";
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from "actions/stake";
 import { showMessage } from "actions/snackbar";
 import { config } from "config";
-import { TransparentTransferDataMsgValue } from "@namada/types";
+import { TransparentTransferDataMsgValue } from "@harish551/namada-types";
 import BigNumber from "bignumber.js";
 import { ibcTransparentTransfer } from "helper";
 
