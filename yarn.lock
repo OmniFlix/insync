@@ -1225,15 +1225,6 @@
     bech32 "^1.1.4"
     readonly-date "^1.0.0"
 
-"@cosmjs/encoding@0.32.3":
-  version "0.32.3"
-  resolved "https://registry.yarnpkg.com/@cosmjs/encoding/-/encoding-0.32.3.tgz#e245ff511fe4a0df7ba427b5187aab69e3468e5b"
-  integrity sha512-p4KF7hhv8jBQX3MkB3Defuhz/W0l3PwWVYU2vkVuBJ13bJcXyhU9nJjiMkaIv+XP+W2QgRceqNNgFUC5chNR7w==
-  dependencies:
-    base64-js "^1.3.0"
-    bech32 "^1.1.4"
-    readonly-date "^1.0.0"
-
 "@cosmjs/encoding@^0.29.0":
   version "0.29.5"
   resolved "https://registry.yarnpkg.com/@cosmjs/encoding/-/encoding-0.29.5.tgz#009a4b1c596cdfd326f30ccfa79f5e56daa264f2"
@@ -1247,6 +1238,15 @@
   version "0.32.4"
   resolved "https://registry.yarnpkg.com/@cosmjs/encoding/-/encoding-0.32.4.tgz#646e0e809f7f4f1414d8fa991fb0ffe6c633aede"
   integrity sha512-tjvaEy6ZGxJchiizzTn7HVRiyTg1i4CObRRaTRPknm5EalE13SV+TCHq38gIDfyUeden4fCuaBVEdBR5+ti7Hw==
+  dependencies:
+    base64-js "^1.3.0"
+    bech32 "^1.1.4"
+    readonly-date "^1.0.0"
+
+"@cosmjs/encoding@^0.33.1":
+  version "0.33.1"
+  resolved "https://registry.yarnpkg.com/@cosmjs/encoding/-/encoding-0.33.1.tgz#77d6a8e0152c658ecf07b5aee3f5968d9071da50"
+  integrity sha512-nuNxf29fUcQE14+1p//VVQDwd1iau5lhaW/7uMz7V2AH3GJbFJoJVaKvVyZvdFk+Cnu+s3wCqgq4gJkhRCJfKw==
   dependencies:
     base64-js "^1.3.0"
     bech32 "^1.1.4"
@@ -1673,10 +1673,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
-"@harish551/namada-sdk@^0.18.0":
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/@harish551/namada-sdk/-/namada-sdk-0.18.0.tgz#03415d9dad68492c3d4a586dcd220ca6c82ad14a"
-  integrity sha512-1r7LsGPXAm9L2cLNSfg8cmAxoXCOi4a7/wtbzW9xweuDuj/Sc0/62o2xV6C+faoeuC3bz4XxikCoNfoV0e6tpA==
+"@harish551/namada-sdk@^0.18.1":
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/@harish551/namada-sdk/-/namada-sdk-0.18.1.tgz#4003b1dca940a1e7116affa6070d9ab786a96cf1"
+  integrity sha512-C4UPmm6Pny12QhnDBoBvKOIsBM7QZrVmkyzyBXfGieEjZEosLPtiaXnxHyV/iRz0UeVOO803Rj+1POLBvyx/2w==
   dependencies:
     "@cosmjs/encoding" "^0.29.0"
     "@dao-xyz/borsh" "^5.1.5"
@@ -1687,6 +1687,15 @@
     buffer "^6.0.3"
     semver "^7.6.3"
     slip44 "^3.0.18"
+
+"@harish551/namada-types@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@harish551/namada-types/-/namada-types-0.6.0.tgz#ceebcc7413c4eb94927c9033d3e8face1101299c"
+  integrity sha512-PEWTHRsQUUeAoTMZ2L/nNdaBefI5V5P+3LZfbzU9Y5DLA58L1zymjE8f0xEhWFfC4AY0N83Ehi3HV2yK69D05A==
+  dependencies:
+    "@dao-xyz/borsh" "^5.1.5"
+    bignumber.js "^9.1.1"
+    slip44 "^3.0.11"
 
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
@@ -3293,6 +3302,13 @@
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
+
+"@zondax/ledger-namada@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@zondax/ledger-namada/-/ledger-namada-2.0.0.tgz#6e3599d0a8a1a6db581fbdbef28b729b6b445667"
+  integrity sha512-NtfVzUmwyWULlzMdMdiQCY00U2CZktV9qA7/EcenZ9wyBPKOBEtPpEUdr+z08MBeo4o+pBTRvOpJ93YHI79JTg==
+  dependencies:
+    "@ledgerhq/hw-transport" "^6.30.6"
 
 "@zondax/ledger-namada@^2.0.0":
   version "2.0.0"

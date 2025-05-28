@@ -1,0 +1,244 @@
+.tokens_transfer_dialog > div:nth-child(3) > div {
+    border-radius: 24px;
+    background: #000;
+}
+
+.ibc_transfer_dialog {
+    margin: 0 auto;
+    padding: 24px 0;
+}
+
+.ibc_transfer_dialog .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.ibc_transfer_dialog .header h2 {
+    color: #FFF;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+}
+
+.ibc_transfer_dialog .header button {
+    padding: 0;
+    min-width: auto;
+}
+
+.ibc_transfer_dialog .header button svg {
+    fill: #fff;
+}
+
+.ibc_transfer_dialog .section1 {
+
+}
+
+.ibc_transfer_dialog .section1 .row1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ibc_transfer_dialog .section1 .row1 .text {
+    color: #808080;
+    font-family:'Blinker', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+}
+
+.ibc_transfer_dialog .section1 .row1 .available {
+    color: #BFBFBF;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px; /* 150% */
+    display: flex;
+    align-items: center;
+    gap: 4px;
+} 
+
+.ibc_transfer_dialog .section1 .row1 .available p {
+    color: #528BFF;
+}
+
+.ibc_transfer_dialog .section1 .row2 {
+    display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 6px 0 14px 0;
+}
+
+.ibc_transfer_dialog .section1 .row2 .left_section {
+    border-radius: 12px 0px 0px 12px;
+    border-top: 1px solid #303030;
+    border-bottom: 1px solid #303030;
+    border-left: 1px solid #303030;
+    background: #000;
+    
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+
+    overflow: hidden;
+    color: #FFF;
+    text-overflow: ellipsis;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 150% */
+    width: 40%;
+    height: 41px;
+    display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0px 10px;
+}
+
+.ibc_transfer_dialog .section1 .row2 .right_section {
+    flex: 1;
+}
+
+.ibc_transfer_dialog .section1 .row2 .right_section .text_field > div {
+    border-radius: 0px 12px 12px 0px;
+}
+
+.ibc_transfer_dialog .text_field {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.ibc_transfer_dialog .text_field > div {
+    border-radius: 12px;
+    border: 1px solid #303030;
+    background: #000;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+.ibc_transfer_dialog .text_field.invalid_address > div {
+    border: 1px solid #8b2626;
+}
+
+.ibc_transfer_dialog .text_field input {
+    color: #fff;
+    text-overflow: ellipsis;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; 
+}
+
+.ibc_transfer_dialog .text_field input::placeholder {
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.30);
+    text-overflow: ellipsis;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; 
+}
+
+.ibc_transfer_dialog .text_field fieldset {
+    border: 0;
+}
+
+.ibc_transfer_dialog .section3 {
+
+}
+
+.ibc_transfer_dialog .section3 .row1 {
+    color: #808080;
+    font-family: 'Blinker', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+    text-align: left;
+}
+
+.ibc_transfer_dialog .section3 .row2 {
+    margin: 6px 0 14px 0;
+}
+
+.ibc_transfer_dialog .section4 {
+
+}
+
+.ibc_transfer_dialog .section4 .row1 {
+    color: #808080;
+    font-family: 'Blinker', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+    text-align: left;
+}
+
+.ibc_transfer_dialog .section4 .row2 {
+    margin: 6px 0 14px 0;
+}
+
+.ibc_transfer_dialog .section5 {
+    display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 20px 0;
+}
+
+.ibc_transfer_dialog .section5 .left_section {
+    color: rgba(255, 255, 255, 0.50);
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 125% */
+    display: flex
+;
+    align-items: center;
+    gap: 4px;
+}
+
+.ibc_transfer_dialog .section5 .left_section > span {
+    color: #FFF;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px; /* 125% */
+}
+
+.ibc_transfer_dialog .actions {
+
+}
+
+.ibc_transfer_dialog .actions button {
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 24px;
+
+    font-family: 'Blinker', sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%; /* 31.2px */
+    color: #000;
+    background: #FFFF46;
+    width: 100%;
+    text-transform: capitalize;
+}
+
+.ibc_transfer_dialog .actions button:disabled {
+    background: #494949;
+    color: #232323;
+}

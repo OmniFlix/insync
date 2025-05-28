@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import './index.css';
-import { getSdk, SdkEvents } from '@namada/sdk/web';
+import { getSdk, SdkEvents } from '@harish551/namada-sdk/web';
 import { connect } from "react-redux";
 import * as PropTypes from 'prop-types';
-import init from '@namada/sdk/web-init';
+import init from '@harish551/namada-sdk/web-init';
 import { config } from "config";
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 
