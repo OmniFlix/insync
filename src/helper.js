@@ -87,7 +87,6 @@ export const initializeChain = (cb) => {
                     await window.keplr.experimentalSuggestChain(kchainConfig);
                 } catch (error) {
                     const chainError = 'Failed to suggest the chain';
-                    console.log('chainError', chainError);
                     cb(chainError);
                 }
             } else {

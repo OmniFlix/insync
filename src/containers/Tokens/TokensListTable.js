@@ -263,7 +263,6 @@ class TokensListTable extends React.Component {
                 minDenomAmount: available
             }
         });
-        console.log('enrichedAssets', enrichedAssets, this.props);
 
         const tableData = enrichedAssets && enrichedAssets.length
             ? enrichedAssets.map((item) =>
