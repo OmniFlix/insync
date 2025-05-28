@@ -3,7 +3,6 @@ import DataTable from '../../components/DataTable';
 import './index.css';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import CircularProgress from '../../components/CircularProgress';
 import UnDelegateButton from '../Home/TokenDetails/UnDelegateButton';
 import ReDelegateButton from '../Home/TokenDetails/ReDelegateButton';
 import DelegateButton from './DelegateButton';
@@ -12,8 +11,7 @@ import ValidatorName from './ValidatorName';
 import { config } from '../../config';
 import { Button } from '@material-ui/core';
 import { showConnectDialog } from '../../actions/navBar';
-import { randomNoRepeats } from 'utils/array';
-import classNames from 'classnames';
+import TextSkeleton from '../../components/TextSkeleton';
 
 class Table extends Component {
     render () {
@@ -30,9 +28,7 @@ class Table extends Component {
             // },
             textLabels: {
                 body: {
-                    noMatch: this.props.inProgress
-                        ? <CircularProgress/>
-                        : !this.props.address
+                        noMatch: !this.props.address
                             ? <Button
                                 className="disconnect_button"
                                 onClick={() => this.props.showConnectDialog()}>
@@ -57,11 +53,14 @@ class Table extends Component {
             label: 'Validator',
             options: {
                 sort: false,
-                customBodyRender: (value, index) => (
-                    <ValidatorName
+                customBodyRender: (value, index) => {
+                    if (value === 'skeleton-loader') {
+                    return <TextSkeleton/>;
+                }
+                    return (<ValidatorName
                         index={index && index.rowIndex} name={value}
-                        value={index.rowData && index.rowData.length && index.rowData[2]}/>
-                ),
+                        value={index.rowData && index.rowData.length && index.rowData[2]}/>)
+                },
             },
         },
         // {
@@ -91,14 +90,21 @@ class Table extends Component {
             label: 'Voting Power',
             options: {
                 sort: true,
-                customBodyRender: (value, index) => (
-                    <div className="voting_power">
-                        <p>{formatCount(value, true)}</p>
-                        {index.rowData && index.rowData.length && index.rowData[2] && index.rowData[2].votingPower
-                            ? <p className="percentage">{formatCount(parseFloat((Number(index.rowData[2].votingPower) / this.props.totalVotingPower) * 100), 2)}%</p>
-                            : '-'}
-                    </div>
-                ),
+                customBodyRender: (value, index) => {
+                    if (value === 'skeleton-loader') {
+                        return <TextSkeleton/>;
+                    }
+                    const votingPower = index.rowData && index.rowData.length && index.rowData[2] && index.rowData[2].votingPower;
+                    const totalingPower = 0;
+                    return (
+                        <div className="voting_power">
+                            <p>{formatCount(value, true)}</p>
+                            {votingPower && totalingPower > 0
+                                ? <p className="percentage">{formatCount(parseFloat((Number(votingPower) / totalingPower) * 100), 2)}%</p>
+                                : '-'}
+                        </div>
+                    )
+                },
             },
         },
         //         {
@@ -128,7 +134,7 @@ class Table extends Component {
             label: 'Tokens Staked',
             options: {
                 sort: false,
-                customBodyRender: (item) => {
+                customBodyRender: (item, index) => {
                     let address = null;
                     let newValue = null;
                     this.props.delegatedValidatorList && this.props.delegatedValidatorList.length &&
@@ -143,13 +149,15 @@ class Table extends Component {
                             }
                         }
                     });
-                    // address && this.props.delegations && this.props.delegations.length &&
-                    // this.props.delegations.map((val) => {
-                    //     if (val && val.length && val[1] && (address === val[1])) {
-                    //         value = val[2];
-                    //     }
-                    // });
-
+                    address && this.props.delegations && this.props.delegations.length &&
+                    this.props.delegations.map((val) => {
+                        if (val && val.length && val[1] && (address === val[1])) {
+                            value = val[2];
+                        }
+                    });
+                    if (item === 'skeleton-loader') {
+                        return <TextSkeleton/>;
+                    }
                     return (
                         <div className={newValue ? 'tokens' : 'no_tokens'}>
                             {floatCountWithoutABBRS(newValue) || 'no tokens'}
@@ -162,7 +170,10 @@ class Table extends Component {
             label: 'Action',
             options: {
                 sort: false,
-                customBodyRender: (value) => {
+                customBodyRender: (value, index) => {
+                    if (value === 'skeleton-loader') {
+                    return <TextSkeleton/>;
+                }
                     return (
                         this.props.delegations.find((item) =>
                             value && (item && item.length && item[1]) === value.address)
@@ -243,11 +254,42 @@ class Table extends Component {
                 ])
             : [];
 
+        const loadingData = Array.from(new Array(5)).map((item, index) => {
+            const array = [
+                'skeleton-loader',
+                'skeleton-loader',
+                'skeleton-loader',
+                'skeleton-loader',
+            ];
+            array.splice(5, 0, ...[...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader'), ...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader')]);
+                return array;
+        });
+
+        const dataLoadingData = Array.from(new Array(2)).map((item, index) => {
+        const array = [
+            'skeleton-loader',
+            'skeleton-loader',
+            'skeleton-loader',
+            'skeleton-loader',
+        ];
+        array.splice(5, 0, ...[...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader'), ...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader')]);
+
+        return array;
+    });
         return (
             <div className="table">
                 <DataTable
                     columns={columns}
-                    data={tableData}
+                    // data={tableData}
+                    data={
+                        (this.props.active === 2 && this.props.delegatedValidatorListInProgress)
+                        ? loadingData
+                        : (this.props.active === 1 && this.props.validatorsListInProgress)
+                            ? loadingData
+                            : (this.props.delegatedValidatorListInProgress && this.props.delegatedValidatorList && this.props.delegatedValidatorList.length)
+                                ? [...tableData, ...dataLoadingData]
+                                : tableData
+                    }
                     name="stake"
                     options={options}/>
             </div>
@@ -314,11 +356,14 @@ const stateToProps = (state) => {
         address: state.accounts.address.value,
         lang: state.language,
         validatorList: state.stake.validators.list,
+        validatorListInProgress: state.stake.validators.inProgress,
+        validatorListInProgress: state.stake.validators.inProgress,
         totalVotingPower: state.stake.validators.totalVotingPower,
         genesisValidatorList: state.stake.genesisValidators.list,
         inProgress: state.stake.validators.inProgress,
         delegations: state.accounts.delegations.result,
         delegatedValidatorList: state.stake.delegatedValidators.list,
+        delegatedValidatorListInProgress: state.stake.delegatedValidators.inProgress,
         inActiveValidators: state.stake.inActiveValidators.list,
     };
 };
