@@ -3,21 +3,29 @@
     backdrop-filter: blur(50px);
     padding: 32px;
     width: max-content;
-    margin: 40px auto;
+    /* margin: 40px auto; */
     /* background: #FFFF46; */
     background: #000;
     width: 550px;
 }
 
-.ibc_content > p {
+.ibc_content .header_div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+
+    margin-bottom: 10px;
+}
+
+.ibc_content .header_div > p {
     color: #fff;
-    text-align: center;
+    text-align: left;
     font-family: 'Blinker', sans-serif;
     font-size: 22px;
     font-style: normal;
     font-weight: 600;
     line-height: 130%;
-    margin-bottom: 24px;
 }
 
 .ibc_content > span {
@@ -51,6 +59,18 @@
     justify-content: center;
 }
 
+.transfer_source .header {
+    padding: 16px 16px 2px 16px;
+}
+
+.transfer_source .select_section {
+    padding: 0px 16px;
+}
+
+.transfer_source .tokens_secion {
+
+}
+
 .transfer_source .header button {
     background: #262626;
     color: #fff;
@@ -74,7 +94,8 @@
 }
 
 .transfer_source .header > .select_field {
-    width: 45%;
+    width: 100%;
+    margin-top: 0px;
 }
 
 .transfer_dialog .header .logout_icon {
@@ -83,16 +104,17 @@
 }
 
 .transfer_dialog > div {
-    padding: 24px 16px 20px;
-    background: #161616;
+    /* padding: 24px 16px 20px; */
+    background: #0B0B0B;
     border-radius: 14px;
-    border: 1px solid #232323;
+    border: 1px solid #1A1A1A;
 }
 
 .transfer_dialog > div > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
 }
 
 .transfer_dialog > div > div.transfer_type {
@@ -160,17 +182,11 @@
 }
 
 .transfer_dialog > .arrow {
-    width: 50px;
-    height: 50px;
-    background: #FFFF46;
-    border-radius: 50px;
     display: flex;
     align-items: center;
-    padding: 10px;
     position: absolute;
     left: 45%;
-    top: 53%;
-    /* cursor: pointer; */
+    top: 58%;
 }
 
 .transfer_dialog .arrow > img {
@@ -180,13 +196,19 @@
 }
 
 .transfer_dialog .transfer_source .select_section > div {
-    width: 45%;
-    margin: 20px 0;
+    width: 40%;
+    margin: 5px 0px;
+}
+
+.transfer_dialog .transfer_source .select_section .amount_text_field {
+    width: 60%;
+    background: #FFFFFF0F;
+    border-radius: 12px;
 }
 
 .transfer_dialog .transfer_source .text_field.amount_text_field input::placeholder,
 .transfer_dialog .transfer_source .text_field.amount_text_field input {
-    color: #b1b1b1;
+    color: #fff;
     display: flex;
     font-family: 'Blinker', sans-serif;
     font-size: 16px;
@@ -195,13 +217,13 @@
 }
 
 .transfer_dialog .transfer_source .text_field.amount_text_field fieldset {
-    border-color: #777777;
+    border-color: #FFFFFF05;
 }
 
 .transfer_dialog .select_field > div > div,
 .transfer_dialog .select_section .select_field > div > div {
     align-items: center;
-    border: 1px solid #696969;
+    border: 1px solid #1A1A1A;
     border-radius: 12px;
     box-sizing: border-box;
     color: #b1b1b1;
@@ -267,13 +289,27 @@
     width: 30px;
 }
 
+.transfer_dialog .tokens_secion {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 16px 16px 16px;
+}
+
+.tokens_secion img {
+    width: 20px;
+    height: 20px;
+}
+
 .transfer_dialog .tokens_secion p {
-    color: #696969;
+    color: #fff;
     text-align: center;
     font-family: 'Blinker', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 130%;
 }
 

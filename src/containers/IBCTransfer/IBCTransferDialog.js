@@ -24,7 +24,7 @@ import { ibcList } from 'dummy/ibcList';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getShieldedArgs, ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
-import DownArrowIcon from '../../assets/masp/downArrow.svg';
+import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { hideShieldedTokensDepositDialog, hideTransparentTokensDepositDialog } from 'actions/assets';
 
 const IBCTransferDialog = (props) => {
@@ -375,7 +375,7 @@ const IBCTransferDialog = (props) => {
                     <div className="transfer_source">
                         <div className="header">
                             <SourceChainSelectField from={props.from} data={props.depositData}/>
-                            <div className="header_right">
+                            {/* <div className="header_right">
                                 <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
                                     {props.ibcTransferAddress
                                         ? <>
@@ -389,16 +389,19 @@ const IBCTransferDialog = (props) => {
                                         localStorage.removeItem('namada_keplr_address');
                                         props.connectIBCAccountSuccess('');
                                     }}/> : null}
-                            </div>
+                            </div> */}
                         </div>
-                        <div className="border"></div>
+                        {/* <div className="border"></div> */}
                         <div className="select_section">
                             <AssetSelectField/>
                             <AmountTextField/>
                         </div>
+                        <div className="border"></div>
                         <div className="tokens_secion">
-                            <p>Available: {ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
-                            <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>
+                            <img alt='keplrIcon' src={keplrIcon}/>
+                            <p>{props.address}</p>
+                            {/* <p>Available: {ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p> */}
+                            {/* <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button> */}
                         </div>
                     </div>
                     <div className="arrow">

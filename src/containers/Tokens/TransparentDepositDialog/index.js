@@ -5,6 +5,8 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import IBCTransferDialog from "containers/IBCTransfer/IBCTransferDialog";
+import { Button } from '@material-ui/core';
+import closeIcon from '../../../assets/close_icon.png'
 
 class TransparentDepositDialog extends React.Component {
    render () {
@@ -15,7 +17,10 @@ class TransparentDepositDialog extends React.Component {
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_deposit_dialog">
                 <div className="ibc_content padding">
-                    <p>Deposit {' '}  {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' to Namada'}</p>
+                    <div className="header_div">
+                        <p>Deposit Asset</p>
+                        <Button><img alt="closeIcon" src={closeIcon}/></Button>
+                    </div>
                     <IBCTransferDialog from='transparent_deposit' depositData={this.props.value}/>
                 </div>
             </Dialog>

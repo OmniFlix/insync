@@ -20,7 +20,7 @@ p {
 }
 
 .padding {
-    padding: 26px 60px;
+    padding: 32px;
 }
 
 .of_community .connect_button {
@@ -71,8 +71,12 @@ p {
     width: 600px;
     background: #000000;
     backdrop-filter: blur(35px);
-    border-radius: 10px;
+    border-radius: 24px;
     color: #ffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .dialog > div .content {
@@ -140,7 +144,7 @@ html::-webkit-scrollbar-thumb,
 
 @media (max-width: 1025px) {
     .padding {
-        padding: 20px 40px;
+        padding: 32px;
     }
 
     .of_community .card > button {
