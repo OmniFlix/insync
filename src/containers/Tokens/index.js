@@ -16,6 +16,7 @@ import ShieldedDepositDialog from './ShieldedDepositDialog';
 import ShieldedWithdrawDialog from './ShieldedWithdrawDialog';
 import ShieldedTransferDialog from './ShieldedTransferDialog';
 import ShieldedConvertDialog from './ShieldedConvertDialog';
+import syncProgress from 'assets/syncProgress.gif';
 import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,10 +42,17 @@ const Tokens = (props) => {
             </div>}
             {props.assetsTab === 'shielded' && <div className="assets stake padding">
                 {(props.tokensProgress || props.shieldedBalanceProgress) && props.shieldedBalance && !props.shieldedBalance.length
-                    ? <div className={ClassNames(classes.root, 'leaner_progress')}>
-                        <LinearProgress />
+                    ? <div className='sync_in_progress'> 
+                        <div className='sync_section'>
+                            <img src={syncProgress} alt="Syncing..." className="sync-progress" />
+                            <h2>Shielded Sync in Progress</h2>
+                            <p>Hang tight, this might take a moment</p>
+                        </div>
                     </div>
-                    : null}
+                    // <div className={ClassNames(classes.root, 'leaner_progress')}>
+                    //     <LinearProgress />
+                    // </div>
+                    :  null}
                 <ShieldedTokensListTable inProgress={props.tokensProgress || props.shieldedBalanceProgress}/>
             </div>}
             <TransparentDepositDialog />
