@@ -26,7 +26,8 @@ const ShieldedToTransparent = (props) => {
     const handleSubmit = () => {
         setInProgress(true);
 
-        const source = props.address;
+        // const source = props.shieldedAddress;
+        const source = props.shieldedData?.pseudoExtendedKey;
         let token = config.TOKEN_ADDRESS;
         let amount = new BigNumber(props.amount);
         if (props.selectedAsset?.balance) {
@@ -36,14 +37,14 @@ const ShieldedToTransparent = (props) => {
         }
 
         const msgValue = new UnshieldingTransferDataMsgValue({
-            target: source,
+            target: props.address,
             token: token,
             amount: amount,
         });
 
         const tx = {
-            source: props.shieldedData?.pseudoExtendedKey,
-            // gasSpendingKey: props.shieldedData?.pseudoExtendedKey,
+            source: source,
+            // gasSpendingKey: props.disposableSigner && props.disposableSigner.publicKey,
             data: [msgValue],
         };
 
