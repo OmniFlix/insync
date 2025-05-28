@@ -13,7 +13,7 @@ import NamadaShieldedLogo from '../../../assets/masp/namada_shielded.svg';
 import BigNumber from 'bignumber.js';
 import { maspTransaction } from 'helper';
 import CircularProgress from 'components/CircularProgress';
-import { ShieldingTransferDataMsgValue } from '@namada/types';
+import { ShieldingTransferDataMsgValue } from '@harish551/namada-types';
 import variables from 'utils/variables';
 import { getBalance } from 'actions/accounts';
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';

@@ -111,8 +111,9 @@ const IBCUnShielding = (props) => {
     const handleNamadaTransfer = () => {
         setInProgress(true);
 
-        const source = props.address;
-        // const source = props.shieldedData?.pseudoExtendedKey;
+        // const source = props.address;
+        const source = props.shieldedData?.pseudoExtendedKey;
+        const gasSpendingKey = props.shieldedData?.pseudoExtendedKey;
         let token = fromNamadaSelectedConfig?.COIN_MINIMAL_DENOM;
         let amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
         // const amount = String(Number(props.amount) * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
@@ -124,11 +125,13 @@ const IBCUnShielding = (props) => {
 
         const tx = {
             source: source,
+            gasSpendingKey: gasSpendingKey,
             token: token,
             amountInBaseDenom: amount,
             receiver: props.ibcTransferAddress,
             portId: 'transfer',
             channelId: namadaChannelId,
+            // disposableSigner: props.disposableSigner?.address,
         };
 
         const txs = {

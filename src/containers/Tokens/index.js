@@ -44,7 +44,7 @@ const Tokens = (props) => {
                         <LinearProgress />
                     </div>
                     : null}
-                <ShieldedTokensListTable/>
+                <ShieldedTokensListTable inProgress={props.tokensProgress || props.shieldedBalanceProgress}/>
             </div>}
             <TransparentDepositDialog />
             <TransparentWithdrawDialog />
