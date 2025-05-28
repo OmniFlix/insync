@@ -14,6 +14,7 @@ import DepositIcon from '../../assets/transactions/deposit.svg';
 import WithdrawIcon from '../../assets/transactions/withdraw.svg';
 import ConvertIcon from '../../assets/transactions/convert.svg';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
+import { setSelectedSource } from 'actions/shieldedAssets';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -69,6 +70,7 @@ class TokensListTable extends React.Component {
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
         this.props.showTransparentTokensConvertDialog(value);
+        this.props.setSelectedSource(value?.config?.COIN_DENOM);
     }
 
     initKeplr (value) {
@@ -299,6 +301,7 @@ TokensListTable.propTypes = {
     connectIBCAccountSuccess: PropTypes.func.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
     fetchIBCChannel: PropTypes.func.isRequired,
+    setSelectedSource: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
     address: PropTypes.string,
 };
@@ -326,6 +329,7 @@ const actionToProps = {
     connectIBCAccountSuccess,
     fetchIBCBalance,
     fetchIBCChannel,
+    setSelectedSource,
 };
 
 

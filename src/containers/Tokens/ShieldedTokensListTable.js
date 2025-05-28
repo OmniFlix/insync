@@ -170,7 +170,7 @@ class ShieldedTokensListTable extends React.Component {
                         <div className="tokens_actions">
                               {token === 'NAM'
                             ? null 
-                            : <Button disabled={true} onClick={() => this.handleDeposit(value)}>
+                            : <Button onClick={() => this.handleDeposit(value)}>
                                 <img src={DepositIcon} alt="Deposit"/>
                                 Deposit
                             </Button>}
@@ -240,7 +240,7 @@ class ShieldedTokensListTable extends React.Component {
             : [];
 
         return (
-            <div className="table">
+            <div className="table shielded_table">
                 <DataTable
                     columns={columns}
                     data={tableData}

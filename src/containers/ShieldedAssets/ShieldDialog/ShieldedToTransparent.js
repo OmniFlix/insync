@@ -43,6 +43,7 @@ const ShieldedToTransparent = (props) => {
 
         const tx = {
             source: props.shieldedData?.pseudoExtendedKey,
+            // gasSpendingKey: props.shieldedData?.pseudoExtendedKey,
             data: [msgValue],
         };
 
@@ -52,6 +53,7 @@ const ShieldedToTransparent = (props) => {
             gasLimit: new BigNumber(32032),
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
+            // publicKey: props.disposableSigner && props.disposableSigner.publicKey,
         };
 
         if (props.selectedAsset?.balance) {
@@ -215,6 +217,7 @@ ShieldedToTransparent.propTypes = {
     revealPublicKey: PropTypes.object,
     selectedAsset: PropTypes.object,
     shieldedData: PropTypes.object,
+    disposableSigner: PropTypes.object,
     shieldedAddress: PropTypes.string,
 };
 
@@ -227,6 +230,7 @@ const stateToProps = (state) => {
         details: state.accounts.address.details,
         shieldedAddress: state.accounts.address.shieldedDetails,
         shieldedData: state.accounts.address.shieldedData,
+        disposableSigner: state.accounts.address.disposableSigner,
         revealPublicKey: state.accounts.revealPublicKey.result,
         selectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.shieldedResult,
     };

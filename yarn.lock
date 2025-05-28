@@ -1673,6 +1673,21 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
+"@harish551/namada-sdk@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@harish551/namada-sdk/-/namada-sdk-0.18.0.tgz#03415d9dad68492c3d4a586dcd220ca6c82ad14a"
+  integrity sha512-1r7LsGPXAm9L2cLNSfg8cmAxoXCOi4a7/wtbzW9xweuDuj/Sc0/62o2xV6C+faoeuC3bz4XxikCoNfoV0e6tpA==
+  dependencies:
+    "@cosmjs/encoding" "^0.29.0"
+    "@dao-xyz/borsh" "^5.1.5"
+    "@ledgerhq/hw-transport" "^6.31.4"
+    "@ledgerhq/hw-transport-webusb" "^6.29.4"
+    "@zondax/ledger-namada" "^2.0.0"
+    bignumber.js "^9.1.1"
+    buffer "^6.0.3"
+    semver "^7.6.3"
+    slip44 "^3.0.18"
+
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.13.0.tgz#fb907624df3256d04b9aa2df50d7aa97ec648748"
@@ -1989,7 +2004,7 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@ledgerhq/devices@8.4.4", "@ledgerhq/devices@^8.4.4":
+"@ledgerhq/devices@^8.4.4":
   version "8.4.4"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-8.4.4.tgz#0d195c1650fe57da2fad7f0d9074a0190947cd6f"
   integrity sha512-sz/ryhe/R687RHtevIE9RlKaV8kkKykUV4k29e7GAVwzHX1gqG+O75cu1NCJUHLbp3eABV5FdvZejqRUlLis9A==
@@ -2003,16 +2018,6 @@
   version "6.19.1"
   resolved "https://registry.yarnpkg.com/@ledgerhq/errors/-/errors-6.19.1.tgz#d9ac45ad4ff839e468b8f63766e665537aaede58"
   integrity sha512-75yK7Nnit/Gp7gdrJAz0ipp31CCgncRp+evWt6QawQEtQKYEDfGo10QywgrrBBixeRxwnMy1DP6g2oCWRf1bjw==
-
-"@ledgerhq/hw-transport-webhid@^6.29.4":
-  version "6.30.0"
-  resolved "https://registry.yarnpkg.com/@ledgerhq/hw-transport-webhid/-/hw-transport-webhid-6.30.0.tgz#cd86b0055eb77276892024abbd38e6ed2471b59e"
-  integrity sha512-HoTzjmYwO7+TVwK+GNbglRepUoDywBL6vjhKnhGqJSUPqAqJJyEXcnKnFDBMN7Phqm55O+YHDYfpcHGBNg5XlQ==
-  dependencies:
-    "@ledgerhq/devices" "8.4.4"
-    "@ledgerhq/errors" "^6.19.1"
-    "@ledgerhq/hw-transport" "^6.31.4"
-    "@ledgerhq/logs" "^6.12.0"
 
 "@ledgerhq/hw-transport-webusb@^6.29.4":
   version "6.29.4"
@@ -2126,19 +2131,19 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
 
-"@namada/sdk@^0.15.0":
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/@namada/sdk/-/sdk-0.15.0.tgz#a9feef3cece442188a9762d936dba910cf0bfbd4"
-  integrity sha512-nx/AOGpMAOOvzg3D1uKmZ7+vKf9s7H3nUofDdzwVI4mE8Pu3rnpKTpZhiLDlwvX5ihFS8xLhdrEQ6XnbYpYXtw==
+"@namada/sdk@0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@namada/sdk/-/sdk-0.17.0.tgz#5f2f3515601e45a59a91ac5003cf373d41ba97e3"
+  integrity sha512-FoMIZjnzxM7FyYQdgGdSVB927yiKYsTVPVJfEcYuUGo9IqT8Xd6c0gLc/ox46+e8F0F/3qenzSrQrVYnxMl/jw==
   dependencies:
     "@cosmjs/encoding" "^0.29.0"
     "@dao-xyz/borsh" "^5.1.5"
     "@ledgerhq/hw-transport" "^6.31.4"
-    "@ledgerhq/hw-transport-webhid" "^6.29.4"
     "@ledgerhq/hw-transport-webusb" "^6.29.4"
-    "@zondax/ledger-namada" "^1.0.0"
+    "@zondax/ledger-namada" "^2.0.0"
     bignumber.js "^9.1.1"
     buffer "^6.0.3"
+    semver "^7.6.3"
     slip44 "^3.0.18"
 
 "@namada/shared@^0.1.3":
@@ -2151,10 +2156,10 @@
     bn.js "^5.2.0"
     typescript "^5.1.3"
 
-"@namada/types@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@namada/types/-/types-0.3.0.tgz#df85d49c741abbfa34e49028c9d0d8d71989df5a"
-  integrity sha512-STrzNy3B1cUDwrU5S5F8wSRTrIv/4O5DxqechG22Q+zUSuaAgXiGh1BnkGTzEkvgdWbzMkNjzrq9h73kPekQEQ==
+"@namada/types@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@namada/types/-/types-0.5.0.tgz#a37c86d5817586e8cfda85d922e82b90d4a89b0e"
+  integrity sha512-ghda4FwVM4uvflcWWgAWJYRILAxGJzBTkFsiJCTMml7KrH6AtqHLpczEKJZCs72jQ5jTVOqOL88E+nuiNwE3Fw==
   dependencies:
     "@dao-xyz/borsh" "^5.1.5"
     bignumber.js "^9.1.1"
@@ -3289,10 +3294,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zondax/ledger-namada@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@zondax/ledger-namada/-/ledger-namada-1.0.0.tgz#ff013d408d95cfb3e34b413eb0b8944aaf698adf"
-  integrity sha512-FevLNX7U/8kolnnxB4V/2Gm46+btfkt00jVOUVuI0n7v0J9J+CLldUEhZBd2o9rl6cQI5J3FEOepQR85cVRAWQ==
+"@zondax/ledger-namada@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@zondax/ledger-namada/-/ledger-namada-2.0.0.tgz#6e3599d0a8a1a6db581fbdbef28b729b6b445667"
+  integrity sha512-NtfVzUmwyWULlzMdMdiQCY00U2CZktV9qA7/EcenZ9wyBPKOBEtPpEUdr+z08MBeo4o+pBTRvOpJ93YHI79JTg==
   dependencies:
     "@ledgerhq/hw-transport" "^6.30.6"
 

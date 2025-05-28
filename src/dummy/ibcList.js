@@ -273,8 +273,8 @@ export const feeList = {
         gas: 28432,
     },
     NTRN: {
-        fee: 0.000001,
-        gas: 28432,
+        fee: 0.00001,
+        gas: 32032,
     },
     STRD: {
         fee: 0.000001,

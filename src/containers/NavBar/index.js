@@ -379,7 +379,7 @@ class NavBar extends Component {
     }
 
     handleNamada (fetch) {
-        initializeNamadaChain((error, addressList, shieldedAddress) => {
+        initializeNamadaChain((error, addressList, shieldedAddress, disposableSigner) => {
             if (addressList === undefined || !addressList) {
                 window.onload = () => this.handleNamada(true);
                 return;
@@ -396,7 +396,7 @@ class NavBar extends Component {
                 decode(localStorage.getItem('of_co_address'));
             const index = shieldedAddress.findIndex((val) => addressList && addressList.address === val.address);
             this.props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1]?.address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1]);
-            this.props.setAccountDetails(addressList);
+            this.props.setAccountDetails(addressList, disposableSigner);
             if (fetch) {
                 this.handleFetch(addressList && addressList.address, shieldedAddress);
             }

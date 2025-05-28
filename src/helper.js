@@ -260,14 +260,17 @@ export const initializeNamadaChain = (cb) => {
             const offlineSigner = namada.getSigner(config.CHAIN_ID);
             let accounts;
             let accountsList;
+            let disposableSigner;
             if (offlineSigner.accounts) {
                 accounts = await offlineSigner.defaultAccount();
                 accountsList = await offlineSigner.accounts();
+                disposableSigner = await offlineSigner.genDisposableKeypair();
             } else {
                 accounts = await namada.defaultAccount();
                 accountsList = await namada.accounts();
+                disposableSigner = await namada.genDisposableKeypair();
             }
-            cb(null, accounts, accountsList);
+            cb(null, accounts, accountsList, disposableSigner);
         } else {
             return null;
         }
@@ -1061,6 +1064,7 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
 
         const { rpc, tx } = sdk;
 
+        const masp = await fetchMaspParams(sdk, chainId);
         const checksums = await rpc.queryChecksums();
         if (checksums && Object.keys(checksums).length) {
             Object.keys(checksums).map((key) => {
@@ -1079,6 +1083,7 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             channelId: Tx.channelId,
         });
 
+        console.log('ibcTransaction', ibcTransfer, txs, tx);
         const wrapperProps = {
             token: txs.token,
             feeAmount: txs.feeAmount,
@@ -1094,9 +1099,11 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             newTxs.push(revealPkTx);
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        console.log('wrapperTxValue', wrapperTxValue);
         const encoded = await tx.buildIbcTransfer(wrapperTxValue, ibcTransfer);
         newTxs.push(encoded);
 
+        console.log('encoded', encoded);
         let updateDate;
         if (type === 'ledger') {
             updateDate = newTxs;
