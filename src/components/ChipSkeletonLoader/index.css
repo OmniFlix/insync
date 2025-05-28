@@ -1,0 +1,14 @@
+.chip_skeleton {
+    background: #46464680;
+    width: 100%;
+}
+
+table .chip_skeleton {
+    width: 100px;
+    background: #ffffff59;
+    border-radius: 10px;
+}
+
+.chip_skeleton:after {
+    background: linear-gradient(90deg, transparent, #797979ab, transparent);
+}
