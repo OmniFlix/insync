@@ -183,14 +183,14 @@ class TokensListTable extends React.Component {
                                 <img src={WithdrawIcon} alt="Withdraw"/>
                                     Withdraw
                                 </Button>}
-                                {/* <CustomTooltip title={token === 'NAM' ? 'Enables in Phase 5' : "Coming Soon"}>
-                                    <span className='disabled_tx_button'> */}
-                                        <Button onClick={() => this.handleTransfer(value)}>
+                                <CustomTooltip title={token === 'NAM' ? 'Enables in Phase 5' : "Coming Soon"}>
+                                    <span className='disabled_tx_button'>
+                                        <Button disabled={true} onClick={() => this.handleTransfer(value)}>
                                             <img src={TransferIcon} alt="Transfer"/>
                                             Transfer
                                         </Button>
-                                    {/* </span>
-                                </CustomTooltip> */}
+                                    </span>
+                                </CustomTooltip>
                                 {token === 'NAM'
                                     ? <CustomTooltip title="Enables in Phase 5">
                                         <span className='disabled_tx_button'>

@@ -41,8 +41,8 @@ import { config } from '../../config';
 // import { Sdk, getSdk } from '@heliaxdev/namada-sdk/web';
 // import init from '@heliaxdev/namada-sdk/web-init';
 
-import { getSdk } from '@namada/sdk/web';
-import init from '@namada/sdk/web-init';
+import { getSdk } from '@harish551/namada-sdk/web';
+import init from '@harish551/namada-sdk/web-init';
 // import { Tokens } from '@namada/types';
 
 export const setAccountAddress = (value, shieldedAddress, shieldedDetails) => {

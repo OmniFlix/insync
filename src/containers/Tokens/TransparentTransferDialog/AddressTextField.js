@@ -3,22 +3,22 @@ import React from 'react';
 import TextField from 'components/TextField';
 import { connect } from 'react-redux';
 import { setTokensTransferAddress } from 'actions/assets';
-import { checkNamada, decodeFromBech32 } from 'utils/address';
 
 const AddressTextField = (props) => {
     const handleChange = (value) => {
-        if (value) {
-            let valid = false;
-            if(props.ibcTransferType === 'transparent') {
-                valid = value && checkNamada(value) && (value.indexOf('tnam') > -1);
-            } else if(props.ibcTransferType === 'shielded') {
-                valid = value && checkNamada(value) && (value.indexOf('znam') > -1);
-            }
+        // if (value) {
+        //     let valid = false;
+        //     // if(props.ibcTransferType === 'transparent') {
+        //     //     valid = value && checkNamada(value) && (value.indexOf('tnam') > -1);
+        //     // } else if(props.ibcTransferType === 'shielded') {
+        //     //     valid = value && checkNamada(value) && (value.indexOf('znam') > -1);
+        //     // }
             
-            props.onChange(value, valid);
-        } else {
-            props.onChange(value, true);
-        }
+        //     props.onChange(value, valid);
+        // } else {
+        //     props.onChange(value, true);
+        // }
+        props.onChange(value, true);
     };
 
     return (

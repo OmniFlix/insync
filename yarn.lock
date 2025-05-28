@@ -1673,6 +1673,30 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
+"@harish551/namada-sdk@^0.18.1":
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/@harish551/namada-sdk/-/namada-sdk-0.18.1.tgz#4003b1dca940a1e7116affa6070d9ab786a96cf1"
+  integrity sha512-C4UPmm6Pny12QhnDBoBvKOIsBM7QZrVmkyzyBXfGieEjZEosLPtiaXnxHyV/iRz0UeVOO803Rj+1POLBvyx/2w==
+  dependencies:
+    "@cosmjs/encoding" "^0.29.0"
+    "@dao-xyz/borsh" "^5.1.5"
+    "@ledgerhq/hw-transport" "^6.31.4"
+    "@ledgerhq/hw-transport-webusb" "^6.29.4"
+    "@zondax/ledger-namada" "^2.0.0"
+    bignumber.js "^9.1.1"
+    buffer "^6.0.3"
+    semver "^7.6.3"
+    slip44 "^3.0.18"
+
+"@harish551/namada-types@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@harish551/namada-types/-/namada-types-0.6.0.tgz#ceebcc7413c4eb94927c9033d3e8face1101299c"
+  integrity sha512-PEWTHRsQUUeAoTMZ2L/nNdaBefI5V5P+3LZfbzU9Y5DLA58L1zymjE8f0xEhWFfC4AY0N83Ehi3HV2yK69D05A==
+  dependencies:
+    "@dao-xyz/borsh" "^5.1.5"
+    bignumber.js "^9.1.1"
+    slip44 "^3.0.11"
+
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.13.0.tgz#fb907624df3256d04b9aa2df50d7aa97ec648748"
@@ -2338,11 +2362,6 @@
   version "1.10.4"
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.10.4.tgz#427d5549943a9c6fce808e39ea64dbe60d4047f1"
   integrity sha512-WJgX9nzTqknM393q1QJDJmoW28kUfEnybeTfVNcNAPnIx210RXm2DiXiHzfNPJNIUUb1tJnz/l4QGtJ30PgWmA==
-
-"@scure/base@^1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@scure/base/-/base-1.2.5.tgz#f9d1b232425b367d0dcb81c96611dcc651d58671"
-  integrity sha512-9rE6EOVeIQzt5TSu4v+K523F8u6DhBsoZWPGKlnCshhlDhy0kJzUX4V+tr2dWmzF1GdekvThABoEQBGBQI7xZw==
 
 "@sinclair/typebox@^0.24.1":
   version "0.24.51"
@@ -3298,6 +3317,13 @@
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@zondax/ledger-namada/-/ledger-namada-1.0.0.tgz#ff013d408d95cfb3e34b413eb0b8944aaf698adf"
   integrity sha512-FevLNX7U/8kolnnxB4V/2Gm46+btfkt00jVOUVuI0n7v0J9J+CLldUEhZBd2o9rl6cQI5J3FEOepQR85cVRAWQ==
+  dependencies:
+    "@ledgerhq/hw-transport" "^6.30.6"
+
+"@zondax/ledger-namada@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@zondax/ledger-namada/-/ledger-namada-2.0.0.tgz#6e3599d0a8a1a6db581fbdbef28b729b6b445667"
+  integrity sha512-NtfVzUmwyWULlzMdMdiQCY00U2CZktV9qA7/EcenZ9wyBPKOBEtPpEUdr+z08MBeo4o+pBTRvOpJ93YHI79JTg==
   dependencies:
     "@ledgerhq/hw-transport" "^6.30.6"
 

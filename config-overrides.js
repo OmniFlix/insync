@@ -15,7 +15,7 @@ module.exports = {
 
         config.resolve.alias = {
             ...config.resolve.alias,
-            '../package.json': path.resolve(__dirname, 'node_modules/@namada/sdk/package.json'),
+            '../package.json': path.resolve(__dirname, 'node_modules/@harish551/namada-sdk/package.json'),
         };
 
         config.resolve.extensions = [...config.resolve.extensions, '.ts', '.js', '.wasm'];
@@ -32,7 +32,7 @@ module.exports = {
             type: 'asset/resource',
         });
 
-        // Copy WASM file from node_modules/@namada/sdk/dist to the build folder
+        // Copy WASM file from node_modules/@harish551/namada-sdk/dist to the build folder
         config.plugins = [
             ...config.plugins,
             new HtmlWebpackPlugin({
@@ -50,11 +50,11 @@ module.exports = {
             new CopyWebpackPlugin({
                 patterns: [
                     {
-                        from: path.resolve(__dirname, 'node_modules/@namada/sdk/dist/shared.namada.wasm'),
+                        from: path.resolve(__dirname, 'node_modules/@harish551/namada-sdk/dist/shared.namada.wasm'),
                         to: '',
                     },
                     {
-                        from: path.resolve(__dirname, 'node_modules/@namada/sdk/dist/crypto.namada.wasm'),
+                        from: path.resolve(__dirname, 'node_modules/@harish551/namada-sdk/dist/crypto.namada.wasm'),
                         to: '',
                     },
                 ],
