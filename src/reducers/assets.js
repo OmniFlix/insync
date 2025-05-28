@@ -1,4 +1,5 @@
-import { ASSETS_TABS_SET, SHIELDED_TOKENS_CONVERT_DIALOG_HIDE, SHIELDED_TOKENS_CONVERT_DIALOG_SHOW, SHIELDED_TOKENS_DEPOSIT_DIALOG_HIDE, SHIELDED_TOKENS_DEPOSIT_DIALOG_SHOW, SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE, SHIELDED_TOKENS_TRANSFER_DIALOG_SHOW, SHIELDED_TOKENS_WITHDRAW_DIALOG_HIDE, SHIELDED_TOKENS_WITHDRAW_DIALOG_SHOW, TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE, TRANSPARENT_TOKENS_CONVERT_DIALOG_SHOW, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_HIDE, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_SHOW, TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE, TRANSPARENT_TOKENS_TRANSFER_DIALOG_SHOW, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_SHOW } from "constants/assets";
+import { setTokensTransferAmount } from "actions/assets";
+import { ASSETS_TABS_SET, SHIELDED_TOKENS_CONVERT_DIALOG_HIDE, SHIELDED_TOKENS_CONVERT_DIALOG_SHOW, SHIELDED_TOKENS_DEPOSIT_DIALOG_HIDE, SHIELDED_TOKENS_DEPOSIT_DIALOG_SHOW, SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE, SHIELDED_TOKENS_TRANSFER_DIALOG_SHOW, SHIELDED_TOKENS_WITHDRAW_DIALOG_HIDE, SHIELDED_TOKENS_WITHDRAW_DIALOG_SHOW, TOKENS_TRANSFER_ADDRESS_SET, TOKENS_TRANSFER_AMOUNT_SET, TOKENS_TRANSFER_MEMO_SET, TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE, TRANSPARENT_TOKENS_CONVERT_DIALOG_SHOW, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_HIDE, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_SHOW, TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE, TRANSPARENT_TOKENS_TRANSFER_DIALOG_SHOW, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_SHOW } from "constants/assets";
 import { combineReducers } from "redux";
 
 const assetsTab = (state = {
@@ -176,6 +177,64 @@ const shieldedTokensConvertDialog = (state = {
     }
 }
 
+// Tokens Transfer Fields
+const tokensTransferAmount = (state = {
+    value: '',
+}, action) => {
+    switch (action.type) {
+    case TOKENS_TRANSFER_AMOUNT_SET:
+        return {
+            value: action.value,
+        };
+    case TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE:
+    case SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE:
+        return {
+            value: '',
+        };
+    default:
+        return state;
+    }
+}
+
+const tokensTransferAddress = (state = {
+    value: '',
+    valid: true,
+}, action) => {
+    switch (action.type) {
+    case TOKENS_TRANSFER_ADDRESS_SET:
+        return {
+            value: action.value,
+            valid: action.valid,
+        };
+    case TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE:
+    case SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE:
+        return {
+            value: '',
+            valid: true,
+        };
+    default:
+        return state;
+    }
+}
+
+const tokensTransferMemo = (state = {
+    value: '',
+}, action) => {
+    switch (action.type) {
+    case TOKENS_TRANSFER_MEMO_SET:
+        return {
+            value: action.value,
+        };
+    case TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE:
+    case SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE:
+        return {
+            value: '',
+        };
+    default:
+        return state;
+    }
+}
+
 
 export default combineReducers({
     assetsTab,
@@ -188,4 +247,8 @@ export default combineReducers({
     shieldedTokensWithdrawDialog,
     shieldedTokensTransferDialog,
     shieldedTokensConvertDialog,
+
+    tokensTransferAmount,
+    tokensTransferAddress,
+    tokensTransferMemo,
 });
