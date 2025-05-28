@@ -270,7 +270,6 @@ export const initializeNamadaChain = (cb) => {
                 accountsList = await namada.accounts();
                 disposableSigner = await namada.genDisposableKeypair();
             }
-            console.log('accounts', accounts, accountsList, disposableSigner);
             cb(null, accounts, accountsList, disposableSigner);
         } else {
             return null;

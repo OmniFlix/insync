@@ -1673,6 +1673,21 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.57.1.tgz#de633db3ec2ef6a3c89e2f19038063e8a122e2c2"
   integrity sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==
 
+"@harish551/namada-sdk@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@harish551/namada-sdk/-/namada-sdk-0.18.0.tgz#03415d9dad68492c3d4a586dcd220ca6c82ad14a"
+  integrity sha512-1r7LsGPXAm9L2cLNSfg8cmAxoXCOi4a7/wtbzW9xweuDuj/Sc0/62o2xV6C+faoeuC3bz4XxikCoNfoV0e6tpA==
+  dependencies:
+    "@cosmjs/encoding" "^0.29.0"
+    "@dao-xyz/borsh" "^5.1.5"
+    "@ledgerhq/hw-transport" "^6.31.4"
+    "@ledgerhq/hw-transport-webusb" "^6.29.4"
+    "@zondax/ledger-namada" "^2.0.0"
+    bignumber.js "^9.1.1"
+    buffer "^6.0.3"
+    semver "^7.6.3"
+    slip44 "^3.0.18"
+
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.13.0.tgz#fb907624df3256d04b9aa2df50d7aa97ec648748"
