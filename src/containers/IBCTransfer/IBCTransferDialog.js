@@ -256,25 +256,7 @@ const IBCTransferDialog = (props) => {
                             // props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address);
                             const tokenAddress = props.shieldedTokensDepositDialogValue && props.shieldedTokensDepositDialogValue.tokenAddress;
                             const balance = props.shieldedTokensDepositDialogValue && props.shieldedTokensDepositDialogValue.balance && Number(props.shieldedTokensDepositDialogValue.balance);
-                            console.log('111111', tokenAddress, balance, props.shieldedData);
-                            handleFetchShieldedBalance(tokenAddress, balance);
-                            // const time = setInterval(() => {
-                            //     (async () => {
-                            //         props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
-                            //             let resultBalance = resBalance && resBalance.length && tokenAddress &&
-                            //                     resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
-                            //             resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
-                            //             console.log('2222222', resultBalance, resBalance);
-                            //             if (resultBalance !== balance) {
-                            //                 props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
-                            //                 props.getBalance(props.address);
-                            //                 props.showDelegateSuccessDialog(res1.txhash, config);
-                            //                 setInProgress(false);
-                            //                 clearInterval(time);
-                            //             }
-                            //         });
-                            //     })();
-                            // }, 5000);
+                            handleFetchShieldedBalance(tokenAddress, balance, config, res1);
 
                             return;
                         }
@@ -365,19 +347,18 @@ const IBCTransferDialog = (props) => {
         }
     };
 
-    const handleFetchShieldedBalance = (tokenAddress, balance) => {
+    const handleFetchShieldedBalance = (tokenAddress, balance, ibcConfig, res1) => {
         props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
             let resultBalance = resBalance && resBalance.length && tokenAddress &&
                     resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
             resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
-            console.log('2222222', resultBalance, resBalance);
             if (resultBalance !== balance) {
-                props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
+                props.fetchIBCBalance(ibcConfig?.REST_URL, props.ibcTransferAddress);
                 props.getBalance(props.address);
-                props.showDelegateSuccessDialog(res1.txhash, config);
+                props.showDelegateSuccessDialog(res1.txhash, ibcConfig);
                 setInProgress(false);
             } else {
-                handleFetchShieldedBalance(tokenAddress, balance);
+                handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
             }
         });
     };

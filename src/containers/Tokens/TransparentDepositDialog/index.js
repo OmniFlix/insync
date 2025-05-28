@@ -4,7 +4,6 @@ import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
-import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 import IBCTransferDialog from "containers/IBCTransfer/IBCTransferDialog";
 
 class TransparentDepositDialog extends React.Component {
@@ -19,7 +18,6 @@ class TransparentDepositDialog extends React.Component {
                     <p>Deposit {' '}  {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' to Namada'}</p>
                     <IBCTransferDialog from='transparent_deposit' depositData={this.props.value}/>
                 </div>
-                    <SuccessDialog/>
             </Dialog>
         )
     }
