@@ -16,6 +16,7 @@ import ShieldedDepositDialog from './ShieldedDepositDialog';
 import ShieldedWithdrawDialog from './ShieldedWithdrawDialog';
 import ShieldedTransferDialog from './ShieldedTransferDialog';
 import ShieldedConvertDialog from './ShieldedConvertDialog';
+import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,6 +55,7 @@ const Tokens = (props) => {
             <ShieldedWithdrawDialog />
             <ShieldedTransferDialog />
             <ShieldedConvertDialog />
+            <SuccessDialog/>
         </>
     );
 };
