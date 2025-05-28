@@ -11,7 +11,7 @@ import AddressTextField from "./AddressTextField";
 import './index.css';
 import { feeList } from "dummy/ibcList";
 import { formatCount } from "utils/numberFormats";
-import { getBalance } from "actions/accounts";
+import { fetchBalanceList, getBalance } from "actions/accounts";
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from "actions/stake";
 import { showMessage } from "actions/snackbar";
 import { config } from "config";
@@ -36,6 +36,7 @@ class TransparentTransferDialog extends React.Component {
         this.setState({ inProgress: true });
 
         const source = this.props.address;
+        // const source = this.props.shieldedData?.pseudoExtendedKey;
         let token = config.TOKEN_ADDRESS;
         let amount = new BigNumber(this.props.tokensTransferAmount);
         if (this.props.value?.balance?.minDenomAmount) {
@@ -76,6 +77,9 @@ class TransparentTransferDialog extends React.Component {
     }
 
     handleFetch (error, value) {
+        const selectedBalance = this.props.value && this.props.value.balance;
+        const tokenAddress = selectedBalance.tokenAddress;
+        const balance = selectedBalance.minDenomAmount;
         if (error) {
             this.setState({ inProgress: false });
             if (error.indexOf('not yet found on the chain') > -1) {
@@ -86,52 +90,15 @@ class TransparentTransferDialog extends React.Component {
             this.props.showMessage(error);
             return;
         }
-        let balance = null;
-        this.props.balance && this.props.balance.length && this.props.balance.map((val) => {
-            if (val && val.length) {
-                val.map((value) => {
-                    if (value === config.TOKEN_ADDRESS) {
-                        balance = val[1];
-                    }
-                });
-            }
 
-            return null;
-        });
-
-        const available = balance;
-        const intervalTime = setInterval(() => {
-            this.props.getBalance(this.props.address, (result) => {
-                if (result && result.length) {
-                    let localBalance = null;
-                    result && result.length && result.map((val) => {
-                        if (val && val.length) {
-                            val.map((value) => {
-                                if (value === config.TOKEN_ADDRESS) {
-                                    localBalance = val[1];
-                                }
-                            });
-                        }
-
-                        return null;
-                    });
-
-                    if (localBalance !== available) {
-                        this.setState({ inProgress: false });
-                        clearInterval(intervalTime);
-                        this.props.successDialog(value && value.hash);
-                        // this.props.handleClose();
-                    }
-                }
-            });
-        }, 2000);
-
-        if (intervalTime) {
-            setTimeout(() => {
-                this.setState({ inProgress: false });
-                clearInterval(intervalTime);
-            }, 60000);
-        }
+        this.props.successDialog(value && value.hash);
+        this.setState({ inProgress: false });
+        this.props.fetchBalanceList(this.props.address);
+        this.props.getBalance(this.props.address);
+        setTimeout(() => {
+            this.props.fetchBalanceList(this.props.address);
+            this.props.getBalance(this.props.address);
+        }, 5000);
     };
 
     render () {
@@ -205,7 +172,7 @@ class TransparentTransferDialog extends React.Component {
                     </div> : null}
                     <div className="actions">
                         <Button disabled={this.state.inProgress} onClick={this.handleTransfer}>
-                            {this.state.inProgress ? 'Processing...' : 'Transfer'}
+                            {this.state.inProgress ? 'InProgress...' : 'Transfer'}
                         </Button>
                     </div>
                 </div>
@@ -219,6 +186,7 @@ TransparentTransferDialog.propTypes = {
     details: PropTypes.object.isRequired,
     handleClose: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    fetchBalanceList: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
     failedDialog: PropTypes.func.isRequired,
     pendingDialog: PropTypes.func.isRequire,
@@ -241,6 +209,7 @@ TransparentTransferDialog.propTypes = {
     tokensTransferAmount: PropTypes.string,
     tokensTransferAddress: PropTypes.string,
     tokensTransferMemo: PropTypes.string,
+    shieldedData: PropTypes.object,
 };
 
 const stateToProps = (state) => {
@@ -256,12 +225,14 @@ const stateToProps = (state) => {
         details: state.accounts.address.details,
         revealPublicKey: state.accounts.revealPublicKey.result,
         tokensTransferMemo: state.assets.tokensTransferMemo.value,
+        shieldedData: state.accounts.address.shieldedData,
     };
 };
 
 const actionToProps = {
     handleClose: hideTransparentTokensTransferDialog,
     getBalance,
+    fetchBalanceList,
     successDialog: showDelegateSuccessDialog,
     failedDialog: showDelegateFailedDialog,
     pendingDialog: showDelegateProcessingDialog,

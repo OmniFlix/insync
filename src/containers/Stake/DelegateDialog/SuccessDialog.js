@@ -145,6 +145,8 @@ const SuccessDialog = (props) => {
                                     ? <p>{props.ibcTokens
                                         ? Number(props.ibcTokens).toFixed(4) + ' ' + props.ibcConfig.COIN_DENOM
                                         : null}</p>
+                                        : props.tokensTransferAmount && props.tokensTransferAmount > 0
+                                            ? <p>{Number(props.tokensTransferAmount).toFixed(4) + ' ' + config.COIN_DENOM}</p>
                                     : <p>{props.ibcTokens
                                         ? Number(props.ibcTokens).toFixed(4) + ' ' + config.COIN_DENOM
                                         : null}</p>}
@@ -335,6 +337,7 @@ SuccessDialog.propTypes = {
     validatorImages: PropTypes.array.isRequired,
     address: PropTypes.string,
     ibcTokens: PropTypes.any,
+    tokensTransferAmount: PropTypes.any,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
         location: PropTypes.object.isRequired,
@@ -361,6 +364,7 @@ const stateToProps = (state) => {
         address: state.accounts.address.value,
         tokens: state.stake.tokens,
         ibcTokens: state.ibcTransfer.ibcTransferAmount.value,
+        tokensTransferAmount: state.assets.tokensTransferAmount.value,
         shieldedTokens: state.shieldedAssets.amount.value,
         lang: state.language,
         open: state.stake.successDialog.open,

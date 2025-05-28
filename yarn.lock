@@ -2140,10 +2140,10 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
 
-"@namada/sdk@0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@namada/sdk/-/sdk-0.17.0.tgz#5f2f3515601e45a59a91ac5003cf373d41ba97e3"
-  integrity sha512-FoMIZjnzxM7FyYQdgGdSVB927yiKYsTVPVJfEcYuUGo9IqT8Xd6c0gLc/ox46+e8F0F/3qenzSrQrVYnxMl/jw==
+"@namada/sdk@0.18.2":
+  version "0.18.2"
+  resolved "https://registry.yarnpkg.com/@namada/sdk/-/sdk-0.18.2.tgz#07b7960e4f24030a019609029500f257d17a5179"
+  integrity sha512-bmMFqRhQGi1PQXE4WcKbp6rBPofykU3dqYuouyKXO+LN1rH+BaO9DOOiowej2XN1CEzlDhswaMdZLfqAcrKJYg==
   dependencies:
     "@cosmjs/encoding" "^0.29.0"
     "@dao-xyz/borsh" "^5.1.5"
@@ -3302,13 +3302,6 @@
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
-
-"@zondax/ledger-namada@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@zondax/ledger-namada/-/ledger-namada-2.0.0.tgz#6e3599d0a8a1a6db581fbdbef28b729b6b445667"
-  integrity sha512-NtfVzUmwyWULlzMdMdiQCY00U2CZktV9qA7/EcenZ9wyBPKOBEtPpEUdr+z08MBeo4o+pBTRvOpJ93YHI79JTg==
-  dependencies:
-    "@ledgerhq/hw-transport" "^6.30.6"
 
 "@zondax/ledger-namada@^2.0.0":
   version "2.0.0"

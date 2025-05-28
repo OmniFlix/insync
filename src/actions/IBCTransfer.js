@@ -30,8 +30,8 @@ import {
     TX_SIGN_AND_BROAD_CAST_ERROR,
     FROM_SHIELDED_NAMADA_SELECT_ASSET_SET,
 } from '../constants/IBCTransfer';
-import { getSdk } from '@harish551/namada-sdk/web';
-import init from '@harish551/namada-sdk/web-init';
+import { getSdk } from '@namada/sdk/web';
+import init from '@namada/sdk/web-init';
 import { config } from '../config';
 import BigNumber from 'bignumber.js';
 import { urlFetchIBCBalance, urlFetchTimeoutHeight } from 'constants/url';
