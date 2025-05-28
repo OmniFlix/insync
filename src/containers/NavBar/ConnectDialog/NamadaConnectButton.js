@@ -29,7 +29,7 @@ const KeplrConnectButton = (props) => {
 
     const initKeplr = () => {
         setInProgress(true);
-        initializeNamadaChain((error, addressList, shieldedAddress) => {
+        initializeNamadaChain((error, addressList, shieldedAddress, disposableSigner) => {
             // const shieldedDetails = shieldedAddress && shieldedAddress.find((item) => item.type === 'shielded-keys');
             // console.log('raw shielded details ', shieldedDetails);
             setInProgress(false);
@@ -42,7 +42,7 @@ const KeplrConnectButton = (props) => {
 
             const index = shieldedAddress.findIndex((val) => addressList && addressList.address === val.address);
             props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1].address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1]);
-            props.setAccountDetails(addressList);
+            props.setAccountDetails(addressList, disposableSigner);
             props.hideConnectDialog();
             // if (!props.proposalTab && !props.stake) {
             //     props.getUnBondingDelegations(addressList && addressList.address);
