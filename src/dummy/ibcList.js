@@ -157,7 +157,7 @@ export const ibcList = [{
         CHAIN_NAME: 'stride',
         NETWORK: 'mainnet',
         COIN_DENOM: 'STRD',
-        COIN_MINIMAL_DENOM: 'ustrd',
+        COIN_MINIMAL_DENOM: 'stuatom',
         COIN_DECIMALS: 6,
         PREFIX: 'stride',
         gasPriceStep: {
@@ -172,7 +172,7 @@ export const ibcList = [{
     image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png',
     assets: [
         {
-            base: 'ustrd',
+            base: 'stuatom',
             name: 'stride',
             display: 'statom',
             symbol: 'stATOM',

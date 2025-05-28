@@ -49,7 +49,7 @@
 .main_content .content_div .tokens_section_tabs {
     display: flex;
     align-items: center;
-    max-width: 800px;
+    width: 1000px;
     margin: auto;
     justify-content: center;
 
@@ -57,7 +57,6 @@
     border: 1px solid #262626;
     border-radius: 32px;
     padding: 4px;
-    width: fit-content;
 }
 
 .tokens_section_tabs .tab {
@@ -68,12 +67,10 @@
     line-height: 130%;
     color: #FFF;
     height: 50px;
-    max-width: 50%;
-    min-width: auto;
+    width: 50%;
     text-align: center;
     text-transform: capitalize;
     border-radius: 32px;
-    width: 200px;
 }
 
 .tokens_section_tabs .tab.active {
@@ -122,7 +119,8 @@
 }
 
 @media (max-width: 1000px) {
-    .assets.stake.padding {
+    .assets.stake.padding,
+    .main_content .content_div .tokens_section_tabs {
         width: 100%;
     }
 }

@@ -148,7 +148,6 @@ const IBCUnShielding = (props) => {
             }
         }
 
-        console.log('txs', txs, tx, fromNamadaSelectedConfig, props);
         ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
     };
 

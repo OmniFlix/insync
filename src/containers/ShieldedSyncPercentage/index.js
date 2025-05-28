@@ -99,7 +99,7 @@ class ShieldedSyncPercentage extends Component {
                             this.setState({
                                 isVisable: false,
                             });
-                        }, 10000);
+                        }, 3000);
                         // postMessage({ ...payload, type: SdkEvents.ProgressBarFinished });
                     });
                 }

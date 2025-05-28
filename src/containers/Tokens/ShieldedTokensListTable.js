@@ -170,7 +170,7 @@ class ShieldedTokensListTable extends React.Component {
                         <div className="tokens_actions">
                               {token === 'NAM'
                             ? null 
-                            : <Button onClick={() => this.handleDeposit(value)}>
+                            : <Button disabled={true} onClick={() => this.handleDeposit(value)}>
                                 <img src={DepositIcon} alt="Deposit"/>
                                 Deposit
                             </Button>}
@@ -217,7 +217,8 @@ class ShieldedTokensListTable extends React.Component {
             
             return {
                 ...asset,
-                balance: (matchingBalance && matchingBalance.length && matchingBalance[1]) || null,
+                balance: (matchingBalance && matchingBalance.length && matchingBalance[1]) || 0,
+                tokenAddress: (matchingBalance && matchingBalance.length && matchingBalance[0]) || (matchingToken && matchingToken.address) || null,
             };
         }).filter((item) => item);
         enrichedAssets.unshift({

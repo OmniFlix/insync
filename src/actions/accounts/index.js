@@ -246,7 +246,7 @@ const fetchBalanceListError = (message) => {
     };
 };
 
-export const fetchBalanceList = (address) => (dispatch) => {
+export const fetchBalanceList = (address, cb) => (dispatch) => {
     dispatch(fetchBalanceListInProgress());
     const url = urlFetchBalanceList(address);
     Axios.get(url, {
@@ -256,6 +256,9 @@ export const fetchBalanceList = (address) => (dispatch) => {
     })
         .then((res) => {
             dispatch(fetchBalanceListSuccess(res.data));
+            if (cb) {
+                cb(res.data);
+            }
         })
         .catch((error) => {
             dispatch(fetchBalanceListError(
@@ -265,6 +268,9 @@ export const fetchBalanceList = (address) => (dispatch) => {
                     ? error.response.data.message
                     : 'Failed!',
             ));
+            if (cb) {
+                cb(null);
+            }
         });
 };
 
@@ -506,6 +512,9 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
                 chainId,
             );
             dispatch(shieldedBalanceFetchSuccess(balance));
+            if (cb) {
+                cb(balance);
+            }
         } catch (error) {
             console.error('❌ Shielded balance error:', {
                 message: error.message || 'Unknown error',
@@ -513,5 +522,8 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
                 chainId,
             });
             dispatch(shieldedBalanceFetchError(error.message || 'Unknown error'));
+            if (cb) {
+                cb(null);
+            }
         }
     };
