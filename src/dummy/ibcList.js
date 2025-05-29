@@ -156,7 +156,7 @@ export const ibcList = [{
         CHAIN_ID: 'stride-1',
         CHAIN_NAME: 'stride',
         NETWORK: 'mainnet',
-        COIN_DENOM: 'STRD',
+        COIN_DENOM: 'stATOM',
         COIN_MINIMAL_DENOM: 'stuatom',
         COIN_DECIMALS: 6,
         PREFIX: 'stride',
@@ -263,22 +263,27 @@ export const feeList = {
     OSMO: {
         fee: 0.00001,
         gas: 32032,
+        shieldedgas: 152624, // Gas for shielded transfer
     },
     ATOM: {
         fee: 0.000001,
         gas: 32032,
+        shieldedgas: 152624,
     },
     TIA: {
         fee: 0.000001,
         gas: 28432,
+        shieldedgas: 102624,
     },
     NTRN: {
         fee: 0.00001,
         gas: 32032,
+        shieldedgas: 152624,
     },
-    STRD: {
+    stATOM: {
         fee: 0.000001,
         gas: 28432,
+        shieldedgas: 102624,
     },
 };
 
@@ -286,5 +291,6 @@ export const namadaAssets = ibcList.flatMap((chain) =>
     chain.assets.map((asset) => ({
         ...asset,
         config: chain.config, // Attach the chain's config to each asset
+        channel_link: chain.channel_link,
     })),
 );
