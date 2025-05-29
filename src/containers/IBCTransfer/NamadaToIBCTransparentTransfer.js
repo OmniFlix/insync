@@ -254,6 +254,10 @@ const NamadaToIBCTransparentTransfer = (props) => {
                     <SourceSelectField ibcOnly={true} from={props.from} data={props.transparentWithdrawData}/>
                     <AmountTextField/>
                 </div>
+                <span className="available_balance">
+                    <p>Available</p>
+                    <p>{namadaBalance || 0} {fromNamadaSelectedConfig?.COIN_DENOM}</p>
+                </span>
                 {fromNamadaSelectedConfig
                     ? <div className="nam_tokens_secion">
                         <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>

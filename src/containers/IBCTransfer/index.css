@@ -18,7 +18,7 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .ibc_content .header_div > p {
@@ -99,21 +99,44 @@
     justify-content: center;
 }
 
-.transfer_source .header {
-    padding: 16px 16px 2px 16px;
+.transfer_source .available_balance {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    margin-left: 2px;
+    margin-top: 5px;
 }
 
-.transfer_source .select_section {
-    padding: 0px 16px;
+.available_balance > p:first-child {
+    color: #BFBFBF;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Blinker', sans-serif;
+}
+
+.available_balance > p:last-child {
+    color: #FFFF46;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Blinker', sans-serif;
 }
 
 .transfer_source .nam_tokens_secion {
     position: absolute;
-    right: 8%;
-    bottom: 26px;
+    right: 5%;
+    bottom: 47px;
 }
 
-.transfer_source .nam_tokens_secion > button {
+.transfer_source .deposit_nam_tokens_secion {
+    position: absolute;
+    right: 5%;
+    bottom: 109px;
+}
+
+.transfer_source .nam_tokens_secion > button,
+.transfer_source .deposit_nam_tokens_secion > button {
+    min-width: 0px;
     height: 31px;
     border-radius: 8px;
     border: 1px solid #FFFFFF14;
@@ -122,6 +145,7 @@
     font-weight: 600;
     font-family: 'Blinker', sans-serif;
     color: #fff;
+    padding: 0px 5px;
 }
 
 .transfer_source .header button {

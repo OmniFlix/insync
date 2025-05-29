@@ -397,6 +397,13 @@ const IBCTransferDialog = (props) => {
                             <AssetSelectField/>
                             <AmountTextField/>
                         </div>
+                        <span className="available_balance">
+                            <p>Available</p>
+                            <p>{ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
+                        </span>
+                        <div className="deposit_nam_tokens_secion">
+                            <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>
+                        </div>
                         <div className="border"></div>
                         {props.ibcTransferAddress && 
                         <div className="tokens_secion">
