@@ -67,11 +67,31 @@ class TokensListTable extends React.Component {
     }
 
     handleConvert (value) {
+        const enrichedAssets = (namadaAssets || []).map((asset) => {
+        const matchingToken = (this.props.tokensList || []).find(token =>
+          token.trace?.includes(`/${asset.base}`)
+        );
+      
+        const matchingBalance = matchingToken
+          ? (this.props.balanceList || []).find(b => b.tokenAddress === matchingToken.address)
+          : null;
+      
+        return {
+          ...asset,
+          balance: matchingBalance || null,
+        };
+    }).filter((item) => item.balance);
+        const find = enrichedAssets.find((item) => item.symbol === value?.config?.COIN_DENOM);
+
+
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
         this.props.showTransparentTokensConvertDialog(value);
-        this.props.setSelectedSource(value?.config?.COIN_DENOM);
+        this.props.setSelectedSource(value?.config?.COIN_DENOM, find);
     }
+
+    
+
 
     initKeplr (value) {
         const config = {

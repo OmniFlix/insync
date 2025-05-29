@@ -23,21 +23,21 @@ const ShieldedSourceSelectField = (props) => {
         return {
             ...asset,
             balance: matchingBalance && matchingBalance.length && matchingBalance[1] || null,
-            balanceTokenAddress: matchingBalance && matchingBalance.length && matchingBalance[0] || null,
+            tokenAddress: matchingBalance && matchingBalance.length && matchingBalance[0] || null,
         };
     }).filter((item) => item.balance);
 
-    useEffect(() => {
-        if (enrichedAssets && enrichedAssets.length && enrichedAssets[0]) {
-            const value = enrichedAssets[0].symbol;
-            const find = enrichedAssets.find((item) => item.symbol === value);
-            if (find) {
-                props.onChange(value, find);
-            } else {
-                props.onChange(value);
-            }
-        }
-    }, [enrichedAssets]);
+    // useEffect(() => {
+    //     if (enrichedAssets && enrichedAssets.length && enrichedAssets[0]) {
+    //         const value = enrichedAssets[0].symbol;
+    //         const find = enrichedAssets.find((item) => item.symbol === value);
+    //         if (find) {
+    //             props.onChange(value, find);
+    //         } else {
+    //             props.onChange(value);
+    //         }
+    //     }
+    // }, [enrichedAssets]);
 
     const handleChange = (value) => {
         if (props.value === value) {

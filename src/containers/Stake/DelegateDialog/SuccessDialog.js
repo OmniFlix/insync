@@ -147,6 +147,8 @@ const SuccessDialog = (props) => {
                                         : null}</p>
                                         : props.tokensTransferAmount && props.tokensTransferAmount > 0
                                             ? <p>{Number(props.tokensTransferAmount).toFixed(4) + ' ' + config.COIN_DENOM}</p>
+                                            : props.shielded && props.shieldedTokens > 0
+                                            ? Number(props.shieldedTokens).toFixed(4) + ' ' + config.COIN_DENOM
                                     : <p>{props.ibcTokens
                                         ? Number(props.ibcTokens).toFixed(4) + ' ' + config.COIN_DENOM
                                         : null}</p>}

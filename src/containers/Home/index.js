@@ -153,7 +153,7 @@ class Home extends Component {
                                 </Button>
                             </div>
                         </div>
-                        <Table active={active}/>
+                        <Table active={active} />
                     </div>
                 </div>
                 <div className="proposals">

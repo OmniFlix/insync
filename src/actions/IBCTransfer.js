@@ -611,7 +611,7 @@ export const executeIBCTransfer = (revisionHeight, revisionNumber, cb) => async 
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );

@@ -77,6 +77,10 @@
     border-radius: 0 100px 100px 0;
 }
 
+.table tbody tr:has(td:only-child) > td {
+    border-radius: 100px;
+}
+
 .table tbody tr td[colspan='6'] {
     border-radius: 50px;
 }
