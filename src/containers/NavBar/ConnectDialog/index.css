@@ -1,6 +1,6 @@
 .dialog.connect_dialog div[role='dialog'] {
-    width: 700px;
-    min-width: 700px;
+    max-width: 479px;
+    width: 100%;
 }
 
 .connect_wallets {
@@ -10,6 +10,22 @@
     flex-direction: column;
     margin: 20px auto;
     gap: 16px;
+    width: 100%;
+}
+
+.connect_dialog .header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.connect_dialog .header > img:hover {
+    cursor: pointer;
+}
+
+.connect_dialog > img {
+    width: 181px;
 }
 
 .connect_dialog h2 {
@@ -17,7 +33,7 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .connect_dialog h2 img {
@@ -30,19 +46,32 @@
 }
 
 .connect_wallets > button {
-    background: #222222;
-    border-radius: 10px;
+    background: #FAFA4521;
+    border: 1px solid #FAFA4552;
     width: 100%;
+    border-radius: 14px;
+    padding: 12px 14px;
+    height: 75px;
+}
+
+.connect_wallets > button > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     font-family: 'Blinker', sans-serif;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 100%;
+    font-weight: 600;
+    font-size: 18px;
     color: #FFFFFF;
-    padding: 14px;
-    box-shadow: 0 4px 20px rgb(0 0 0 / 25%);
-    text-transform: unset;
-    min-width: 240px;
-    max-width: 300px;
+    text-transform: none;
+}
+
+.connect_wallets > button > span > svg {
+    width: 42px;
+    fill: #000;
+    background: yellow;
+    border-radius: 20px;
+    padding: 5px;
 }
 
 .connect_wallets > button:disabled {
@@ -52,31 +81,8 @@
 }
 
 .connect_wallets > button:hover {
-    background: #222222;
-}
-
-.connect_wallets > button:hover:before {
-    content: "";
-    position: absolute;
-    background: #222222;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    border-radius: 10px;
-}
-
-.connect_wallets > button:hover:after {
-    content: "";
-    background: #ff0;
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    z-index: -2;
-    border-radius: 10px;
+    background: #FAFA4533;
+    border: 1px solid #FAFA4580;
 }
 
 .connect_wallets > button > span:first-child {
