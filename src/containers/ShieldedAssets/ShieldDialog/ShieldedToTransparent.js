@@ -14,12 +14,13 @@ import { shieldedToTransparentTransaction } from 'helper';
 import CircularProgress from 'components/CircularProgress';
 import { UnshieldingTransferDataMsgValue } from '@harish551/namada-types';
 import variables from 'utils/variables';
-import { getBalance } from 'actions/accounts';
+import { getBalance, getShieldedBalance } from 'actions/accounts';
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';
 import { showMessage } from 'actions/snackbar';
 import { feeList } from 'dummy/ibcList';
 import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from 'containers/IBCTransfer/ShieldedSourceSelectField';
+import { fetchIBCBalance } from 'actions/IBCTransfer';
 
 const ShieldedToTransparent = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -80,54 +81,26 @@ const ShieldedToTransparent = (props) => {
             props.showMessage(error);
             return;
         }
-        // let balance = null;
-        // props.balance && props.balance.length && props.balance.map((val) => {
-        //     if (val && val.length) {
-        //         val.map((value) => {
-        //             if (value === config.TOKEN_ADDRESS) {
-        //                 balance = val[1];
-        //             }
-        //         });
-        //     }
+        const tokenAddress = props.selectedAsset && props.selectedAsset.tokenAddress;
+        const balance = props.selectedAsset && props.selectedAsset.balance && Number(props.selectedAsset.balance);
+        const fromNamadaSelectedConfig = props.selectedAsset?.config;
+        handleFetchShieldedBalance(tokenAddress, balance, fromNamadaSelectedConfig, value);
+    };
 
-        //     return null;
-        // });
-
-        props.getBalance(props.address);
-        setInProgress(false);
-        props.successDialog(value && value.hash);
-        // const available = balance;
-        // const intervalTime = setInterval(() => {
-        //     props.getBalance(props.address, (result) => {
-        //         if (result && result.length) {
-        //             let localBalance = null;
-        //             result && result.length && result.map((val) => {
-        //                 if (val && val.length) {
-        //                     val.map((value) => {
-        //                         if (value === config.TOKEN_ADDRESS) {
-        //                             localBalance = val[1];
-        //                         }
-        //                     });
-        //                 }
-
-        //                 return null;
-        //             });
-
-        //             if (localBalance !== available) {
-        //                 setInProgress(false);
-        //                 clearInterval(intervalTime);
-        //                 props.successDialog(value && value.hash);
-        //             }
-        //         }
-        //     });
-        // }, 2000);
-
-        // if (intervalTime) {
-        //     setTimeout(() => {
-        //         setInProgress(false);
-        //         clearInterval(intervalTime);
-        //     }, 60000);
-        // }
+    const handleFetchShieldedBalance = (tokenAddress, balance, ibcConfig, res1) => {
+        props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
+            let resultBalance = resBalance && resBalance.length && tokenAddress &&
+                    resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
+            resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
+            if (resultBalance !== balance) {
+                props.fetchIBCBalance(ibcConfig?.REST_URL, props.ibcTransferAddress);
+                props.getBalance(props.address);
+                props.successDialog(res1.hash);
+                setInProgress(false);
+            } else {
+                handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
+            }
+        });
     };
 
     let balance = null;
@@ -215,6 +188,8 @@ ShieldedToTransparent.propTypes = {
     open: PropTypes.bool.isRequired,
     pendingDialog: PropTypes.func.isRequired,
     setAmount: PropTypes.func.isRequired,
+    getShieldedBalance: PropTypes.func.isRequired,
+    fetchIBCBalance: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
@@ -247,6 +222,8 @@ const actionToProps = {
     failedDialog: showDelegateFailedDialog,
     pendingDialog: showDelegateProcessingDialog,
     showMessage,
+    getShieldedBalance,
+    fetchIBCBalance,
 };
 
 export default connect(stateToProps, actionToProps)(ShieldedToTransparent);

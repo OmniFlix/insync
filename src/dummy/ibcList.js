@@ -3,8 +3,8 @@ export const ibcList = [{
     value: 'osmosis',
     chain_name: 'osmosis',
     config: {
-        RPC_URL: 'https://osmosis-rpc.polkachu.com',
-        REST_URL: 'https://osmosis-api.polkachu.com',
+        RPC_URL: 'https://rpc-osmosis.streamswap.io',
+        REST_URL: 'https://lcd-osmosis.streamswap.io',
         CHAIN_ID: 'osmosis-1',
         CHAIN_NAME: 'Osmosis',
         NETWORK: 'mainnet',

@@ -11,13 +11,14 @@ import AddressTextField from "../TransparentTransferDialog/AddressTextField";
 import '../TransparentTransferDialog/index.css';
 import { feeList } from "dummy/ibcList";
 import { formatCount } from "utils/numberFormats";
-import { fetchBalanceList, getBalance } from "actions/accounts";
+import { fetchBalanceList, getBalance, getShieldedBalance } from "actions/accounts";
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from "actions/stake";
 import { showMessage } from "actions/snackbar";
-import { config } from "config";
+import { config } from "../../../config";
 import { ShieldedTransferDataMsgValue } from "@harish551/namada-types";
 import BigNumber from "bignumber.js";
 import { ibcShieldedTransfer } from "helper";
+import { fetchIBCBalance } from "actions/IBCTransfer";
 
 class ShieldedTransferDialog extends React.Component {
     constructor (props) {
@@ -29,6 +30,7 @@ class ShieldedTransferDialog extends React.Component {
 
         this.handleTransfer = this.handleTransfer.bind(this);
         this.handleFetch = this.handleFetch.bind(this);
+        this.handleFetchShieldedBalance = this.handleFetchShieldedBalance.bind(this);
     }
 
     handleTransfer () {
@@ -91,14 +93,26 @@ class ShieldedTransferDialog extends React.Component {
             return;
         }
 
-        this.props.successDialog(value && value.hash);
-        this.setState({ inProgress: false });
-        this.props.fetchBalanceList(this.props.address);
-        this.props.getBalance(this.props.address);
-        setTimeout(() => {
-            this.props.fetchBalanceList(this.props.address);
-            this.props.getBalance(this.props.address);
-        }, 5000);
+        const tokenAddress = this.props.value && this.props.value.tokenAddress;
+        const balance = this.props.value && this.props.value.balance && Number(this.props.value.balance);
+        const fromNamadaSelectedConfig = this.props.value?.config;
+        this.handleFetchShieldedBalance(tokenAddress, balance, fromNamadaSelectedConfig, value);
+    };
+
+    handleFetchShieldedBalance (tokenAddress, balance, ibcConfig, res1) {
+        this.props.getShieldedBalance(this.props.shieldedData?.viewingKey, this.props.shieldedData?.timestamp, this.props.address, this.props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
+            let resultBalance = resBalance && resBalance.length && tokenAddress &&
+                    resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
+            resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
+            if (resultBalance !== balance) {
+                this.props.fetchIBCBalance(ibcConfig?.REST_URL, this.props.ibcTransferAddress);
+                this.props.getBalance(this.props.address);
+                this.props.successDialog(res1.hash);
+                this.setState({ inProgress: false });
+            } else {
+                handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
+            }
+        });
     };
 
     render () {
@@ -191,6 +205,8 @@ ShieldedTransferDialog.propTypes = {
     failedDialog: PropTypes.func.isRequired,
     pendingDialog: PropTypes.func.isRequire,
     showMessage: PropTypes.func.isRequired,
+    getShieldedBalance: PropTypes.func.isRequired,
+    fetchIBCBalance: PropTypes.func.isRequired,
     ibcTransferType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
@@ -239,6 +255,8 @@ const actionToProps = {
     failedDialog: showDelegateFailedDialog,
     pendingDialog: showDelegateProcessingDialog,
     showMessage,
+    getShieldedBalance,
+    fetchIBCBalance,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(ShieldedTransferDialog));
