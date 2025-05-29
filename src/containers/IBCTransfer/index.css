@@ -144,7 +144,7 @@
 .transfer_dialog .nam_arrow {
     position: absolute;
     left: 45%;
-    top: 45% !important;
+    bottom: 160px !important;
 }
 
 .transfer_source .connect_keplr {

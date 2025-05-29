@@ -262,7 +262,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
             {/* <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
                 <img alt="TransferIcon" src={TransferIcon}/>
             </div> */}
-            <div className="nam_arrow" style={{ top: '45%' }}>
+            <div className="nam_arrow">
                 <img alt="Arrow" src={DownArrowIcon}/>
             </div>
             <div className="nam_transfer_destination" style={{ minHeight: 'unset' }}>
