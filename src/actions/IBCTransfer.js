@@ -527,6 +527,7 @@ export const txSignAndBroadCast = (config, data, cb) => (dispatch) => {
             }
         })
         .catch((error) => {
+            console.error('txSignAndBroadCast - Error:', error);
             dispatch(txSignAndBroadCastError(
                 error.response &&
                 error.response.data &&

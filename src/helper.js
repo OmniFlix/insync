@@ -1289,9 +1289,11 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
             newTxs.push(revealPkTx);
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        console.log('wrapperTxValue', wrapperTxValue, ibcTransfer);
         const encoded = await tx.buildShieldedTransfer(wrapperTxValue, ibcTransfer);
         newTxs.push(encoded);
 
+        console.log('encoded', encoded);
         let updateDate;
         if (type === 'ledger') {
             updateDate = newTxs;
@@ -1299,6 +1301,7 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
             updateDate = tx.buildBatch(newTxs);
         }
 
+        console.log('updateDate', updateDate);
         client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
