@@ -90,6 +90,7 @@ Stake.propTypes = {
     inActiveValidators: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     validatorList: PropTypes.array.isRequired,
+    delegatedValidatorListInProgress: PropTypes.bool.isRequired,
 };
 
 const stateToProps = (state) => {

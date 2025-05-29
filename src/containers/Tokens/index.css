@@ -10,7 +10,7 @@
     position: relative;
 }
 
-.assets.stake .table.shielded_table::after {
+/* .assets.stake .table.shielded_table::after {
     width: 100%;
     position: absolute;
     height: 100%;
@@ -27,7 +27,7 @@
     font-size: 20px;
     line-height: 130%;
     color: #FFF;
-}
+} */
 
 .assets .leaner_progress {
     width: calc(100% - 48px);

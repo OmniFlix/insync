@@ -3,21 +3,32 @@
     backdrop-filter: blur(50px);
     padding: 32px;
     width: max-content;
-    margin: 40px auto;
-    /* background: #FFFF46; */
     background: #000;
     width: 550px;
 }
 
 .ibc_content > p {
-    color: #fff;
-    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'Blinker', sans-serif;
+}
+
+.ibc_content .header_div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.ibc_content .header_div > p {
+    color: #ffffff;
+    text-align: left;
     font-family: 'Blinker', sans-serif;
     font-size: 22px;
     font-style: normal;
     font-weight: 600;
     line-height: 130%;
-    margin-bottom: 24px;
 }
 
 .ibc_content > span {
@@ -45,23 +56,157 @@
     min-width: 450px;
 }
 
+.transfer_dialog .transfer_source {
+    padding: 16px;
+    position: relative;
+}
+
+.transfer_dialog .transfer_source .nam_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.transfer_dialog .transfer_source .nam_header > img {
+    width: 44px;
+    height: 44px;
+}
+
+.nam_header > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 150px;
+
+}
+
+.nam_header > div > div {
+    display: flex;
+    max-width: 150px;
+}
+
+.nam_header > div > div > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .transfer_dialog .header .header_right {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.transfer_source .header button {
-    background: #262626;
+.transfer_source .available_balance {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    margin-left: 2px;
+    margin-top: 5px;
+}
+
+.available_balance > p:first-child {
+    color: #BFBFBF;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Blinker', sans-serif;
+}
+
+.available_balance > p:last-child {
+    color: #FFFF46;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Blinker', sans-serif;
+}
+
+.transfer_source .nam_tokens_secion {
+    position: absolute;
+    right: 5%;
+    bottom: 47px;
+}
+
+.transfer_source .deposit_nam_tokens_secion {
+    position: absolute;
+    right: 5%;
+    bottom: 109px;
+}
+
+.transfer_source .nam_tokens_secion > button,
+.transfer_source .deposit_nam_tokens_secion > button {
+    min-width: 0px;
+    height: 31px;
+    border-radius: 8px;
+    border: 1px solid #FFFFFF14;
+    background: #FFFFFF1F;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Blinker', sans-serif;
     color: #fff;
+    padding: 0px 5px;
+}
+
+.transfer_source .header button {
+    width: 100%;
+    height: 40px;
+    padding: 10px 8px;
+    background: #fff;
+    color: #0B0B0B;
     text-align: center;
     font-family: 'Blinker', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 600;
     line-height: 130%;
     text-transform: none;
     border: 1px solid transparent;
+    border-radius: 10px;
+}
+
+.transfer_dialog .nam_arrow {
+    position: absolute;
+    left: 45%;
+    bottom: 160px !important;
+}
+
+.transfer_source .connect_keplr {
+    width: 100%;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0B0B0B;
+    text-transform: none;
+    font-family: 'Blinker', sans-serif;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.transfer_dialog .nam_transfer_destination {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.transfer_dialog .nam_transfer_destination > div {
+    height: 69px;
+    border-radius: 20px;
+    padding: 42px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.transfer_dialog .nam_transfer_destination > div > p {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Blinker', sans-serif;
+}
+
+.transfer_source .header button:hover,
+.transfer_source .connect_keplr:hover {
+    background: #f0f0f0ed;
 }
 
 .transfer_source .header button img {
@@ -74,7 +219,8 @@
 }
 
 .transfer_source .header > .select_field {
-    width: 45%;
+    width: 100%;
+    margin-top: 0px;
 }
 
 .transfer_dialog .header .logout_icon {
@@ -83,16 +229,22 @@
 }
 
 .transfer_dialog > div {
-    padding: 24px 16px 20px;
-    background: #161616;
+    background: #0B0B0B;
     border-radius: 14px;
-    border: 1px solid #232323;
+    border: 1px solid #1A1A1A;
+}
+
+.transfer_dialog .transfer_destination > div {
+    border-radius: 16px;
+    padding: 24px 16px 16px 16px;
+    border: 1px solid #FFFF46;
 }
 
 .transfer_dialog > div > div {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
 }
 
 .transfer_dialog > div > div.transfer_type {
@@ -127,7 +279,7 @@
     font-weight: 500;
     font-size: 14px;
     line-height: 130%;
-    color: #696969;
+    color: #fff;
     text-align: left;
     flex: 1 1;
     display: flex;
@@ -142,8 +294,9 @@
 }
 
 .transfer_dialog > button {
+    height: 47px;
     background: #FFFF46 !important;
-    border-radius: 16px;
+    border-radius: 24px;
     font-family: 'Blinker', sans-serif;
     font-style: normal;
     font-weight: 600;
@@ -160,17 +313,11 @@
 }
 
 .transfer_dialog > .arrow {
-    width: 50px;
-    height: 50px;
-    background: #FFFF46;
-    border-radius: 50px;
     display: flex;
     align-items: center;
-    padding: 10px;
     position: absolute;
     left: 45%;
-    top: 53%;
-    /* cursor: pointer; */
+    bottom: 140px;
 }
 
 .transfer_dialog .arrow > img {
@@ -180,13 +327,19 @@
 }
 
 .transfer_dialog .transfer_source .select_section > div {
-    width: 45%;
-    margin: 20px 0;
+    width: 40%;
+    margin: 5px 0px;
+}
+
+.transfer_dialog .transfer_source .select_section .amount_text_field {
+    width: 60%;
+    background: #FFFFFF0F;
+    border-radius: 12px;
 }
 
 .transfer_dialog .transfer_source .text_field.amount_text_field input::placeholder,
 .transfer_dialog .transfer_source .text_field.amount_text_field input {
-    color: #b1b1b1;
+    color: #fff;
     display: flex;
     font-family: 'Blinker', sans-serif;
     font-size: 16px;
@@ -195,13 +348,19 @@
 }
 
 .transfer_dialog .transfer_source .text_field.amount_text_field fieldset {
-    border-color: #777777;
+    border-color: #FFFFFF05;
 }
 
-.transfer_dialog .select_field > div > div,
 .transfer_dialog .select_section .select_field > div > div {
+    background: #FFFFFF0F;
+    border-radius: 12px;
+    height: 46px;
+    border: 1px solid #FFFFFF05;
+}
+
+.transfer_dialog .select_field > div > div {
     align-items: center;
-    border: 1px solid #696969;
+    border: 1px solid #1A1A1A;
     border-radius: 12px;
     box-sizing: border-box;
     color: #b1b1b1;
@@ -257,7 +416,7 @@
 
 .transfer_dialog .select_field img {
     align-items: center;
-    background: #696969;
+    background: #F0D8FF;
     border-radius: 50px;
     color: #fff;
     display: flex;
@@ -265,15 +424,30 @@
     justify-content: center;
     margin-right: 10px;
     width: 30px;
+    padding: 4px;
+}
+
+.transfer_dialog .tokens_secion {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 16px 16px 16px;
+}
+
+.tokens_secion img {
+    width: 20px;
+    height: 20px;
 }
 
 .transfer_dialog .tokens_secion p {
-    color: #696969;
+    color: #fff;
     text-align: center;
     font-family: 'Blinker', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 130%;
 }
 
@@ -307,8 +481,8 @@
 }
 
 .transfer_dialog p > img {
-    width: 28px;
-    height: 28px;
+    width: 44px;
+    height: 44px;
 }
 
 .transfer_dialog .address_text_field > div,
@@ -325,7 +499,7 @@
 }
 
 .transfer_dialog .transfer_source .border {
-    border-bottom: 1px solid #696969;
+    border-bottom: 1px solid #ffffff26;
     margin: 10px 0;
     opacity: 0.4;
 }
@@ -336,20 +510,23 @@
 }
 
 .transfer_dialog .fee {
-    margin-top: 20px;
+    border: none;
+    background: none;
 }
 
-.transfer_dialog .transfer_destination .fee > p {
+.transfer_dialog .fee > p {
     color: #696969;
     text-align: center;
     font-family: 'Blinker', sans-serif;
     font-size: 16px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 130%;
 }
 
-.transfer_dialog .transfer_destination .fee > p > b {
+.transfer_dialog .fee > p > p {
     color: #FFF;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Blinker', sans-serif;
 }

@@ -1,21 +1,26 @@
-import { Dialog } from "@material-ui/core";
+import { Dialog, Button } from "@material-ui/core";
 import { hideTransparentTokensWithdrawDialog } from "actions/assets";
 import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import NamadaToIBCTransparentTransfer from "containers/IBCTransfer/NamadaToIBCTransparentTransfer";
+import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
+import closeIcon from '../../../assets/close_icon.png';
 
 class TransparentWithdrawDialog extends React.Component {
-   render () {
+    render () {
         return (
             <Dialog open={this.props.open}
-            onClose={this.props.handleClose}
-            aria-describedby="claim-dialog-description"
-            aria-labelledby="claim-dialog-title"
-            className="dialog tokens_withdraw_dialog">
-                 <div className="ibc_content padding">
-                    <p>Withdraw {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                onClose={this.props.handleClose}
+                aria-describedby="claim-dialog-description"
+                aria-labelledby="claim-dialog-title"
+                className="dialog tokens_withdraw_dialog">
+                <div className="ibc_content padding">
+                    <div className="header_div">
+                        <p>Withdraw Asset</p>
+                        <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
+                    </div>
                     <NamadaToIBCTransparentTransfer from="transparent_withdraw" transparentWithdrawData={this.props.value}/>
                 </div>
             </Dialog>
