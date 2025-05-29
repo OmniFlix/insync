@@ -305,6 +305,7 @@ const delegatedValidators = (state = {
         return {
             ...state,
             list: action.list,
+            inProgress: false,
         };
     case DELEGATED_VALIDATORS_FETCH_ERROR:
         return {
