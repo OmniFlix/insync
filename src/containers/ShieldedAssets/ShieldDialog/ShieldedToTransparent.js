@@ -31,9 +31,9 @@ const ShieldedToTransparent = (props) => {
         let token = config.TOKEN_ADDRESS;
         let amount = new BigNumber(props.amount);
         if (props.selectedAsset?.balance) {
-            // amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
-            amount = new BigNumber(props.amount);
-            token = props.selectedAsset?.balanceTokenAddress;
+            amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
+            // amount = new BigNumber(props.amount);
+            token = props.selectedAsset?.tokenAddress;
         }
 
         const msgValue = new UnshieldingTransferDataMsgValue({
@@ -44,7 +44,6 @@ const ShieldedToTransparent = (props) => {
 
         const tx = {
             source: source,
-            // gasSpendingKey: props.disposableSigner && props.disposableSigner.publicKey,
             data: [msgValue],
         };
 
@@ -53,12 +52,12 @@ const ShieldedToTransparent = (props) => {
             feeAmount: new BigNumber(0.000001),
             gasLimit: new BigNumber(32032),
             chainId: config.CHAIN_ID,
-            publicKey: props.details && props.details.publicKey,
-            // publicKey: props.disposableSigner && props.disposableSigner.publicKey,
+            // publicKey: props.details && props.details.publicKey,
+            publicKey: props.disposableSigner && props.disposableSigner.publicKey,
         };
 
         if (props.selectedAsset?.balance) {
-            txs.token = props.selectedAsset?.balanceTokenAddress;
+            txs.token = props.selectedAsset?.tokenAddress;
             txs.feeAmount = new BigNumber(0.00001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
             // txs.chainId = fromNamadaSelectedConfig.CHAIN_ID;
             if (fromNamadaSelectedConfig?.COIN_DENOM === 'ATOM') {
@@ -80,51 +79,54 @@ const ShieldedToTransparent = (props) => {
             props.showMessage(error);
             return;
         }
-        let balance = null;
-        props.balance && props.balance.length && props.balance.map((val) => {
-            if (val && val.length) {
-                val.map((value) => {
-                    if (value === config.TOKEN_ADDRESS) {
-                        balance = val[1];
-                    }
-                });
-            }
+        // let balance = null;
+        // props.balance && props.balance.length && props.balance.map((val) => {
+        //     if (val && val.length) {
+        //         val.map((value) => {
+        //             if (value === config.TOKEN_ADDRESS) {
+        //                 balance = val[1];
+        //             }
+        //         });
+        //     }
 
-            return null;
-        });
+        //     return null;
+        // });
 
-        const available = balance;
-        const intervalTime = setInterval(() => {
-            props.getBalance(props.address, (result) => {
-                if (result && result.length) {
-                    let localBalance = null;
-                    result && result.length && result.map((val) => {
-                        if (val && val.length) {
-                            val.map((value) => {
-                                if (value === config.TOKEN_ADDRESS) {
-                                    localBalance = val[1];
-                                }
-                            });
-                        }
+        props.getBalance(props.address);
+        setInProgress(false);
+        props.successDialog(value && value.hash);
+        // const available = balance;
+        // const intervalTime = setInterval(() => {
+        //     props.getBalance(props.address, (result) => {
+        //         if (result && result.length) {
+        //             let localBalance = null;
+        //             result && result.length && result.map((val) => {
+        //                 if (val && val.length) {
+        //                     val.map((value) => {
+        //                         if (value === config.TOKEN_ADDRESS) {
+        //                             localBalance = val[1];
+        //                         }
+        //                     });
+        //                 }
 
-                        return null;
-                    });
+        //                 return null;
+        //             });
 
-                    if (localBalance !== available) {
-                        setInProgress(false);
-                        clearInterval(intervalTime);
-                        props.successDialog(value && value.hash);
-                    }
-                }
-            });
-        }, 2000);
+        //             if (localBalance !== available) {
+        //                 setInProgress(false);
+        //                 clearInterval(intervalTime);
+        //                 props.successDialog(value && value.hash);
+        //             }
+        //         }
+        //     });
+        // }, 2000);
 
-        if (intervalTime) {
-            setTimeout(() => {
-                setInProgress(false);
-                clearInterval(intervalTime);
-            }, 60000);
-        }
+        // if (intervalTime) {
+        //     setTimeout(() => {
+        //         setInProgress(false);
+        //         clearInterval(intervalTime);
+        //     }, 60000);
+        // }
     };
 
     let balance = null;

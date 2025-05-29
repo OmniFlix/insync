@@ -5,7 +5,6 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import NamadaToIBCTransparentTransfer from "containers/IBCTransfer/NamadaToIBCTransparentTransfer";
-import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 
 class TransparentWithdrawDialog extends React.Component {
    render () {
@@ -19,7 +18,6 @@ class TransparentWithdrawDialog extends React.Component {
                     <p>Withdraw {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
                     <NamadaToIBCTransparentTransfer from="transparent_withdraw" transparentWithdrawData={this.props.value}/>
                 </div>
-                <SuccessDialog/>
             </Dialog>
         )
     }

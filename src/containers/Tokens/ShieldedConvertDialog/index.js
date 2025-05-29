@@ -4,6 +4,7 @@ import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
+import ShieldedToTransparent from "containers/ShieldedAssets/ShieldDialog/ShieldedToTransparent";
 
 class ShieldedConvertDialog extends React.Component {
    render () {
@@ -13,8 +14,9 @@ class ShieldedConvertDialog extends React.Component {
             aria-describedby="claim-dialog-description"
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_convert_dialog">
-                <div className="ibc_content padding">
-
+                <div className="ibc_content shield_tranfer">
+                    <p>Namada Shielded to Namada Transparent</p>
+                    <ShieldedToTransparent/>
                 </div>
             </Dialog>
         )

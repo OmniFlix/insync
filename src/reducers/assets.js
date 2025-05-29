@@ -66,6 +66,16 @@ const transparentTokensTransferDialog = (state = {
             open: true,
             value: action.value,
         };
+    case SHIELDED_TOKENS_TRANSFER_DIALOG_SHOW:
+        return {
+            ...state,
+            value: action.value,
+        };
+    case SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE:
+        return {
+            ...state,
+            value: {},
+        };
     case TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE:
         return {
             ...state,

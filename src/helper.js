@@ -13,9 +13,8 @@ import {
     ShieldingTransferMsgValue,
     IbcTransferMsgValue,
     UnshieldingTransferMsgValue,
-    UnshieldingTransferDataMsgValue,
-    AccountType,
     TransparentTransferMsgValue,
+    ShieldedTransferMsgValue,
 } from '@harish551/namada-types';
 
 import { getSdk } from '@namada/sdk/web';
@@ -882,7 +881,7 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, c
 
         const { rpc, tx } = sdk;
 
-        const masp = await fetchMaspParams(sdk, chainId);
+        const masp = await fetchMaspParams(sdk, config.CHAIN_ID);
         const checksums = await rpc.queryChecksums();
         if (checksums && Object.keys(checksums).length) {
             Object.keys(checksums).map((key) => {
@@ -973,7 +972,7 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
 
         const { rpc, tx } = sdk;
 
-        const masp = await fetchMaspParams(sdk, chainId);
+        const masp = await fetchMaspParams(sdk, config.CHAIN_ID);
         const checksums = await rpc.queryChecksums();
         if (checksums && Object.keys(checksums).length) {
             Object.keys(checksums).map((key) => {
@@ -983,16 +982,13 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
             });
         }
 
-        const offlineSigner = namada.getSigner(config.CHAIN_ID);
-        const disposableSigner = await offlineSigner.genDisposableKeypair();
-        console.log('disposableSigner', disposableSigner);
         const TransparentTransfer = new UnshieldingTransferMsgValue({
             source: Tx.source,
             gasSpendingKey: Tx.source,
             data: Tx.data,
+            // bparams: [],
         });
 
-        console.log('TransparentTransfer', TransparentTransfer, tx);
         const wrapperProps = {
             token: txs.token,
             feeAmount: txs.feeAmount,
@@ -1009,6 +1005,7 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
         const encoded = await tx.buildUnshieldingTransfer(wrapperTxValue, TransparentTransfer);
+        // const encoded = await tx.build_unshielding_transfer(TransparentTransfer, wrapperTxValue);
         newTxs.push(encoded);
 
         let updateDate;
@@ -1069,7 +1066,7 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
 
         const { rpc, tx } = sdk;
 
-        const masp = await fetchMaspParams(sdk, chainId);
+        const masp = await fetchMaspParams(sdk, config.CHAIN_ID);
         const checksums = await rpc.queryChecksums();
         if (checksums && Object.keys(checksums).length) {
             Object.keys(checksums).map((key) => {
@@ -1079,15 +1076,22 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             });
         }
 
-        const ibcTransfer = new IbcTransferMsgValue({
+        const obj = {
             source: Tx.source,
-            // gasSpendingKey: Tx.gasSpendingKey,
             receiver: Tx.receiver,
             token: Tx.token,
             amountInBaseDenom: Tx.amountInBaseDenom,
             portId: Tx.portId,
             channelId: Tx.channelId,
-        });
+        };
+
+        if (Tx.gasSpendingKey) {
+            const disposableAddress = await client.genDisposableKeypair();
+            obj.gasSpendingKey = Tx.gasSpendingKey;
+            obj.refundTarget = disposableAddress && disposableAddress.address;
+        }
+
+        const ibcTransfer = new IbcTransferMsgValue(obj);
 
         const wrapperProps = {
             token: txs.token,
@@ -1104,11 +1108,9 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             newTxs.push(revealPkTx);
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-        console.log('wrapperTxValue', wrapperTxValue);
         const encoded = await tx.buildIbcTransfer(wrapperTxValue, ibcTransfer);
         newTxs.push(encoded);
 
-        console.log('encoded', encoded);
         let updateDate;
         if (type === 'ledger') {
             updateDate = newTxs;
@@ -1234,6 +1236,98 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
     }
 };
 
+export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, type, cb) => {
+    const isExtensionInstalled = typeof window.namada === 'object';
+    if (!isExtensionInstalled || !window.namada) {
+        const error = 'Download the Namada Extension';
+        cb(error);
+    }
+
+    if (window.namada) {
+        const namada = window.namada;
+        const client = namada.getSigner();
+
+        const { cryptoMemory } = await init();
+
+        const sdk = getSdk(
+            cryptoMemory,
+            config.RPC_URL,
+            config.MAPS_REST_URL,
+            '',
+            config.TOKEN_ADDRESS,
+        );
+
+        const { rpc, tx } = sdk;
+
+        const masp = await fetchMaspParams(sdk, config.CHAIN_ID);
+        const checksums = await rpc.queryChecksums();
+        if (checksums && Object.keys(checksums).length) {
+            Object.keys(checksums).map((key) => {
+                if (key && checksums[key]) {
+                    checksums[key] = checksums[key].toLowerCase();
+                }
+            });
+        }
+
+        const ibcTransfer = new ShieldedTransferMsgValue({
+            data: Tx.data,
+            gasSpendingKey: Tx.gasSpendingKey,
+        });
+
+        const wrapperProps = {
+            token: txs.token,
+            feeAmount: txs.feeAmount,
+            gasLimit: txs.gasLimit,
+            chainId: txs.chainId,
+            publicKey: txs.publicKey,
+            memo: txs.memo || '',
+        };
+
+        const newTxs = [];
+        if (revealPublicKey && !revealPublicKey.publicKey) {
+            const revealPkTx = await tx.buildRevealPk(wrapperProps);
+            newTxs.push(revealPkTx);
+        }
+        const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        const encoded = await tx.buildShieldedTransfer(wrapperTxValue, ibcTransfer);
+        newTxs.push(encoded);
+
+        let updateDate;
+        if (type === 'ledger') {
+            updateDate = newTxs;
+        } else {
+            updateDate = tx.buildBatch(newTxs);
+        }
+
+        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+            rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                    cb(result.info || result.log || result.rawLog);
+                } else {
+                    cb(null, result);
+                }
+            }).catch((error) => {
+                const message = 'success';
+                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                    cb(null, message);
+                } else {
+                    cb(error && error.message);
+                }
+            });
+        }).catch((error) => {
+            console.error(`Transaction was rejected: ${error}`);
+            const message = 'success';
+            if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                cb(null, message);
+            } else {
+                cb(error && error.message);
+            }
+        });
+    } else {
+        return null;
+    }
+};
+
 // export const ibcUnShieldingTransaction = async (address, Tx, txs, revealPublicKey, type, cb) => {
 //     const isExtensionInstalled = typeof window.namada === 'object';
 //     if (!isExtensionInstalled || !window.namada) {
@@ -1266,7 +1360,6 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
 //             });
 //         }
 
-//         console.log('ibcUnShieldingTransaction', Tx, txs);
 //         const ibcTransfer = new UnshieldingTransferMsgValue({
 //             source: Tx.source,
 //             data: [new UnshieldingTransferDataMsgValue({
@@ -1281,7 +1374,6 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
 //             // channelId: Tx.channelId,
 //         });
 
-//         console.log('ibcUnShieldingTransaction', ibcTransfer, txs, tx);
 //         const wrapperProps = {
 //             token: txs.token,
 //             feeAmount: txs.feeAmount,
