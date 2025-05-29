@@ -56,13 +56,14 @@ class ShieldedTransferDialog extends React.Component {
             gasSpendingKey: source,
         };
 
+        const fee = feeList && feeList[fromSelectedConfig?.COIN_DENOM]
         const txs = {
             token: config.TOKEN_ADDRESS,
             feeAmount: new BigNumber(0.000001),
-            gasLimit: new BigNumber(32032),
+            gasLimit: new BigNumber(fee?.shieldedgas || 152624),
             chainId: config.CHAIN_ID,
-            // publicKey: this.props.details && this.props.details.publicKey,
-            publicKey: this.props.disposableSigner?.publicKey,
+            publicKey: this.props.details && this.props.details.publicKey,
+            // publicKey: this.props.disposableSigner?.publicKey,
             memo: this.props.tokensTransferMemo || '',
         };
 
@@ -163,7 +164,7 @@ class ShieldedTransferDialog extends React.Component {
                     ? <div className="section5">
                             <div className="left_section">
                                 <span>Fee</span>
-                                {formatCount(fee.fee * fee.gas)}{' '} {fromSelectedConfig.COIN_DENOM}
+                                {formatCount(fee.fee * fee.shieldedgas)}{' '} {fromSelectedConfig.COIN_DENOM}
                             </div>
                             {/* <div className="right_section">
                                 <span>Fee options</span>

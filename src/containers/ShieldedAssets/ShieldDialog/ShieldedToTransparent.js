@@ -47,13 +47,14 @@ const ShieldedToTransparent = (props) => {
             data: [msgValue],
         };
 
+        const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
         const txs = {
             token: config.TOKEN_ADDRESS,
             feeAmount: new BigNumber(0.000001),
-            gasLimit: new BigNumber(32032),
+            gasLimit: new BigNumber(fee?.shieldedgas || 152624),
             chainId: config.CHAIN_ID,
-            // publicKey: props.details && props.details.publicKey,
-            publicKey: props.disposableSigner && props.disposableSigner.publicKey,
+            publicKey: props.details && props.details.publicKey,
+            // publicKey: props.disposableSigner && props.disposableSigner.publicKey,
         };
 
         if (props.selectedAsset?.balance) {
@@ -189,7 +190,7 @@ const ShieldedToTransparent = (props) => {
                 </div>
                 {fee && fee.fee
                 ? <div className="fee">
-                    <p>fee:<b>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
+                    <p>fee:<b>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
                 </div> : null}
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>

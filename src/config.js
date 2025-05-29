@@ -1,10 +1,10 @@
 export const config = {
     RPC_URL: 'https://namada-mainnet-rpc.mellifera.network',
     REST_URL: 'https://namada-mainnet-indexer.mellifera.network',
-    MAPS_REST_URL: 'https://namada-mainnet-masp.mellifera.network',
+    MASP_REST_URL: 'https://namada-mainnet-masp.mellifera.network',
     // RPC_URL: 'https://namada-rpc.cosmicvalidator.com',
     // REST_URL: 'https://namada-indexer.cosmicvalidator.com',
-    // MAPS_REST_URL: 'https://namada-masp.cosmicvalidator.com',
+    // MASP_REST_URL: 'https://namada-masp.cosmicvalidator.com',
     EXPLORER_URL: 'https://explorer75.org/namada',
     STAKING_URL: 'https://namada.omniflix.co/stake',
     NETWORK_NAME: 'Namada',

@@ -263,22 +263,27 @@ export const feeList = {
     OSMO: {
         fee: 0.00001,
         gas: 32032,
+        shieldedgas: 152624, // Gas for shielded transfer
     },
     ATOM: {
         fee: 0.000001,
         gas: 32032,
+        shieldedgas: 152624,
     },
     TIA: {
         fee: 0.000001,
         gas: 28432,
+        shieldedgas: 102624,
     },
     NTRN: {
         fee: 0.00001,
         gas: 32032,
+        shieldedgas: 152624,
     },
     stATOM: {
         fee: 0.000001,
         gas: 28432,
+        shieldedgas: 102624,
     },
 };
 

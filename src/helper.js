@@ -370,7 +370,7 @@ export const delegateTransaction = (Tx, txs, revealPublicKey, type, cb) => {
             const sdk = getSdk(
                 cryptoMemory,
                 config.RPC_URL,
-                config.MAPS_REST_URL,
+                config.MASP_REST_URL,
                 '',
                 config.TOKEN_ADDRESS,
             );
@@ -481,7 +481,7 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
             const sdk = getSdk(
                 cryptoMemory,
                 config.RPC_URL,
-                config.MAPS_REST_URL,
+                config.MASP_REST_URL,
                 '',
                 config.TOKEN_ADDRESS,
             );
@@ -571,7 +571,7 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
             const sdk = getSdk(
                 cryptoMemory,
                 config.RPC_URL,
-                config.MAPS_REST_URL,
+                config.MASP_REST_URL,
                 '',
                 config.TOKEN_ADDRESS,
             );
@@ -662,7 +662,7 @@ export const claimTransaction = (Tx, txs, type, cb) => {
             const sdk = getSdk(
                 cryptoMemory,
                 config.RPC_URL,
-                config.MAPS_REST_URL,
+                config.MASP_REST_URL,
                 '',
                 config.TOKEN_ADDRESS,
             );
@@ -765,7 +765,7 @@ export const voteTransaction = (Tx, txs, type, cb) => {
             const sdk = getSdk(
                 cryptoMemory,
                 config.RPC_URL,
-                config.MAPS_REST_URL,
+                config.MASP_REST_URL,
                 '',
                 config.TOKEN_ADDRESS,
             );
@@ -874,7 +874,7 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, c
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );
@@ -965,7 +965,7 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );
@@ -1004,10 +1004,13 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
             newTxs.push(revealPkTx);
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        console.log('wrapperTxValue', wrapperTxValue, TransparentTransfer);
+        console.log('checksums', checksums);
         const encoded = await tx.buildUnshieldingTransfer(wrapperTxValue, TransparentTransfer);
         // const encoded = await tx.build_unshielding_transfer(TransparentTransfer, wrapperTxValue);
         newTxs.push(encoded);
 
+        console.log('encoded', encoded);
         let updateDate;
         if (type === 'ledger') {
             updateDate = newTxs;
@@ -1015,7 +1018,9 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
             updateDate = tx.buildBatch(newTxs);
         }
 
+        console.log('updateDate', updateDate, checksums);
         client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+            console.log('signedBondTxBytes', signedBondTxBytes);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
                     cb(result.info || result.log || result.rawLog);
@@ -1059,7 +1064,7 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );
@@ -1162,7 +1167,7 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );
@@ -1252,7 +1257,7 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );
@@ -1344,7 +1349,7 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
 //         const sdk = getSdk(
 //             cryptoMemory,
 //             config.RPC_URL,
-//             config.MAPS_REST_URL,
+//             config.MASP_REST_URL,
 //             '',
 //             config.TOKEN_ADDRESS,
 //         );
@@ -1445,7 +1450,7 @@ export const getShieldedArgs = async (
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );
