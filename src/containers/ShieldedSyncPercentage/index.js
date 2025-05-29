@@ -59,7 +59,7 @@ class ShieldedSyncPercentage extends Component {
                     const sdk = getSdk(
                         cryptoMemory,
                         config.RPC_URL,
-                        config.MAPS_REST_URL,
+                        config.MASP_REST_URL,
                         '',
                         config.TOKEN_ADDRESS,
                     );

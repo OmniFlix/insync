@@ -24,7 +24,7 @@ import { showMessage } from 'actions/snackbar';
 import { showConnectDialog } from 'actions/navBar';
 import { getWrapAddress } from '../../utils/strings';
 import keplrIcon from '../../assets/keplr.png';
-import { fetchBalanceList, fetchTokensList, getBalance } from '../../actions/accounts';
+import { fetchBalanceList, fetchTokensList, getBalance, getShieldedBalance } from '../../actions/accounts';
 import { showDelegateSuccessDialog } from '../../actions/stake';
 import CircularProgress from '../../components/CircularProgress';
 import { feeList, ibcList } from 'dummy/ibcList';
@@ -37,31 +37,31 @@ import ShieldedSourceSelectField from './ShieldedSourceSelectField';
 
 const IBCUnShielding = (props) => {
     const [inProgress, setInProgress] = useState(false);
-    useEffect(() => {
-        const address = localStorage.getItem('namada_keplr_address');
-        if (address) {
-            const selectedChain = props.selectedChain || ibcList[0];
+    // useEffect(() => {
+    //     const address = localStorage.getItem('namada_keplr_address');
+    //     if (address) {
+    //         const selectedChain = props.selectedChain || ibcList[0];
     
-            const config = {
-                RPC_URL: selectedChain && selectedChain.config && selectedChain.config.RPC_URL,
-                REST_URL: selectedChain && selectedChain.config && selectedChain.config.REST_URL,
-                CHAIN_ID: selectedChain && selectedChain.config && selectedChain.config.CHAIN_ID,
-                CHAIN_NAME: selectedChain && selectedChain.config && selectedChain.config.CHAIN_NAME,
-                COIN_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_DENOM,
-                COIN_MINIMAL_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_MINIMAL_DENOM,
-                COIN_DECIMALS: selectedChain && selectedChain.config && selectedChain.config.COIN_DECIMALS,
-                PREFIX: selectedChain && selectedChain.config && selectedChain.config.PREFIX,
-            };
+    //         const config = {
+    //             RPC_URL: selectedChain && selectedChain.config && selectedChain.config.RPC_URL,
+    //             REST_URL: selectedChain && selectedChain.config && selectedChain.config.REST_URL,
+    //             CHAIN_ID: selectedChain && selectedChain.config && selectedChain.config.CHAIN_ID,
+    //             CHAIN_NAME: selectedChain && selectedChain.config && selectedChain.config.CHAIN_NAME,
+    //             COIN_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_DENOM,
+    //             COIN_MINIMAL_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_MINIMAL_DENOM,
+    //             COIN_DECIMALS: selectedChain && selectedChain.config && selectedChain.config.COIN_DECIMALS,
+    //             PREFIX: selectedChain && selectedChain.config && selectedChain.config.PREFIX,
+    //         };
     
-            setInProgress(true);
-            props.connectIBCAccount(config, (address) => {
-                setInProgress(false);
-                localStorage.setItem('namada_keplr_address', address[0].address);
-                props.fetchIBCBalance(config.REST_URL, address[0].address);
-                props.fetchIBCChannel(selectedChain.channel_link);
-            });
-        }
-    }, []);
+    //         setInProgress(true);
+    //         props.connectIBCAccount(config, (address) => {
+    //             setInProgress(false);
+    //             localStorage.setItem('namada_keplr_address', address[0].address);
+    //             props.fetchIBCBalance(config.REST_URL, address[0].address);
+    //             props.fetchIBCChannel(selectedChain.channel_link);
+    //         });
+    //     }
+    // }, []);
 
     let balance = null;
     let ibcBalance = null;
@@ -120,7 +120,7 @@ const IBCUnShielding = (props) => {
         const namadaChannelId = getChannelIdForChain(props.ibcChannel, 'namada');
         if (props.fromNamadaSelectedAsset?.balance) {
             amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
-            token = props.fromNamadaSelectedAsset?.balanceTokenAddress;
+            token = props.fromNamadaSelectedAsset?.tokenAddress;
         }
 
         const tx = {
@@ -134,16 +134,18 @@ const IBCUnShielding = (props) => {
             // disposableSigner: props.disposableSigner?.address,
         };
 
+        const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
         const txs = {
             token: config.TOKEN_ADDRESS,
             feeAmount: new BigNumber(0.000001),
-            gasLimit: new BigNumber(32032),
+            gasLimit: new BigNumber(fee?.shieldedgas || 152624),
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
+            // publicKey: props.disposableSigner?.publicKey,
         };
         
         if (props.fromNamadaSelectedAsset?.balance) {
-            txs.token = props.fromNamadaSelectedAsset?.balanceTokenAddress;
+            txs.token = props.fromNamadaSelectedAsset?.tokenAddress;
             txs.feeAmount = new BigNumber(0.00001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
             // txs.chainId = fromNamadaSelectedConfig.CHAIN_ID;
             if (fromNamadaSelectedConfig?.COIN_DENOM === 'ATOM') {
@@ -180,53 +182,26 @@ const IBCUnShielding = (props) => {
             props.showMessage(error);
             return;
         }
-        let balance = null;
-        props.balance && props.balance.length && props.balance.map((val) => {
-            if (val && val.length) {
-                val.map((value) => {
-                    if (value === config.TOKEN_ADDRESS) {
-                        balance = val[1];
-                    }
-                });
-            }
+        const tokenAddress = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.tokenAddress;
+        const balance = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.balance && Number(props.fromNamadaSelectedAsset.balance);
+        const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
+        handleFetchShieldedBalance(tokenAddress, balance, fromNamadaSelectedConfig, value);
+    };
 
-            return null;
-        });
-
-        const available = balance;
-        const intervalTime = setInterval(() => {
-            props.getBalance(props.address, (result) => {
-                if (result && result.length) {
-                    let localBalance = null;
-                    result && result.length && result.map((val) => {
-                        if (val && val.length) {
-                            val.map((value) => {
-                                if (value === config.TOKEN_ADDRESS) {
-                                    localBalance = val[1];
-                                }
-                            });
-                        }
-
-                        return null;
-                    });
-
-                    if (localBalance !== available) {
-                        setInProgress(false);
-                        clearInterval(intervalTime);
-                        props.showDelegateSuccessDialog(value && value.hash, fromNamadaSelectedConfig);
-                        props.fetchTokensList();
-                        props.fetchBalanceList(props.address);
-                    }
-                }
-            });
-        }, 2000);
-
-        if (intervalTime) {
-            setTimeout(() => {
+    const handleFetchShieldedBalance = (tokenAddress, balance, ibcConfig, res1) => {
+        props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
+            let resultBalance = resBalance && resBalance.length && tokenAddress &&
+                    resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
+            resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
+            if (resultBalance !== balance) {
+                props.fetchIBCBalance(ibcConfig?.REST_URL, props.ibcTransferAddress);
+                props.getBalance(props.address);
+                props.showDelegateSuccessDialog(res1.hash);
                 setInProgress(false);
-                clearInterval(intervalTime);
-            }, 60000);
-        }
+            } else {
+                handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
+            }
+        });
     };
 
     const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
@@ -290,7 +265,7 @@ const IBCUnShielding = (props) => {
                     </div> : null}
                     {fee && fee.fee
                     ? <div className="fee">
-                        <p>fee:<b>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
+                        <p>fee:<b>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
                     </div> : null}
             </div>
             <Button
@@ -319,6 +294,7 @@ IBCUnShielding.propTypes = {
     fetchTokensList: PropTypes.func.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    getShieldedBalance: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setIBCSwapType: PropTypes.func.isRequired,
@@ -387,6 +363,7 @@ const actionToProps = {
     fetchIBCChannel,
     fetchTokensList,
     fetchBalanceList,
+    getShieldedBalance,
 };
 
 export default connect(stateToProps, actionToProps)(IBCUnShielding);

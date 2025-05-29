@@ -527,6 +527,7 @@ export const txSignAndBroadCast = (config, data, cb) => (dispatch) => {
             }
         })
         .catch((error) => {
+            console.error('txSignAndBroadCast - Error:', error);
             dispatch(txSignAndBroadCastError(
                 error.response &&
                 error.response.data &&
@@ -611,7 +612,7 @@ export const executeIBCTransfer = (revisionHeight, revisionNumber, cb) => async 
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );

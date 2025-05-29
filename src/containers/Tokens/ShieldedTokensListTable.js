@@ -4,14 +4,14 @@ import './index.css';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import CircularProgress from '../../components/CircularProgress';
-import { namadaAssets } from 'dummy/ibcList';
+import { ibcList, namadaAssets } from 'dummy/ibcList';
 import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
 import TransferIcon from '../../assets/transactions/transfer.svg';
 import DepositIcon from '../../assets/transactions/deposit.svg';
 import WithdrawIcon from '../../assets/transactions/withdraw.svg';
 import ConvertIcon from '../../assets/transactions/convert.svg';
 import { showShieldedTokensConvertDialog, showShieldedTokensDepositDialog, showShieldedTokensTransferDialog, showShieldedTokensWithdrawDialog } from 'actions/assets';
-import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
+import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setFromShieldedNamadaSelectedAsset, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
 import classNames from 'classnames';
 
@@ -54,8 +54,14 @@ class ShieldedTokensListTable extends React.Component {
     }
 
     handleWithdraw (value) {
+        this.initKeplr(value);
         this.props.setIBCTransferType('shielded');
-        // this.initKeplr(value);
+        const find = ibcList.find((item) => item.value === value.coingecko_id);
+        if (find) {
+            this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
+        } else {
+            this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM);
+        }
         this.props.showShieldedTokensWithdrawDialog(value);
     }
 
@@ -68,6 +74,12 @@ class ShieldedTokensListTable extends React.Component {
     handleConvert (value) {
         this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
+        const find = ibcList.find((item) => item.value === value.coingecko_id);
+        if (find) {
+            this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
+        } else {
+            this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM);
+        }
         this.props.showShieldedTokensConvertDialog(value);
     }
 
@@ -177,30 +189,36 @@ class ShieldedTokensListTable extends React.Component {
                             </Button>}
                             {token === 'NAM'
                                 ? null 
-                                : <CustomTooltip  title="Coming Soon">
-                                    <span className='disabled_tx_button'>
-                                        <Button disabled={true} onClick={() => this.handleWithdraw(value)}> 
-                                            <img src={WithdrawIcon} alt="Withdraw"/>
-                                            Withdraw
-                                        </Button>
-                                    </span>
-                                </CustomTooltip>}
-                                <CustomTooltip  title="Coming Soon">
-                                    <span className='disabled_tx_button'>
-                                        <Button disabled={true} onClick={() => this.handleTransfer(value)}>
-                                            <img src={TransferIcon} alt="Transfer"/>
-                                            Transfer
-                                        </Button>
-                                    </span>
-                                </CustomTooltip>
-                                <CustomTooltip  title="Coming Soon">
-                                    <span className='disabled_tx_button'>
-                                        <Button disabled={true} onClick={() => this.handleConvert(value)}>
-                                            <img src={ConvertIcon} alt="Convert"/>
-                                            Unshield
-                                        </Button>
-                                    </span>
-                                </CustomTooltip>
+                                : <Button onClick={() => this.handleWithdraw(value)}> 
+                                    <img src={WithdrawIcon} alt="Withdraw"/>
+                                    Withdraw
+                                </Button>}
+                                {token === 'NAM'
+                                    ? <CustomTooltip  title="Enables in Phase 5">
+                                        <span className='disabled_tx_button'>
+                                            <Button disabled={true} onClick={() => this.handleTransfer(value)}>
+                                                <img src={TransferIcon} alt="Transfer"/>
+                                                Transfer
+                                            </Button>
+                                        </span>
+                                    </CustomTooltip> 
+                                    : <Button onClick={() => this.handleTransfer(value)}>
+                                        <img src={TransferIcon} alt="Transfer"/>
+                                        Transfer
+                                    </Button>}
+                                {token === 'NAM'
+                                    ? <CustomTooltip  title="Enables in Phase 5">
+                                        <span className='disabled_tx_button'>
+                                            <Button disabled={true} onClick={() => this.handleConvert(value)}>
+                                                <img src={ConvertIcon} alt="Convert"/>
+                                                Unshield
+                                            </Button>
+                                        </span>
+                                    </CustomTooltip> 
+                                    : <Button onClick={() => this.handleConvert(value)}>
+                                        <img src={ConvertIcon} alt="Convert"/>
+                                        Unshield
+                                    </Button>}
                         </div>
                     );
                 },
@@ -260,7 +278,7 @@ ShieldedTokensListTable.propTypes = {
     showShieldedTokensDepositDialog: PropTypes.func.isRequired, 
     showShieldedTokensWithdrawDialog: PropTypes.func.isRequired,
     showShieldedTokensConvertDialog: PropTypes.func.isRequired,
-    setIBCTransferType: PropTypes.func.isRequired,
+    setFromShieldedNamadaSelectedAsset: PropTypes.func.isRequired,
     setSelectedChain: PropTypes.func.isRequired,
     connectIBCAccount: PropTypes.func.isRequired,
     connectIBCAccountSuccess: PropTypes.func.isRequired,
@@ -293,6 +311,7 @@ const actionToProps = {
     connectIBCAccountSuccess: connectIBCAccountSuccess,
     fetchIBCBalance: fetchIBCBalance,
     fetchIBCChannel: fetchIBCChannel,
+    setFromShieldedNamadaSelectedAsset,
 };
 
 

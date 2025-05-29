@@ -4,6 +4,7 @@ import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
+import IBCUnShielding from "containers/IBCTransfer/IBCUnShielding";
 
 class ShieldedWithdrawDialog extends React.Component {
    render () {
@@ -14,7 +15,8 @@ class ShieldedWithdrawDialog extends React.Component {
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_withdraw_dialog">
                 <div className="ibc_content padding">
-
+                    <p>Withdraw {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                    <IBCUnShielding/>
                 </div>
             </Dialog>
         )

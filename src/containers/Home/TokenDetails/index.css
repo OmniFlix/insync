@@ -10,6 +10,14 @@
     margin-right: 40px;
 }
 
+.chip_info > span {
+    height: 80px;
+    width: 230px;
+    border-radius: 50px;
+    margin: 10px 0px;
+    transform: none;
+}
+
 .token_details .chip_info:last-child {
     margin-right: unset;
 }
