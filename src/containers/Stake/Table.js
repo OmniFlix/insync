@@ -304,7 +304,6 @@ Table.propTypes = {
         }),
     ),
     validatorList: PropTypes.array,
-    delegatedValidatorListInProgress: PropTypes.bool,
 };
 
 const stateToProps = (state) => {
@@ -318,7 +317,6 @@ const stateToProps = (state) => {
         inProgress: state.stake.validators.inProgress,
         delegations: state.accounts.delegations.result,
         delegatedValidatorList: state.stake.delegatedValidators.list,
-        delegatedValidatorListInProgress: state.stake.delegatedValidators.inProgress,
         inActiveValidators: state.stake.inActiveValidators.list,
     };
 };
