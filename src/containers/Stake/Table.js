@@ -28,17 +28,17 @@ class Table extends Component {
             // },
             textLabels: {
                 body: {
-                        noMatch: !this.props.address
-                            ? <Button
-                                className="disconnect_button"
-                                onClick={() => this.props.showConnectDialog()}>
+                    noMatch: !this.props.address
+                        ? <Button
+                            className="disconnect_button"
+                            onClick={() => this.props.showConnectDialog()}>
                                 Connect
-                            </Button>
-                            : <span
-                                className="no_data_table" onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                }}> Stake with a Validator now! </span>,
+                        </Button>
+                        : <span
+                            className="no_data_table" onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }}> Stake with a Validator now! </span>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {
@@ -55,8 +55,8 @@ class Table extends Component {
                 sort: false,
                 customBodyRender: (value, index) => {
                     if (value === 'skeleton-loader') {
-                    return <TextSkeleton/>;
-                }
+                        return <TextSkeleton/>;
+                    }
                     return (<ValidatorName
                         index={index && index.rowIndex} name={value}
                         value={index.rowData && index.rowData.length && index.rowData[2]}/>)
@@ -103,7 +103,7 @@ class Table extends Component {
                                 ? <p className="percentage">{formatCount(parseFloat((Number(votingPower) / totalingPower) * 100), 2)}%</p>
                                 : '-'}
                         </div>
-                    )
+                    );
                 },
             },
         },
@@ -172,8 +172,8 @@ class Table extends Component {
                 sort: false,
                 customBodyRender: (value, index) => {
                     if (value === 'skeleton-loader') {
-                    return <TextSkeleton/>;
-                }
+                        return <TextSkeleton/>;
+                    }
                     return (
                         this.props.delegations.find((item) =>
                             value && (item && item.length && item[1]) === value.address)
@@ -262,34 +262,32 @@ class Table extends Component {
                 'skeleton-loader',
             ];
             array.splice(5, 0, ...[...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader'), ...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader')]);
-                return array;
+            return array;
         });
 
         const dataLoadingData = Array.from(new Array(2)).map((item, index) => {
-        const array = [
-            'skeleton-loader',
-            'skeleton-loader',
-            'skeleton-loader',
-            'skeleton-loader',
-        ];
-        array.splice(5, 0, ...[...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader'), ...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader')]);
+            const array = [
+                'skeleton-loader',
+                'skeleton-loader',
+                'skeleton-loader',
+                'skeleton-loader',
+            ];
+            array.splice(5, 0, ...[...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader'), ...Array(this.props.delegatedValidatorList && this.props.delegatedValidatorList.length).fill('skeleton-loader')]);
+            return array;
+        });
 
-        return array;
-    });
+        const data = (this.props.active === 2 && this.props.delegatedValidatorListInProgress)
+            ? loadingData
+            : (this.props.active === 1 && this.props.validatorsListInProgress)
+                ? loadingData
+                : (this.props.delegatedValidatorListInProgress && this.props.delegatedValidatorList && this.props.delegatedValidatorList.length)
+                    ? [...tableData, ...dataLoadingData]
+                    : tableData;
         return (
             <div className="table">
                 <DataTable
                     columns={columns}
-                    // data={tableData}
-                    data={
-                        (this.props.active === 2 && this.props.delegatedValidatorListInProgress)
-                        ? loadingData
-                        : (this.props.active === 1 && this.props.validatorsListInProgress)
-                            ? loadingData
-                            : (this.props.delegatedValidatorListInProgress && this.props.delegatedValidatorList && this.props.delegatedValidatorList.length)
-                                ? [...tableData, ...dataLoadingData]
-                                : tableData
-                    }
+                    data={data}
                     name="stake"
                     options={options}/>
             </div>
@@ -348,6 +346,8 @@ Table.propTypes = {
         }),
     ),
     validatorList: PropTypes.array,
+    delegatedValidatorListInProgress: PropTypes.bool,
+    validatorsListInProgress: PropTypes.bool,
 };
 
 const stateToProps = (state) => {
@@ -356,7 +356,6 @@ const stateToProps = (state) => {
         address: state.accounts.address.value,
         lang: state.language,
         validatorList: state.stake.validators.list,
-        validatorListInProgress: state.stake.validators.inProgress,
         validatorListInProgress: state.stake.validators.inProgress,
         totalVotingPower: state.stake.validators.totalVotingPower,
         genesisValidatorList: state.stake.genesisValidators.list,
