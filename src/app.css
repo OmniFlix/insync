@@ -68,7 +68,6 @@ p {
 }
 
 .dialog div[role='dialog'] {
-    width: 600px;
     background: #000000;
     backdrop-filter: blur(35px);
     border-radius: 24px;
