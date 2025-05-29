@@ -10,7 +10,7 @@
 
 .nav_bar .right_content {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: 10px;
@@ -121,7 +121,7 @@ table .disconnect_button {
     line-height: 130%;
     text-transform: capitalize;
     min-width: auto;
-    padding: 12px 26px;
+    padding: 8px 22px;
     opacity: 1;
 }
 
@@ -224,7 +224,6 @@ table .disconnect_button {
     border: 1px solid rgba(255, 255, 70, 0.50);
     background: rgba(255, 255, 70, 0.20);
     backdrop-filter: blur(10px);
-    height: 50px;
     flex-shrink: 0;
 
     color: #FFFF46;
