@@ -93,7 +93,6 @@ const ShieldedToTransparent = (props) => {
                     resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
             resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
             if (resultBalance !== balance) {
-                props.fetchIBCBalance(ibcConfig?.REST_URL, props.ibcTransferAddress);
                 props.getBalance(props.address);
                 props.successDialog(res1.hash);
                 setInProgress(false);
