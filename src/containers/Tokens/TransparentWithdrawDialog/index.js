@@ -23,7 +23,6 @@ class TransparentWithdrawDialog extends React.Component {
                     </div>
                     <NamadaToIBCTransparentTransfer from="transparent_withdraw" transparentWithdrawData={this.props.value}/>
                 </div>
-                <SuccessDialog/>
             </Dialog>
         )
     }

@@ -14,6 +14,7 @@ import ClaimButton from './ClaimButton';
 // import Compound from './Compound';
 import { config } from '../../../config';
 // import { gas } from '../../../defaultGasValues';
+import ChipSkeleton from '../../../components/ChipSkeletonLoader'
 
 const TokenDetails = (props) => {
     let staked = props.delegatedValidatorList && props.delegatedValidatorList.reduce((accumulator, currentValue) => {
@@ -79,10 +80,14 @@ const TokenDetails = (props) => {
         <div className="token_details">
             <div className="chip_info">
                 <p>{variables[props.lang]['available_tokens']}</p>
-                <div className="chip">
-                    <img alt="available tokens" src={totalTokens}/>
-                    <p>{available || 0}</p>
-                </div>
+                {props.balanceInProgress ? (
+                    <ChipSkeleton/>
+                ) : (
+                    <div className="chip">
+                        <img alt="available tokens" src={totalTokens}/>
+                        <p>{available || 0}</p>
+                    </div>
+                )}
                 <StakeTokensButton/>
             </div>
             {/* <div className="chip_info">
@@ -94,10 +99,14 @@ const TokenDetails = (props) => {
             </div> */}
             <div className="chip_info">
                 <p>{variables[props.lang]['staked_tokens']}</p>
-                <div className="chip">
-                    <img alt="total tokens" src={stakedTokens}/>
-                    <p>{staked}</p>
-                </div>
+                {props.delegatedValidatorListInProgress ? (
+                    <ChipSkeleton/>
+                ) : (
+                    <div className="chip">
+                        <img alt="total tokens" src={stakedTokens}/>
+                        <p>{staked}</p>
+                    </div>
+                )}
                 <div className="buttons_div">
                     <UnDelegateButton/>
                     <span/>
@@ -106,10 +115,15 @@ const TokenDetails = (props) => {
             </div>
             <div className="chip_info">
                 <p>{variables[props.lang].rewards}</p>
-                <div className="chip">
-                    <img alt="total tokens" src={rewardsIcon}/>
-                    <p>{rewards > 0 ? rewards.toFixed(4) : 0}</p>
-                </div>
+                {props.rewardsInProgress ? (
+                    <ChipSkeleton/>
+                ) : (
+                    <div className="chip">
+                        <img alt="total tokens" src={rewardsIcon}/>
+                        <p>{rewards > 0 ? rewards.toFixed(4) : 0}</p>
+                    </div>
+                )}
+                
                 <div className="buttons_div">
                     <ClaimButton disable={rewards <= 0}/>
                     {/*         /!* <span/> *!/ */}
@@ -157,6 +171,7 @@ const stateToProps = (state) => {
     return {
         delegations: state.accounts.delegations.result,
         delegatedValidatorList: state.stake.delegatedValidators.list,
+        delegatedValidatorListInProgress: state.stake.delegatedValidators.inProgress,
         delegationsInProgress: state.accounts.delegations.inProgress,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,

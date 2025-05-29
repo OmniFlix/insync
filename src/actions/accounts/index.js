@@ -89,7 +89,7 @@ export const getDelegations = (address) => (dispatch) => {
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );
@@ -154,7 +154,7 @@ export const getBalance = (address, cb) => (dispatch) => {
         const sdk = getSdk(
             cryptoMemory,
             config.RPC_URL,
-            config.MAPS_REST_URL,
+            config.MASP_REST_URL,
             '',
             config.TOKEN_ADDRESS,
         );
@@ -496,7 +496,7 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
             const sdk = getSdk(
                 cryptoMemory,
                 config.RPC_URL,
-                config.MAPS_REST_URL,
+                config.MASP_REST_URL,
                 '',
                 config.TOKEN_ADDRESS,
             );
