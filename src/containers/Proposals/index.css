@@ -389,6 +389,21 @@
         backdrop-filter: unset;
         border-radius: unset;
     }
+
+    .proposals .tabs > p {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 560px) {
+    .proposals .tabs > p {
+        font-size: 22px;
+    }
+
+    .proposals .tabs > span {
+        height: 25px;
+        margin: 0px 16px;
+    }
 }
 
 @media (max-width: 426px) {
@@ -398,5 +413,13 @@
 
     .proposals .card .icon_info {
         flex-wrap: wrap;
+    }
+
+    .proposals .tabs > p {
+        font-size: 16px;
+    }
+
+    .proposals .tabs > span {
+        height: 21px;
     }
 }
