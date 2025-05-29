@@ -55,8 +55,8 @@
 
 .shield_dialog .header p > img,
 .transfer_destination > div > p > img {
-    width: 28px;
-    height: 28px;
+    width: 44px;
+    height: 44px;
 }
 
 .shield_dialog .address {
@@ -137,6 +137,26 @@
     height: auto;
 }
 
+.transfer_source .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* .transfer_source .header > button {
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    height: 40px;
+    padding: 10px 8px;
+    color: #0B0B0B;
+    font-family: 'Blinker', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+} */
+
 .transfer_source .border {
     border-bottom: 1px solid #696969;
     margin: 10px 0;
@@ -174,7 +194,7 @@
 
 .transfer_source .select_section .select_field img {
     align-items: center;
-    background: #696969;
+    background: #F0D8FF;
     border-radius: 50px;
     color: #fff;
     display: flex;

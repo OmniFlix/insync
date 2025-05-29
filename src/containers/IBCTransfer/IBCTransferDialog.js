@@ -24,7 +24,7 @@ import { ibcList } from 'dummy/ibcList';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { getShieldedArgs, ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
-import DownArrowIcon from '../../assets/masp/downArrow.svg';
+import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { hideShieldedTokensDepositDialog, hideTransparentTokensDepositDialog } from 'actions/assets';
 
 const IBCTransferDialog = (props) => {
@@ -374,8 +374,9 @@ const IBCTransferDialog = (props) => {
                 ? <>
                     <div className="transfer_source">
                         <div className="header">
+                            {!props.ibcTransferAddress && <Button>Connect Wallet</Button>}
                             <SourceChainSelectField from={props.from} data={props.depositData}/>
-                            <div className="header_right">
+                            {/* <div className="header_right">
                                 <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
                                     {props.ibcTransferAddress
                                         ? <>
@@ -389,17 +390,28 @@ const IBCTransferDialog = (props) => {
                                         localStorage.removeItem('namada_keplr_address');
                                         props.connectIBCAccountSuccess('');
                                     }}/> : null}
-                            </div>
+                            </div> */}
                         </div>
-                        <div className="border"></div>
+                        {/* <div className="border"></div> */}
                         <div className="select_section">
                             <AssetSelectField/>
                             <AmountTextField/>
                         </div>
-                        <div className="tokens_secion">
-                            <p>Available: {ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
+                        <span className="available_balance">
+                            <p>Available</p>
+                            <p>{ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
+                        </span>
+                        <div className="deposit_nam_tokens_secion">
                             <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>
                         </div>
+                        <div className="border"></div>
+                        {props.ibcTransferAddress && 
+                        <div className="tokens_secion">
+                            <img alt='keplrIcon' src={keplrIcon}/>
+                            <p>{props.ibcTransferAddress}</p>
+                            {/* <p>Available: {ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p> */}
+                            {/* <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button> */}
+                        </div>}
                     </div>
                     <div className="arrow">
                         <img alt="Arrow" src={DownArrowIcon}/>
@@ -437,7 +449,7 @@ const IBCTransferDialog = (props) => {
                             : <div>
                                 <p>
                                     <img alt="NamadaLogo" src={NamadaLogo}/>
-                                    Namada Transparent
+                                    NAM
                                 </p>
                                 <div className="address">
                                     <span>{props.address}</span>

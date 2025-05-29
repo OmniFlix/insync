@@ -1,25 +1,30 @@
-import { Dialog } from "@material-ui/core";
-import { hideTransparentTokensDepositDialog } from "actions/assets";
-import React from "react";
+import { Dialog, Button } from '@material-ui/core';
+import { hideTransparentTokensDepositDialog } from 'actions/assets';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
-import IBCTransferDialog from "containers/IBCTransfer/IBCTransferDialog";
+import IBCTransferDialog from 'containers/IBCTransfer/IBCTransferDialog';
+import closeIcon from '../../../assets/close_icon.png';
 
 class TransparentDepositDialog extends React.Component {
-   render () {
+    render () {
         return (
-            <Dialog open={this.props.open}
-            onClose={this.props.handleClose}
-            aria-describedby="claim-dialog-description"
-            aria-labelledby="claim-dialog-title"
-            className="dialog tokens_deposit_dialog">
+            <Dialog
+                aria-describedby="claim-dialog-description"
+                aria-labelledby="claim-dialog-title"
+                className="dialog tokens_deposit_dialog"
+                open={this.props.open}
+                onClose={this.props.handleClose}>
                 <div className="ibc_content padding">
-                    <p>Deposit {' '}  {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' to Namada'}</p>
-                    <IBCTransferDialog from='transparent_deposit' depositData={this.props.value}/>
+                    <div className="header_div">
+                        <p>Deposit Asset</p>
+                        <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
+                    </div>
+                    <IBCTransferDialog depositData={this.props.value} from="transparent_deposit"/>
                 </div>
             </Dialog>
-        )
+        );
     }
 }
 

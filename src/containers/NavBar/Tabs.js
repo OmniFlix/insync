@@ -148,8 +148,8 @@ class Tabs extends Component {
                         value="tokens"
                         onClick={() => this.handleChange('tokens')}
                         {...a11yProps(3)} />
-                     {/* <ShieldedTab handleChange={this.handleChange} value={this.state.value}/> */}
-                     {/* <TransferTab handleChange={this.handleChange} value={this.state.value}/> */}
+                    {/* <ShieldedTab handleChange={this.handleChange} value={this.state.value}/> */}
+                    {/* <TransferTab handleChange={this.handleChange} value={this.state.value}/> */}
                 </div>
             </AppBar>
         );
