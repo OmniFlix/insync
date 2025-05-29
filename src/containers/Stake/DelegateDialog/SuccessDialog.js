@@ -145,10 +145,10 @@ const SuccessDialog = (props) => {
                                     ? <p>{props.ibcTokens
                                         ? Number(props.ibcTokens).toFixed(4) + ' ' + props.ibcConfig.COIN_DENOM
                                         : null}</p>
-                                        : props.tokensTransferAmount && props.tokensTransferAmount > 0
+                                        : props.tokensTransferAmount && Number(props.tokensTransferAmount) > 0
                                             ? <p>{Number(props.tokensTransferAmount).toFixed(4) + ' ' + config.COIN_DENOM}</p>
-                                            : props.shielded && props.shieldedTokens > 0
-                                            ? Number(props.shieldedTokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                            : props.shieldedTokens && Number(props.shieldedTokens) > 0
+                                            ? <p>{Number(props.shieldedTokens).toFixed(4) + ' ' + config.COIN_DENOM}</p>
                                     : <p>{props.ibcTokens
                                         ? Number(props.ibcTokens).toFixed(4) + ' ' + config.COIN_DENOM
                                         : null}</p>}
