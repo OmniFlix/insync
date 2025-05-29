@@ -149,12 +149,12 @@ class Table extends Component {
                             }
                         }
                     });
-                    address && this.props.delegations && this.props.delegations.length &&
-                    this.props.delegations.map((val) => {
-                        if (val && val.length && val[1] && (address === val[1])) {
-                            value = val[2];
-                        }
-                    });
+                    // address && this.props.delegations && this.props.delegations.length &&
+                    // this.props.delegations.map((val) => {
+                    //     if (val && val.length && val[1] && (address === val[1])) {
+                    //         value = val[2];
+                    //     }
+                    // });
                     if (item === 'skeleton-loader') {
                         return <TextSkeleton/>;
                     }
