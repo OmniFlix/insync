@@ -374,6 +374,7 @@ const IBCTransferDialog = (props) => {
                 ? <>
                     <div className="transfer_source">
                         <div className="header">
+                            {!props.ibcTransferAddress && <Button>Connect Wallet</Button>}
                             <SourceChainSelectField from={props.from} data={props.depositData}/>
                             {/* <div className="header_right">
                                 <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
@@ -397,12 +398,13 @@ const IBCTransferDialog = (props) => {
                             <AmountTextField/>
                         </div>
                         <div className="border"></div>
+                        {props.ibcTransferAddress && 
                         <div className="tokens_secion">
                             <img alt='keplrIcon' src={keplrIcon}/>
-                            <p>{props.address}</p>
+                            <p>{props.ibcTransferAddress}</p>
                             {/* <p>Available: {ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p> */}
                             {/* <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button> */}
-                        </div>
+                        </div>}
                     </div>
                     <div className="arrow">
                         <img alt="Arrow" src={DownArrowIcon}/>
@@ -440,7 +442,7 @@ const IBCTransferDialog = (props) => {
                             : <div>
                                 <p>
                                     <img alt="NamadaLogo" src={NamadaLogo}/>
-                                    Namada Transparent
+                                    NAM
                                 </p>
                                 <div className="address">
                                     <span>{props.address}</span>

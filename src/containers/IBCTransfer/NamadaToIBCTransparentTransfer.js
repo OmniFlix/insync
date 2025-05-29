@@ -32,7 +32,7 @@ import { feeList, ibcList } from 'dummy/ibcList';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
-import DownArrowIcon from '../../assets/masp/downArrow.svg';
+import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
 
@@ -237,15 +237,16 @@ const NamadaToIBCTransparentTransfer = (props) => {
     const disable = !props.amount || props.amount === '';
     return (
         <div className="transfer_dialog">
-             <div className="transfer_source">
-                <div className="header">
-                    <p>
-                        <img alt="NamadaLogo" src={NamadaLogo}/>
-                        Namada Transparent
-                    </p>
+            <div className="transfer_source">
+                {!props.ibcTransferAddress && <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>Connect wallet</Button>}
+                <div className="nam_header">
+                    <img alt="NamadaLogo" src={NamadaLogo}/>
                     <div className="address">
-                        <span>{props.address}</span>
-                        {props.address && props.address.slice(props.address.length - 6, props.address.length)}
+                        NAM
+                        <div>
+                            <span>{props.address}</span>
+                            {props.address && props.address.slice(props.address.length - 6, props.address.length)}
+                        </div>    
                     </div>
                 </div>
                 <div className="border"></div>
@@ -254,45 +255,44 @@ const NamadaToIBCTransparentTransfer = (props) => {
                     <AmountTextField/>
                 </div>
                 {fromNamadaSelectedConfig
-                    ? <div className="tokens_secion">
-                        <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                    ? <div className="nam_tokens_secion">
                         <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
                     </div> : null}
             </div>
             {/* <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
                 <img alt="TransferIcon" src={TransferIcon}/>
             </div> */}
-            <div className="arrow" style={{ top: '45%' }}>
+            <div className="nam_arrow" style={{ top: '45%' }}>
                 <img alt="Arrow" src={DownArrowIcon}/>
             </div>
-            <div className="transfer_destination" style={{ minHeight: 'unset' }}>
+            <div className="nam_transfer_destination" style={{ minHeight: 'unset' }}>
                 {fromNamadaSelectedConfig
                 ? <div>
                         <p>
-                            {image && <img alt={props.fromNamadaSelectedAsset?.name} src={image} style={{ width: '24px', height: '24px', marginRight: '8px' }} />}
-                            {fromNamadaSelectedConfig.COIN_DENOM}
+                            <img alt={keplrIcon} src={keplrIcon} style={{ width: '24px', height: '24px', marginRight: '8px' }} />
+                            {props.ibcTransferAddress}
                         </p>
                         <div className="header_right">
-                            <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
+                            {/* <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
                                 {props.ibcTransferAddress
                                     ? <>
                                         <img alt="keplr" src={keplrIcon}/>
                                         {getWrapAddress(props.ibcTransferAddress, 6, 6)}
                                     </>
                                     : 'Connect'}
-                            </Button>
-                            {props.ibcTransferAddress
+                            </Button> */}
+                            {/* {props.ibcTransferAddress
                                 ? <ExitToAppIcon className="logout_icon" onClick={() => {
                                     localStorage.removeItem('namada_keplr_address');
                                     props.connectIBCAccountSuccess('');
-                                }}/> : null}
+                                }}/> : null} */}
                         </div>
                     </div> : null}
-                    {fee && fee.fee
-                    ? <div className="fee">
-                        <p>fee:<b>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
-                    </div> : null}
             </div>
+            {fee && fee.fee
+                    ? <div className="fee">
+                        <p>fee:<p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
+                    </div> : null}
             <Button
                 className="submit_button"
                 disabled={disable || inProgress}

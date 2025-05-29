@@ -81,10 +81,10 @@ const Stake = (props) => {
                     ) : (
                         <div className="nodata_table_div">Stake with a Validator now!</div>
                     )) : (props.validatorList && props.validatorList.length > 0 ? (
-                            <Table active={active} />
-                        ) : (
-                            <div className="nodata_table_div">No active validators available</div>
-                        ))}
+                    <Table active={active} />
+                ) : (
+                    <div className="nodata_table_div">No active validators available</div>
+                ))}
             </div>
             <DelegateDialog/>
             <SuccessDialog/>
@@ -99,6 +99,7 @@ Stake.propTypes = {
     inActiveValidators: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     validatorList: PropTypes.array.isRequired,
+    delegatedValidatorListInProgress: PropTypes.bool.isRequired,
 };
 
 const stateToProps = (state) => {

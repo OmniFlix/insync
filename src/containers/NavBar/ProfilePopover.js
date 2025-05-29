@@ -28,22 +28,22 @@ const ProfilePopover = (props) => {
 
     return (
         <Popover
-            className={classes.popover}
-            classes={{
-                paper: classes.paper,
-            }}
-            open={props.open}
+            disableRestoreFocus
             anchorEl={props.anchorEl}
             anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'center',
             }}
+            className={classes.popover}
+            classes={{
+                paper: classes.paper,
+            }}
+            open={props.open}
             transformOrigin={{
                 vertical: 'top',
                 horizontal: 'center',
             }}
             onClose={props.onClose}
-            disableRestoreFocus
         >
             <div
                 className="content"
@@ -68,9 +68,9 @@ const ProfilePopover = (props) => {
 
 ProfilePopover.propTypes = {
     open: PropTypes.bool.isRequired,
-    anchorEl: PropTypes.object,
     onClose: PropTypes.func.isRequired,
     address: PropTypes.string,
+    anchorEl: PropTypes.object,
 };
 
 const stateToProps = (state) => {

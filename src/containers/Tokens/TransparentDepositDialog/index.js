@@ -1,30 +1,30 @@
-import { Dialog } from "@material-ui/core";
-import { hideTransparentTokensDepositDialog } from "actions/assets";
-import React from "react";
+import { Dialog, Button } from '@material-ui/core';
+import { hideTransparentTokensDepositDialog } from 'actions/assets';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
-import IBCTransferDialog from "containers/IBCTransfer/IBCTransferDialog";
-import { Button } from '@material-ui/core';
-import closeIcon from '../../../assets/close_icon.png'
+import IBCTransferDialog from 'containers/IBCTransfer/IBCTransferDialog';
+import closeIcon from '../../../assets/close_icon.png';
 
 class TransparentDepositDialog extends React.Component {
-   render () {
+    render () {
         return (
-            <Dialog open={this.props.open}
-            onClose={this.props.handleClose}
-            aria-describedby="claim-dialog-description"
-            aria-labelledby="claim-dialog-title"
-            className="dialog tokens_deposit_dialog">
+            <Dialog
+                aria-describedby="claim-dialog-description"
+                aria-labelledby="claim-dialog-title"
+                className="dialog tokens_deposit_dialog"
+                open={this.props.open}
+                onClose={this.props.handleClose}>
                 <div className="ibc_content padding">
                     <div className="header_div">
                         <p>Deposit Asset</p>
-                        <Button><img alt="closeIcon" src={closeIcon}/></Button>
+                        <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
                     </div>
-                    <IBCTransferDialog from='transparent_deposit' depositData={this.props.value}/>
+                    <IBCTransferDialog depositData={this.props.value} from="transparent_deposit"/>
                 </div>
             </Dialog>
-        )
+        );
     }
 }
 
