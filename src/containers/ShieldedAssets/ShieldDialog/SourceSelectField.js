@@ -15,6 +15,7 @@ const SourceSelectField = (props) => {
         }
 
         const find = enrichedAssets.find((item) => item.symbol === value);
+
         if (find) {
             props.onChange(value, find);
         } else {
