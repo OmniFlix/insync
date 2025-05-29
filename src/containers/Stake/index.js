@@ -75,7 +75,7 @@ const Stake = (props) => {
                     </div>
                     <p>Unbonding Period: 14 Days</p>
                 </div>
-                <Table active={active} />
+                <Table active={active}/>
             </div>
             <DelegateDialog/>
             <SuccessDialog/>
