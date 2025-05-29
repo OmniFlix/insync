@@ -189,11 +189,13 @@ class Table extends Component {
             },
         }];
 
-        let dataToMap = this.props.active === 2
-            ? this.props.delegatedValidatorList
-            : this.props.active === 3
-                ? this.props.inActiveValidators
-                : this.props.validatorList;
+        let dataToMap = this.props.active === 1
+        ? this.props.validatorList
+        :  this.props.active === 2
+        ? this.props.delegatedValidatorList
+        // : this.props.active === 3
+        // ? this.props.inActiveValidators
+        : [];
 
         if (this.props.active === 2) {
             dataToMap = [];
