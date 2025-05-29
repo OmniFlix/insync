@@ -7,6 +7,8 @@ import { hideConnectDialog } from '../../../actions/navBar';
 import NamadaConnectButton from './NamadaConnectButton';
 import KeplrConnectButton from './KeplrConnectButton';
 import './index.css';
+import ConnectWalletImage from '../../../assets/connect_wallet_image.png';
+import CloseIcon from '../../../assets/close_icon.png'
 
 const ConnectDialog = (props) => {
     return (
@@ -17,6 +19,10 @@ const ConnectDialog = (props) => {
             open={props.open}
             onClose={props.handleClose}>
             <DialogContent className="content">
+                <div className="header">
+                    <img alt="closeIcon" src={CloseIcon} onClick={props.handleClose}/>
+                </div>
+                <img alt="connectWallet" className="connect_wallet_image" src={ConnectWalletImage}/>
                 <h2 className="heading">
                     Supported Wallets
                 </h2>

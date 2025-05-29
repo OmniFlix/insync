@@ -25,25 +25,6 @@
     margin-right: 10px;
 }
 
-.nav_bar .profile_button {
-    border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    background: rgba(255, 255, 255, 0.10);
-    backdrop-filter: blur(10px);
-    flex-shrink: 0;
-    color: #FFF;
-    text-align: center;
-    font-family: 'Blinker', sans-serif;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 130%;
-    text-transform: capitalize;
-    min-width: auto;
-    padding: 10px 26px;
-    opacity: 1;
-}
-
 .nav_bar .divider {
     width: 2px;
     height: 20px;
@@ -124,12 +105,12 @@ table .disconnect_button {
     gap: 20px;
 }
 
-.nav_bar .right_content .tab {
+.nav_bar .right_content .tab,
+.nav_bar .profile_button {
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.10);
     background: rgba(255, 255, 255, 0.10);
     backdrop-filter: blur(10px);
-    /* height: 50px; */
     flex-shrink: 0;
     color: #FFF;
     text-align: center;
@@ -140,7 +121,7 @@ table .disconnect_button {
     line-height: 130%;
     text-transform: capitalize;
     min-width: auto;
-    padding: 10px 26px;
+    padding: 8px 22px;
     opacity: 1;
 }
 
@@ -243,7 +224,6 @@ table .disconnect_button {
     border: 1px solid rgba(255, 255, 70, 0.50);
     background: rgba(255, 255, 70, 0.20);
     backdrop-filter: blur(10px);
-    height: 50px;
     flex-shrink: 0;
 
     color: #FFFF46;
@@ -305,6 +285,7 @@ table .disconnect_button {
 @media (max-width: 1441px) {
 
     .nav_bar .right_content .tab,
+    .nav_bar .profile_button,
     .nav_bar .select_field > div > div {
         font-size: 18px;
     }
@@ -392,7 +373,8 @@ table .disconnect_button {
         flex-direction: column;
     }
 
-    .nav_bar .right_content .tab {
+    .nav_bar .right_content .tab,
+    .nav_bar .profile_button {
         margin: 0 0 10px;
         width: 200px;
     }
@@ -439,7 +421,8 @@ table .disconnect_button {
         width: 100%;
     }
 
-    .nav_bar .right_content .tab {
+    .nav_bar .right_content .tab,
+    .nav_bar .profile_button {
         min-width: 100%;
         width: 100%;
     }
