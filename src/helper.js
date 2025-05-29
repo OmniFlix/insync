@@ -1004,13 +1004,10 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
             newTxs.push(revealPkTx);
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-        console.log('wrapperTxValue', wrapperTxValue, TransparentTransfer);
-        console.log('checksums', checksums);
         const encoded = await tx.buildUnshieldingTransfer(wrapperTxValue, TransparentTransfer);
         // const encoded = await tx.build_unshielding_transfer(TransparentTransfer, wrapperTxValue);
         newTxs.push(encoded);
 
-        console.log('encoded', encoded);
         let updateDate;
         if (type === 'ledger') {
             updateDate = newTxs;
@@ -1018,9 +1015,7 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
             updateDate = tx.buildBatch(newTxs);
         }
 
-        console.log('updateDate', updateDate, checksums);
         client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
-            console.log('signedBondTxBytes', signedBondTxBytes);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
                     cb(result.info || result.log || result.rawLog);
