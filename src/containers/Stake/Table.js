@@ -94,13 +94,11 @@ class Table extends Component {
                     if (value === 'skeleton-loader') {
                         return <TextSkeleton/>;
                     }
-                    const votingPower = index.rowData && index.rowData.length && index.rowData[2] && index.rowData[2].votingPower;
-                    const totalingPower = 0;
                     return (
                         <div className="voting_power">
                             <p>{formatCount(value, true)}</p>
-                            {votingPower && totalingPower > 0
-                                ? <p className="percentage">{formatCount(parseFloat((Number(votingPower) / totalingPower) * 100), 2)}%</p>
+                            {index.rowData && index.rowData.length && index.rowData[2] && index.rowData[2].votingPower
+                                ? <p className="percentage">{formatCount(parseFloat((Number(index.rowData[2].votingPower) / this.props.totalVotingPower) * 100), 2)}%</p>
                                 : '-'}
                         </div>
                     );
