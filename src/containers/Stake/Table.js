@@ -12,8 +12,6 @@ import ValidatorName from './ValidatorName';
 import { config } from '../../config';
 import { Button } from '@material-ui/core';
 import { showConnectDialog } from '../../actions/navBar';
-import { randomNoRepeats } from 'utils/array';
-import classNames from 'classnames';
 
 class Table extends Component {
     render () {
@@ -43,12 +41,12 @@ class Table extends Component {
                                     e.preventDefault();
                                     e.stopPropagation();
                                 }}>
-                                    {this.props.active === 2 && !this.props.delegatedValidatorListInProgress && (!this.props.delegatedValidatorList || this.props.delegatedValidatorList.length === 0)
-                                        ? 'Stake with a Validator now!'
-                                        : this.props.active === 1 && !this.props.inProgress && (!this.props.validatorList || this.props.validatorList.length === 0)
-                                            ? 'No Active Validators'
-                                            : null}
-                                </span>,
+                                {this.props.active === 2 && !this.props.delegatedValidatorListInProgress && (!this.props.delegatedValidatorList || this.props.delegatedValidatorList.length === 0)
+                                    ? 'Stake with a Validator now!'
+                                    : this.props.active === 1 && !this.props.inProgress && (!this.props.validatorList || this.props.validatorList.length === 0)
+                                        ? 'No Active Validators'
+                                        : null}
+                            </span>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {
@@ -248,9 +246,6 @@ class Table extends Component {
                     item,
                 ])
             : [];
-console.log('active ', this.props.active)
-console.log(' delegated progress ', this.props.delegatedValidatorListInProgress)
-console.log(' delgated result ', this.props.delegatedValidatorList)
         return (
             <div className="table">
                 <DataTable
@@ -314,6 +309,7 @@ Table.propTypes = {
         }),
     ),
     validatorList: PropTypes.array,
+    delegatedValidatorListInProgress: PropTypes.bool,
 };
 
 const stateToProps = (state) => {
