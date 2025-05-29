@@ -28,7 +28,7 @@ class Table extends Component {
             // },
             textLabels: {
                 body: {
-                    noMatch: (this.props.active === 2 && this.props.inProgress) || (this.props.active === 1 && this.props.delegatedValidatorListInProgress)
+                    noMatch: this.props.inProgress
                         ? <CircularProgress/>
                         : !this.props.address
                             ? <Button
