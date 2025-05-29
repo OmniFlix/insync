@@ -41,12 +41,7 @@ class Table extends Component {
                                     e.preventDefault();
                                     e.stopPropagation();
                                 }}>
-                                {this.props.active === 2 && !this.props.delegatedValidatorListInProgress && (!this.props.delegatedValidatorList || this.props.delegatedValidatorList.length === 0)
-                                    ? 'Stake with a Validator now!'
-                                    : this.props.active === 1 && !this.props.inProgress && (!this.props.validatorList || this.props.validatorList.length === 0)
-                                        ? 'No Active Validators'
-                                        : null}
-                            </span>,
+                                 Stake with a Validator now! </span>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {
