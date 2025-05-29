@@ -110,7 +110,7 @@
 .transfer_source .nam_tokens_secion {
     position: absolute;
     right: 8%;
-    top: 71%;
+    bottom: 26px;
 }
 
 .transfer_source .nam_tokens_secion > button {
