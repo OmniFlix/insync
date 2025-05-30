@@ -31,7 +31,7 @@ import { feeList, ibcList } from 'dummy/ibcList';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
-import DownArrowIcon from '../../assets/masp/downArrow.svg';
+import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from './ShieldedSourceSelectField';
 

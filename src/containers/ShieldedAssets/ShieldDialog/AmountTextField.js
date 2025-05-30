@@ -6,7 +6,11 @@ import { setAmount } from '../../../actions/shieldedAssets';
 
 const AmountTextField = (props) => {
     const fromNamadaSelectedConfig = props.selectedAsset?.config;
-    const namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    let namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    if (props.from === 'shield_to_transparent') {
+        const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
+        namadaBalance = props.fromNamadaSelectedAsset?.balance && Number(props.fromNamadaSelectedAsset?.balance) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    }
     
     const handleChange = (input) => {
         const value = parseFloat(input) || 0;
@@ -34,6 +38,8 @@ AmountTextField.propTypes = {
     value: PropTypes.number,
     valid: PropTypes.bool,
     selectedAsset: PropTypes.object,
+    fromNamadaSelectedAsset: PropTypes.object,
+    from: PropTypes.string,
 };
 
 const stateToProps = (state) => {
@@ -43,6 +49,7 @@ const stateToProps = (state) => {
         value: state.shieldedAssets.amount.value, 
         valid: state.shieldedAssets.amount.valid,
         selectedAsset: state.shieldedAssets.selectedAsset.result,
+        fromNamadaSelectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.shieldedResult,
     };
 };
 
