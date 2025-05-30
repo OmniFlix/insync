@@ -9,7 +9,7 @@ const AmountTextField = (props) => {
     const namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
     
     const handleChange = (input) => {
-        const value = parseFloat(input) || 0;
+        const value = input === '' ? '' : parseFloat(input);
         const isValid = value <= namadaBalance;
         props.onChange(value, isValid);
     }
