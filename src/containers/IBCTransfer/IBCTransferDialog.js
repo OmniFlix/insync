@@ -511,7 +511,7 @@ const IBCTransferDialog = (props) => {
                 </>}
             <Button
                 className="submit_button"
-                disabled={disable || inProgress}
+                disabled={disable || inProgress || props.amountValid === false}
                 onClick={handleSubmit}>
                 {inProgress
                     ? 'InProgress...'
@@ -553,6 +553,7 @@ IBCTransferDialog.propTypes = {
     shieldedTokensDepositDialogValue: PropTypes.object,
     address: PropTypes.string,
     amount: PropTypes.string,
+    amountValid: PropTypes.bool,
     from: PropTypes.string,
     ibcBalance: PropTypes.number,
     ibcChannel: PropTypes.object,
@@ -575,6 +576,7 @@ const stateToProps = (state) => {
         address: state.accounts.address.value,
         shieldedData: state.accounts.address.shieldedData,
         amount: state.ibcTransfer.ibcTransferAmount.value,
+        amountValid: state.ibcTransfer.ibcTransferAmount.valid,
         details: state.accounts.address.details,
         shieldedAddress: state.accounts.address.shieldedDetails,
         ibcTransferType: state.ibcTransfer.ibcTransferType.value,
