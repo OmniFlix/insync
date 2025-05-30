@@ -1,9 +1,10 @@
 import React from 'react';
 import './index.css';
+import classNames from 'classnames';
 
-const DotsLoading = () => {
+const DotsLoading = (props) => {
     return (
-        <div className="spinner">
+        <div className={classNames(props.className ? `spinner ${props.className}` : "spinner")}>
             <div className="bounce1"/>
             <div className="bounce2"/>
             <div className="bounce3"/>

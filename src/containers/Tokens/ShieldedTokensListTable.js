@@ -14,6 +14,7 @@ import { showShieldedTokensConvertDialog, showShieldedTokensDepositDialog, showS
 import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setFromShieldedNamadaSelectedAsset, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
 import classNames from 'classnames';
+import DotsLoading from 'components/DotsLoading';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -167,7 +168,9 @@ class ShieldedTokensListTable extends React.Component {
 
                     return (
                         <div className="voting_power token_name">
-                            {amount} &nbsp;<p className="percentage" style={{ marginTop: '2px' }}>{value.symbol}</p>
+                            {this.props.inProgress
+                                ? <DotsLoading className="balance"/>
+                                : amount} &nbsp;<p className="percentage" style={{ marginTop: '2px' }}>{value.symbol}</p>
                         </div>
                     );
                 },
@@ -183,13 +186,13 @@ class ShieldedTokensListTable extends React.Component {
                         <div className="tokens_actions">
                               {token === 'NAM'
                             ? null 
-                            : <Button onClick={() => this.handleDeposit(value)}>
+                            : <Button onClick={() => this.handleDeposit(value)} disabled={this.props.shieldedBalanceProgress}>
                                 <img src={DepositIcon} alt="Deposit"/>
                                 Deposit
                             </Button>}
                             {token === 'NAM'
                                 ? null 
-                                : <Button onClick={() => this.handleWithdraw(value)}> 
+                                : <Button onClick={() => this.handleWithdraw(value)} disabled={this.props.shieldedBalanceProgress}> 
                                     <img src={WithdrawIcon} alt="Withdraw"/>
                                     Withdraw
                                 </Button>}
@@ -202,7 +205,7 @@ class ShieldedTokensListTable extends React.Component {
                                             </Button>
                                         </span>
                                     </CustomTooltip> 
-                                    : <Button onClick={() => this.handleTransfer(value)}>
+                                    : <Button onClick={() => this.handleTransfer(value)} disabled={this.props.shieldedBalanceProgress}>
                                         <img src={TransferIcon} alt="Transfer"/>
                                         Transfer
                                     </Button>}
@@ -215,7 +218,7 @@ class ShieldedTokensListTable extends React.Component {
                                             </Button>
                                         </span>
                                     </CustomTooltip> 
-                                    : <Button onClick={() => this.handleConvert(value)}>
+                                    : <Button onClick={() => this.handleConvert(value)} disabled={this.props.shieldedBalanceProgress}>
                                         <img src={ConvertIcon} alt="Convert"/>
                                         Unshield
                                     </Button>}
@@ -287,13 +290,14 @@ ShieldedTokensListTable.propTypes = {
     tokensList: PropTypes.array.isRequired,
     address: PropTypes.string,
     inProgress: PropTypes.bool,
+    shieldedBalanceProgress: PropTypes.bool.isRequired,
 };
 
 const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         lang: state.language,
-
+        shieldedBalanceProgress: state.accounts.shieldedBalance.inProgress,
         tokensList: state.accounts.tokensList.result,
         balanceList: state.accounts.shieldedBalance.result,
     };

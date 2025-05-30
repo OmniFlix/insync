@@ -18,19 +18,9 @@ import ShieldedTransferDialog from './ShieldedTransferDialog';
 import ShieldedConvertDialog from './ShieldedConvertDialog';
 import syncProgress from 'assets/syncProgress.gif';
 import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        '& > * + *': {
-            marginTop: theme.spacing(2),
-        },
-    },
-}));
+import ShieldedSyncPercentageText from '../ShieldedSyncPercentage/ShieldedSyncPercentageText';
 
 const Tokens = (props) => {
-    const classes = useStyles();
-
     return (
         <>
             <NavBar/>
@@ -40,8 +30,17 @@ const Tokens = (props) => {
                     ? <CircularProgress />
                     : <TokensListTable />}
             </div>}
+            {props.assetsTab === 'shielded' && props.shieldedBalanceProgress && <div className="sync_progress_div">
+                <div className="left_div">
+                    <p>Shielded Sync in Progress</p>
+                    <p>Hang tight, this might take a moment</p>
+                </div>
+                <div className="right_div">
+                    <ShieldedSyncPercentageText/>
+                </div>
+            </div>}
             {props.assetsTab === 'shielded' && <div className="assets stake padding">
-                {(props.tokensProgress || props.shieldedBalanceProgress) && props.shieldedBalance && !props.shieldedBalance.length
+                {/* {(props.tokensProgress || props.shieldedBalanceProgress) && props.shieldedBalance && !props.shieldedBalance.length
                     ? <div className='sync_in_progress'> 
                         <div className='sync_section'>
                             <img src={syncProgress} alt="Syncing..." className="sync-progress" />
@@ -49,10 +48,7 @@ const Tokens = (props) => {
                             <p>Hang tight, this might take a moment</p>
                         </div>
                     </div>
-                    // <div className={ClassNames(classes.root, 'leaner_progress')}>
-                    //     <LinearProgress />
-                    // </div>
-                    :  null}
+                    :  null} */}
                 <ShieldedTokensListTable inProgress={props.tokensProgress || props.shieldedBalanceProgress}/>
             </div>}
             <TransparentDepositDialog />

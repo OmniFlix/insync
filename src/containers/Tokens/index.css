@@ -188,6 +188,48 @@
     width: 100%;
 }
 
+.sync_progress_div {
+    width: 1000px;
+    max-width: 100%;
+    margin: 20px auto -20px auto;
+    background: #242400;
+    border: 1px solid #ffff46;
+    border-radius: 40px;
+    height: 160px;
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+.sync_progress_div .left_div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.sync_progress_div .left_div > p:first-child {
+    font-family: 'Blinker', sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: #fff;
+}
+.sync_progress_div .left_div > p:last-child {
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #FFFFFF80;
+}
+
+.sync_progress_div .right_div > p {
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 'Blinker', sans-serif;
+    color: #fff;
+}
+
 @media (max-width: 1000px) {
     .assets.stake.padding,
     .main_content .content_div .tokens_section_tabs {
