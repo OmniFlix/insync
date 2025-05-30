@@ -358,6 +358,16 @@
     }
 }
 
+@media (max-width: 470px) {
+    .table .tokens_actions {
+        flex-wrap: wrap;
+    }
+
+    .tokens_section_tabs > div .tab {
+        font-size: 20px;
+    }
+}
+
 
 @media (max-width: 426px) {
     .table .actions > span {
