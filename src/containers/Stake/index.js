@@ -9,6 +9,7 @@ import DelegateDialog from './DelegateDialog';
 import SuccessDialog from './DelegateDialog/SuccessDialog';
 import UnSuccessDialog from './DelegateDialog/UnSuccessDialog';
 import PendingDialog from './DelegateDialog/PendingDialog';
+import UnbondingTable from './UnbondingTable';
 // import MultiDelegateButton from './MultiDelegateButton';
 
 const Stake = (props) => {
@@ -77,6 +78,11 @@ const Stake = (props) => {
                 </div>
                 <Table active={active}/>
             </div>
+              {(active === 2 && props.unBondingValidatorsList && props.unBondingValidatorsList.length)
+                                ? <div style={{paddingTop: 0}} className='stake_content padding'> 
+                                    <h2 style={{textAlign: 'left', fontSize: '30px'}}>Unbonding</h2>
+                                    <UnbondingTable />
+                                </div> : null}
             <DelegateDialog/>
             <SuccessDialog/>
             <UnSuccessDialog/>
@@ -91,6 +97,7 @@ Stake.propTypes = {
     lang: PropTypes.string.isRequired,
     validatorList: PropTypes.array.isRequired,
     delegatedValidatorListInProgress: PropTypes.bool.isRequired,
+     unBondingValidatorsList: PropTypes.array.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -99,6 +106,7 @@ const stateToProps = (state) => {
         delegatedValidatorList: state.stake.delegatedValidators.list,
         inActiveValidators: state.stake.inActiveValidators.list,
         validatorList: state.stake.validators.list,
+          unBondingValidatorsList: state.stake.unBondingValidators.list,
     };
 };
 
