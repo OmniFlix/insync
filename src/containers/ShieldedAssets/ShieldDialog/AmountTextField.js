@@ -5,25 +5,25 @@ import { connect } from 'react-redux';
 import { setAmount } from '../../../actions/shieldedAssets';
 
 const AmountTextField = (props) => {
-    // let amount = props.data && props.data.balance && props.data.balance.minDenomAmount;
-    // if (props.data && props.data.config && props.data.config.COIN_DECIMALS) {
-    //     amount = amount ? (amount / 10 ** props.data.config.COIN_DECIMALS) : 0;
-    // }
-    // const handleChange = (input) => {
-    //     const value = parseFloat(input) || 0;
-    //     const isValid = value <= amount;
-    //     props.onChange(value, isValid);
-    // }
+    const fromNamadaSelectedConfig = props.selectedAsset?.config;
+    const namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    
+    const handleChange = (input) => {
+        const value = parseFloat(input) || 0;
+        const isValid = value <= namadaBalance;
+        props.onChange(value, isValid);
+    }
 
     return (
         <TextField
-            className="amount_text_field"
+            className={props.valid ? 'amount_text_field' : 'invalid_address amount_text_field'}
+            error={!props.valid}
             id="amount-text-field"
             name="amount"
             placeholder="Amount"
             type="number"
             value={props.value}
-            onChange={props.onChange}/>
+            onChange={handleChange}/>
     );
 };
 
@@ -33,6 +33,7 @@ AmountTextField.propTypes = {
     balance: PropTypes.array,
     value: PropTypes.number,
     valid: PropTypes.bool,
+    selectedAsset: PropTypes.object,
 };
 
 const stateToProps = (state) => {
@@ -41,6 +42,7 @@ const stateToProps = (state) => {
         lang: state.language,
         value: state.shieldedAssets.amount.value, 
         valid: state.shieldedAssets.amount.valid,
+        selectedAsset: state.shieldedAssets.selectedAsset.result,
     };
 };
 

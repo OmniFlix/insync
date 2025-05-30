@@ -29,6 +29,7 @@ import {
     TX_SIGN_AND_BROAD_CAST_SUCCESS,
 } from '../constants/IBCTransfer';
 import { DELEGATE_SUCCESS_DIALOG_HIDE } from 'constants/stake';
+import { TRANSPARENT_TOKENS_DEPOSIT_DIALOG_HIDE, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE } from 'constants/assets';
 
 const connection = (state = {
     inProgress: false,
@@ -171,6 +172,8 @@ const ibcTransferAmount = (state = {
             valid: action.valid,
         };
     case DELEGATE_SUCCESS_DIALOG_HIDE:
+    case TRANSPARENT_TOKENS_DEPOSIT_DIALOG_HIDE:
+    case TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE:
         return {
             value: '',
             valid: true,
