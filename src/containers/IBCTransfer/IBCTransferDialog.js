@@ -395,7 +395,7 @@ const IBCTransferDialog = (props) => {
                         {/* <div className="border"></div> */}
                         <div className="select_section">
                             <AssetSelectField/>
-                            <AmountTextField/>
+                            <AmountTextField  from="namada_deposit"/>
                         </div>
                         <span className="available_balance">
                             <p>Available</p>
@@ -473,7 +473,7 @@ const IBCTransferDialog = (props) => {
                         <div className="border"></div>
                         <div className="select_section">
                             <SourceSelectField/>
-                            <AmountTextField/>
+                            <AmountTextField from="from_namada_deposit"/>
                         </div>
                         {fromNamadaSelectedConfig
                             ? <div className="tokens_secion">
