@@ -113,7 +113,8 @@
     line-height: 130%; /* 23.4px */
 }
 
-.stake .table .voting_power.token_name {
+.stake .table .voting_power.token_name,
+.stake .table .voting_power.token_balance {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -263,6 +264,10 @@
 
     .stake .table .validator .name_section > p {
         width: 300px;
+    }
+
+    .stake .table .voting_power.token_balance {
+        justify-content: flex-end;
     }
 }
 
