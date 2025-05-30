@@ -115,10 +115,11 @@ export const hideShieldedTokensConvertDialog = () => {
 }
 
 // Tokens Transfer Dialog Fields
-export const setTokensTransferAmount = (value) => {
+export const setTokensTransferAmount = (value, valid) => {
     return {
         type: TOKENS_TRANSFER_AMOUNT_SET,
         value,
+        valid,
     };
 }
 

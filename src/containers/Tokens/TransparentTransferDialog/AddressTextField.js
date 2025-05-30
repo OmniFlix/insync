@@ -6,19 +6,19 @@ import { setTokensTransferAddress } from 'actions/assets';
 
 const AddressTextField = (props) => {
     const handleChange = (value) => {
-        // if (value) {
-        //     let valid = false;
-        //     // if(props.ibcTransferType === 'transparent') {
-        //     //     valid = value && checkNamada(value) && (value.indexOf('tnam') > -1);
-        //     // } else if(props.ibcTransferType === 'shielded') {
-        //     //     valid = value && checkNamada(value) && (value.indexOf('znam') > -1);
-        //     // }
+        if (value) {
+            let valid = false;
+            if(props.ibcTransferType === 'transparent') {
+                valid = value && (value.indexOf('tnam') > -1);
+            } else if(props.ibcTransferType === 'shielded') {
+                valid = value && (value.indexOf('znam') > -1);
+            }
             
-        //     props.onChange(value, valid);
-        // } else {
-        //     props.onChange(value, true);
-        // }
-        props.onChange(value, true);
+            props.onChange(value, valid);
+        } else {
+            props.onChange(value, true);
+        }
+        // props.onChange(value, true);
     };
 
     return (
