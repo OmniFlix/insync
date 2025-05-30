@@ -32,6 +32,7 @@ const AssetSelectField = (props) => {
             value={props.value}
             onChange={handleChange}>
             {assets && assets.map((asset, index) => {
+                console.log('asdkjgaksd', asset)
                 const image = asset.logo_URIs && (asset.logo_URIs.svg || asset.logo_URIs.png);
                 return (
                     <MenuItem key={index} value={asset}>

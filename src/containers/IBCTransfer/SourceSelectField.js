@@ -59,7 +59,6 @@ const SourceSelectField = (props) => {
             props.onChange(value);
         }
     };
-
     return (
         <SelectField
             className="select_field"
@@ -78,9 +77,9 @@ const SourceSelectField = (props) => {
                 </div>
             </MenuItem>}
             {enrichedAssets && enrichedAssets.map((asset, index) => {
-                if (asset?.balance?.minDenomAmount === "0") {
-                    return null;
-                }
+                // if (asset?.balance?.minDenomAmount === "0") {
+                //     return null;
+                // }
                 const image = asset.logo_URIs && (asset.logo_URIs.svg || asset.logo_URIs.png);
                 return (
                     <MenuItem key={index} value={asset.symbol}>
