@@ -38,6 +38,9 @@ import {
     GENESIS_VALIDATORS_FETCH_IN_PROGRESS,
     GENESIS_VALIDATORS_FETCH_SUCCESS,
     GENESIS_VALIDATORS_FETCH_ERROR,
+    UNBONDING_VALIDATORS_FETCH_IN_PROGRESS,
+    UNBONDING_VALIDATORS_FETCH_SUCCESS,
+    UNBONDING_VALIDATORS_FETCH_ERROR,
 } from '../constants/stake';
 import { DISCONNECT_SET } from '../constants/accounts';
 import { DEFAULT_PAGE } from '../config';
@@ -322,6 +325,37 @@ const delegatedValidators = (state = {
     }
 };
 
+const unBondingValidators = (state = {
+    inProgress: false,
+    list: [],
+}, action) => {
+    switch (action.type) {
+    case UNBONDING_VALIDATORS_FETCH_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case UNBONDING_VALIDATORS_FETCH_SUCCESS:
+        return {
+            ...state,
+            list: action.list,
+            inProgress: false,
+        };
+    case UNBONDING_VALIDATORS_FETCH_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            list: [],
+        };
+    default:
+        return state;
+    }
+};
+
 const claimDialog = (state = {
     open: false,
     validator: 'all',
@@ -477,6 +511,7 @@ export default combineReducers({
     validators,
     validatorDetails,
     delegatedValidators,
+    unBondingValidators,
     claimDialog,
     claimDelegateDialog,
     inActiveValidators,

@@ -31,6 +31,7 @@ import {
 import {
     fetchAPR,
     fetchGenesisValidators,
+    fetchUnBondingValidators,
     fetchValidatorImage,
     fetchValidatorImageSuccess,
     getDelegatedValidatorsDetails,
@@ -185,6 +186,7 @@ class NavBar extends Component {
     componentDidUpdate (pp, ps, ss) {
         if ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== '')) {
             this.props.getDelegatedValidatorsDetails(this.props.address);
+            this.props.fetchUnBondingValidators(this.props.address);
             this.props.fetchRewards(this.props.address);
         }
         if ((pp.proposals && !pp.proposals.length && (pp.proposals !== this.props.proposals) &&
@@ -244,6 +246,7 @@ class NavBar extends Component {
             this.props.fetchRewards(this.props.address);
             this.props.getUnBondingDelegations(this.props.address);
             this.props.getDelegatedValidatorsDetails(this.props.address);
+            this.props.fetchUnBondingValidators(this.props.address);
         }
     }
 
@@ -345,6 +348,10 @@ class NavBar extends Component {
         if (this.props.delegatedValidatorList && !this.props.delegatedValidatorList.length &&
             !this.props.delegatedValidatorListInProgress && !this.props.proposalTab) {
             this.props.getDelegatedValidatorsDetails(address);
+        }
+        if (this.props.unBondingValidatorsList && !this.props.unBondingValidatorsList.length &&
+            !this.props.unBondingValidatorsListInProgress && !this.props.proposalTab) {
+            this.props.fetchUnBondingValidators(address);
         }
     }
 
@@ -526,6 +533,7 @@ NavBar.propTypes = {
     getUnBondingDelegations: PropTypes.func.isRequired,
     getValidators: PropTypes.func.isRequired,
     getShieldedBalance: PropTypes.func.isRequired,
+    fetchUnBondingValidators: PropTypes.func.isRequired,
     shieldedBalanceFetchSuccess: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     inActiveValidatorsInProgress: PropTypes.bool.isRequired,
@@ -542,6 +550,8 @@ NavBar.propTypes = {
     unBondingDelegationsInProgress: PropTypes.bool.isRequired,
     validatorImages: PropTypes.array.isRequired,
     validatorList: PropTypes.array.isRequired,
+    unBondingValidatorsList: PropTypes.array.isRequired,
+    unBondingValidatorsListInProgress: PropTypes.bool.isRequired,
     validatorListInProgress: PropTypes.bool.isRequired,
     vestingBalance: PropTypes.object.isRequired,
     vestingBalanceInProgress: PropTypes.bool.isRequired,
@@ -591,6 +601,8 @@ const stateToProps = (state) => {
         delegations: state.accounts.delegations.result,
         delegationsInProgress: state.accounts.delegations.inProgress,
         delegatedValidatorList: state.stake.delegatedValidators.list,
+        unBondingValidatorsList: state.stake.unBondingValidators.list,
+        unBondingValidatorsListInProgress: state.stake.unBondingValidators.inProgress,
         delegatedValidatorListInProgress: state.stake.delegatedValidators.inProgress,
         lang: state.language,
         show: state.navBar.show,
@@ -638,6 +650,7 @@ const actionToProps = {
     fetchTokensList,
     fetchBalanceList,
     getShieldedBalance,
+    fetchUnBondingValidators,
     shieldedBalanceFetchSuccess,
 };
 

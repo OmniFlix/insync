@@ -10,6 +10,7 @@ import {
     showDelegateProcessingDialog,
     showDelegateSuccessDialog,
     selectMultiValidators,
+    fetchUnBondingValidators,
 } from '../../../actions/stake';
 import ValidatorSelectField from './ValidatorSelectField';
 import TokensTextField from './TokensTextField';
@@ -225,6 +226,7 @@ const DelegateDialog = (props) => {
         props.getDelegations(props.address);
         props.fetchRewards(props.address);
         props.getDelegatedValidatorsDetails(props.address);
+        props.fetchUnBondingValidators(props.address);
         // props.getUnBondingDelegations(props.address);
         // props.getDelegatedValidatorsDetails(props.address);
         // props.fetchRewards(props.address);
@@ -361,6 +363,7 @@ DelegateDialog.propTypes = {
     genesisValidatorList: PropTypes.object.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
+    fetchUnBondingValidators: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
@@ -408,6 +411,7 @@ const actionToProps = {
     getBalance,
     getDelegations,
     getDelegatedValidatorsDetails,
+    fetchUnBondingValidators,
     getUnBondingDelegations,
     showMessage,
     selectMultiValidators,

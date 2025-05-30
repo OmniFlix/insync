@@ -22,6 +22,7 @@ export const INACTIVE_VALIDATORS_UNBONDING_URL = `${REST_URL}/cosmos/staking/v1b
 export const getValidatorURL = (address) => `${REST_URL}/cosmos/staking/v1beta1/validators/${address}`;
 export const PROPOSALS_LIST_URL = `${REST_URL}/api/v1/gov/proposal/all`;
 export const getDelegatedValidatorsURL = (address) => `${REST_URL}/api/v1/pos/bond/${address}`;
+export const getUnBondingValidatorsURL = (address) => `${REST_URL}/api/v1/pos/merged-unbonds/${address}`;
 export const urlFetchProposalVotes = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/votes`;
 export const urlFetchTallyDetails = (id) => `${REST_URL}/cosmos/gov/v1beta1/proposals/${id}/tally`;
 export const urlFetchProposalDetails = (id) => `${REST_URL}/api/v1/gov/proposal/${id}`;

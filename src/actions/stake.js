@@ -29,6 +29,9 @@ import {
     SELECTED_MULTI_VALIDATORS,
     TO_VALIDATOR_SET,
     TOKENS_SET,
+    UNBONDING_VALIDATORS_FETCH_ERROR,
+    UNBONDING_VALIDATORS_FETCH_IN_PROGRESS,
+    UNBONDING_VALIDATORS_FETCH_SUCCESS,
     VALIDATOR_FETCH_ERROR,
     VALIDATOR_FETCH_IN_PROGRESS,
     VALIDATOR_FETCH_SUCCESS,
@@ -44,6 +47,7 @@ import Axios from 'axios';
 import {
     GENESIS_VALIDATORS_LIST_URL,
     getDelegatedValidatorsURL,
+    getUnBondingValidatorsURL,
     getValidatorURL,
     INACTIVE_VALIDATORS_UNBONDING_URL,
     INACTIVE_VALIDATORS_URL,
@@ -334,6 +338,62 @@ export const getDelegatedValidatorsDetails = (address) => async (dispatch) => {
     } catch (error) {
         const errMsg = error.response?.data?.message || 'Failed!';
         dispatch(fetchDelegatedValidatorsError(errMsg));
+    }
+};
+
+const fetchUnBondingValidatorsInProgress = () => {
+    return {
+        type: UNBONDING_VALIDATORS_FETCH_IN_PROGRESS,
+    };
+};
+
+const fetchUnBondingValidatorsSuccess = (list) => {
+    return {
+        type: UNBONDING_VALIDATORS_FETCH_SUCCESS,
+        list,
+    };
+};
+
+const fetchUnBondingValidatorsError = (message) => {
+    return {
+        type: UNBONDING_VALIDATORS_FETCH_ERROR,
+        message,
+    };
+};
+
+export const fetchUnBondingValidators = (address) => async (dispatch) => {
+    dispatch(fetchUnBondingValidatorsInProgress());
+    const perPage = 100; // try maximum perPage allowed by the API
+    let currentPage = 1;
+    let totalPages = 1;
+    let allResults = [];
+
+    try {
+        do {
+            const URL = getUnBondingValidatorsURL(address);
+            const response = await Axios.get(URL, {
+                params: {
+                    page: currentPage,
+                    perPage,
+                },
+                headers: {
+                    Accept: 'application/json, text/plain, */*',
+                },
+            });
+
+            const data = response.data;
+            const pageResults = data?.results || [];
+            const pagination = data?.pagination;
+
+            allResults = [...allResults, ...pageResults];
+            totalPages = pagination?.totalPages || 1;
+            currentPage++;
+        } while (currentPage <= totalPages);
+
+        dispatch(fetchUnBondingValidatorsSuccess(allResults));
+    } catch (error) {
+        const errMsg = error.response?.data?.message || 'Failed!';
+        dispatch(fetchUnBondingValidatorsError(errMsg));
     }
 };
 
