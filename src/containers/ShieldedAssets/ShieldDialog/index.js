@@ -183,12 +183,12 @@ const ShieldDialog = (props) => {
                         {props.shieldedAddress && props.shieldedAddress.slice(props.shieldedAddress.length - 6, props.shieldedAddress.length)}
                     </div>
                 </div>
-                {fee && fee.fee
+                {/* <p>Transaction fee: 0.025385 NAM</p> */}
+            </div>
+            {fee && fee.fee
                 ? <div className="fee">
                     <p>fee:<b>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
                 </div> : null}
-                {/* <p>Transaction fee: 0.025385 NAM</p> */}
-            </div>
             {inProgress && <CircularProgress className="full_screen"/>}
             <Button
                 disabled={disable}

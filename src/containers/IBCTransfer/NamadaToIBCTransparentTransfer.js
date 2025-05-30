@@ -272,8 +272,9 @@ const NamadaToIBCTransparentTransfer = (props) => {
             <div className="nam_transfer_destination" style={{ minHeight: 'unset' }}>
                 {fromNamadaSelectedConfig
                 ? <div>
+                    <img alt={keplrIcon} src={keplrIcon} style={{ width: '24px', height: '24px', marginRight: '8px' }} />
                         <p>
-                            <img alt={keplrIcon} src={keplrIcon} style={{ width: '24px', height: '24px', marginRight: '8px' }} />
+                            
                             {props.ibcTransferAddress}
                         </p>
                         <div className="header_right">

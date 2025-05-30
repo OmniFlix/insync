@@ -1,10 +1,11 @@
-import { Dialog } from "@material-ui/core";
+import { Dialog, Button } from "@material-ui/core";
 import { hideShieldedTokensWithdrawDialog } from "actions/assets";
 import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import IBCUnShielding from "containers/IBCTransfer/IBCUnShielding";
+import closeIcon from '../../../assets/close_icon.png';
 
 class ShieldedWithdrawDialog extends React.Component {
    render () {
@@ -15,7 +16,10 @@ class ShieldedWithdrawDialog extends React.Component {
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_withdraw_dialog">
                 <div className="ibc_content padding">
-                    <p>Withdraw {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                    <div className="header_div">
+                        <p>Withdraw {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                        <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
+                    </div>
                     <IBCUnShielding/>
                 </div>
             </Dialog>
