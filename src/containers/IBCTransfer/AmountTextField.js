@@ -15,7 +15,6 @@ const AmountTextField = (props) => {
         props.onChange(value, isValid);
     }
 
-    console.log('asdkgasdkads', props.data)
     return (
         <TextField
             className={props.valid ? 'text_field' : 'invalid_address text_field'}

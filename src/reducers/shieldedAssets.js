@@ -3,11 +3,13 @@ import { AMOUNT_SET, EXTERNAL_SHIELDING_SUB_TABS_SET, EXTERNAL_TRANSFER_SUB_TABS
 
 const amount = (state = {
     value: '',
+    valid: true,
 }, action) => {
     switch (action.type) {
     case AMOUNT_SET:
         return {
             value: action.value,
+            valid: action.valid,
         };
     default:
         return state;
