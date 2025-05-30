@@ -495,7 +495,7 @@ class NavBar extends Component {
                     </div>
                     <ConnectDialog/>
                 </div>
-                <ShieldedSyncPercentage/>
+                {/* <ShieldedSyncPercentage/> */}
             </>
         );
     }
