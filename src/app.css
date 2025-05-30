@@ -73,13 +73,17 @@ p {
     border-radius: 24px;
     color: #ffff;
     display: flex;
-    flex-direction: row;
+    /* flex-direction: row; */
     justify-content: center;
     align-items: center;
+    min-width: 550px;
 }
 
 .dialog > div .content {
     padding: 50px;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
 }
 
 .dialog h2 {

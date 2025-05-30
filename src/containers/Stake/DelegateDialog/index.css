@@ -10,7 +10,8 @@
     text-align: center;
     color: #FFFFFF;
     margin: unset;
-    margin-bottom: 65px;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
 .delegate_dialog .content > p {
