@@ -29,7 +29,7 @@ const AmountTextField = (props) => {
     }
    
     const handleChange = (input) => {
-        const value = parseFloat(input) || '';
+        const value = input === '' ? '' : parseFloat(input);
         const isValid = value <= amount;
         props.onChange(value, isValid);
     }
