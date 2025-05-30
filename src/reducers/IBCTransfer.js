@@ -162,15 +162,18 @@ const ibcChannel = (state = {
 
 const ibcTransferAmount = (state = {
     value: '',
+    valid: true,
 }, action) => {
     switch (action.type) {
     case IBC_TRANSFER_AMOUNT_SET:
         return {
             value: action.value,
+            valid: action.valid,
         };
     case DELEGATE_SUCCESS_DIALOG_HIDE:
         return {
             value: '',
+            valid: true,
         };
     default:
         return state;

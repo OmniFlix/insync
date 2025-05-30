@@ -5,6 +5,16 @@ import { connect } from 'react-redux';
 import { setAmount } from '../../../actions/shieldedAssets';
 
 const AmountTextField = (props) => {
+    // let amount = props.data && props.data.balance && props.data.balance.minDenomAmount;
+    // if (props.data && props.data.config && props.data.config.COIN_DECIMALS) {
+    //     amount = amount ? (amount / 10 ** props.data.config.COIN_DECIMALS) : 0;
+    // }
+    // const handleChange = (input) => {
+    //     const value = parseFloat(input) || 0;
+    //     const isValid = value <= amount;
+    //     props.onChange(value, isValid);
+    // }
+
     return (
         <TextField
             className="amount_text_field"
@@ -22,13 +32,15 @@ AmountTextField.propTypes = {
     onChange: PropTypes.func.isRequired,
     balance: PropTypes.array,
     value: PropTypes.number,
+    valid: PropTypes.bool,
 };
 
 const stateToProps = (state) => {
     return {
         balance: state.accounts.balance.result,
         lang: state.language,
-        value: state.shieldedAssets.amount.value,
+        value: state.shieldedAssets.amount.value, 
+        valid: state.shieldedAssets.amount.valid,
     };
 };
 

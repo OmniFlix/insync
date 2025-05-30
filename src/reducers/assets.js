@@ -190,16 +190,19 @@ const shieldedTokensConvertDialog = (state = {
 // Tokens Transfer Fields
 const tokensTransferAmount = (state = {
     value: '',
+    valid: true,
 }, action) => {
     switch (action.type) {
     case TOKENS_TRANSFER_AMOUNT_SET:
         return {
             value: action.value,
+            valid: action.valid,
         };
     case TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE:
     case SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE:
         return {
             value: '',
+            valid: true,
         };
     default:
         return state;

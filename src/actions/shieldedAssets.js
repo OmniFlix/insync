@@ -1,9 +1,10 @@
 import { AMOUNT_SET, EXTERNAL_SHIELDING_SUB_TABS_SET, EXTERNAL_TRANSFER_SUB_TABS_SET, SELECT_SOURCE_SET, SHIELDING_SUB_TABS_SET } from '../constants/shieldedAssets';
 
-export const setAmount = (value) => {
+export const setAmount = (value, valid) => {
     return {
         type: AMOUNT_SET,
         value,
+        valid,
     };
 };
 

@@ -252,7 +252,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
                 <div className="border"></div>
                 <div className="select_section">
                     <SourceSelectField ibcOnly={true} from={props.from} data={props.transparentWithdrawData}/>
-                    <AmountTextField/>
+                    <AmountTextField data={props.transparentWithdrawData}/>
                 </div>
                 <span className="available_balance">
                     <p>Available</p>
@@ -260,7 +260,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
                 </span>
                 {fromNamadaSelectedConfig
                     ? <div className="nam_tokens_secion">
-                        <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
+                        <Button onClick={() => props.setIBCTransferAmount(namadaBalance, true)}>Max</Button>
                     </div> : null}
             </div>
             {/* <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
@@ -299,7 +299,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
                     </div> : null}
             <Button
                 className="submit_button"
-                disabled={disable || inProgress}
+                disabled={disable || inProgress || props.amountValid === false}
                 onClick={handleSubmit}>
                 {inProgress
                     ? 'InProgress...'
@@ -337,6 +337,7 @@ NamadaToIBCTransparentTransfer.propTypes = {
     fromNamadaSelectedAsset: PropTypes.object.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
+    amountValid: PropTypes.bool,
     from: PropTypes.string,
     ibcBalance: PropTypes.number,
     ibcChannel: PropTypes.object,
@@ -357,6 +358,7 @@ const stateToProps = (state) => {
         lang: state.language,
         address: state.accounts.address.value,
         amount: state.ibcTransfer.ibcTransferAmount.value,
+        amountValid: state.ibcTransfer.ibcTransferAmount.valid,
         details: state.accounts.address.details,
         shieldedAddress: state.accounts.address.shieldedDetails,
         ibcTransferType: state.ibcTransfer.ibcTransferType.value,

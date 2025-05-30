@@ -46,10 +46,11 @@ import { MsgTransfer } from 'cosmjs-types/ibc/applications/transfer/v1/tx';
 import { MsgSend } from 'cosmjs-types/cosmos/bank/v1beta1/tx';
 import { fromBase64, toBase64 } from '@cosmjs/encoding';
 
-export const setIBCTransferAmount = (value) => {
+export const setIBCTransferAmount = (value, valid) => {
     return {
         type: IBC_TRANSFER_AMOUNT_SET,
         value,
+        valid,
     };
 };
 
