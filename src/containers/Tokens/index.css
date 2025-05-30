@@ -116,7 +116,7 @@
 }
 
 /* Tabs Section */
-.main_content .content_div .tokens_section_tabs {
+.main_content .content_div .tokens_section_tabs > div {
     display: flex;
     align-items: center;
     width: 1000px;
@@ -129,7 +129,7 @@
     padding: 4px;
 }
 
-.tokens_section_tabs .tab {
+.tokens_section_tabs > div .tab {
     cursor: pointer;
     font-family: 'Blinker', sans-serif;
     font-weight: 600;
@@ -143,7 +143,7 @@
     border-radius: 32px;
 }
 
-.tokens_section_tabs .tab.active {
+.tokens_section_tabs > div .tab.active {
     background: #ffff46;
     color: #000;
 }
@@ -189,13 +189,17 @@
 }
 
 .sync_progress_div {
+    padding: 0px 20px;
+}
+
+.sync_progress_div > div {
     width: 1000px;
     max-width: 100%;
     margin: 20px auto -20px auto;
     background: #242400;
     border: 1px solid #ffff46;
     border-radius: 40px;
-    height: 160px;
+    height: fit-content;
     padding: 24px 32px;
     display: flex;
     justify-content: space-between;
@@ -203,27 +207,27 @@
     align-items: center;
 }
 
-.sync_progress_div .left_div {
+.sync_progress_div > div .left_div {
     display: flex;
     flex-direction: column;
     gap: 10px;
     align-items: flex-start;
 }
 
-.sync_progress_div .left_div > p:first-child {
+.sync_progress_div > div .left_div > p:first-child {
     font-family: 'Blinker', sans-serif;
     font-size: 36px;
     font-weight: 400;
     color: #fff;
 }
-.sync_progress_div .left_div > p:last-child {
+.sync_progress_div > div .left_div > p:last-child {
     font-family: 'Blinker', sans-serif;
     font-size: 16px;
     font-weight: 400;
     color: #FFFFFF80;
 }
 
-.sync_progress_div .right_div > p {
+.sync_progress_div > div .right_div > p {
     font-size: 24px;
     font-weight: 600;
     font-family: 'Blinker', sans-serif;
@@ -231,8 +235,168 @@
 }
 
 @media (max-width: 1000px) {
-    .assets.stake.padding,
-    .main_content .content_div .tokens_section_tabs {
+    .assets.stake.padding {
         width: 100%;
+        padding: 26px 20px;
+    }
+
+    .main_content .content_div .tokens_section_tabs {
+        padding: 0px 20px;
+    }
+
+    .main_content .content_div .tokens_section_tabs > div {
+        width: 100%;
+    }
+}
+
+@media (max-width: 958px) {
+    .stake .heading {
+        margin-top: unset;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .table .validator {
+        width: 100%;
+    }
+
+    .table .voting_power.token_name {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .table td .status {
+        margin-right: unset;
+    }
+
+    .table .voting_power {
+        align-items: flex-end;
+    }
+
+    .table td .tokens {
+        text-align: right;
+    }
+
+    .table .validator .name_section > p {
+        width: 300px;
+    }
+}
+
+@media (max-width: 770px) {
+    .table {
+        background: unset;
+        padding: 0;
+        backdrop-filter: unset;
+        border-radius: unset;
+    }
+
+    .stake .tabs > p {
+        font-size: 30px;
+    }
+
+    .stake .heading .multi_delegate_button {
+        font-size: 16px;
+    }
+
+    .sync_progress_div {
+        margin-bottom: -26px;
+    }
+
+    .assets.stake.padding {
+        padding: 26px 0px;
+    }
+
+    .assets.stake .table {
+        padding: 0px 20px;
+    }
+
+    .stake .table {
+        margin-top: 0px;
+    }
+}
+
+@media (max-width: 680px) {
+    .stake .heading {
+        overflow: auto;
+    }
+
+    .stake .tabs > p {
+        width: max-content;
+    }
+
+    .stake .tabs > p {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 610px) {
+    .sync_progress_div > div {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .sync_progress_div > div .left_div {
+        align-items: center;
+    }
+
+    .sync_progress_div > div .left_div > p:first-child {
+        font-size: 28px;
+    }
+
+    .sync_progress_div > div .left_div > p:last-child {
+        font-size: 14px;
+    }
+
+    .shielded_sync_percentage_text .circular_progress_track,
+    .shielded_sync_percentage_text .circular_progress_bar {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}
+
+
+@media (max-width: 426px) {
+    .table .actions > span {
+        display: none;
+    }
+
+    .table .actions {
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .table .actions > button {
+        padding: 5px 10px;
+    }
+
+    .table .validator .name_section > p {
+        width: 200px;
+    }
+
+    .stake .tabs > p {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 375px) {
+    .table .actions {
+        flex-direction: column;
+    }
+
+    .table .actions > button {
+        width: 100%;
+        margin: 4px 0;
+    }
+
+    .table .validator .name_section > p {
+        width: 150px;
+    }
+
+    .stake .tabs > p {
+        font-size: 16px;
     }
 }

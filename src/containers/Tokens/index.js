@@ -31,12 +31,14 @@ const Tokens = (props) => {
                     : <TokensListTable />}
             </div>}
             {props.assetsTab === 'shielded' && props.shieldedBalanceProgress && <div className="sync_progress_div">
-                <div className="left_div">
-                    <p>Shielded Sync in Progress</p>
-                    <p>Hang tight, this might take a moment</p>
-                </div>
-                <div className="right_div">
-                    <ShieldedSyncPercentageText/>
+                <div>
+                    <div className="left_div">
+                        <p>Shielded Sync in Progress</p>
+                        <p>Hang tight, this might take a moment</p>
+                    </div>
+                    <div className="right_div">
+                        <ShieldedSyncPercentageText/>
+                    </div>
                 </div>
             </div>}
             {props.assetsTab === 'shielded' && <div className="assets stake padding">

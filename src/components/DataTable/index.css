@@ -117,8 +117,9 @@
     }
 
     .table tbody tr td:first-child > div:first-child,
-    .table tbody tr td:last-child > div:first-child {
-        display: none;
+    .table tbody tr td:last-child > div:first-child,
+    .assets thead {
+        display: none !important;
     }
 
     .table tbody tr td:first-child > div:nth-child(2),
