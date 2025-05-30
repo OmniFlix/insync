@@ -301,9 +301,9 @@ table .disconnect_button {
 }
 
 @media (max-width: 1120px) {
-    .nav_bar .horizontal_tabs {
+    /* .nav_bar .horizontal_tabs {
         margin-bottom: 10px;
-    }
+    } */
 
     .nav_bar.disconnected_nav .right_content {
         margin: unset;

@@ -20,18 +20,7 @@ import syncProgress from 'assets/syncProgress.gif';
 import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 import ShieldedSyncPercentageText from '../ShieldedSyncPercentage/ShieldedSyncPercentageText';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        '& > * + *': {
-            marginTop: theme.spacing(2),
-        },
-    },
-}));
-
 const Tokens = (props) => {
-    const classes = useStyles();
-
     return (
         <>
             <NavBar/>

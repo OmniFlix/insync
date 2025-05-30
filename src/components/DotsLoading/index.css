@@ -4,6 +4,10 @@
     margin: auto;
 }
 
+.spinner.balance {
+    margin: unset;
+}
+
 .spinner > div {
     width: 10px;
     margin: 0 2px;
@@ -12,6 +16,10 @@
     border-radius: 100%;
     display: inline-block;
     animation: bounce_delay 1.4s infinite ease-in-out both;
+}
+
+.spinner.balance > div {
+    background: #fff;
 }
 
 .spinner .bounce1 {

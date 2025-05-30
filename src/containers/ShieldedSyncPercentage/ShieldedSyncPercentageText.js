@@ -15,12 +15,8 @@ class ShieldedSyncPercentageText extends Component {
         };
     }
 
-    componentDidUpdate(prevProps) {
-        if (
-            prevProps.address !== this.props.address &&
-            prevProps.address === '' &&
-            this.props.address !== ''
-        ) {
+    componentDidMount () {
+        if (this.props.address && (this.props.address !== '')) {
             (async () => {
                 if (window.namada) {
                     const { cryptoMemory } = await init();
@@ -31,6 +27,47 @@ class ShieldedSyncPercentageText extends Component {
                         '',
                         config.TOKEN_ADDRESS
                     );
+
+                    addEventListener(SdkEvents.ProgressBarIncremented, (e) => {
+                        const payload = JSON.parse(e.detail);
+                        if (payload?.name === 'namada_sdk::progress_bar::fetched') {
+                            const { current, total } = payload;
+                            const percentage = total > 0 ? (current / total) * 100 : 0;
+                            this.setState({ percentage });
+                        }
+                    });
+
+                    addEventListener(SdkEvents.ProgressBarFinished, () => {
+                        setTimeout(() => {
+                            this.setState({ isVisible: false });
+                        }, 3000);
+                    });
+                }
+            })();
+        }
+    }
+
+    componentDidUpdate (pp, ps, ss) {
+        if ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== '') && !this.state.isVisible) {
+            (async () => {
+                if (window.namada) {
+                    const { cryptoMemory } = await init();
+                    const sdk = getSdk(
+                        cryptoMemory,
+                        config.RPC_URL,
+                        config.MASP_REST_URL,
+                        '',
+                        config.TOKEN_ADDRESS
+                    );
+
+                    addEventListener(SdkEvents.ProgressBarStarted, (e) => {
+                        // const event = e;
+                        // const payload = JSON.parse(event.detail);
+                        this.setState({
+                            stated: true,
+                        });
+                        // postMessage({ ...payload, type: SdkEvents.ProgressBarStarted });
+                    });
 
                     addEventListener(SdkEvents.ProgressBarIncremented, (e) => {
                         const payload = JSON.parse(e.detail);
