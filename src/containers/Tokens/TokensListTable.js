@@ -178,7 +178,7 @@ class TokensListTable extends React.Component {
                     }
 
                     return (
-                        <div className="voting_power token_name">
+                        <div className="voting_power token_balance">
                             {amount} &nbsp;<p className="percentage" style={{ marginTop: '2px' }}>{value.symbol}</p>
                         </div>
                     );

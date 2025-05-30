@@ -17,6 +17,14 @@
     width: 100%;
 }
 
+.dialog .connect_wallet_image {
+    margin: auto;
+}
+
+.connect_dialog .connect_wallet_image + h2 {
+    margin: auto;
+}
+
 .connect_dialog .header {
     width: 100%;
     display: flex;

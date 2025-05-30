@@ -19,6 +19,7 @@ import PendingDialog from '../Stake/DelegateDialog/PendingDialog';
 import withRouter from '../../components/WithRouter';
 // import SendButton from './SendButton';
 import cvIcon from '../../assets/cv.png';
+import UnbondingTable from 'containers/Stake/UnbondingTable';
 class Home extends Component {
     constructor (props) {
         super(props);
@@ -155,6 +156,11 @@ class Home extends Component {
                         </div>
                         <Table active={active} />
                     </div>
+                    {(active === 2 && this.props.unBondingValidatorsList && this.props.unBondingValidatorsList.length)
+                    ? <div style={{paddingTop: 0}} className='stake_content padding'> 
+                        <h2 style={{textAlign: 'left', fontSize: '30px'}}>Unbonding</h2>
+                        <UnbondingTable />
+                    </div> : null}
                 </div>
                 <div className="proposals">
                     {!this.props.open
@@ -201,6 +207,7 @@ Home.propTypes = {
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }),
+    unBondingValidatorsList: PropTypes.array.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -214,6 +221,7 @@ const stateToProps = (state) => {
         delegatedValidatorList: state.stake.delegatedValidators.list,
         inActiveValidators: state.stake.inActiveValidators.list,
         validatorList: state.stake.validators.list,
+          unBondingValidatorsList: state.stake.unBondingValidators.list,
     };
 };
 

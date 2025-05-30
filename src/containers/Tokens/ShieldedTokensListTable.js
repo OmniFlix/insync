@@ -167,7 +167,7 @@ class ShieldedTokensListTable extends React.Component {
                     // }
 
                     return (
-                        <div className="voting_power token_name">
+                        <div className="voting_power token_balance">
                             {this.props.inProgress
                                 ? <DotsLoading className="balance"/>
                                 : amount} &nbsp;<p className="percentage" style={{ marginTop: '2px' }}>{value.symbol}</p>

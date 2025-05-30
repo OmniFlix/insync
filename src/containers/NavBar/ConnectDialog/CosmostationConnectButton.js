@@ -10,7 +10,7 @@ import {
     getUnBondingDelegations,
     setAccountAddress,
 } from '../../../actions/accounts';
-import { getDelegatedValidatorsDetails } from '../../../actions/stake';
+import { fetchUnBondingValidators, getDelegatedValidatorsDetails } from '../../../actions/stake';
 import { showMessage } from '../../../actions/snackbar';
 import logo from '../../../assets/cosmostation.svg';
 import { encode } from 'js-base64';
@@ -46,6 +46,7 @@ const CosmostationConnectButton = (props) => {
             props.fetchVestingBalance(account.address);
             if (!props.proposalTab) {
                 props.getDelegatedValidatorsDetails(account.address);
+                props.fetchUnBondingValidators(account.address);
             }
             localStorage.setItem('of_co_address', encode(account.address));
             localStorage.setItem('of_co_wallet', 'cosmostation');
@@ -68,6 +69,7 @@ CosmostationConnectButton.propTypes = {
     fetchVestingBalance: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
+    fetchUnBondingValidators: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     hideConnectDialog: PropTypes.func.isRequired,
@@ -89,6 +91,7 @@ const actionsToProps = {
     showMessage,
     getDelegations,
     getDelegatedValidatorsDetails,
+    fetchUnBondingValidators,
     fetchVestingBalance,
     getBalance,
     getUnBondingDelegations,

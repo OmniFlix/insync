@@ -103,6 +103,7 @@ class ShieldedSyncPercentageText extends Component {
                     <Box position="relative" display="inline-flex">
                         {/* Track */}
                         <CircularProgress
+                            className="circular_progress_track"
                             variant="determinate"
                             value={100}
                             size={110}
@@ -111,6 +112,7 @@ class ShieldedSyncPercentageText extends Component {
                         />
                         {/* Progress fill */}
                         <CircularProgress
+                            className="circular_progress_bar"
                             variant="determinate"
                             value={percentage}
                             size={110}

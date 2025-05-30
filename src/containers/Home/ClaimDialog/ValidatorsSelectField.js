@@ -18,15 +18,15 @@ const ValidatorSelectField = (props) => {
         props.onChange(value);
     };
 
-    const total = 0;
+    let total = 0;
 
-    // const totalRewards = props.rewards && props.rewards.length &&
-    //     props.rewards.map((value) => {
-    //         const rewards = value && value.minDenomAmount ? value.minDenomAmount / 10 ** config.COIN_DECIMALS : 0;
-    //         total = rewards + total;
+    const totalRewards = props.rewards && props.rewards.length &&
+        props.rewards.map((value) => {
+            const rewards = value && value.minDenomAmount ? value.minDenomAmount / 10 ** config.COIN_DECIMALS : 0;
+            total = rewards + total;
 
-    //         return total;
-    //     });
+            return total;
+        });
 
     return (
         <SelectField
