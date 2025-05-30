@@ -139,7 +139,7 @@ const ShieldDialog = (props) => {
     });
 
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
-    const disable = inProgress || !props.amount;
+    const disable = inProgress || !props.amount || props.amountValid === false;
 
     const fromNamadaSelectedConfig = props.selectedAsset?.config;
     const namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
@@ -214,6 +214,8 @@ ShieldDialog.propTypes = {
     showMessage: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
+    amount: PropTypes.number,
+    amountValid: PropTypes.bool,
     revealPublicKey: PropTypes.object,
     selectedAsset: PropTypes.object,
     shieldedAddress: PropTypes.string,
@@ -225,6 +227,7 @@ const stateToProps = (state) => {
         lang: state.language,
         address: state.accounts.address.value,
         amount: state.shieldedAssets.amount.value,
+        amountValid: state.shieldedAssets.amount.valid,
         details: state.accounts.address.details,
         shieldedAddress: state.accounts.address.shieldedDetails,
         revealPublicKey: state.accounts.revealPublicKey.result,

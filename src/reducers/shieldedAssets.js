@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { AMOUNT_SET, EXTERNAL_SHIELDING_SUB_TABS_SET, EXTERNAL_TRANSFER_SUB_TABS_SET, SELECT_SOURCE_SET, SHIELDING_SUB_TABS_SET } from '../constants/shieldedAssets';
+import { TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE } from 'constants/assets';
 
 const amount = (state = {
     value: '',
@@ -11,6 +12,11 @@ const amount = (state = {
             value: action.value,
             valid: action.valid,
         };
+    case TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE:
+        return {
+            value: '',
+            valid: true,
+        }
     default:
         return state;
     }
