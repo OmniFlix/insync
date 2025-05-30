@@ -138,7 +138,7 @@ const ShieldedToTransparent = (props) => {
                 <div className="border"></div>
                 <div className="select_section">
                     <ShieldedSourceSelectField/>
-                    <AmountTextField/>
+                    <AmountTextField from={"shield_to_transparent"}/>
                 </div>
                 {fromNamadaSelectedConfig
                     ? <div className="tokens_secion">
