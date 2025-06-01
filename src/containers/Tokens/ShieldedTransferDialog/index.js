@@ -154,7 +154,7 @@ class ShieldedTransferDialog extends React.Component {
                                 {this.props.value?.symbol || this.props.value?.display}
                             </div>
                             <div className="right_section">
-                                <AmountTextField />
+                                <AmountTextField from="shielded" amount={amount}/>
                             </div>
                         </div>
                     </div>

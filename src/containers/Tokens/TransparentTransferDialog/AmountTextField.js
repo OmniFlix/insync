@@ -10,6 +10,10 @@ const AmountTextField = (props) => {
         amount = amount ? (amount / 10 ** props.transferValue.config.COIN_DECIMALS) : 0;
     }
 
+    if (props.from === 'shielded') {
+        amount = props.amount;
+    }
+
     const handleChange = (input) => {
         const value = input === '' ? '' : parseFloat(input);
         const isValid = value <= amount;
@@ -36,6 +40,8 @@ AmountTextField.propTypes = {
     transferValue: PropTypes.object,
     value: PropTypes.number,
     valid: PropTypes.bool,
+    from: PropTypes.string,
+    amount: PropTypes.any,
 };
 
 const stateToProps = (state) => {
