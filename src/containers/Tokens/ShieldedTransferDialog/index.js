@@ -65,7 +65,6 @@ class ShieldedTransferDialog extends React.Component {
             gasLimit: new BigNumber(fee?.shieldedgas || 152624),
             chainId: config.CHAIN_ID,
             publicKey: this.props.details && this.props.details.publicKey,
-            // publicKey: this.props.disposableSigner?.publicKey,
             memo: this.props.tokensTransferMemo || '',
         };
 

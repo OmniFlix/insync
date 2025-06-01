@@ -2155,6 +2155,15 @@
     semver "^7.6.3"
     slip44 "^3.0.18"
 
+"@namada/types@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@namada/types/-/types-0.5.0.tgz#a37c86d5817586e8cfda85d922e82b90d4a89b0e"
+  integrity sha512-ghda4FwVM4uvflcWWgAWJYRILAxGJzBTkFsiJCTMml7KrH6AtqHLpczEKJZCs72jQ5jTVOqOL88E+nuiNwE3Fw==
+  dependencies:
+    "@dao-xyz/borsh" "^5.1.5"
+    bignumber.js "^9.1.1"
+    slip44 "^3.0.11"
+
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz#dbf733a965ca47b1973177dc0bb6c889edcfb129"

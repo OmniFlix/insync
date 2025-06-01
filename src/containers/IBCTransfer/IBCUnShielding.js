@@ -226,7 +226,7 @@ const IBCUnShielding = (props) => {
                 <div className="border"></div>
                 <div className="select_section">
                     <ShieldedSourceSelectField ibcOnly={true}/>
-                    <AmountTextField/>
+                    <AmountTextField amount={namadaBalance} from="withdraw_shielded"/>
                 </div>
                 {fromNamadaSelectedConfig
                     ? <div className="tokens_secion">
