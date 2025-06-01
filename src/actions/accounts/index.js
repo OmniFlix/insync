@@ -505,6 +505,8 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
                 key: viewingKey,
                 birthday: birthday,
             }];
+            // console.log('55555', sdk.rpc);
+            // await sdk.getMasp().clearShieldedContext(chainId);
             await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
             const balance = await sdk.rpc.queryBalance(
                 viewingKey,
