@@ -1395,28 +1395,43 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
             const revealPkTx = await tx.buildRevealPk(wrapperProps);
             newTxs.push(revealPkTx);
         }
+        // console.log('5555555', tx);
+        // return;
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-        const encoded = await tx.buildShieldedTransfer(wrapperTxValue, ibcTransfer);
-        newTxs.push(encoded);
-        cb(null, null, true);
+        // const encoded = await tx.buildShieldedTransfer(wrapperTxValue, ibcTransfer);
+        console.log('11111', tx);
+        const queryProps = [ibcTransfer];
+        // const encoded = await tx.buildShieldedTransfer.apply(tx, [wrapperTxValue, ibcTransfer]);
+        Promise.all(
+            queryProps.map((props) => tx.buildShieldedTransfer.apply(tx, [wrapperTxValue, props]))
+        ).then((res) => console.log('444444', res)).finally((encoded) => {
+            console.log('333333', encoded);
+            newTxs.push(encoded);
+            cb(null, null, true);
 
-        console.log('encoded', encoded);
-        let updateDate;
-        if (type === 'ledger') {
-            updateDate = newTxs;
-        } else {
-            updateDate = tx.buildBatch(newTxs);
-        }
+            let updateDate;
+            if (type === 'ledger') {
+                updateDate = newTxs;
+            } else {
+                updateDate = tx.buildBatch(newTxs);
+            }
 
-        console.log('updateDate', updateDate, address, checksums);
-        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
-            cb(null, null, null, true);
-            rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
-                if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                    cb(result.info || result.log || result.rawLog);
-                } else {
-                    cb(null, result);
-                }
+            client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+                cb(null, null, null, true);
+                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                        cb(result.info || result.log || result.rawLog);
+                    } else {
+                        cb(null, result);
+                    }
+                }).catch((error) => {
+                    const message = 'success';
+                    if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                        cb(null, message);
+                    } else {
+                        cb(error && error.message);
+                    }
+                });
             }).catch((error) => {
                 const message = 'success';
                 if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
@@ -1425,13 +1440,6 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
                     cb(error && error.message);
                 }
             });
-        }).catch((error) => {
-            const message = 'success';
-            if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                cb(null, message);
-            } else {
-                cb(error && error.message);
-            }
         });
     } else {
         return null;
