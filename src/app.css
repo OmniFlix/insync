@@ -76,7 +76,8 @@ p {
     /* flex-direction: row; */
     justify-content: center;
     align-items: center;
-    min-width: 550px;
+    max-width: 550px;
+    width: 100%;
 }
 
 .dialog > div .content {

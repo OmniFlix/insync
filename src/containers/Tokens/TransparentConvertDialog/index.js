@@ -1,23 +1,28 @@
-import { Dialog } from "@material-ui/core";
+import { Dialog, Button } from "@material-ui/core";
 import { hideTransparentTokensConvertDialog } from "actions/assets";
 import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import ShieldDialog from "containers/ShieldedAssets/ShieldDialog";
+import closeIcon from '../../../assets/close_icon.png';
 
 class TransparentConvertDialog extends React.Component {
    render () {
         return (
-            <Dialog open={this.props.open}
-            onClose={this.props.handleClose}
-            aria-describedby="claim-dialog-description"
-            aria-labelledby="claim-dialog-title"
-            className="dialog tokens_convert_dialog">
-                 <div className="ibc_content shield_tranfer">
+            <Dialog
+                open={this.props.open}
+                onClose={this.props.handleClose}
+                aria-describedby="claim-dialog-description"
+                aria-labelledby="claim-dialog-title"
+                className="dialog tokens_convert_dialog">
+                <div className="ibc_content shield_tranfer">
+                    <div className="header_div">
                         <p>Namada Transparent to Namada Shielded</p>
-                        <ShieldDialog/>
+                        <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
                     </div>
+                    <ShieldDialog/>
+                </div>
             </Dialog>
         )
     }
