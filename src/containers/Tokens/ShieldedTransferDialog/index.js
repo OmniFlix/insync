@@ -81,7 +81,7 @@ class ShieldedTransferDialog extends React.Component {
         }
 
         this.setState({ params: true, approval: true });
-        ibcShieldedTransfer(this.props.address, tx, txs, this.props.revealPublicKey, this.props.details && this.props.details.type, this.handleFetch);
+        ibcShieldedTransfer(this.props.address, tx, txs, this.props.revealPublicKey, this.props.details && this.props.details.type, this.props.details, this.handleFetch);
     }
 
     handleFetch (error, value, params, approval) {
