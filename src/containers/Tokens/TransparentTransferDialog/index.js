@@ -18,6 +18,7 @@ import { config } from "config";
 import { TransparentTransferDataMsgValue } from "@harish551/namada-types";
 import BigNumber from "bignumber.js";
 import { ibcTransparentTransfer } from "helper";
+import CircularProgress from "components/CircularProgress";
 
 class TransparentTransferDialog extends React.Component {
     constructor (props) {
@@ -25,6 +26,7 @@ class TransparentTransferDialog extends React.Component {
 
         this.state = {
             inProgress: false,
+            approval: false,
         };
 
         this.handleTransfer = this.handleTransfer.bind(this);
@@ -73,15 +75,21 @@ class TransparentTransferDialog extends React.Component {
             }
         }
 
+        this.setState({ approval: true });
         ibcTransparentTransfer(this.props.address, tx, txs, this.props.revealPublicKey, this.props.details && this.props.details.type, this.handleFetch);
     }
 
-    handleFetch (error, value) {
+    handleFetch (error, value, approval) {
+        if (approval) {
+            this.setState({ approval: false });
+            return;
+        }
+
         const selectedBalance = this.props.value && this.props.value.balance;
         const tokenAddress = selectedBalance.tokenAddress;
         const balance = selectedBalance.minDenomAmount;
         if (error) {
-            this.setState({ inProgress: false });
+            this.setState({ inProgress: false, approval: false });
             if (error.indexOf('not yet found on the chain') > -1) {
                 this.props.pendingDialog();
                 return;
@@ -92,7 +100,7 @@ class TransparentTransferDialog extends React.Component {
         }
 
         this.props.successDialog(value && value.hash);
-        this.setState({ inProgress: false });
+        this.setState({ inProgress: false, approval: false });
         this.props.fetchBalanceList(this.props.address);
         this.props.getBalance(this.props.address);
         setTimeout(() => {
@@ -111,7 +119,7 @@ class TransparentTransferDialog extends React.Component {
         const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         const fee = feeList && feeList[fromSelectedConfig?.COIN_DENOM];
 
-        const disable = this.props.inProgress || this.props.tokensTransferAddressValid === false || !this.props.tokensTransferAmount || !this.props.tokensTransferAddress || this.props.tokensTransferAmountValid === false;
+        const disable = this.state.inProgress || this.props.inProgress || this.props.tokensTransferAddressValid === false || !this.props.tokensTransferAmount || !this.props.tokensTransferAddress || this.props.tokensTransferAmountValid === false;
 
         return (
             <Dialog open={this.props.open}
@@ -173,9 +181,13 @@ class TransparentTransferDialog extends React.Component {
                                 <span>Fee options</span>
                             </div> */}
                     </div> : null}
+                    {this.state.inProgress && <CircularProgress className="full_screen"/>}
                     <div className="actions">
                         <Button disabled={disable} onClick={this.handleTransfer}>
-                            {this.state.inProgress ? 'InProgress...' : 'Transfer'}
+                            {this.state.approval
+                                ? 'Approval pending...'
+                                : this.state.inProgress
+                                    ? 'InProgress...' : 'Transfer'}
                         </Button>
                     </div>
                 </div>

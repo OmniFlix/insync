@@ -21,6 +21,7 @@ import BigNumber from 'bignumber.js';
 
 const ClaimDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
+    const [approval, setApproval] = useState(false);
 
     const handleClaimAll = () => {
         setInProgress(true);
@@ -49,11 +50,18 @@ const ClaimDialog = (props) => {
             });
         }
 
+        setApproval(true);
         claimTransaction(msg, txs, props.details && props.details.type, handleFetch);
     };
 
-    const handleFetch = (error, result) => {
+    const handleFetch = (error, result, approval) => {
+        if (approval) {
+            setApproval(false);
+            return;
+        }
+
         setInProgress(false);
+        setApproval(false);
         if (error) {
             if (error.indexOf('not yet found on the chain') > -1) {
                 props.pendingDialog();
@@ -88,6 +96,7 @@ const ClaimDialog = (props) => {
             publicKey: props.details && props.details.publicKey,
         };
 
+        setApproval(true);
         claimTransaction(tx, txs, props.details && props.details.type, handleFetch);
     };
 
@@ -134,9 +143,10 @@ const ClaimDialog = (props) => {
                     disabled={disable}
                     variant="contained"
                     onClick={props.value === 'all' ? handleClaimAll : handleClaim}>
-                    {inProgress
-                        ? variables[props.lang]['approval_pending']
-                        : variables[props.lang].claim}
+                    {approval
+                        ? 'Approval pending...'
+                        : inProgress
+                            ? 'InProgress...' : variables[props.lang].claim}
                 </Button>
             </DialogActions>
         </Dialog>

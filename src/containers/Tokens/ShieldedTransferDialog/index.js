@@ -19,6 +19,7 @@ import { ShieldedTransferDataMsgValue } from "@harish551/namada-types";
 import BigNumber from "bignumber.js";
 import { ibcShieldedTransfer } from "helper";
 import { fetchIBCBalance } from "actions/IBCTransfer";
+import CircularProgress from "components/CircularProgress";
 
 class ShieldedTransferDialog extends React.Component {
     constructor (props) {
@@ -26,6 +27,8 @@ class ShieldedTransferDialog extends React.Component {
 
         this.state = {
             inProgress: false,
+            params: false,
+            approval: false,
         };
 
         this.handleTransfer = this.handleTransfer.bind(this);
@@ -77,12 +80,22 @@ class ShieldedTransferDialog extends React.Component {
             }
         }
 
+        this.setState({ params: true, approval: true });
         ibcShieldedTransfer(this.props.address, tx, txs, this.props.revealPublicKey, this.props.details && this.props.details.type, this.handleFetch);
     }
 
-    handleFetch (error, value) {
+    handleFetch (error, value, params, approval) {
+        if (approval) {
+            this.setState({ approval: false });
+            return;
+        }
+        if (params) {
+            this.setState({ params: false });
+            return;
+        }
+
         if (error) {
-            this.setState({ inProgress: false });
+            this.setState({ inProgress: false, params: false, approval: false });
             if (error.indexOf('not yet found on the chain') > -1) {
                 this.props.pendingDialog();
                 return;
@@ -107,7 +120,7 @@ class ShieldedTransferDialog extends React.Component {
                 this.props.fetchIBCBalance(ibcConfig?.REST_URL, this.props.ibcTransferAddress);
                 this.props.getBalance(this.props.address);
                 this.props.successDialog(res1.hash);
-                this.setState({ inProgress: false });
+                this.setState({ inProgress: false, params: false, approval: false });
             } else {
                 handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
             }
@@ -183,9 +196,15 @@ class ShieldedTransferDialog extends React.Component {
                                 <span>Fee options</span>
                             </div> */}
                     </div> : null}
+                    {this.state.inProgress && <CircularProgress className="full_screen"/>}
                     <div className="actions">
                         <Button disabled={this.state.inProgress} onClick={this.handleTransfer}>
-                            {this.state.inProgress ? 'InProgress...' : 'Transfer'}
+                            {this.state.params
+                                ? 'Generating MASP Parameters...'
+                                : this.state.approval
+                                    ? 'Approval pending...'
+                                    : this.state.inProgress
+                                        ? 'InProgress...' : 'Transfer'}
                         </Button>
                     </div>
                 </div>
