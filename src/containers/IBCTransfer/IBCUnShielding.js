@@ -37,6 +37,8 @@ import ShieldedSourceSelectField from './ShieldedSourceSelectField';
 
 const IBCUnShielding = (props) => {
     const [inProgress, setInProgress] = useState(false);
+    const [approval, setApproval] = useState(false);
+    const [params, setParams] = useState(false);
     // useEffect(() => {
     //     const address = localStorage.getItem('namada_keplr_address');
     //     if (address) {
@@ -153,6 +155,8 @@ const IBCUnShielding = (props) => {
             }
         }
 
+        setParams(true);
+        setApproval(true);
         ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
     };
 
@@ -171,9 +175,20 @@ const IBCUnShielding = (props) => {
         handleNamadaTransfer();
     };
 
-    const handleFetch = (error, value) => {
+    const handleFetch = (error, value, params, approval) => {
+        if (approval) {
+            setApproval(false);
+            return;
+        }
+        if (params) {
+            setParams(false);
+            return;
+        }
+
         if (error) {
             setInProgress(false);
+            setParams(false);
+            setApproval(false);
             // if (error.indexOf('not yet found on the chain') > -1) {
             //     props.pendingDialog();
             //     return;
@@ -198,6 +213,8 @@ const IBCUnShielding = (props) => {
                 props.getBalance(props.address);
                 props.showDelegateSuccessDialog(res1.hash);
                 setInProgress(false);
+                setParams(false);
+                setApproval(false);
             } else {
                 handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
             }
@@ -272,9 +289,12 @@ const IBCUnShielding = (props) => {
                 className="submit_button"
                 disabled={disable || inProgress}
                 onClick={handleSubmit}>
-                {inProgress
-                    ? 'InProgress...'
-                    : 'Submit'}
+                {params
+                    ? 'Generating MASP Parameters...'
+                    : approval
+                        ? 'Approval pending...'
+                        : inProgress
+                            ? 'InProgress...' : 'Submit'}
             </Button>
             {inProgress && <CircularProgress className="full_screen"/>}
         </div>

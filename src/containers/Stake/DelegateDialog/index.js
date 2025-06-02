@@ -33,6 +33,7 @@ import BigNumber from 'bignumber.js';
 
 const DelegateDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
+    const [approval, setApproval] = useState(false);
     const handleDelegateType = () => {
         setInProgress(true);
         // let gasValue = gas.delegate;
@@ -83,6 +84,7 @@ const DelegateDialog = (props) => {
             publicKey: props.details && props.details.publicKey,
         };
 
+        setApproval(true);
         if (props.name === 'Undelegate') {
             txs.gasLimit = new BigNumber(100000);
             unDelegateTransaction(tx, txs, props.details && props.details.type, handleFetch);
@@ -145,9 +147,15 @@ const DelegateDialog = (props) => {
         signTxAndBroadcast(updatedTx, props.address, handleFetch);
     };
 
-    const handleFetch = (error, value) => {
+    const handleFetch = (error, value, approval) => {
+        if (approval) {
+            setApproval(false);
+            return;
+        }
+
         if (error) {
             setInProgress(false);
+            setApproval(false);
             if (error.indexOf('not yet found on the chain') > -1) {
                 props.pendingDialog();
                 return;
@@ -188,6 +196,7 @@ const DelegateDialog = (props) => {
 
                     if (localBalance !== available) {
                         setInProgress(false);
+                        setApproval(false);
                         clearInterval(intervalTime);
                         props.successDialog(value && value.hash);
                         updateBalance();
@@ -199,6 +208,7 @@ const DelegateDialog = (props) => {
         if (intervalTime) {
             setTimeout(() => {
                 setInProgress(false);
+                setApproval(false);
                 clearInterval(intervalTime);
             }, 60000);
         }
@@ -344,9 +354,10 @@ const DelegateDialog = (props) => {
                     disabled={disable}
                     variant="contained"
                     onClick={props.name === 'Multi-Delegate' ? handleMultiDelegate : handleDelegateType}>
-                    {inProgress
-                        ? variables[props.lang]['approval_pending']
-                        : props.name}
+                    {approval
+                        ? 'Approval pending...'
+                        : inProgress
+                            ? 'InProgress...' : props.name}
                 </Button>
             </DialogActions>
         </Dialog>

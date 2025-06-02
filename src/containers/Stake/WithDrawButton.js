@@ -12,6 +12,7 @@ import { fetchRewards, getBalance, getDelegations } from 'actions/accounts';
 
 const WithDrawButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
+    const [approval, setApproval] = useState(false);
 
     const handleClick = () => {
         setInProgress(true);
@@ -34,12 +35,19 @@ const WithDrawButton = (props) => {
             publicKey: props.details && props.details.publicKey,
         };
 
+        setApproval(true);
         withdrawTransaction(tx, txs, props.details && props.details.type, handleFetch);
     };
 
-    const handleFetch = (error, value) => {
+    const handleFetch = (error, value, approval) => {
+        if (approval) {
+            setApproval(false);
+            return;
+        }
+
         if (error) {
             setInProgress(false);
+            setApproval(false);
             if (error.indexOf('not yet found on the chain') > -1) {
                 props.pendingDialog();
                 return;
@@ -80,6 +88,7 @@ const WithDrawButton = (props) => {
 
                     if (localBalance !== available) {
                         setInProgress(false);
+                        setApproval(false);
                         clearInterval(intervalTime);
                         props.successDialog(value && value.hash);
                         updateBalance();
@@ -91,6 +100,7 @@ const WithDrawButton = (props) => {
         if (intervalTime) {
             setTimeout(() => {
                 setInProgress(false);
+                setApproval(false);
                 clearInterval(intervalTime);
             }, 60000);
         }
@@ -110,8 +120,12 @@ const WithDrawButton = (props) => {
         <Button
             className="delegate_button"
             variant="outlined"
+            disabled={inProgress}
             onClick={handleClick}>
-            {inProgress ? 'InProgress...' : 'Withdraw'}
+            {approval
+                ? 'Approval pending...'
+                : inProgress
+                    ? 'InProgress...' : 'Withdraw'}
         </Button>
     );
 };

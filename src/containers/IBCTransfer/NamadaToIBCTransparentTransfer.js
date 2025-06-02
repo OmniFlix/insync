@@ -38,6 +38,8 @@ import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
 
 const NamadaToIBCTransparentTransfer = (props) => {
     const [inProgress, setInProgress] = useState(false);
+    const [approval, setApproval] = useState(false);
+    const [params, setParams] = useState(false);
     useEffect(() => {
         const address = localStorage.getItem('namada_keplr_address');
         if (address) {
@@ -148,6 +150,8 @@ const NamadaToIBCTransparentTransfer = (props) => {
             }
         }
 
+        setParams(true);
+        setApproval(true);
         ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
     };
 
@@ -166,9 +170,21 @@ const NamadaToIBCTransparentTransfer = (props) => {
         handleNamadaTransfer();
     };
 
-    const handleFetch = (error, value) => {
+
+    const handleFetch = (error, value, params, approval) => {
+        if (approval) {
+            setApproval(false);
+            return;
+        }
+        if (params) {
+            setParams(false);
+            return;
+        }
+
         if (error) {
             setInProgress(false);
+            setParams(false);
+            setApproval(false);
             // if (error.indexOf('not yet found on the chain') > -1) {
             //     props.pendingDialog();
             //     return;
@@ -209,6 +225,8 @@ const NamadaToIBCTransparentTransfer = (props) => {
 
                     if (localBalance !== available) {
                         setInProgress(false);
+                        setParams(false);
+                        setApproval(false);
                         clearInterval(intervalTime);
                         props.showDelegateSuccessDialog(value && value.hash, fromNamadaSelectedConfig);
                         props.fetchTokensList();
@@ -224,6 +242,8 @@ const NamadaToIBCTransparentTransfer = (props) => {
         if (intervalTime) {
             setTimeout(() => {
                 setInProgress(false);
+                setParams(false);
+                setApproval(false);
                 clearInterval(intervalTime);
             }, 60000);
         }
@@ -301,9 +321,12 @@ const NamadaToIBCTransparentTransfer = (props) => {
                 className="submit_button"
                 disabled={disable || inProgress || props.amountValid === false}
                 onClick={handleSubmit}>
-                {inProgress
-                    ? 'InProgress...'
-                    : 'Submit'}
+                {params
+                    ? 'Generating MASP Parameters...'
+                    : approval
+                        ? 'Approval pending...'
+                        : inProgress
+                            ? 'InProgress...' : 'Submit'}
             </Button>
             {inProgress && <CircularProgress className="full_screen"/>}
         </div>
