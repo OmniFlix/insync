@@ -1,10 +1,11 @@
-import { Dialog } from "@material-ui/core";
+import { Dialog, Button } from "@material-ui/core";
 import { hideShieldedTokensConvertDialog } from "actions/assets";
 import React from "react";
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import ShieldedToTransparent from "containers/ShieldedAssets/ShieldDialog/ShieldedToTransparent";
+import closeIcon from '../../../assets/close_icon.png';
 
 class ShieldedConvertDialog extends React.Component {
    render () {
@@ -15,7 +16,10 @@ class ShieldedConvertDialog extends React.Component {
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_convert_dialog">
                 <div className="ibc_content shield_tranfer">
-                    <p>Namada Shielded to Namada Transparent</p>
+                    <div className="header_div">
+                        <p>Namada Shielded to Namada Transparent</p>
+                        <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
+                    </div>
                     <ShieldedToTransparent/>
                 </div>
             </Dialog>

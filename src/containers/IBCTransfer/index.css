@@ -4,7 +4,8 @@
     padding: 32px;
     width: max-content;
     background: #000;
-    width: 550px;
+    max-width: 550px;
+    width: 100%;
 }
 
 .ibc_content > p {
@@ -53,7 +54,8 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    min-width: 450px;
+    max-width: 450px;
+    width: 100%;
 }
 
 .transfer_dialog .transfer_source {
@@ -99,7 +101,8 @@
     justify-content: center;
 }
 
-.transfer_source .available_balance {
+.transfer_source .available_balance,
+.transfer_source .shielded_tokens_secion .available_balance {
     display: flex;
     flex-direction: row;
     gap: 5px;
@@ -108,14 +111,16 @@
     margin-top: 5px;
 }
 
-.available_balance > p:first-child {
+.available_balance > p:first-child,
+.transfer_source .shielded_tokens_secion .available_balance > p:first-child {
     color: #BFBFBF;
     font-size: 12px;
     font-weight: 500;
     font-family: 'Blinker', sans-serif;
 }
 
-.available_balance > p:last-child {
+.available_balance > p:last-child,
+.transfer_source .shielded_tokens_secion .available_balance > p:last-child {
     color: #FFFF46;
     font-size: 12px;
     font-weight: 500;
@@ -194,7 +199,9 @@
     border-radius: 20px;
     padding: 42px 24px;
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    gap: 2px;
 }
 
 .transfer_dialog .nam_transfer_destination > div > p {
@@ -436,12 +443,22 @@
     padding: 5px 16px 16px 16px;
 }
 
+.transfer_dialog .shielded_tokens_secion {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0px;
+}
+
 .tokens_secion img {
     width: 20px;
     height: 20px;
 }
 
-.transfer_dialog .tokens_secion p {
+.transfer_dialog .tokens_secion p,
+.transfer_dialog .shielded_tokens_secion p {
     color: #fff;
     text-align: center;
     font-family: 'Blinker', sans-serif;
@@ -451,7 +468,8 @@
     line-height: 130%;
 }
 
-.transfer_dialog .tokens_secion > button {
+.transfer_dialog .tokens_secion > button,
+.transfer_dialog .shielded_tokens_secion > button {
     padding: 4px 6px;
     border: 1px solid #FFF;
     color: #696969;
@@ -529,4 +547,45 @@
     font-size: 16px;
     font-weight: 600;
     font-family: 'Blinker', sans-serif;
+}
+
+@media (max-width: 600px) {
+    .transfer_dialog > div > div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    .transfer_dialog .transfer_source .select_section > div {
+        width: 100%;
+    }
+
+    .transfer_dialog .tokens_secion {
+        padding: 0px;
+    }
+
+    .transfer_dialog .tokens_secion p,
+    .nam_transfer_destination > div > p {
+        display: inline-block;
+        width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .nam_transfer_destination > div {
+        padding: 0px !important;
+    }
+    
+    .transfer_source .deposit_nam_tokens_secion {
+        position: absolute;
+        right: 6%;
+        bottom: 88px;
+    }
+
+    .transfer_dialog > .arrow {
+        bottom: 164px;
+    }
 }

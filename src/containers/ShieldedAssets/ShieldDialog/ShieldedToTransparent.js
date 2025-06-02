@@ -173,11 +173,13 @@ const ShieldedToTransparent = (props) => {
                         {props.address && props.address.slice(props.address.length - 6, props.address.length)}
                     </div>
                 </div>
-                {fee && fee.fee
-                ? <div className="fee">
-                    <p>fee:<b>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
-                </div> : null}
+                {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
+            {fee && fee.fee
+                ? <div className="fee">
+                    <p>fee</p>
+                    <p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                </div> : null}
             {inProgress && <CircularProgress className="full_screen"/>}
             <Button
                 disabled={disable}
