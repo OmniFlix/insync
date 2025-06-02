@@ -31,6 +31,10 @@ module.exports = {
             test: /\.wasm$/,
             type: 'asset/resource',
         });
+        config.module.rules.push({
+            test: /\.worker\.js$/,
+            use: { loader: 'worker-loader' },
+        });
 
         // Copy WASM file from node_modules/@namada/sdk/dist to the build folder
         config.plugins = [

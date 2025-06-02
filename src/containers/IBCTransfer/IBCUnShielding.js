@@ -157,7 +157,7 @@ const IBCUnShielding = (props) => {
 
         setParams(true);
         setApproval(true);
-        ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
+        ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, props.details, handleFetch);
     };
 
     const handleSubmit = () => {

@@ -20,6 +20,7 @@ import {
 
 import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
+import { workerBuildTxPair } from 'workers/services';
 
 const chainId = osmosisChainConfig.CHAIN_ID;
 const chainName = osmosisChainConfig.CHAIN_NAME;
@@ -1052,7 +1053,7 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, c
     }
 };
 
-export const shieldedToTransparentTransaction = async (address, Tx, txs, revealPublicKey, type, cb) => {
+export const shieldedToTransparentTransaction = async (address, Tx, txs, revealPublicKey, type, account, cb) => {
     const isExtensionInstalled = typeof window.namada === 'object';
     if (!isExtensionInstalled || !window.namada) {
         const error = 'Download the Namada Extension';
@@ -1075,7 +1076,6 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
 
         const { rpc, tx } = sdk;
 
-        const masp = await fetchMaspParams(sdk, config.CHAIN_ID);
         const checksums = await rpc.queryChecksums();
         if (checksums && Object.keys(checksums).length) {
             Object.keys(checksums).map((key) => {
@@ -1106,8 +1106,34 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
             const revealPkTx = await tx.buildRevealPk(wrapperProps);
             newTxs.push(revealPkTx);
         }
-        const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-        const encoded = await tx.buildUnshieldingTransfer(wrapperTxValue, TransparentTransfer);
+        // const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        // const encoded = await tx.buildUnshieldingTransfer(wrapperTxValue, TransparentTransfer);
+        const encoded =  await workerBuildTxPair({
+            rpcUrl: config.RPC_URL,
+            token: txs.token,
+            buildTxFn: async (workerLink) => {
+            const msgValue = TransparentTransfer;
+            const msg = {
+                type: "unshield",
+                payload: {
+                    account: {
+                        ...account,
+                        publicKey: txs.publicKey,
+                    },
+                    gasConfig: {
+                        gasLimit: txs.gasLimit,
+                        gasPriceInMinDenom: txs.feeAmount,
+                        gasToken: txs.token,
+                    },
+                    props: [msgValue],
+                    chain: txs.chainId,
+                    memo: '',
+                },
+            };
+
+            return (await workerLink.unshield(msg)).payload;
+            },
+        });
         cb(null, null, true);
         newTxs.push(encoded);
 
@@ -1147,7 +1173,7 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
     }
 };
 
-export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb) => {
+export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, account, cb) => {
     const isExtensionInstalled = typeof window.namada === 'object';
     if (!isExtensionInstalled || !window.namada) {
         const error = 'Download the Namada Extension';
@@ -1170,7 +1196,6 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
 
         const { rpc, tx } = sdk;
 
-        const masp = await fetchMaspParams(sdk, config.CHAIN_ID);
         const checksums = await rpc.queryChecksums();
         if (checksums && Object.keys(checksums).length) {
             Object.keys(checksums).map((key) => {
@@ -1211,8 +1236,34 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, cb
             const revealPkTx = await tx.buildRevealPk(wrapperProps);
             newTxs.push(revealPkTx);
         }
-        const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-        const encoded = await tx.buildIbcTransfer(wrapperTxValue, ibcTransfer);
+        // const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        // const encoded = await tx.buildIbcTransfer(wrapperTxValue, ibcTransfer);
+        const encoded =  await workerBuildTxPair({
+            rpcUrl: config.RPC_URL,
+            token: txs.token,
+            buildTxFn: async (workerLink) => {
+            const msgValue = ibcTransfer;
+            const msg = {
+                type: "ibc-transfer",
+                payload: {
+                    account: {
+                        ...account,
+                        publicKey: txs.publicKey,
+                    },
+                    gasConfig: {
+                        gasLimit: txs.gasLimit,
+                        gasPriceInMinDenom: txs.feeAmount,
+                        gasToken: txs.token,
+                    },
+                    props: [msgValue],
+                    chain: txs.chainId,
+                    memo: '',
+                },
+            };
+
+            return (await workerLink.ibcTransfer(msg)).payload;
+            },
+        });
         cb(null, null, true);
         newTxs.push(encoded);
 
@@ -1343,7 +1394,7 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
     }
 };
 
-export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, type, cb) => {
+export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, type, account, cb) => {
     const isExtensionInstalled = typeof window.namada === 'object';
     if (!isExtensionInstalled || !window.namada) {
         const error = 'Download the Namada Extension';
@@ -1366,7 +1417,6 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
 
         const { rpc, tx } = sdk;
 
-        const masp = await fetchMaspParams(sdk, config.CHAIN_ID);
         const checksums = await rpc.queryChecksums();
         if (checksums && Object.keys(checksums).length) {
             Object.keys(checksums).map((key) => {
@@ -1395,43 +1445,53 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
             const revealPkTx = await tx.buildRevealPk(wrapperProps);
             newTxs.push(revealPkTx);
         }
-        // console.log('5555555', tx);
-        // return;
-        const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        // const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
         // const encoded = await tx.buildShieldedTransfer(wrapperTxValue, ibcTransfer);
-        console.log('11111', tx);
-        const queryProps = [ibcTransfer];
-        // const encoded = await tx.buildShieldedTransfer.apply(tx, [wrapperTxValue, ibcTransfer]);
-        Promise.all(
-            queryProps.map((props) => tx.buildShieldedTransfer.apply(tx, [wrapperTxValue, props]))
-        ).then((res) => console.log('444444', res)).finally((encoded) => {
-            console.log('333333', encoded);
-            newTxs.push(encoded);
-            cb(null, null, true);
+        const encoded =  await workerBuildTxPair({
+            rpcUrl: config.RPC_URL,
+            token: txs.token,
+            buildTxFn: async (workerLink) => {
+            const msgValue = ibcTransfer;
+            const msg = {
+                type: "shielded-transfer",
+                payload: {
+                    account: {
+                        ...account,
+                        publicKey: txs.publicKey,
+                    },
+                    gasConfig: {
+                        gasLimit: txs.gasLimit,
+                        gasPriceInMinDenom: txs.feeAmount,
+                        gasToken: txs.token,
+                    },
+                    props: [msgValue],
+                    chain: txs.chainId,
+                    memo: '',
+                },
+            };
 
-            let updateDate;
-            if (type === 'ledger') {
-                updateDate = newTxs;
-            } else {
-                updateDate = tx.buildBatch(newTxs);
-            }
+            return (await workerLink.shieldedTransfer(msg)).payload;
+            },
+        });
+        console.log('encoded', encoded);
+        newTxs.push(encoded);
+        cb(null, null, true);
 
-            client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
-                cb(null, null, null, true);
-                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
-                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                        cb(result.info || result.log || result.rawLog);
-                    } else {
-                        cb(null, result);
-                    }
-                }).catch((error) => {
-                    const message = 'success';
-                    if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                        cb(null, message);
-                    } else {
-                        cb(error && error.message);
-                    }
-                });
+        let updateDate;
+        if (type === 'ledger') {
+            updateDate = newTxs;
+        } else {
+            updateDate = tx.buildBatch(newTxs);
+        }
+
+        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+            cb(null, null, null, true);
+            rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                    cb(result.info || result.log || result.rawLog);
+                } else {
+                    cb(null, result);
+                }
             }).catch((error) => {
                 const message = 'success';
                 if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
@@ -1440,6 +1500,13 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
                     cb(error && error.message);
                 }
             });
+        }).catch((error) => {
+            const message = 'success';
+            if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                cb(null, message);
+            } else {
+                cb(error && error.message);
+            }
         });
     } else {
         return null;
@@ -1471,7 +1538,6 @@ export const getShieldedArgs = async (
 
         const { rpc, tx } = sdk;
 
-        const masp = await fetchMaspParams(sdk, chainId);
         const checksums = await rpc.queryChecksums();
         if (checksums && Object.keys(checksums).length) {
             Object.keys(checksums).map((key) => {
@@ -1481,10 +1547,24 @@ export const getShieldedArgs = async (
             });
         }
 
-        const memo = await tx.generateIbcShieldingMemo(target,
-            token,
-            amount,
-            destinationChannelId);
+        const memo =  await workerBuildTxPair({
+            rpcUrl: config.RPC_URL,
+            token: config.TOKEN_ADDRESS,
+            buildTxFn: async (workerLink) => {
+            const msg = {
+                type: "generate-ibc-shielding-memo",
+                payload: {
+                    target,
+                    token,
+                    amount,
+                    destinationChannelId,
+                    chainId: config.CHAIN_ID,
+                },
+            };
+
+            return (await workerLink.generateIbcShieldingMemo(msg)).payload;
+            },
+        });
         const receiver = sdk.masp.maspAddress();
         return { memo, receiver };
     } else {

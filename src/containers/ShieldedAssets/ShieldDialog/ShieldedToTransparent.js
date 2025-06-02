@@ -67,7 +67,7 @@ const ShieldedToTransparent = (props) => {
 
         setParams(true);
         setApproval(true);
-        shieldedToTransparentTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
+        shieldedToTransparentTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, props.details, handleFetch);
     };
 
     const handleFetch = (error, value, params, approval) => {
