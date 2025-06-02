@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfilePopover = (props) => {
     const classes = useStyles();
-
     return (
         <Popover
             disableRestoreFocus
@@ -50,11 +49,19 @@ const ProfilePopover = (props) => {
                 onMouseLeave={props.onClose}
             >
                 <div className="address_section">
-                    <p className="address_heading">Address</p>
+                    <p className="address_heading">Transparent Address</p>
                     <div className="hash_text" title={props.address}>
                         <p className="name">{props.address}</p>
                         {props.address && props.address.slice(props.address.length - 6, props.address.length)}
                         <CopyButton data={props.address}>
+                            {variables[props.lang].copy}
+                        </CopyButton>
+                    </div>
+                    <p className="address_heading">Shielded Address</p>
+                    <div className="hash_text" title={props.address}>
+                        <p className="name">{props.shieldedaddress?.shieldedDetails}</p>
+                        {props.address && props.shieldedaddress?.shieldedDetails.slice(props.shieldedaddress?.shieldedDetails.length - 6, props.shieldedaddress?.shieldedDetails.length)}
+                        <CopyButton data={props.shieldedaddress?.shieldedDetails}>
                             {variables[props.lang].copy}
                         </CopyButton>
                     </div>
@@ -77,6 +84,7 @@ const stateToProps = (state) => {
     return {
         lang: state.language,
         address: state.accounts.address.value,
+        shieldedaddress: state.accounts.address,
     };
 };
 
