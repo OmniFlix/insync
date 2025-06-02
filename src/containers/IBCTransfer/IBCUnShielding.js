@@ -211,19 +211,19 @@ const IBCUnShielding = (props) => {
 
     const disable = !props.amount || props.amount === '';
 
-    let namBalance = null;
-                props.balance && props.balance.length && props.balance.map((val) => {
-                    if (val && val.length) {
-                        val.map((value) => {
-                            if (value === config.TOKEN_ADDRESS) {
-                                namBalance = val[1];
-                            }
-                        });
-                    }
+    // let namBalance = null;
+    //             props.balance && props.balance.length && props.balance.map((val) => {
+    //                 if (val && val.length) {
+    //                     val.map((value) => {
+    //                         if (value === config.TOKEN_ADDRESS) {
+    //                             namBalance = val[1];
+    //                         }
+    //                     });
+    //                 }
             
-                    return null;
-                });
-    const available = namBalance && namBalance / 10 ** config.COIN_DECIMALS;
+    //                 return null;
+    //             });
+    // const available = namBalance && namBalance / 10 ** config.COIN_DECIMALS;
 
     return (
         <div className="transfer_dialog">
@@ -241,7 +241,7 @@ const IBCUnShielding = (props) => {
                     </p>
                     <span className="balance_span">
                         <p>Available </p>
-                        <p>{available}{' '}{config.COIN_DENOM}</p>
+                        <p>{namadaBalance}{' '}{config.COIN_DENOM}</p>
                     </span>
                     
                 </div>
@@ -252,7 +252,11 @@ const IBCUnShielding = (props) => {
                 </div>
                 {fromNamadaSelectedConfig
                     ? <div className="shielded_tokens_secion">
-                        <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                        {/* <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p> */}
+                        <span className="available_balance">
+                            <p>Available</p>
+                            <p>{namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>                        
+                        </span>
                         <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
                     </div> : null}
             </div>
@@ -288,7 +292,7 @@ const IBCUnShielding = (props) => {
             </div>
             {fee && fee.fee
                     ? <div className="fee">
-                        <p>fee:<b>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
+                        <p>fee:<p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
                     </div> : null}
             <Button
                 className="submit_button"

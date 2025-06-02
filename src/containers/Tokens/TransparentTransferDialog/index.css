@@ -52,7 +52,7 @@
     line-height: 20px; /* 142.857% */
 }
 
-.ibc_transfer_dialog .section1 .row1 .available {
+.ibc_transfer_dialog .section1 .row1 .available_balance {
     color: #BFBFBF;
     font-family: Inter;
     font-size: 12px;
@@ -199,19 +199,23 @@
     font-style: normal;
     font-weight: 400;
     line-height: 20px; /* 125% */
-    display: flex
-;
+    display: flex;
     align-items: center;
     gap: 4px;
 }
 
 .ibc_transfer_dialog .section5 .left_section > span {
-    color: #FFF;
-    font-family: 'Blinker', sans-serif;
     font-size: 16px;
-    font-style: normal;
+    font-weight: 400;
+    color: #FFFFFF80;
+    font-family: 'Blinker', sans-serif;
+}
+
+.ibc_transfer_dialog .section5 .left_section > p {
+    font-size: 16px;
     font-weight: 600;
-    line-height: 20px; /* 125% */
+    color: #FFFFFF;
+    font-family: 'Blinker', sans-serif;
 }
 
 .ibc_transfer_dialog .actions {

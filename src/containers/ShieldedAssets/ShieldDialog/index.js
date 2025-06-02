@@ -187,7 +187,8 @@ const ShieldDialog = (props) => {
             </div>
             {fee && fee.fee
                 ? <div className="fee">
-                    <p>fee:<b>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
+                    <p>fee</p>
+                    <p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
             {inProgress && <CircularProgress className="full_screen"/>}
             <Button

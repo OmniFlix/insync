@@ -101,7 +101,8 @@
     justify-content: center;
 }
 
-.transfer_source .available_balance {
+.transfer_source .available_balance,
+.transfer_source .shielded_tokens_secion .available_balance {
     display: flex;
     flex-direction: row;
     gap: 5px;
@@ -110,14 +111,16 @@
     margin-top: 5px;
 }
 
-.available_balance > p:first-child {
+.available_balance > p:first-child,
+.transfer_source .shielded_tokens_secion .available_balance > p:first-child {
     color: #BFBFBF;
     font-size: 12px;
     font-weight: 500;
     font-family: 'Blinker', sans-serif;
 }
 
-.available_balance > p:last-child {
+.available_balance > p:last-child,
+.transfer_source .shielded_tokens_secion .available_balance > p:last-child {
     color: #FFFF46;
     font-size: 12px;
     font-weight: 500;

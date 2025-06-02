@@ -143,7 +143,7 @@ class ShieldedTransferDialog extends React.Component {
                     <div className="section1">
                         <div className="row1">
                             <div className="text">Asset</div>
-                            <div className="available">
+                            <div className="available_balance">
                                 <span>Available</span>
                                 <p>{amount}{' '}{this.props.value?.symbol}</p>
                             </div>
@@ -178,7 +178,7 @@ class ShieldedTransferDialog extends React.Component {
                     ? <div className="section5">
                             <div className="left_section">
                                 <span>Fee</span>
-                                {formatCount(fee.fee * fee.shieldedgas)}{' '} {fromSelectedConfig.COIN_DENOM}
+                                <p>{formatCount(fee.fee * fee.shieldedgas)}{' '} {fromSelectedConfig.COIN_DENOM}</p>
                             </div>
                             {/* <div className="right_section">
                                 <span>Fee options</span>

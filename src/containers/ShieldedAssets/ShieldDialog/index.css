@@ -276,7 +276,22 @@
     border-radius: 0px;
     margin-top: 0px;
     display: flex;
-    justify-content: flex-start;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.shield_dialog .fee > p:first-child {
+    font-size: 16px;
+    font-weight: 400;
+    color: #FFFFFF80;
+    font-family: 'Blinker', sans-serif;
+}
+
+.shield_dialog .fee > p:last-child {
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+    font-family: 'Blinker', sans-serif;
 }
 
 @media (max-width: 600px) {
