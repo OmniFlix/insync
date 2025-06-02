@@ -1400,6 +1400,7 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
         newTxs.push(encoded);
         cb(null, null, true);
 
+        console.log('encoded', encoded);
         let updateDate;
         if (type === 'ledger') {
             updateDate = newTxs;
@@ -1407,6 +1408,7 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
             updateDate = tx.buildBatch(newTxs);
         }
 
+        console.log('updateDate', updateDate, address, checksums);
         client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
             cb(null, null, null, true);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
