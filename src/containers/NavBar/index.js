@@ -493,6 +493,11 @@ class NavBar extends Component {
                                         onClose={this.handleProfilePopoverClose}
                                     />
                                 )}
+                                <ProfilePopover
+                                        anchorEl={profileAnchorEl}
+                                        open={profileOpen}
+                                        onClose={this.handleProfilePopoverClose}
+                                    />
                             </div>)
                             : <Button
                                 className="connect_button"
