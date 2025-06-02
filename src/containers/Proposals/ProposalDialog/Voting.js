@@ -19,6 +19,7 @@ import BigNumber from 'bignumber.js';
 
 const Voting = (props) => {
     const [value, setValue] = React.useState('');
+    const [approval, setApproval] = React.useState(false);
     const [inProgress, setInProgress] = React.useState(false);
 
     const handleChange = (event) => {
@@ -62,11 +63,17 @@ const Voting = (props) => {
             publicKey: props.details && props.details.publicKey,
         };
 
+        setApproval(true);
         voteTransaction(tx, txs, props.details && props.details.type, handleFetch);
     };
 
-    const handleFetch = (error, result) => {
+    const handleFetch = (error, result, approval) => {
+        if (approval) {
+            setApproval(false);
+            return;
+        }
         setInProgress(false);
+        setApproval(false);
         if (error) {
             if (error.indexOf('not yet found on the chain') > -1) {
                 props.pendingDialog();
@@ -116,8 +123,12 @@ const Voting = (props) => {
                         disabled={disable}
                         variant="contained"
                         onClick={handleVote}>
-                        {inProgress ? <CircularProgress/>
-                            : 'Confirm'}
+                        {approval
+                            ? 'Approval pending...'
+                            : inProgress
+                                ? 'InProgress...' : 'Confirm'}
+                        {/* {inProgress ? <CircularProgress/>
+                            : 'Confirm'} */}
                     </Button>
                 </div>
             </form>

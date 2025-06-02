@@ -34,7 +34,26 @@ const ToValidatorSelectField = (props) => {
             }
         });
     } else {
-        validatorList = dataToMap;
+        let newData = [];
+        if (validatorList && validatorList.length) {
+            validatorList.map((val) => {
+                if (val && val.name && val.name.toLowerCase() === 'cosmic validator') {
+                    newData.splice(0, 0, val);
+                } else if (val && val.name && val.name.toLowerCase() === 'mandragora') {
+                    const find = newData.find((val1) => val1 && val1.name && val1.name.toLowerCase() === 'cosmic validator');
+                    if (!find) {
+                        newData.splice(0, 0, val);
+                    } else {
+                        newData.splice(1, 0, val);
+                    }
+                } else {
+                    newData.push(val);
+                }
+            });
+        } else {
+            newData = dataToMap;
+        }
+        validatorList = newData;
     }
 
     return (
@@ -48,9 +67,9 @@ const ToValidatorSelectField = (props) => {
                 validatorList.map((item, index) => {
                     return (
                         props.removeValue !== item.operator_address && <MenuItem
-                            key={item.key || item.value || item.name || item.address || item.type ||
-                                    item.operator_address}
-                            value={item.value || item.name || item.address || item.type ||
+                            key={item.key || item.value || item.name || item.type ||
+                                    item.address || item.operator_address}
+                            value={item.address || item.name || item.type ||
                                     (item.operator_address)}>
                             {item && item.avatar
                                 ? <img

@@ -21,6 +21,8 @@ const AmountTextField = (props) => {
         if (amount > 0.5) {
             amount = amount - 0.05;
         }
+    } else if (props.from === 'withdraw_shielded') {
+        amount = props.amount;
     } else {
         amount = props.data && props.data.balance && props.data.balance.minDenomAmount;
         if (props.data && props.data.config && props.data.config.COIN_DECIMALS) {
@@ -58,6 +60,7 @@ AmountTextField.propTypes = {
     selectedChain: PropTypes.object,
     value: PropTypes.number,
     valid: PropTypes.bool,
+    amount: PropTypes.any,
 };
 
 const stateToProps = (state) => {

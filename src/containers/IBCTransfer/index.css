@@ -437,7 +437,7 @@
 .transfer_dialog .tokens_secion {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     gap: 10px;
     padding: 5px 16px 16px 16px;

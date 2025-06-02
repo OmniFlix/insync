@@ -13,7 +13,6 @@ import BigNumber from 'bignumber.js';
 import { shieldedToTransparentTransaction } from 'helper';
 import CircularProgress from 'components/CircularProgress';
 import { UnshieldingTransferDataMsgValue } from '@harish551/namada-types';
-import variables from 'utils/variables';
 import { getBalance, getShieldedBalance } from 'actions/accounts';
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';
 import { showMessage } from 'actions/snackbar';
@@ -24,16 +23,16 @@ import { fetchIBCBalance } from 'actions/IBCTransfer';
 
 const ShieldedToTransparent = (props) => {
     const [inProgress, setInProgress] = useState(false);
+    const [approval, setApproval] = useState(false);
+    const [params, setParams] = useState(false);
     const handleSubmit = () => {
         setInProgress(true);
 
-        // const source = props.shieldedAddress;
         const source = props.shieldedData?.pseudoExtendedKey;
         let token = config.TOKEN_ADDRESS;
         let amount = new BigNumber(props.amount);
         if (props.selectedAsset?.balance) {
             amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
-            // amount = new BigNumber(props.amount);
             token = props.selectedAsset?.tokenAddress;
         }
 
@@ -55,7 +54,6 @@ const ShieldedToTransparent = (props) => {
             gasLimit: new BigNumber(fee?.shieldedgas || 152624),
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
-            // publicKey: props.disposableSigner && props.disposableSigner.publicKey,
         };
 
         if (props.selectedAsset?.balance) {
@@ -67,12 +65,25 @@ const ShieldedToTransparent = (props) => {
             }
         }
 
+        setParams(true);
+        setApproval(true);
         shieldedToTransparentTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
     };
 
-    const handleFetch = (error, value) => {
+    const handleFetch = (error, value, params, approval) => {
+        if (approval) {
+            setApproval(false);
+            return;
+        }
+        if (params) {
+            setParams(false);
+            return;
+        }
+
         if (error) {
             setInProgress(false);
+            setParams(false);
+            setApproval(false);
             if (error.indexOf('not yet found on the chain') > -1) {
                 props.pendingDialog();
                 return;
@@ -96,6 +107,8 @@ const ShieldedToTransparent = (props) => {
                 props.getBalance(props.address);
                 props.successDialog(res1.hash);
                 setInProgress(false);
+                setParams(false);
+                setApproval(false);
             } else {
                 handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
             }
@@ -171,9 +184,12 @@ const ShieldedToTransparent = (props) => {
             <Button
                 disabled={disable}
                 onClick={handleSubmit}>
-                {inProgress
-                    ? variables[props.lang]['approval_pending']
-                    : 'Submit'}
+                {params
+                    ? 'Generating MASP Parameters...'
+                    : approval
+                        ? 'Approval pending...'
+                        : inProgress
+                            ? 'InProgress...' : 'Submit'}
             </Button>
         </div>
     );

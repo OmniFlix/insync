@@ -14,7 +14,6 @@ import BigNumber from 'bignumber.js';
 import { maspTransaction } from 'helper';
 import CircularProgress from 'components/CircularProgress';
 import { ShieldingTransferDataMsgValue } from '@harish551/namada-types';
-import variables from 'utils/variables';
 import { getBalance } from 'actions/accounts';
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';
 import { showMessage } from 'actions/snackbar';
@@ -24,6 +23,8 @@ import { hideTransparentTokensConvertDialog } from 'actions/assets';
 
 const ShieldDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
+    const [approval, setApproval] = useState(false);
+    const [params, setParams] = useState(false);
     const handleSubmit = () => {
         setInProgress(true);
 
@@ -63,12 +64,25 @@ const ShieldDialog = (props) => {
             }
         }
 
+        setParams(true);
+        setApproval(true);
         maspTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
     };
 
-    const handleFetch = (error, value) => {
+    const handleFetch = (error, value, params, approval) => {
+        if (approval) {
+            setApproval(false);
+            return;
+        }
+        if (params) {
+            setParams(false);
+            return;
+        }
+
         if (error) {
             setInProgress(false);
+            setParams(false);
+            setApproval(false);
             if (error.indexOf('not yet found on the chain') > -1) {
                 props.pendingDialog();
                 return;
@@ -109,6 +123,8 @@ const ShieldDialog = (props) => {
 
                     if (localBalance !== available) {
                         setInProgress(false);
+                        setParams(false);
+                        setApproval(false);
                         clearInterval(intervalTime);
                         props.successDialog(value && value.hash);
                         props.hideTransparentTokensConvertDialog();
@@ -120,6 +136,8 @@ const ShieldDialog = (props) => {
         if (intervalTime) {
             setTimeout(() => {
                 setInProgress(false);
+                setParams(false);
+                setApproval(false);
                 clearInterval(intervalTime);
             }, 60000);
         }
@@ -194,9 +212,12 @@ const ShieldDialog = (props) => {
             <Button
                 disabled={disable}
                 onClick={handleSubmit}>
-                {inProgress
-                    ? variables[props.lang]['approval_pending']
-                    : 'Submit'}
+                {params
+                    ? 'Generating MASP Parameters...'
+                    : approval
+                        ? 'Approval pending...'
+                        : inProgress
+                            ? 'InProgress...' : 'Submit'}
             </Button>
         </div>
     );
