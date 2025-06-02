@@ -960,7 +960,7 @@ const fetchMaspParams = async (sdk, chainId) => {
     });
 };
 
-export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, cb) => {
+export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, account, cb) => {
     const isExtensionInstalled = typeof window.namada === 'object';
     if (!isExtensionInstalled || !window.namada) {
         const error = 'Download the Namada Extension';
@@ -1012,8 +1012,35 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, c
             const revealPkTx = await tx.buildRevealPk(wrapperProps);
             newTxs.push(revealPkTx);
         }
-        const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-        const encoded = await tx.buildShieldingTransfer(wrapperTxValue, shieldingTransfer);
+        // const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
+        // const encoded = await tx.buildShieldingTransfer(wrapperTxValue, shieldingTransfer);
+        const encoded =  await workerBuildTxPair({
+            rpcUrl: config.RPC_URL,
+            token: txs.token,
+            buildTxFn: async (workerLink) => {
+            const msgValue = shieldingTransfer;
+            const msg = {
+                type: "shield",
+                payload: {
+                    account: {
+                        ...account,
+                        publicKey: txs.publicKey,
+                    },
+                    gasConfig: {
+                        gasLimit: txs.gasLimit,
+                        gasPriceInMinDenom: txs.feeAmount,
+                        gasToken: txs.token,
+                    },
+                    props: [msgValue],
+                    chain: txs.chainId,
+                    revealPublicKey,
+                    memo: '',
+                },
+            };
+
+            return (await workerLink.shield(msg)).payload;
+            },
+        });
         cb(null, null, true);
         newTxs.push(encoded);
 

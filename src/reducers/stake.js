@@ -163,6 +163,7 @@ const successDialog = (state = {
     open: false,
     hash: '',
     config: {},
+    ibcToken: {},
 }, action) => {
     switch (action.type) {
     case DELEGATE_SUCCESS_DIALOG_SHOW:
@@ -170,12 +171,14 @@ const successDialog = (state = {
             open: true,
             hash: action.value,
             config: action.config,
+            ibcToken: action.ibcToken,
         };
     case DELEGATE_SUCCESS_DIALOG_HIDE:
         return {
             open: false,
             hash: '',
             config: {},
+            ibcToken: {},
         };
     default:
         return state;

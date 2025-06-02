@@ -119,7 +119,7 @@ class ShieldedTransferDialog extends React.Component {
             if (resultBalance !== balance) {
                 this.props.fetchIBCBalance(ibcConfig?.REST_URL, this.props.ibcTransferAddress);
                 this.props.getBalance(this.props.address);
-                this.props.successDialog(res1.hash);
+                this.props.successDialog(res1.hash, null, ibcConfig);
                 this.setState({ inProgress: false, params: false, approval: false });
             } else {
                 handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);

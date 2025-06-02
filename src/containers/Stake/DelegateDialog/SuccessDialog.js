@@ -94,7 +94,7 @@ const SuccessDialog = (props) => {
             open={props.open}
             onClose={handleClose}>
             <DialogContent className="content">
-                <div className="heading">
+                <div className="heading" style={{ width: '100%' }}>
                     <img alt="success" src={success}/>
                     {props.shielded
                         ? <h1>Tokens Shielded Successfully</h1>
@@ -141,16 +141,16 @@ const SuccessDialog = (props) => {
                             </div>
                             <div className="row">
                                 <p>{variables[props.lang].tokens}</p>
-                                {props.ibcConfig && props.ibcConfig.COIN_DENOM
+                                {props.ibcConfig && props.ibcConfig.COIN_DENOM && props.ibcTokens && Number(props.ibcTokens) > 0
                                     ? <p>{props.ibcTokens
                                         ? Number(props.ibcTokens).toFixed(4) + ' ' + props.ibcConfig.COIN_DENOM
                                         : null}</p>
                                         : props.tokensTransferAmount && Number(props.tokensTransferAmount) > 0
-                                            ? <p>{Number(props.tokensTransferAmount).toFixed(4) + ' ' + config.COIN_DENOM}</p>
+                                            ? <p>{Number(props.tokensTransferAmount).toFixed(4) + ' ' + (props.ibcTokenConfig?.COIN_DENOM || config.COIN_DENOM)}</p>
                                             : props.shieldedTokens && Number(props.shieldedTokens) > 0
-                                            ? <p>{Number(props.shieldedTokens).toFixed(4) + ' ' + config.COIN_DENOM}</p>
-                                    : <p>{props.ibcTokens
-                                        ? Number(props.ibcTokens).toFixed(4) + ' ' + config.COIN_DENOM
+                                            ? <p>{Number(props.shieldedTokens).toFixed(4) + ' ' + (props.ibcTokenConfig?.COIN_DENOM || config.COIN_DENOM)}</p>
+                                    : <p>{props.ibcTokens && Number(props.ibcTokens) > 0
+                                        ? Number(props.ibcTokens).toFixed(4) + ' ' + (props.ibcTokenConfig?.COIN_DENOM || config.COIN_DENOM)
                                         : null}</p>}
                             </div>
                         </>
@@ -339,6 +339,7 @@ SuccessDialog.propTypes = {
     validatorImages: PropTypes.array.isRequired,
     address: PropTypes.string,
     ibcTokens: PropTypes.any,
+    ibcTokenConfig: PropTypes.any,
     tokensTransferAmount: PropTypes.any,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
@@ -371,6 +372,7 @@ const stateToProps = (state) => {
         lang: state.language,
         open: state.stake.successDialog.open,
         ibcConfig: state.stake.successDialog.config,
+        ibcTokenConfig: state.stake.successDialog.ibcToken,
         hash: state.stake.successDialog.hash,
         name: state.stake.delegateDialog.name,
         validator: state.stake.validator.value,

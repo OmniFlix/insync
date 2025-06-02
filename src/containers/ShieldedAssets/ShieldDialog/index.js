@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js';
 import { maspTransaction } from 'helper';
 import CircularProgress from 'components/CircularProgress';
 import { ShieldingTransferDataMsgValue } from '@harish551/namada-types';
-import { getBalance } from 'actions/accounts';
+import { fetchBalanceList, getBalance, getShieldedBalance } from 'actions/accounts';
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';
 import { showMessage } from 'actions/snackbar';
 import { feeList } from 'dummy/ibcList';
@@ -66,7 +66,7 @@ const ShieldDialog = (props) => {
 
         setParams(true);
         setApproval(true);
-        maspTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
+        maspTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, props.details, handleFetch);
     };
 
     const handleFetch = (error, value, params, approval) => {
@@ -91,31 +91,16 @@ const ShieldDialog = (props) => {
             props.showMessage(error);
             return;
         }
-        let balance = null;
-        props.balance && props.balance.length && props.balance.map((val) => {
-            if (val && val.length) {
-                val.map((value) => {
-                    if (value === config.TOKEN_ADDRESS) {
-                        balance = val[1];
-                    }
-                });
-            }
 
-            return null;
-        });
-
-        const available = balance;
+        const available = props.selectedAsset?.balance?.minDenomAmount;
+        const token = props.selectedAsset?.balance?.tokenAddress;
         const intervalTime = setInterval(() => {
-            props.getBalance(props.address, (result) => {
+            props.fetchBalanceList(props.address, (result) => {
                 if (result && result.length) {
                     let localBalance = null;
                     result && result.length && result.map((val) => {
-                        if (val && val.length) {
-                            val.map((value) => {
-                                if (value === config.TOKEN_ADDRESS) {
-                                    localBalance = val[1];
-                                }
-                            });
+                        if (val && val.tokenAddress === token) {
+                            localBalance = val.minDenomAmount;
                         }
 
                         return null;
@@ -126,8 +111,9 @@ const ShieldDialog = (props) => {
                         setParams(false);
                         setApproval(false);
                         clearInterval(intervalTime);
-                        props.successDialog(value && value.hash);
-                        props.hideTransparentTokensConvertDialog();
+                        props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
+                        props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID);
+                        // props.hideTransparentTokensConvertDialog();
                     }
                 }
             });
@@ -139,7 +125,9 @@ const ShieldDialog = (props) => {
                 setParams(false);
                 setApproval(false);
                 clearInterval(intervalTime);
-            }, 60000);
+                props.fetchBalanceList(props.address);
+                props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
+            }, 30000);
         }
     };
 
@@ -228,6 +216,8 @@ ShieldDialog.propTypes = {
     details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    fetchBalanceList: PropTypes.func.isRequired,
+    getShieldedBalance: PropTypes.func.isRequired,
     hideTransparentTokensConvertDialog: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
@@ -240,6 +230,7 @@ ShieldDialog.propTypes = {
     amountValid: PropTypes.bool,
     revealPublicKey: PropTypes.object,
     selectedAsset: PropTypes.object,
+    shieldedData: PropTypes.object,
     shieldedAddress: PropTypes.string,
 };
 
@@ -254,12 +245,15 @@ const stateToProps = (state) => {
         shieldedAddress: state.accounts.address.shieldedDetails,
         revealPublicKey: state.accounts.revealPublicKey.result,
         selectedAsset: state.shieldedAssets.selectedAsset.result,
+        shieldedData: state.accounts.address.shieldedData,
     };
 };
 
 const actionToProps = {
     setAmount,
     getBalance,
+    fetchBalanceList,
+    getShieldedBalance,
     successDialog: showDelegateSuccessDialog,
     failedDialog: showDelegateFailedDialog,
     pendingDialog: showDelegateProcessingDialog,

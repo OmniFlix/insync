@@ -85,6 +85,7 @@ class TransparentTransferDialog extends React.Component {
             return;
         }
 
+        const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         const selectedBalance = this.props.value && this.props.value.balance;
         const tokenAddress = selectedBalance.tokenAddress;
         const balance = selectedBalance.minDenomAmount;
@@ -99,7 +100,7 @@ class TransparentTransferDialog extends React.Component {
             return;
         }
 
-        this.props.successDialog(value && value.hash);
+        this.props.successDialog(value && value.hash, null, fromSelectedConfig);
         this.setState({ inProgress: false, approval: false });
         this.props.fetchBalanceList(this.props.address);
         this.props.getBalance(this.props.address);

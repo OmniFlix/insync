@@ -82,7 +82,7 @@ class NavBar extends Component {
             setTimeout(() => {
                 this.handleNamada(true);
             }, 600);
-        } else if (localStorage.getItem('of_co_address')) {
+        } else if (localStorage.getItem('namada_keplr_address')) {
             setTimeout(() => {
                 this.initKeplr();
             }, 600);
@@ -368,19 +368,19 @@ class NavBar extends Component {
 
             if (error) {
                 this.props.showMessage(error);
-                localStorage.removeItem('of_co_address');
+                localStorage.removeItem('namada_keplr_address');
 
                 return;
             }
 
-            const previousAddress = localStorage.getItem('of_co_address') &&
-                decode(localStorage.getItem('of_co_address'));
+            const previousAddress = localStorage.getItem('namada_keplr_address') &&
+                decode(localStorage.getItem('namada_keplr_address'));
             this.props.setAccountAddress(addressList && addressList.address);
             if (fetch) {
                 this.handleFetch(addressList && addressList.address);
             }
             if (addressList && previousAddress !== addressList.address) {
-                localStorage.setItem('of_co_address', encode(addressList && addressList.address));
+                localStorage.setItem('namada_keplr_address', encode(addressList && addressList.address));
             }
         });
     }
