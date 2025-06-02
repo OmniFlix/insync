@@ -211,7 +211,7 @@ const IBCUnShielding = (props) => {
             if (resultBalance !== balance) {
                 props.fetchIBCBalance(ibcConfig?.REST_URL, props.ibcTransferAddress);
                 props.getBalance(props.address);
-                props.showDelegateSuccessDialog(res1.hash);
+                props.showDelegateSuccessDialog(res1.hash, null, ibcConfig);
                 setInProgress(false);
                 setParams(false);
                 setApproval(false);

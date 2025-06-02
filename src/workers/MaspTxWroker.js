@@ -42,15 +42,15 @@ export class Worker {
     return { type: "init-done", payload: null };
   }
 
-//   async shield(m: Shield): Promise<ShieldDone> {
-//     if (!this.sdk) {
-//       throw new Error("SDK is not initialized");
-//     }
-//     return {
-//       type: "shield-done",
-//       payload: await shield(this.sdk, m.payload),
-//     };
-//   }
+  async shield(m) {
+    if (!this.sdk) {
+      throw new Error("SDK is not initialized");
+    }
+    return {
+      type: "shield-done",
+      payload: await shield(this.sdk, m.payload),
+    };
+  }
 
   async unshield(m) {
     if (!this.sdk) {
@@ -152,6 +152,35 @@ async function ibcTransfer(
   return encodedTxData && encodedTxData.txs && encodedTxData.txs.length && encodedTxData.txs[0];
 }
 
+async function shield(
+  sdk,
+  payload
+) {
+  const {
+    publicKeyRevealed,
+    account,
+    gasConfig,
+    chain,
+    props: shieldingProps,
+    memo,
+  } = payload;
+
+  await sdk.masp.loadMaspParams("", chain);
+  const chainId = { chainId: chain };
+  const encodedTxData = await buildTx(
+    sdk,
+    account,
+    gasConfig,
+    chainId,
+    shieldingProps,
+    sdk.tx.buildShieldingTransfer,
+    memo,
+    !publicKeyRevealed
+  );
+
+  return encodedTxData && encodedTxData.txs && encodedTxData.txs.length && encodedTxData.txs[0];
+}
+
 async function unshield(
   sdk,
   payload
@@ -221,8 +250,8 @@ function newSdk(
 }
 
 export const registerTransferHandlers = () => {
-//   registerBNTransferHandler<ShieldDone>("shield-done");
-//   registerBNTransferHandler<Shield>("shield");
+  registerBNTransferHandler("shield-done");
+  registerBNTransferHandler("shield");
   registerBNTransferHandler("shielded-transfer-done");
   registerBNTransferHandler("shielded-transfer");
   registerBNTransferHandler("unshield-done");
