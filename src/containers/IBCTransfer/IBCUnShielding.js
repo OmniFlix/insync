@@ -211,20 +211,6 @@ const IBCUnShielding = (props) => {
 
     const disable = !props.amount || props.amount === '';
 
-    // let namBalance = null;
-    //             props.balance && props.balance.length && props.balance.map((val) => {
-    //                 if (val && val.length) {
-    //                     val.map((value) => {
-    //                         if (value === config.TOKEN_ADDRESS) {
-    //                             namBalance = val[1];
-    //                         }
-    //                     });
-    //                 }
-            
-    //                 return null;
-    //             });
-    // const available = namBalance && namBalance / 10 ** config.COIN_DECIMALS;
-
     return (
         <div className="transfer_dialog">
              <div className="transfer_source">
@@ -252,7 +238,6 @@ const IBCUnShielding = (props) => {
                 </div>
                 {fromNamadaSelectedConfig
                     ? <div className="shielded_tokens_secion">
-                        {/* <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p> */}
                         <span className="available_balance">
                             <p>Available</p>
                             <p>{namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>                        
