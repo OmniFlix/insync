@@ -547,8 +547,10 @@ const IBCTransferDialog = (props) => {
                         ? 'Approval pending...'
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
+                              {(inProgress || approval || params) ? 
+                              <CircularProgress className="action_progress"/> : null}
             </Button>
-            {inProgress && <CircularProgress className="full_screen" text={props.transactionCompleted ? 'Transaction is in progress...' : null}/>}
+            {/* {inProgress && <CircularProgress className="full_screen" text={props.transactionCompleted ? 'Transaction is in progress...' : null}/>} */}
         </div>
     );
 };

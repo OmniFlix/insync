@@ -182,7 +182,7 @@ const ShieldedToTransparent = (props) => {
                     <p>fee</p>
                     <p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
-            {inProgress && <CircularProgress className="full_screen"/>}
+            {/* {inProgress && <CircularProgress className="full_screen"/>} */}
             <Button
                 disabled={disable}
                 onClick={handleSubmit}>
@@ -192,6 +192,8 @@ const ShieldedToTransparent = (props) => {
                         ? 'Approval pending...'
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
+                             {(inProgress || approval || params) ? 
+                              <CircularProgress className="action_progress"/> : null}
             </Button>
         </div>
     );

@@ -307,8 +307,10 @@ const NamadaToIBCTransparentTransfer = (props) => {
                         ? 'Approval pending...'
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
+                              {(params || approval || inProgress) ?
+                               <CircularProgress className="action_progress"/> : null}
             </Button>
-            {inProgress && <CircularProgress className="full_screen"/>}
+            {/* {inProgress && <CircularProgress className="full_screen"/>} */}
         </div>
     );
 };

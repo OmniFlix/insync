@@ -319,6 +319,14 @@
     opacity: 0.5;
 }
 
+.transfer_dialog > button .action_progress {
+    position: absolute;
+}
+
+.transfer_dialog > button .action_progress > div {
+    color: #000;
+}
+
 .transfer_dialog > .arrow {
     display: flex;
     align-items: center;

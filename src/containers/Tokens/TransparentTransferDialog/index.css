@@ -258,3 +258,11 @@
     opacity: 0.5;
     color: rgba(0, 0, 0, 0.26);
 }
+
+.ibc_transfer_dialog .actions button .action_progress {
+    position: absolute;
+}
+
+.ibc_transfer_dialog .actions button .action_progress > div {
+    color: #000;
+}

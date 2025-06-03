@@ -182,13 +182,14 @@ class TransparentTransferDialog extends React.Component {
                                 <span>Fee options</span>
                             </div> */}
                     </div> : null}
-                    {this.state.inProgress && <CircularProgress className="full_screen"/>}
+                    {/* {this.state.inProgress && <CircularProgress className="full_screen"/>} */}
                     <div className="actions">
                         <Button disabled={disable} onClick={this.handleTransfer}>
                             {this.state.approval
                                 ? 'Approval pending...'
                                 : this.state.inProgress
                                     ? 'InProgress...' : 'Transfer'}
+                                      {(this.state.inProgress || this.state.approval) ? <CircularProgress className="action_progress"/> : null}
                         </Button>
                     </div>
                 </div>

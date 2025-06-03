@@ -22,6 +22,40 @@ const Voting = (props) => {
     const [approval, setApproval] = React.useState(false);
     const [inProgress, setInProgress] = React.useState(false);
 
+    React.useEffect(() => {
+        if (!props.voteDetails || !props.proposal) return;
+    
+        const votedOption = props.voteDetails && props.voteDetails.find((vote) =>
+            vote &&
+            (String(vote.proposalId) === String(props.proposal.id) ||
+             (String(vote.proposalId) === '0' && String(props.proposal.id) === '0'))
+        );
+    
+        if (votedOption && votedOption.vote !== undefined) {
+            switch (votedOption.vote) {
+                case 1:
+                case 'yay':
+                    setValue('Yes');
+                    break;
+                case 2:
+                case 'abstain':
+                    setValue('Abstain');
+                    break;
+                case 3:
+                case 'nay':
+                    setValue('No');
+                    break;
+                case 4:
+                case 'VOTE_OPTION_NO_WITH_VETO':
+                    setValue('NoWithVeto');
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [props.voteDetails, props.proposal]);
+
+
     const handleChange = (event) => {
         setValue(event.target.value);
     };
@@ -92,8 +126,7 @@ const Voting = (props) => {
         }
     };
 
-    const disable = value === '';
-
+    const disable = value === '' || approval || inProgress;
     return (
         <div className="proposal_dialog_section3_right">
             <p className="pds3r_heading">Please choose your vote</p>
@@ -127,8 +160,8 @@ const Voting = (props) => {
                             ? 'Approval pending...'
                             : inProgress
                                 ? 'InProgress...' : 'Confirm'}
-                        {/* {inProgress ? <CircularProgress/>
-                            : 'Confirm'} */}
+                        {inProgress || approval ? <CircularProgress className="action_loader"/>
+                            : null}
                     </Button>
                 </div>
             </form>
@@ -148,8 +181,10 @@ Voting.propTypes = {
     pendingDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
+    voteDetails: PropTypes.array.isRequired,
     address: PropTypes.string,
     proposalId: PropTypes.string,
+    proposal: PropTypes.object,
 };
 
 const stateToProps = (state) => {
@@ -157,6 +192,9 @@ const stateToProps = (state) => {
         address: state.accounts.address.value,
         lang: state.language,
         details: state.accounts.address.details,
+
+        voteDetails: state.proposals.voteDetails.value,
+        proposal: state.proposals.dialog.value,
     };
 };
 

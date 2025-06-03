@@ -319,8 +319,10 @@ const IBCUnShielding = (props) => {
                         ? 'Approval pending...'
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
+                            {(inProgress || approval || params) ? 
+                              <CircularProgress className="action_progress"/> : null}
             </Button>
-            {inProgress && <CircularProgress className="full_screen"/>}
+            {/* {inProgress && <CircularProgress className="full_screen"/>} */}
         </div>
     );
 };
