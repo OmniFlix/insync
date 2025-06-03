@@ -1,0 +1,11 @@
+.processing_button .button_div {
+    overflow: hidden;
+    background: #FFFF46;
+    border-radius: inherit;
+    color: #000;
+}
+
+.processing_button .button_div button:disabled {
+    /* opacity: 1; */
+    color: #000;
+}
