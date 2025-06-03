@@ -1,0 +1,33 @@
+.processing_button {
+    /* background: none !important;
+    border-radius: 24px !important; */
+
+    position: relative;
+    display: inline-block;
+    border-radius: 24px;
+    padding: 3px;
+    background: conic-gradient(#FFF 0% 25%, transparent 25% 50%, #FFF 50% 75%, transparent 75% 100%);
+    animation: spin 3s linear infinite;
+    background-size: 400% 400%;
+    background-repeat: no-repeat;
+    background-position: center;
+    overflow: visible;
+    width: 100%;
+}
+
+.processing_button .button_div {
+    overflow: hidden;
+    background: #FFFF46;
+    border-radius: inherit;
+    color: #000;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px !important;
+}
+
+.processing_button .button_div button:disabled {
+    /* opacity: 1; */
+    color: #000;
+}

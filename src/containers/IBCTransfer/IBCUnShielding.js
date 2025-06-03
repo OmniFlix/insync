@@ -34,6 +34,7 @@ import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from './ShieldedSourceSelectField';
+import ProcessingButton from 'components/ProcessingButton';
 
 const IBCUnShielding = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -226,7 +227,7 @@ const IBCUnShielding = (props) => {
     const image = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.logo_URIs && (props.fromNamadaSelectedAsset.logo_URIs.svg || props.fromNamadaSelectedAsset.logo_URIs.png);
     const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
 
-    const disable = !props.amount || props.amount === '';
+    const disable = !props.amount || props.amount === '' || props.amountValid === false;
 
     return (
         <div className="transfer_dialog">
@@ -309,7 +310,21 @@ const IBCUnShielding = (props) => {
                     ? <div className="fee">
                         <p>fee:<p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
                     </div> : null}
-            <Button
+                    {inProgress
+                    ?  <ProcessingButton>
+                    <Button
+                    className="submit_button"
+                    disabled={disable || inProgress}
+                    onClick={handleSubmit}>
+                    {params
+                        ? 'Generating MASP Parameters...'
+                        : approval
+                            ? 'Approval pending...'
+                            : inProgress
+                                ? 'InProgress...' : 'Submit'}
+                </Button>
+                </ProcessingButton>
+            : <Button
                 className="submit_button"
                 disabled={disable || inProgress}
                 onClick={handleSubmit}>
@@ -319,8 +334,8 @@ const IBCUnShielding = (props) => {
                         ? 'Approval pending...'
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
-            </Button>
-            {inProgress && <CircularProgress className="full_screen"/>}
+            </Button>}
+            {/* {inProgress && <CircularProgress className="full_screen"/>} */}
         </div>
     );
 };
@@ -352,6 +367,7 @@ IBCUnShielding.propTypes = {
     fromNamadaSelectedAsset: PropTypes.object.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
+    amountValid: PropTypes.bool,
     ibcBalance: PropTypes.number,
     ibcChannel: PropTypes.object,
     ibcTransferAddress: PropTypes.string,
@@ -372,6 +388,7 @@ const stateToProps = (state) => {
         lang: state.language,
         address: state.accounts.address.value,
         amount: state.ibcTransfer.ibcTransferAmount.value,
+        amountValid: state.ibcTransfer.ibcTransferAmount.valid,
         details: state.accounts.address.details,
         disposableSigner: state.accounts.address.disposableSigner,
         shieldedAddress: state.accounts.address.shieldedDetails,

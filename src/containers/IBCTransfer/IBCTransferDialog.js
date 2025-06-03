@@ -26,6 +26,7 @@ import { getShieldedArgs, ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { hideShieldedTokensDepositDialog, hideTransparentTokensDepositDialog } from 'actions/assets';
+import ProcessingButton from 'components/ProcessingButton';
 
 const IBCTransferDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -537,7 +538,21 @@ const IBCTransferDialog = (props) => {
                             </div> : null}
                     </div>
                 </>}
-            <Button
+                {inProgress
+                ? <ProcessingButton>
+                    <Button
+                        className="submit_button"
+                        disabled={disable || inProgress || props.amountValid === false}
+                        onClick={handleSubmit}>
+                        {params
+                            ? 'Generating MASP Parameters...'
+                            : approval
+                                ? 'Approval pending...'
+                                : inProgress
+                                    ? 'InProgress...' : 'Submit'}
+                    </Button>
+                </ProcessingButton>
+            : <Button
                 className="submit_button"
                 disabled={disable || inProgress || props.amountValid === false}
                 onClick={handleSubmit}>
@@ -547,8 +562,7 @@ const IBCTransferDialog = (props) => {
                         ? 'Approval pending...'
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
-            </Button>
-            {inProgress && <CircularProgress className="full_screen" text={props.transactionCompleted ? 'Transaction is in progress...' : null}/>}
+            </Button>}
         </div>
     );
 };
