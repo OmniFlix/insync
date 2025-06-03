@@ -112,7 +112,7 @@
 
 .shield_dialog > button {
     background: #FFFF46 !important;
-    border-radius: 16px;
+    border-radius: 24px;
     font-family: 'Blinker', sans-serif;
     font-style: normal;
     font-weight: 600;
@@ -124,7 +124,21 @@
     border: 2px solid #000;
 }
 
-.shield_dialog > button:disabled {
+.shield_dialog .submit_button {
+    background: #FFFF46 !important;
+    border-radius: 24px;
+    font-family: 'Blinker', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #000;
+    text-transform: capitalize;
+    padding: 10px 30px;
+}
+
+.shield_dialog > button:disabled,
+.shield_dialog .submit_button:disabled {
     opacity: 0.5;
 }
 

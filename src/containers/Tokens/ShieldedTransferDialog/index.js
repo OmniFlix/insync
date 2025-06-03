@@ -20,6 +20,7 @@ import BigNumber from "bignumber.js";
 import { ibcShieldedTransfer } from "helper";
 import { fetchIBCBalance } from "actions/IBCTransfer";
 import CircularProgress from "components/CircularProgress";
+import ProcessingButton from "components/ProcessingButton";
 
 class ShieldedTransferDialog extends React.Component {
     constructor (props) {
@@ -196,9 +197,11 @@ class ShieldedTransferDialog extends React.Component {
                                 <span>Fee options</span>
                             </div> */}
                     </div> : null}
-                    {this.state.inProgress && <CircularProgress className="full_screen"/>}
+                    {/* {this.state.inProgress && <CircularProgress className="full_screen"/>} */}
                     <div className="actions">
-                        <Button disabled={this.state.inProgress} onClick={this.handleTransfer}>
+                        {this.state.inProgress
+                        ? <ProcessingButton>
+                            <Button disabled={this.state.inProgress} onClick={this.handleTransfer}>
                             {this.state.params
                                 ? 'Generating MASP Parameters...'
                                 : this.state.approval
@@ -206,6 +209,15 @@ class ShieldedTransferDialog extends React.Component {
                                     : this.state.inProgress
                                         ? 'InProgress...' : 'Transfer'}
                         </Button>
+                        </ProcessingButton>
+                        : <Button disabled={this.state.inProgress} onClick={this.handleTransfer}>
+                            {this.state.params
+                                ? 'Generating MASP Parameters...'
+                                : this.state.approval
+                                    ? 'Approval pending...'
+                                    : this.state.inProgress
+                                        ? 'InProgress...' : 'Transfer'}
+                        </Button>}
                     </div>
                 </div>
             </Dialog>

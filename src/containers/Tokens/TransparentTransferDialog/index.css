@@ -255,6 +255,6 @@
 }
 
 .ibc_transfer_dialog .actions button:disabled {
-    opacity: 0.5;
+    /* opacity: 0.5; */
     color: rgba(0, 0, 0, 0.26);
 }

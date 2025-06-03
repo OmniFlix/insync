@@ -20,6 +20,7 @@ import { showMessage } from 'actions/snackbar';
 import { feeList } from 'dummy/ibcList';
 import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensConvertDialog } from 'actions/assets';
+import ProcessingButton from 'components/ProcessingButton';
 
 const ShieldDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -200,7 +201,22 @@ const ShieldDialog = (props) => {
                     <p>fee</p>
                     <p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
-            <Button
+                {inProgress
+                ? <ProcessingButton>
+                    <Button
+                     className="submit_button"
+                        disabled={disable}
+                        onClick={handleSubmit}>
+                        {params
+                            ? 'Generating MASP Parameters...'
+                            : approval
+                                ? 'Approval pending...'
+                                : inProgress
+                                    ? 'InProgress...' : 'Submit'}
+                    </Button>
+                </ProcessingButton>
+                :  <Button
+                className="submit_button"
                 disabled={disable}
                 onClick={handleSubmit}>
                 {params
@@ -209,8 +225,8 @@ const ShieldDialog = (props) => {
                         ? 'Approval pending...'
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
-                    {(inProgress || approval || params) ? <CircularProgress className="action_progress"/> : null}
-            </Button>
+            </Button>}
+           
         </div>
     );
 };

@@ -34,6 +34,7 @@ import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from './ShieldedSourceSelectField';
+import ProcessingButton from 'components/ProcessingButton';
 
 const IBCUnShielding = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -309,7 +310,21 @@ const IBCUnShielding = (props) => {
                     ? <div className="fee">
                         <p>fee:<p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
                     </div> : null}
-            <Button
+                    {inProgress
+                    ?  <ProcessingButton>
+                    <Button
+                    className="submit_button"
+                    disabled={disable || inProgress}
+                    onClick={handleSubmit}>
+                    {params
+                        ? 'Generating MASP Parameters...'
+                        : approval
+                            ? 'Approval pending...'
+                            : inProgress
+                                ? 'InProgress...' : 'Submit'}
+                </Button>
+                </ProcessingButton>
+            : <Button
                 className="submit_button"
                 disabled={disable || inProgress}
                 onClick={handleSubmit}>
@@ -319,8 +334,8 @@ const IBCUnShielding = (props) => {
                         ? 'Approval pending...'
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
-            </Button>
-            {inProgress && <CircularProgress className="full_screen"/>}
+            </Button>}
+            {/* {inProgress && <CircularProgress className="full_screen"/>} */}
         </div>
     );
 };

@@ -5,7 +5,7 @@ import './index.css';
 
 const ProcessingButton = ({ children }) => {
   return (
-    <Box
+    <p
       className='processing_button'
       sx={{
         position: 'relative',
@@ -35,7 +35,7 @@ const ProcessingButton = ({ children }) => {
           }
         `}
       </style>
-    </Box>
+    </p>
   );
 };
 

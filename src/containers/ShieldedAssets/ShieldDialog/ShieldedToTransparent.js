@@ -20,6 +20,7 @@ import { feeList } from 'dummy/ibcList';
 import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from 'containers/IBCTransfer/ShieldedSourceSelectField';
 import { fetchIBCBalance } from 'actions/IBCTransfer';
+import ProcessingButton from 'components/ProcessingButton';
 
 const ShieldedToTransparent = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -182,8 +183,11 @@ const ShieldedToTransparent = (props) => {
                     <p>fee</p>
                     <p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
-            {inProgress && <CircularProgress className="full_screen"/>}
-            <Button
+            {/* {inProgress && <CircularProgress className="full_screen"/>} */}
+            {inProgress
+            ? <ProcessingButton>
+                  <Button
+                  className='submit_button'
                 disabled={disable}
                 onClick={handleSubmit}>
                 {params
@@ -193,6 +197,18 @@ const ShieldedToTransparent = (props) => {
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
             </Button>
+            </ProcessingButton>
+            :   <Button
+            className='submit_button'
+            disabled={disable}
+            onClick={handleSubmit}>
+            {params
+                ? 'Generating MASP Parameters...'
+                : approval
+                    ? 'Approval pending...'
+                    : inProgress
+                        ? 'InProgress...' : 'Submit'}
+        </Button>}
         </div>
     );
 };
