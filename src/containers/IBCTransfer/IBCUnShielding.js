@@ -259,8 +259,9 @@ const IBCUnShielding = (props) => {
                             <p>Available</p>
                             <p>{namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>                        
                         </span>
-                        <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
+                        {/* <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button> */}
                     </div> : null}
+                <Button className="max_button" onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
             </div>
             {/* <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
                 <img alt="TransferIcon" src={TransferIcon}/>
@@ -268,22 +269,30 @@ const IBCUnShielding = (props) => {
             <div className="arrow" style={{ top: '48%', height: 'max-content' }}>
                 <img alt="Arrow" src={DownArrowIcon}/>
             </div>
-            <div className="transfer_destination" style={{ minHeight: 'unset' }}>
+            <div className="shielded_transfer_destination" style={{ minHeight: 'unset' }}>
                 {fromNamadaSelectedConfig
                 ? <div>
-                        <p>
+                        {/* <p>
                             {image && <img alt={props.fromNamadaSelectedAsset?.name} src={image} style={{ width: '24px', height: '24px', marginRight: '8px' }} />}
                             {fromNamadaSelectedConfig.COIN_DENOM}
-                        </p>
-                        <div className="header_right">
-                            <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
+                        </p> */}
+                        <div className="shielded_withdraw_header_right">
+                            {/* <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
                                 {props.ibcTransferAddress
                                     ? <>
                                         <img alt="keplr" src={keplrIcon}/>
                                         {getWrapAddress(props.ibcTransferAddress, 6, 6)}
                                     </>
                                     : 'Connect'}
-                            </Button>
+                            </Button> */}
+                            {props.ibcTransferAddress ? (
+                                <p><img alt="keplr" src={keplrIcon}/>{' '}{getWrapAddress(props.ibcTransferAddress, 6, 6)}</p>
+                            ) 
+                            : ( 
+                            <Button onClick={() => props.showConnectDialog(false, false, true)}>
+                                Connect
+                            </Button>)
+                            }
                             {props.ibcTransferAddress
                                 ? <ExitToAppIcon className="logout_icon" onClick={() => {
                                     localStorage.removeItem('namada_keplr_address');

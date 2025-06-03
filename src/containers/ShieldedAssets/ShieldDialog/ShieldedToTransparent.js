@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import AmountTextField from './AmountTextField';
 import { setAmount } from '../../../actions/shieldedAssets';
 import { config } from '../../../config';
-import DownArrowIcon from '../../../assets/masp/downArrow.svg';
+import DownArrowIcon from '../../../assets/down_arrow_nofill.png';
 import NamadaLogo from '../../../assets/masp/namada_logo.svg';
 import NamadaShieldedLogo from '../../../assets/masp/namada_shielded.svg';
 import BigNumber from 'bignumber.js';
@@ -155,9 +155,11 @@ const ShieldedToTransparent = (props) => {
                 </div>
                 {fromNamadaSelectedConfig
                     ? <div className="tokens_secion">
-                        <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
-                        <Button onClick={() => props.setAmount(namadaBalance)}>Max</Button>
+                        <p>Available {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                        {/* <Button onClick={() => props.setAmount(namadaBalance)}>Max</Button> */}
                     </div> : null}
+                <Button className="max_button" onClick={() => props.setAmount(namadaBalance)}>Max</Button>
+
             </div>
             <div className="arrow">
                 <img alt="Arrow" src={DownArrowIcon}/>

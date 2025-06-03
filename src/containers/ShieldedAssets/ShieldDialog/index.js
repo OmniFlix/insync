@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import AmountTextField from './AmountTextField';
 import { setAmount } from '../../../actions/shieldedAssets';
 import { config } from '../../../config';
-import DownArrowIcon from '../../../assets/masp/downArrow.svg';
+import DownArrowIcon from '../../../assets/down_arrow_nofill.png';
 import SourceSelectField from './SourceSelectField';
 import NamadaLogo from '../../../assets/masp/namada_logo.svg';
 import NamadaShieldedLogo from '../../../assets/masp/namada_shielded.svg';
