@@ -412,12 +412,12 @@ export const delegateTransaction = (Tx, txs, revealPublicKey, type, cb) => {
             const encoded = await tx.buildBond(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
 
-            // const updateDate = tx.buildBatch(newTxs);
-            let updateDate;
+            // const updatedData = tx.buildBatch(newTxs);
+            let updatedData;
             if (type === 'ledger') {
-                updateDate = newTxs;
+                updatedData = newTxs;
             } else {
-                updateDate = tx.buildBatch(newTxs);
+                updatedData = tx.buildBatch(newTxs);
             }
 
             // const checksums = {
@@ -436,7 +436,7 @@ export const delegateTransaction = (Tx, txs, revealPublicKey, type, cb) => {
             //     "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
             // };
 
-            client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
+            client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
                 cb(null, null, true);
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -523,15 +523,15 @@ export const withdrawTransaction = (Tx, txs, revealPublicKey, type, cb) => {
             const encoded = await tx.buildWithdraw(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
 
-            // const updateDate = tx.buildBatch(newTxs);
-            let updateDate;
+            // const updatedData = tx.buildBatch(newTxs);
+            let updatedData;
             if (type === 'ledger') {
-                updateDate = newTxs;
+                updatedData = newTxs;
             } else {
-                updateDate = tx.buildBatch(newTxs);
+                updatedData = tx.buildBatch(newTxs);
             }
 
-            client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
+            client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
                 cb(null, null, true);
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -615,14 +615,14 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
             const encoded = await tx.buildUnbond(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
 
-            let updateDate;
+            let updatedData;
             if (type === 'ledger') {
-                updateDate = newTxs;
+                updatedData = newTxs;
             } else {
-                updateDate = tx.buildBatch(newTxs);
+                updatedData = tx.buildBatch(newTxs);
             }
 
-            client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
+            client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
                 cb(null, null, true);
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -707,14 +707,14 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
             const encoded = await tx.buildRedelegate(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
 
-            let updateDate;
+            let updatedData;
             if (type === 'ledger') {
-                updateDate = newTxs;
+                updatedData = newTxs;
             } else {
-                updateDate = tx.buildBatch(newTxs);
+                updatedData = tx.buildBatch(newTxs);
             }
 
-            client.sign(updateDate, Tx.source, checksums).then((signedBondTxBytes) => {
+            client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
                 cb(null, null, true);
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -811,14 +811,14 @@ export const claimTransaction = (Tx, txs, type, cb) => {
                 address = Tx.source;
             }
 
-            let updateDate;
+            let updatedData;
             if (type === 'ledger') {
-                updateDate = newTxs;
+                updatedData = newTxs;
             } else {
-                updateDate = tx.buildBatch(newTxs);
+                updatedData = tx.buildBatch(newTxs);
             }
 
-            client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+            client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
                 cb(null, null, true);
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -902,14 +902,14 @@ export const voteTransaction = (Tx, txs, type, cb) => {
             const encoded = await tx.buildVoteProposal(wrapperTxValue, bondMsgValue);
             newTxs.push(encoded);
 
-            let updateDate;
+            let updatedData;
             if (type === 'ledger') {
-                updateDate = newTxs;
+                updatedData = newTxs;
             } else {
-                updateDate = tx.buildBatch(newTxs);
+                updatedData = tx.buildBatch(newTxs);
             }
 
-            client.sign(updateDate, Tx.voter, checksums).then((signedBondTxBytes) => {
+            client.sign(updatedData, Tx.voter, checksums).then((signedBondTxBytes) => {
                 cb(null, null, true);
                 rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                     if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -1044,14 +1044,14 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, a
         cb(null, null, true);
         newTxs.push(encoded);
 
-        let updateDate;
+        let updatedData;
         if (type === 'ledger') {
-            updateDate = newTxs;
+            updatedData = newTxs;
         } else {
-            updateDate = tx.buildBatch(newTxs);
+            updatedData = tx.buildBatch(newTxs);
         }
 
-        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+        client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
             cb(null, null, null, true);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -1164,14 +1164,14 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
         cb(null, null, true);
         newTxs.push(encoded);
 
-        let updateDate;
+        let updatedData;
         if (type === 'ledger') {
-            updateDate = newTxs;
+            updatedData = newTxs;
         } else {
-            updateDate = tx.buildBatch(newTxs);
+            updatedData = tx.buildBatch(newTxs);
         }
 
-        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+        client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
             cb(null, null, null, true);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -1294,14 +1294,14 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, ac
         cb(null, null, true);
         newTxs.push(encoded);
 
-        let updateDate;
+        let updatedData;
         if (type === 'ledger') {
-            updateDate = newTxs;
+            updatedData = newTxs;
         } else {
-            updateDate = tx.buildBatch(newTxs);
+            updatedData = tx.buildBatch(newTxs);
         }
 
-        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+        client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
             cb(null, null, null, true);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -1384,14 +1384,14 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
         const encoded = await tx.buildTransparentTransfer(wrapperTxValue, ibcTransfer);
         newTxs.push(encoded);
 
-        let updateDate;
+        let updatedData;
         if (type === 'ledger') {
-            updateDate = newTxs;
+            updatedData = newTxs;
         } else {
-            updateDate = tx.buildBatch(newTxs);
+            updatedData = tx.buildBatch(newTxs);
         }
 
-        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+        client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
             cb(null, null, true);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
@@ -1504,14 +1504,14 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
         newTxs.push(encoded);
         cb(null, null, true);
 
-        let updateDate;
+        let updatedData;
         if (type === 'ledger') {
-            updateDate = newTxs;
+            updatedData = newTxs;
         } else {
-            updateDate = tx.buildBatch(newTxs);
+            updatedData = tx.buildBatch(newTxs);
         }
 
-        client.sign(updateDate, address, checksums).then((signedBondTxBytes) => {
+        client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
             cb(null, null, null, true);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
