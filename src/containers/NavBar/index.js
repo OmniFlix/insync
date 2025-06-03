@@ -48,6 +48,7 @@ import ProfileAvatar from '../../assets/profile_avatar_icon.png';
 // import { init as initShared } from '../../private_modules/namada/shared/init-inline';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
 import syncedIcon from '../../assets/synced.png';
+import variables from 'utils/variables';
 
 const CustomTooltip = withStyles({
     tooltip: {

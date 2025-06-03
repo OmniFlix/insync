@@ -33,6 +33,7 @@ import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
+import variables from 'utils/variables';
 
 const NamadaToIBCTransparentTransfer = (props) => {
     const [inProgress, setInProgress] = useState(false);

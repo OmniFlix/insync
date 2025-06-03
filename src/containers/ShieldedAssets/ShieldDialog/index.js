@@ -20,6 +20,7 @@ import { showMessage } from 'actions/snackbar';
 import { feeList } from 'dummy/ibcList';
 import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensConvertDialog } from 'actions/assets';
+import variables from 'utils/variables';
 
 const ShieldDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);

@@ -15,6 +15,7 @@ import WithdrawIcon from '../../assets/transactions/withdraw.svg';
 import ConvertIcon from '../../assets/transactions/convert.svg';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
 import { setSelectedSource } from 'actions/shieldedAssets';
+import variables from 'utils/variables';
 
 const CustomTooltip = withStyles({
     tooltip: {

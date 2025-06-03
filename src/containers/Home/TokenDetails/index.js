@@ -181,6 +181,7 @@ const stateToProps = (state) => {
         unBondingDelegationsInProgress: state.accounts.unBondingDelegations.inProgress,
         rewards: state.accounts.rewards.result,
         rewardsInProgress: state.accounts.rewards.inProgress,
+        lang: state.language,
     };
 };
 

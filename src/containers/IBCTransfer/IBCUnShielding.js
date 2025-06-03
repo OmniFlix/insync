@@ -34,6 +34,7 @@ import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from './ShieldedSourceSelectField';
+import variables from 'utils/variables';
 
 const IBCUnShielding = (props) => {
     const [inProgress, setInProgress] = useState(false);

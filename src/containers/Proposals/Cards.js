@@ -11,6 +11,7 @@ import { formatCount, tally } from '../../utils/numberFormats';
 import DotsLoading from '../../components/DotsLoading';
 import withRouter from '../../components/WithRouter';
 import { fixDateString } from 'utils/date';
+import variables from 'utils/variables';
 
 const Cards = (props) => {
     const [page, setPage] = useState(1);
@@ -220,6 +221,7 @@ const Cards = (props) => {
 
 Cards.propTypes = {
     handleShow: PropTypes.func.isRequired,
+    lang: PropTypes.string.isRequired,
     proposalDetails: PropTypes.object.isRequired,
     proposalDetailsInProgress: PropTypes.bool.isRequired,
     tallyDetails: PropTypes.object.isRequired,
@@ -240,6 +242,7 @@ const stateToProps = (state) => {
         proposalsInProgress: state.proposals._.inProgress,
         voteDetails: state.proposals.voteDetails.value,
         tallyDetails: state.proposals.tallyDetails.value,
+        lang: state.language,
     };
 };
 

@@ -26,6 +26,7 @@ import { getShieldedArgs, ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { hideShieldedTokensDepositDialog, hideTransparentTokensDepositDialog } from 'actions/assets';
+import variables from 'utils/variables';
 
 const IBCTransferDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);

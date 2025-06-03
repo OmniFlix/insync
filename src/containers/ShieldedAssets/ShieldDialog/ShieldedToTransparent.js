@@ -20,6 +20,7 @@ import { feeList } from 'dummy/ibcList';
 import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from 'containers/IBCTransfer/ShieldedSourceSelectField';
 import { fetchIBCBalance } from 'actions/IBCTransfer';
+import variables from 'utils/variables';
 
 const ShieldedToTransparent = (props) => {
     const [inProgress, setInProgress] = useState(false);
