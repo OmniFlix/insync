@@ -5,9 +5,6 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AssetTabs from './Tabs';
 import ShieldedTokensListTable from './ShieldedTokensListTable';
-import { makeStyles } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import ClassNames from 'classnames';
 import TransparentDepositDialog from './TransparentDepositDialog';
 import TransparentWithdrawDialog from './TransparentWithdrawDialog';
 import TransparentTransferDialog from './TransparentTransferDialog';
@@ -16,11 +13,18 @@ import ShieldedDepositDialog from './ShieldedDepositDialog';
 import ShieldedWithdrawDialog from './ShieldedWithdrawDialog';
 import ShieldedTransferDialog from './ShieldedTransferDialog';
 import ShieldedConvertDialog from './ShieldedConvertDialog';
-import syncProgress from 'assets/syncProgress.gif';
 import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 import ShieldedSyncPercentageText from '../ShieldedSyncPercentage/ShieldedSyncPercentageText';
+import SyncCompleteIcon from '../../assets/sync_complete_tick.png';
+import Button from '@material-ui/core/Button';
+import { reSyncBalance } from '../../actions/accounts';
+import { config } from 'config';
 
 const Tokens = (props) => {
+    const handleReSync = () => {
+        props.reSyncBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID);
+    };
+
     return (
         <>
             <NavBar/>
@@ -30,27 +34,38 @@ const Tokens = (props) => {
                     ? <CircularProgress />
                     : <TokensListTable />}
             </div>}
-            {props.assetsTab === 'shielded' && props.shieldedBalanceProgress && <div className="sync_progress_div">
+            {props.address && props.assetsTab === 'shielded' && <div className="sync_progress_div">
                 <div>
-                    <div className="left_div">
-                        <p>Shielded Sync in Progress</p>
-                        <p>Hang tight, this might take a moment</p>
-                    </div>
-                    <div className="right_div">
-                        <ShieldedSyncPercentageText/>
-                    </div>
+                    {props.shieldedBalanceProgress
+                        ? (
+                            <div className="sync_container">
+                                <div className="left_div">
+                                    <p>Shielded Sync in Progress</p>
+                                    <p>Hang tight, this might take a moment</p>
+                                </div>
+                                <div className="right_div">
+                                    <ShieldedSyncPercentageText/>
+                                </div>
+                            </div>
+                        )
+                        : (
+                            <div className="sync_container">
+                                <div className="success_left_div">
+                                    <img alt="syncComplete" src={SyncCompleteIcon}/>
+                                    <span>
+                                        <p>Shielded synced successfully</p>
+                                        <p>Your shielded balance is now up to date.</p>
+                                    </span>
+                                </div>
+                                <div className="right_div">
+                                    <Button onClick={handleReSync}>Sync Again</Button>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
             </div>}
             {props.assetsTab === 'shielded' && <div className="assets stake padding">
-                {/* {(props.tokensProgress || props.shieldedBalanceProgress) && props.shieldedBalance && !props.shieldedBalance.length
-                    ? <div className='sync_in_progress'> 
-                        <div className='sync_section'>
-                            <img src={syncProgress} alt="Syncing..." className="sync-progress" />
-                            <h2>Shielded Sync in Progress</h2>
-                            <p>Hang tight, this might take a moment</p>
-                        </div>
-                    </div>
-                    :  null} */}
                 <ShieldedTokensListTable inProgress={props.tokensProgress || props.shieldedBalanceProgress}/>
             </div>}
             <TransparentDepositDialog />
@@ -74,10 +89,14 @@ Tokens.propTypes = {
     shieldedBalanceProgress: PropTypes.bool.isRequired,
     shieldedBalance: PropTypes.array.isRequired,
     tokensProgress: PropTypes.bool.isRequired,
+    address: PropTypes.string,
+    reSyncBalance: PropTypes.func,
+    shieldedData: PropTypes.object,
 };
 
 const stateToProps = (state) => {
     return {
+        address: state.accounts.address.value,
         lang: state.language,
         tokensProgress: state.accounts.tokensList.inProgress,
         balanceProgress: state.accounts.balanceList.inProgress,
@@ -85,7 +104,12 @@ const stateToProps = (state) => {
         shieldedBalanceProgress: state.accounts.shieldedBalance.inProgress,
         shieldedBalance: state.accounts.shieldedBalance.result,
         assetsTab: state.assets.assetsTab.value,
+        shieldedData: state.accounts.address.shieldedData,
     };
 };
 
-export default connect(stateToProps)(Tokens);
+const actionToProps = {
+    reSyncBalance,
+};
+
+export default connect(stateToProps, actionToProps)(Tokens);
