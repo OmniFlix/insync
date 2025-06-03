@@ -177,13 +177,16 @@ const ShieldDialog = (props) => {
                     </div>
                 </div>
                 <div className="border"></div>
-                <div className="select_section">
+                <div className="transparent_shield_select_section">
                     <SourceSelectField/>
                     <AmountTextField/>
                 </div>
                 {fromNamadaSelectedConfig
-                    ? <div className="tokens_secion">
-                        <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                    ? <div className="transparent_tokens_secion">
+                        <span>
+                            <p>Available</p>
+                            <p>{namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                        </span>
                         <Button onClick={() => props.setAmount(namadaBalance)}>Max</Button>
                     </div> : null}
             </div>
@@ -201,12 +204,13 @@ const ShieldDialog = (props) => {
                         {props.shieldedAddress && props.shieldedAddress.slice(props.shieldedAddress.length - 6, props.shieldedAddress.length)}
                     </div>
                 </div>
-                {fee && fee.fee
-                ? <div className="fee">
-                    <p>fee:<b>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
-                </div> : null}
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
+            {fee && fee.fee
+                ? <div className="transparent_fee">
+                    <p>fee</p>
+                    <p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                </div> : null}
             {inProgress && <CircularProgress className="full_screen"/>}
             <Button
                 disabled={disable}

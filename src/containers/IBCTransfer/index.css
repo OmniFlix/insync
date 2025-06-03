@@ -347,11 +347,46 @@
     line-height: 22px;
 }
 
-.transfer_dialog .transfer_source .text_field.amount_text_field fieldset {
+/* .transfer_dialog .transfer_source .text_field.amount_text_field fieldset {
     border-color: #FFFFFF05;
-}
+} */
 
 .transfer_dialog .select_section .select_field > div > div {
+    background: #FFFFFF0F;
+    border-radius: 12px;
+    height: 46px;
+    border: 1px solid #FFFFFF05;
+}
+
+.transfer_source .transparent_shield_select_section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.transfer_source .transparent_shield_select_section .select_field > div > div {
+    align-items: center;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: #fff;
+    display: flex;
+    font-family: 'Blinker', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+}
+
+.transfer_source .transparent_shield_select_section .select_field {
+    width: 40%;
+    background: #FFFFFF0F;
+    border-radius: 12px;
+    height: 46px;
+    border: 1px solid #FFFFFF05;
+}
+
+.transfer_source .transparent_shield_select_section .amount_text_field {
+    width: 60%;
     background: #FFFFFF0F;
     border-radius: 12px;
     height: 46px;
@@ -416,7 +451,7 @@
 
 .transfer_dialog .select_field img {
     align-items: center;
-    background: #F0D8FF;
+    /* background: #F0D8FF; */
     border-radius: 50px;
     color: #fff;
     display: flex;
@@ -430,7 +465,7 @@
 .transfer_dialog .tokens_secion {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 10px;
     padding: 5px 16px 16px 16px;
@@ -514,7 +549,8 @@
     background: none;
 }
 
-.transfer_dialog .fee > p {
+.transfer_dialog .fee > p,
+.shield_dialog .transparent_fee > p:first-child {
     color: #696969;
     text-align: center;
     font-family: 'Blinker', sans-serif;
@@ -524,9 +560,20 @@
     line-height: 130%;
 }
 
-.transfer_dialog .fee > p > p {
+.transfer_dialog .fee > p > p,
+.shield_dialog .transparent_fee > p:last-child {
     color: #FFF;
     font-size: 16px;
     font-weight: 600;
     font-family: 'Blinker', sans-serif;
+}
+
+.shield_dialog .transparent_fee {
+    border: none;
+    background: none;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
 }

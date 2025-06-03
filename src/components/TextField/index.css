@@ -29,7 +29,7 @@
 
 .text_field fieldset {
     border-radius: 12px;
-    border-color: #696969;
+    /* border-color: #696969; */
 }
 
 .ex_network .text_field > div:hover fieldset,

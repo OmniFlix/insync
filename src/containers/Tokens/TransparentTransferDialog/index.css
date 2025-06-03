@@ -65,7 +65,7 @@
 } 
 
 .ibc_transfer_dialog .section1 .row1 .available p {
-    color: #528BFF;
+    color: #FFFF46;
 }
 
 .ibc_transfer_dialog .section1 .row2 {
@@ -206,12 +206,21 @@
 }
 
 .ibc_transfer_dialog .section5 .left_section > span {
+    color: #FFFFFF80;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.ibc_transfer_dialog .section5 .left_section > p {
     color: #FFF;
     font-family: 'Blinker', sans-serif;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
-    line-height: 20px; /* 125% */
+    line-height: 20px;
 }
 
 .ibc_transfer_dialog .actions {

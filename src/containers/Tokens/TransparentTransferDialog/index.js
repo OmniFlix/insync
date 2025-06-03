@@ -175,7 +175,7 @@ class TransparentTransferDialog extends React.Component {
                     ? <div className="section5">
                             <div className="left_section">
                                 <span>Fee</span>
-                                {formatCount(fee.fee * fee.gas)}{' '} {fromSelectedConfig.COIN_DENOM}
+                                <p>{formatCount(fee.fee * fee.gas)}{' '} {fromSelectedConfig.COIN_DENOM}</p>
                             </div>
                             {/* <div className="right_section">
                                 <span>Fee options</span>
