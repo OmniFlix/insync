@@ -10,25 +10,6 @@
     position: relative;
 }
 
-/* .assets.stake .table.shielded_table::after {
-    width: 100%;
-    position: absolute;
-    height: 100%;
-    background: #0000009c;
-    content: 'Shielded sync in progress...';
-    left: 0;
-    top: 0;
-    border-radius: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Blinker', sans-serif;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 130%;
-    color: #FFF;
-} */
-
 .assets .leaner_progress {
     width: calc(100% - 48px);
     margin: auto;
@@ -207,6 +188,42 @@
     align-items: center;
 }
 
+.sync_progress_div > div .sync_container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sync_container .right_div > button {
+    height: 47px;
+    max-width: 141px;
+    width: 100%;
+    background: #ffff46;
+    padding: 8px 16px;
+    border-radius: 24px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'Blinker', sans-serif;
+    color: #000;
+}
+
+.sync_container .success_left_div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.success_left_div > span {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
 .sync_progress_div > div .left_div {
     display: flex;
     flex-direction: column;
@@ -214,13 +231,15 @@
     align-items: flex-start;
 }
 
-.sync_progress_div > div .left_div > p:first-child {
+.sync_progress_div > div .left_div > p:first-child,
+.sync_progress_div > div .sync_container .success_left_div > span > p:first-child {
     font-family: 'Blinker', sans-serif;
     font-size: 36px;
     font-weight: 400;
     color: #fff;
 }
-.sync_progress_div > div .left_div > p:last-child {
+.sync_progress_div > div .left_div > p:last-child,
+.sync_progress_div > div .sync_container .success_left_div > span > p:last-child {
     font-family: 'Blinker', sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -316,6 +335,14 @@
     .stake .table {
         margin-top: 0px;
     }
+
+    .sync_container .success_left_div > span > p:first-child {
+        font-size: 24px !important;
+    }
+
+    .sync_container .success_left_div > span > p:last-child {
+        font-size: 14px !important;
+    }
 }
 
 @media (max-width: 680px) {
@@ -356,6 +383,23 @@
         width: 80px !important;
         height: 80px !important;
     }
+
+    .sync_progress_div > div .sync_container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .sync_container .success_left_div {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sync_container .success_left_div > span {
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
 }
 
 @media (max-width: 470px) {
@@ -389,6 +433,18 @@
 
     .stake .tabs > p {
         font-size: 18px;
+    }
+
+    .sync_container .success_left_div > img {
+        width: 40px;
+    }
+
+    .sync_container .success_left_div > span > p:first-child {
+        font-size: 20px !important;
+    }
+
+    .sync_container .success_left_div > span > p:last-child {
+        font-size: 14px !important;
     }
 }
 

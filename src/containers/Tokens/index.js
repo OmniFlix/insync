@@ -19,6 +19,9 @@ import ShieldedConvertDialog from './ShieldedConvertDialog';
 import syncProgress from 'assets/syncProgress.gif';
 import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 import ShieldedSyncPercentageText from '../ShieldedSyncPercentage/ShieldedSyncPercentageText';
+import SyncCompleteIcon from '../../assets/sync_complete_tick.png';
+import Button from '@material-ui/core/Button';
+import { getShieldedBalance } from '../../actions/accounts';
 
 const Tokens = (props) => {
     return (
@@ -30,17 +33,37 @@ const Tokens = (props) => {
                     ? <CircularProgress />
                     : <TokensListTable />}
             </div>}
-            {props.assetsTab === 'shielded' && props.shieldedBalanceProgress && <div className="sync_progress_div">
+            <div className="sync_progress_div">
                 <div>
-                    <div className="left_div">
-                        <p>Shielded Sync in Progress</p>
-                        <p>Hang tight, this might take a moment</p>
-                    </div>
-                    <div className="right_div">
-                        <ShieldedSyncPercentageText/>
-                    </div>
+                    {props.shieldedBalanceProgress
+                        ? (
+                            <div className="sync_container">
+                                <div className="left_div">
+                                    <p>Shielded Sync in Progress</p>
+                                    <p>Hang tight, this might take a moment</p>
+                                </div>
+                                <div className="right_div">
+                                    <ShieldedSyncPercentageText/>
+                                </div>
+                            </div>
+                        )
+                        : (
+                            <div className="sync_container">
+                                <div className="success_left_div">
+                                    <img alt="syncComplete" src={SyncCompleteIcon}/>
+                                    <span>
+                                        <p>Shielded synced successfully</p>
+                                        <p>Your shielded balance is now up to date.</p>
+                                    </span>
+                                </div>
+                                <div className="right_div">
+                                    <Button onClick={props.getShieldedBalance}>Sync Again</Button>
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
-            </div>}
+            </div>
             {props.assetsTab === 'shielded' && <div className="assets stake padding">
                 {/* {(props.tokensProgress || props.shieldedBalanceProgress) && props.shieldedBalance && !props.shieldedBalance.length
                     ? <div className='sync_in_progress'> 
@@ -74,6 +97,7 @@ Tokens.propTypes = {
     shieldedBalanceProgress: PropTypes.bool.isRequired,
     shieldedBalance: PropTypes.array.isRequired,
     tokensProgress: PropTypes.bool.isRequired,
+    getShieldedBalance: PropTypes.func,
 };
 
 const stateToProps = (state) => {
@@ -88,4 +112,8 @@ const stateToProps = (state) => {
     };
 };
 
-export default connect(stateToProps)(Tokens);
+const actionToProps = {
+    getShieldedBalance,
+};
+
+export default connect(stateToProps, actionToProps)(Tokens);
