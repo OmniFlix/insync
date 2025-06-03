@@ -22,7 +22,6 @@ class TransparentConvertDialog extends React.Component {
                         </div>
                         <ShieldDialog/>
                     </div>
-                    <ShieldDialog/>
             </Dialog>
         )
     }
