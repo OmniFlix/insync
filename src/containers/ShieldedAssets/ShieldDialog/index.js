@@ -200,7 +200,6 @@ const ShieldDialog = (props) => {
                     <p>fee</p>
                     <p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
-            {inProgress && <CircularProgress className="full_screen"/>}
             <Button
                 disabled={disable}
                 onClick={handleSubmit}>
@@ -210,6 +209,7 @@ const ShieldDialog = (props) => {
                         ? 'Approval pending...'
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
+                    {(inProgress || approval || params) ? <CircularProgress className="action_progress"/> : null}
             </Button>
         </div>
     );

@@ -128,6 +128,14 @@
     opacity: 0.5;
 }
 
+.shield_dialog > button .action_progress {
+    position: absolute;
+}
+
+.shield_dialog > button .action_progress > div {
+    color: #000;
+}
+
 .shield_dialog > .arrow {
     /* width: 50px;
     height: 50px; */

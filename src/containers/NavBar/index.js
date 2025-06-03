@@ -38,10 +38,7 @@ import {
     getInActiveValidators,
     getValidators,
 } from '../../actions/stake';
-import CopyButton from '../../components/CopyButton/TextButton';
-import variables from '../../utils/variables';
 import { fetchProposalDetails, fetchProposalTally, fetchVoteDetails, getProposals } from '../../actions/proposals';
-import { Button } from '@material-ui/core';
 import ConnectDialog from './ConnectDialog';
 import withRouter from '../../components/WithRouter';
 import ShieldedSyncPercentage from 'containers/ShieldedSyncPercentage';
@@ -49,6 +46,37 @@ import ProfilePopover from './ProfilePopover';
 import ProfileAvatar from '../../assets/profile_avatar_icon.png';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
 // import { init as initShared } from '../../private_modules/namada/shared/init-inline';
+import { Button, withStyles, Tooltip } from '@material-ui/core';
+import syncedIcon from '../../assets/synced.png';
+
+const CustomTooltip = withStyles({
+    tooltip: {
+      maxWidth: '650px',
+      maxHeight: '180px',
+      backgroundColor: '#000000',
+      color: '#ffffff',
+      overflow: 'auto',
+      scrollbarWidth: 'thin',
+      '&::-webkit-scrollbar': {
+        width: '4px',
+      },
+      '&::-webkit-scrollbar-track': {
+        backgroundColor: '#1E1E1E',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#ffffff',
+        borderRadius: '1px',
+      },
+      border: '1px solid #484242',
+      color: '#FFF',
+      fontFamily:  "'Blinker', sans-serif",
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: '500',
+      lineHeight: '130%',
+      padding: '6px 20px',
+    },
+})(Tooltip);
 
 class NavBar extends Component {
     constructor (props) {
@@ -479,6 +507,22 @@ class NavBar extends Component {
                             <Icon className="cross" icon="cross"/>
                         </div>
                         <Tabs/>
+                        {this.props.shieldedBalanceProgress && this.props.address
+                        ?  <CustomTooltip title="Syncing">
+                            <div 
+                            className='sync_progress'>
+                                <div className="blip">
+                                    <span className="starts"/>
+                                </div>
+                            </div>
+                            </CustomTooltip>
+                            : this.props.address
+                            ? <CustomTooltip title="Fully Synced">
+                                <div className="shielded_synced">
+                                    <span className="completed"/>
+                                   {/* <img src={syncedIcon} alt="synced" /> */}
+                                </div>
+                            </CustomTooltip> : null}
                         {localStorage.getItem('of_co_address') || this.props.address
                             ? (<div 
                                 onMouseEnter={this.handleProfilePopoverOpen}
@@ -544,6 +588,7 @@ NavBar.propTypes = {
     proposals: PropTypes.array.isRequired,
     setAccountAddress: PropTypes.func.isRequired,
     setAccountDetails: PropTypes.func.isRequired,
+    shieldedBalanceProgress: PropTypes.bool.isRequired,
     show: PropTypes.bool.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
     showDialog: PropTypes.func.isRequired,
@@ -621,6 +666,8 @@ const stateToProps = (state) => {
         voteDetailsInProgress: state.proposals.voteDetails.inProgress,
         inActiveValidatorsList: state.stake.inActiveValidators.list,
         inActiveValidatorsInProgress: state.stake.inActiveValidators.inProgress,
+
+        shieldedBalanceProgress: state.accounts.shieldedBalance.inProgress,
     };
 };
 
