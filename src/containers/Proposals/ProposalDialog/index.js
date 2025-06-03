@@ -177,7 +177,7 @@ class ProposalDialog extends Component {
                                         <div className="pds3l_c">
                                             <p className="pds3l_c1">Proposer</p>
                                             {this.props.proposal?.author && <div className="pds3l_c2 hash_text" title={this.props.proposal.author}>
-                                                <p className="name">{this.props.proposal.author}</p>
+                                                <p className="name proposal_address">{this.props.proposal.author}</p>
                                                 {this.props.proposal.author &&
                                                     this.props.proposal.author.slice(this.props.proposal.author.length - 6, this.props.proposal.author.length)}
                                             </div>}

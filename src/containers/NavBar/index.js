@@ -67,14 +67,14 @@ const CustomTooltip = withStyles({
         backgroundColor: '#ffffff',
         borderRadius: '1px',
       },
-      border: '1px solid #484242',
       color: '#FFF',
       fontFamily:  "'Blinker', sans-serif",
-      fontSize: '18px',
+      fontSize: '16px',
       fontStyle: 'normal',
-      fontWeight: '500',
+      fontWeight: '600',
       lineHeight: '130%',
-      padding: '6px 20px',
+      padding: '8px 20px',
+      borderRadius: '10px'
     },
 })(Tooltip);
 

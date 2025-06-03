@@ -29,7 +29,8 @@
 .proposal_dialog_section1 {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
+    width: 100%;
 }
 
 .proposal_dialog_section1_header {
@@ -78,6 +79,7 @@
     color: #FFFFFF;
     text-align: left;
     margin-top: 30px;
+    width: 100%;
 }
 
 .proposal_dialog_section3_left .pds3l_c2.vote_details {
@@ -111,6 +113,7 @@
     margin-top: 50px;
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .proposal_dialog_section3_left {
@@ -148,6 +151,11 @@
     text-align: left;
     flex: 1;
     display: flex;
+}
+
+.proposal_dialog_section3_left .pds3l_c2 .name.proposal_address {
+    font-size: unset;
+    font-weight: unset;
 }
 
 .proposal_dialog_section3_left .vp_cards {
@@ -233,6 +241,15 @@
 .voting_card .buttons_div {
     text-align: center;
     margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.voting_card .buttons_div button {
+    height: 52px;
 }
 
 .proposal_dialog .voting_card .cancel_button {
@@ -261,10 +278,19 @@
     padding: 10px 30px;
 }
 
+.proposal_dialog .voting_card .confirm_button .action_loader {
+    position: absolute;
+}
+
+.proposal_dialog .voting_card .confirm_button .action_loader > div {
+    color: #fff;
+}
+
 .proposal_dialog .already_voted {
     display: flex;
     align-items: center;
     margin-left: -40px;
+    width: 100%;
 }
 
 .proposal_dialog .already_voted .icon {
