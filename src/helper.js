@@ -993,9 +993,17 @@ export const maspTransaction = async (address, Tx, txs, revealPublicKey, type, a
             });
         }
 
+        let bparams = undefined;
+        if (type === 'ledger') {
+            const ledger = await sdk.initLedger();
+            bparams = await ledger.getBparams();
+            ledger.closeTransport();
+        }
+
         const shieldingTransfer = new ShieldingTransferMsgValue({
             target: Tx.target,
             data: Tx.data,
+            bparams: bparams,
         });
 
         const wrapperProps = {
@@ -1112,11 +1120,18 @@ export const shieldedToTransparentTransaction = async (address, Tx, txs, revealP
             });
         }
 
+        let bparams = undefined;
+        if (type === 'ledger') {
+            const ledger = await sdk.initLedger();
+            bparams = await ledger.getBparams();
+            ledger.closeTransport();
+        }
+
         const TransparentTransfer = new UnshieldingTransferMsgValue({
             source: Tx.source,
             gasSpendingKey: Tx.source,
             data: Tx.data,
-            // bparams: [],
+            bparams: bparams,
         });
 
         const wrapperProps = {
@@ -1232,6 +1247,13 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, ac
             });
         }
 
+        let bparams = undefined;
+        if (type === 'ledger') {
+            const ledger = await sdk.initLedger();
+            bparams = await ledger.getBparams();
+            ledger.closeTransport();
+        }
+
         const obj = {
             source: Tx.source,
             receiver: Tx.receiver,
@@ -1239,6 +1261,7 @@ export const ibcTransaction = async (address, Tx, txs, revealPublicKey, type, ac
             amountInBaseDenom: Tx.amountInBaseDenom,
             portId: Tx.portId,
             channelId: Tx.channelId,
+            bparams: bparams,
         };
 
         if (Tx.gasSpendingKey) {
@@ -1453,9 +1476,17 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
             });
         }
 
+        let bparams = undefined;
+        if (type === 'ledger') {
+            const ledger = await sdk.initLedger();
+            bparams = await ledger.getBparams();
+            ledger.closeTransport();
+        }
+
         const ibcTransfer = new ShieldedTransferMsgValue({
             data: Tx.data,
             gasSpendingKey: Tx.gasSpendingKey,
+            bparams: bparams,
         });
 
         const wrapperProps = {
