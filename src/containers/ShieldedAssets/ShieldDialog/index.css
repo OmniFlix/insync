@@ -107,7 +107,7 @@
     border: 1px solid #FFFFFF14;
     position: absolute;
     right: 5%;
-    bottom: 63%;
+    bottom: 66%;
 }
 
 .shield_dialog > button {
@@ -382,6 +382,15 @@
         position: absolute;
         right: 5%;
         bottom: 281px;
+    }
+
+    .shield_dialog .transfer_source .max_button {
+        color: #fff;
+        background: #FFFFFF1F;
+        border: 1px solid #FFFFFF14;
+        position: absolute;
+        right: 5%;
+        bottom: 63%;
     }
 }
 
