@@ -65,7 +65,7 @@
 } 
 
 .ibc_transfer_dialog .section1 .row1 .available p {
-    color: #528BFF;
+    color: #FFFF46;
 }
 
 .ibc_transfer_dialog .section1 .row2 {
@@ -93,7 +93,7 @@
     font-weight: 600;
     line-height: 24px; /* 150% */
     width: 40%;
-    height: 41px;
+    height: 46px;
     display: flex;
         align-items: center;
         justify-content: flex-start;
@@ -205,6 +205,17 @@
 }
 
 .ibc_transfer_dialog .section5 .left_section > span {
+    color: #FFFFFF80;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.ibc_transfer_dialog .section5 .left_section > p {
+    color: #FFF;
+    font-family: 'Blinker', sans-serif;
     font-size: 16px;
     font-weight: 400;
     color: #FFFFFF80;
@@ -214,6 +225,7 @@
 .ibc_transfer_dialog .section5 .left_section > p {
     font-size: 16px;
     font-weight: 600;
+    line-height: 20px;
     color: #FFFFFF;
     font-family: 'Blinker', sans-serif;
 }

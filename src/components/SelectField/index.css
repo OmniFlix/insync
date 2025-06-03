@@ -76,7 +76,7 @@ div[role='presentation'][id='menu-source'] li {
 
 div[role='presentation'][id='menu-validators'] li .image,
 div[role='presentation'][id='menu-source'] li img {
-    background: #696969;
+    /* background: #696969; */
     width: 30px;
     height: 30px;
     border-radius: 50px;

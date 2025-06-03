@@ -9,9 +9,9 @@
 
 .shield_dialog > div {
     padding: 24px 16px 20px;
-    background: #161616;
+    background: #0B0B0B;
     border-radius: 14px;
-    border: 1px solid #232323;
+    border: 1px solid #1A1A1A;
 }
 
 .shield_dialog > div > div {
@@ -101,6 +101,15 @@
     text-transform: none;
 }
 
+.shield_dialog .transfer_source .max_button {
+    color: #fff;
+    background: #FFFFFF1F;
+    border: 1px solid #FFFFFF14;
+    position: absolute;
+    right: 5%;
+    bottom: 66%;
+}
+
 .shield_dialog > button {
     background: #FFFF46 !important;
     border-radius: 16px;
@@ -120,16 +129,22 @@
 }
 
 .shield_dialog > .arrow {
-    width: 50px;
-    height: 50px;
-    background: #FFFF46;
-    border-radius: 50px;
+    /* width: 50px;
+    height: 50px; */
+    /* background: #FFFF46; */
+    /* border-radius: 50px; */
     display: flex;
     align-items: center;
-    padding: 10px;
+    /* padding: 10px; */
     position: absolute;
-    left: 45%;
-    top: 50%;
+    left: 43%;
+    top: 39%;
+    background: none;
+    border: none;
+}
+
+.shield_dialog.shield_convert_arrow > .arrow {
+    top: 42%;
 }
 
 .arrow > img {
@@ -188,17 +203,38 @@
     opacity: 0.4;
 }
 
+.transfer_source .select_section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
 .transfer_source .select_section > div {
     width: 45%;
     margin: 20px 0;
+    background-color: #FFFFFF0F;
+    border: 1px solid #FFFFFF05;
+    border-radius: 12px;
+}
+
+.transfer_source .select_section > div:first-child {
+    width: 40% !important;
+}
+
+.transfer_source .select_section > div:last-child {
+    background: #FFFFFF0F;
+    width: 60% !important;
+    border-radius: 12px;
+    border: 1px solid #FFFFFF05;
 }
 
 .transfer_source .select_section .select_field > div > div {
     align-items: center;
-    border: 1px solid #696969;
-    border-radius: 5px;
+    /* border: 1px solid #696969;
+    border-radius: 5px; */
     box-sizing: border-box;
-    color: #696969;
+    color: #fff;
     display: flex;
     font-family: 'Blinker', sans-serif;
     font-size: 18px;
@@ -219,7 +255,7 @@
 
 .transfer_source .select_section .select_field img {
     align-items: center;
-    background: #F0D8FF;
+    /* background: #F0D8FF; */
     border-radius: 50px;
     color: #fff;
     display: flex;
@@ -257,7 +293,6 @@
     display: flex;
     justify-content: end;
     align-items: center;
-
     color: #FFF;
     text-align: center;
     font-family: 'Blinker', sans-serif;
@@ -267,6 +302,48 @@
     line-height: 130%;
     text-decoration: underline;
     margin-top: 40px;
+}
+
+.transfer_source .transparent_tokens_secion {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transparent_tokens_secion > button {
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Blinker', sans-serif;
+    color: #fff;
+    background: #FFFFFF1F;
+    border: 1px solid #FFFFFF14;
+    border-radius: 8px;
+    padding: 3px 2px;
+    position: absolute;
+    right: 5%;
+    bottom: 262px;
+}
+
+.transfer_source .transparent_tokens_secion > span {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+.transparent_tokens_secion > span > p:first-child {
+    font-size: 12px;
+    font-weight: 500;
+    color: #bfbfbf;
+    font-family: "Inter", sans-serif;
+}
+
+.transparent_tokens_secion > span > p:last-child {
+    font-size: 12px;
+    font-weight: 500;
+    color: #FFFF46;
+    font-family: "Inter", sans-serif;
 }
 
 .shield_dialog .fee {
@@ -303,5 +380,64 @@
 
     .transfer_destination > div {
         flex-direction: column;
+    }
+
+    .transparent_tokens_secion > button {
+        position: absolute;
+        right: 5%;
+        bottom: 281px;
+    }
+
+    .shield_dialog .transfer_source .max_button {
+        color: #fff;
+        background: #FFFFFF1F;
+        border: 1px solid #FFFFFF14;
+        position: absolute;
+        right: 5%;
+        bottom: 63%;
+    }
+}
+
+@media (max-width: 470px) {
+    .transfer_source .transparent_shield_select_section {
+        flex-direction: column !important;
+        gap: 0px !important;
+    }
+
+    .transfer_source .transparent_shield_select_section .select_field {
+        margin: 0px !important;
+        width: 100% !important;
+    }
+
+    .transfer_source .transparent_shield_select_section .amount_text_field {
+        margin-top: 5px !important;
+        width: 100% !important;
+    }
+
+    .transparent_tokens_secion > button {
+        right: 7%;
+    }
+
+    .shield_dialog > .arrow {
+        top: 45%;
+    }
+
+    .transfer_source .select_section {
+        flex-direction: column;
+    }
+
+    .transfer_source .select_section > div:first-child {
+        width: 100% !important;
+        margin: 0px !important;
+    }
+
+    .transfer_source .select_section > div:last-child {
+        width: 100% !important;
+        margin-top: 0px;
+    }
+
+    .shield_dialog .transfer_source .max_button {
+        right: 7%;
+        bottom: 59%;
     }
 }

@@ -4,7 +4,7 @@
 }
 
 .text_field > div {
-    height: 2.573rem;
+    height: 2.873rem;
     font-weight: 100;
 }
 
@@ -28,8 +28,8 @@
 }
 
 .text_field fieldset {
-    border-radius: 4px;
-    border-color: #696969;
+    border-radius: 12px;
+    /* border-color: #696969; */
 }
 
 .ex_network .text_field > div:hover fieldset,

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import AmountTextField from './AmountTextField';
 import { setAmount } from '../../../actions/shieldedAssets';
 import { config } from '../../../config';
-import DownArrowIcon from '../../../assets/masp/downArrow.svg';
+import DownArrowIcon from '../../../assets/down_arrow_nofill.png';
 import SourceSelectField from './SourceSelectField';
 import NamadaLogo from '../../../assets/masp/namada_logo.svg';
 import NamadaShieldedLogo from '../../../assets/masp/namada_shielded.svg';
@@ -165,13 +165,16 @@ const ShieldDialog = (props) => {
                     </div>
                 </div>
                 <div className="border"></div>
-                <div className="select_section">
+                <div className="transparent_shield_select_section">
                     <SourceSelectField/>
                     <AmountTextField/>
                 </div>
                 {fromNamadaSelectedConfig
-                    ? <div className="tokens_secion">
-                        <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                    ? <div className="transparent_tokens_secion">
+                        <span>
+                            <p>Available</p>
+                            <p>{namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                        </span>
                         <Button onClick={() => props.setAmount(namadaBalance)}>Max</Button>
                     </div> : null}
             </div>
@@ -192,7 +195,8 @@ const ShieldDialog = (props) => {
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
             {fee && fee.fee
-                ? <div className="fee">
+
+                ? <div className="transparent_fee">
                     <p>fee</p>
                     <p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
