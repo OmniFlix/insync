@@ -126,7 +126,7 @@ const ShieldDialog = (props) => {
                 setApproval(false);
                 clearInterval(intervalTime);
                 props.fetchBalanceList(props.address);
-                props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
+                // props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
             }, 30000);
         }
     };

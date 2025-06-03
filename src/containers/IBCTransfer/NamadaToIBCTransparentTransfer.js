@@ -222,7 +222,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
                 setParams(false);
                 setApproval(false);
                 clearInterval(intervalTime);
-                props.showDelegateSuccessDialog(value && value.hash, null, fromNamadaSelectedConfig);
+                // props.showDelegateSuccessDialog(value && value.hash, null, fromNamadaSelectedConfig);
                 props.fetchBalanceList(props.address);
             }, 30000);
         }
