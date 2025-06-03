@@ -143,6 +143,10 @@
     border: none;
 }
 
+.shield_dialog.shield_convert_arrow > .arrow {
+    top: 42%;
+}
+
 .arrow > img {
     width: 100%;
     height: auto;

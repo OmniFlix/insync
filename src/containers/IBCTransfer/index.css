@@ -130,13 +130,13 @@
 .transfer_source .nam_tokens_secion {
     position: absolute;
     right: 5%;
-    bottom: 47px;
+    bottom: 50px;
 }
 
 .transfer_source .deposit_nam_tokens_secion {
     position: absolute;
     right: 5%;
-    bottom: 109px;
+    bottom: 112px;
 }
 
 .transfer_source .nam_tokens_secion > button,
@@ -536,7 +536,7 @@
     min-width: unset;
     position: absolute;
     right: 5%;
-    bottom: 59px;
+    bottom: 60px;
 }
 
 .transfer_dialog p {

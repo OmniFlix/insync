@@ -161,7 +161,7 @@ const ShieldedToTransparent = (props) => {
                 <Button className="max_button" onClick={() => props.setAmount(namadaBalance)}>Max</Button>
 
             </div>
-            <div className="arrow">
+            <div className="arrow shield_convert_arrow">
                 <img alt="Arrow" src={DownArrowIcon}/>
             </div>
             <div className="transfer_destination">

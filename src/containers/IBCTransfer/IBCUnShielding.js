@@ -286,18 +286,22 @@ const IBCUnShielding = (props) => {
                                     : 'Connect'}
                             </Button> */}
                             {props.ibcTransferAddress ? (
-                                <p><img alt="keplr" src={keplrIcon}/>{' '}{getWrapAddress(props.ibcTransferAddress, 6, 6)}</p>
+                                <div className="tokens_secion">
+                                    <img alt='keplrIcon' src={keplrIcon}/>
+                                    <p>{props.ibcTransferAddress}</p>
+                                </div>
+                                // <p><img alt="keplr" src={keplrIcon}/>{' '}{getWrapAddress(props.ibcTransferAddress, 6, 6)}</p>
                             ) 
                             : ( 
                             <Button onClick={() => props.showConnectDialog(false, false, true)}>
                                 Connect
                             </Button>)
                             }
-                            {props.ibcTransferAddress
+                            {/* {props.ibcTransferAddress
                                 ? <ExitToAppIcon className="logout_icon" onClick={() => {
                                     localStorage.removeItem('namada_keplr_address');
                                     props.connectIBCAccountSuccess('');
-                                }}/> : null}
+                                }}/> : null} */}
                         </div>
                     </div> : null}
             </div>
