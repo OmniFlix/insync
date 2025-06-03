@@ -137,6 +137,9 @@ class ShieldedTransferDialog extends React.Component {
 
         const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         const fee = feeList && feeList[fromSelectedConfig?.COIN_DENOM]
+
+        const disable = this.state.inProgress || this.props.tokensTransferAddressValid === false || !this.props.tokensTransferAmount || !this.props.tokensTransferAddress || this.props.tokensTransferAmountValid === false;
+
         return (
             <Dialog open={this.props.open}
             onClose={this.props.handleClose}
@@ -201,7 +204,7 @@ class ShieldedTransferDialog extends React.Component {
                     <div className="actions">
                         {this.state.inProgress
                         ? <ProcessingButton>
-                            <Button disabled={this.state.inProgress} onClick={this.handleTransfer}>
+                            <Button disabled={disable} onClick={this.handleTransfer}>
                             {this.state.params
                                 ? 'Generating MASP Parameters...'
                                 : this.state.approval
@@ -210,7 +213,7 @@ class ShieldedTransferDialog extends React.Component {
                                         ? 'InProgress...' : 'Transfer'}
                         </Button>
                         </ProcessingButton>
-                        : <Button disabled={this.state.inProgress} onClick={this.handleTransfer}>
+                        : <Button disabled={disable} onClick={this.handleTransfer}>
                             {this.state.params
                                 ? 'Generating MASP Parameters...'
                                 : this.state.approval
@@ -253,7 +256,9 @@ ShieldedTransferDialog.propTypes = {
     value: PropTypes.object,
     revealPublicKey: PropTypes.object,
     tokensTransferAmount: PropTypes.string,
+    tokensTransferAmountValid: PropTypes.bool,
     tokensTransferAddress: PropTypes.string,
+    tokensTransferAddressValid: PropTypes.bool,
     tokensTransferMemo: PropTypes.string,
     shieldedData: PropTypes.object,
     disposableSigner: PropTypes.object,
@@ -268,7 +273,9 @@ const stateToProps = (state) => {
         value: state.assets.shieldedTokensTransferDialog.value,
         ibcTransferType: state.ibcTransfer.ibcTransferType.value,
         tokensTransferAmount: state.assets.tokensTransferAmount.value,
+        tokensTransferAmountValid: state.assets.tokensTransferAmount.valid,
         tokensTransferAddress: state.assets.tokensTransferAddress.value, 
+        tokensTransferAddressValid: state.assets.tokensTransferAddress.valid, 
         details: state.accounts.address.details,
         revealPublicKey: state.accounts.revealPublicKey.result,
         tokensTransferMemo: state.assets.tokensTransferMemo.value,

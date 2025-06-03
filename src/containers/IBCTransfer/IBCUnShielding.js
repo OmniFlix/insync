@@ -227,7 +227,7 @@ const IBCUnShielding = (props) => {
     const image = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.logo_URIs && (props.fromNamadaSelectedAsset.logo_URIs.svg || props.fromNamadaSelectedAsset.logo_URIs.png);
     const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
 
-    const disable = !props.amount || props.amount === '';
+    const disable = !props.amount || props.amount === '' || props.amountValid === false;
 
     return (
         <div className="transfer_dialog">
@@ -367,6 +367,7 @@ IBCUnShielding.propTypes = {
     fromNamadaSelectedAsset: PropTypes.object.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
+    amountValid: PropTypes.bool,
     ibcBalance: PropTypes.number,
     ibcChannel: PropTypes.object,
     ibcTransferAddress: PropTypes.string,
@@ -387,6 +388,7 @@ const stateToProps = (state) => {
         lang: state.language,
         address: state.accounts.address.value,
         amount: state.ibcTransfer.ibcTransferAmount.value,
+        amountValid: state.ibcTransfer.ibcTransferAmount.valid,
         details: state.accounts.address.details,
         disposableSigner: state.accounts.address.disposableSigner,
         shieldedAddress: state.accounts.address.shieldedDetails,
