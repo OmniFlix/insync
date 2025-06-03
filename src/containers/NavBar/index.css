@@ -270,6 +270,161 @@ table .disconnect_button {
     font-family: 'Blinker', sans-serif;
 }
 
+/* Blip Css */
+.sync_progress {
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(10px);
+    width: 40px;
+    height: 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sync_progress .blip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sync_progress > span {
+    color: #FFFF46;
+}
+
+.sync_progress .blip:first-child {
+    width: 10px;
+    height: 10px;
+    background: #FFFF46;
+    border-radius: 50%; /* Makes it a perfect circle */
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 255, 70, 0.6);
+    animation: pulse 1.5s infinite ease-out;
+    flex-shrink: 0;
+
+    will-change: transform, box-shadow;
+}
+
+.sync_progress .blip:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.sync_progress .blip:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.sync_progress span.starts {
+    color: #FFFF46 !important;
+}
+
+.sync_progress span.starts:first-child {
+    background: #FFFF46 !important;
+    animation: pulse 2s infinite !important;
+}
+
+.shielded_synced {
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(10px);
+    width: 40px;
+    height: 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shielded_synced img {
+    
+}
+
+/* .shielded_synced .blip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shielded_synced > span {
+    color: #75E0A7;
+}
+
+.shielded_synced .blip:first-child {
+    width: 10px;
+    height: 10px;
+    background: #60FFB8;
+    border-radius: 50%; 
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(117, 224, 167, 0.6);
+    animation: pulse 1.5s infinite ease-out;
+    flex-shrink: 0;
+
+    will-change: transform, box-shadow;
+}
+
+.shielded_synced .blip:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.shielded_synced .blip:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+.shielded_synced span.starts {
+    color: #60FFB8 !important;
+}
+
+.shielded_synced span.starts:first-child {
+    background: #60FFB8 !important;
+    animation: synced_pulse 2s infinite !important;
+}
+
+@keyframes synced_pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(117, 224, 167, 0.6);
+    }
+
+    70% {
+        transform: scale(1.2);
+        box-shadow: 0 0 0 10px rgba(117, 224, 167, 0); 
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(117, 224, 167, 0);
+    }
+} */
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 70, 0.6);
+    }
+
+    70% {
+        transform: scale(1.2); 
+        box-shadow: 0 0 0 10px rgba(255, 255, 70, 0); 
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 70, 0);
+    }
+}
+
 @keyframes fadeInDown {
     0% {
         opacity: 0;
