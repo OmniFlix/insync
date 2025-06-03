@@ -120,7 +120,7 @@ class ProposalDialog extends Component {
                 <NavBar proposalTab={true}/>
                 {this.props.proposalsInProgress
                     ? <div className="proposals_content padding">
-                        <div className="cards_content loading_card">Loading...</div>
+                        <div className="cards_content loading_card">{variables[this.props.lang].loading}</div>
                     </div>
                     : this.props.proposal && this.props.proposal.id
                         ? <div className="proposal_dialog padding">
@@ -138,8 +138,8 @@ class ProposalDialog extends Component {
                                             : this.props.proposal && (this.props.proposal.status === 4 ||
                                                 this.props.proposal.status === 'rejected' || this.props.proposal.status === 'executedRejected')
                                                 ? 'rejected'
-                                                : null)}> Proposal
-                                        Status: &nbsp;{this.props.proposal && this.props.proposal.status
+                                                : null)}> {variables[this.props.lang].proposal}
+                                        {variables[this.props.lang].status}: &nbsp;{this.props.proposal && this.props.proposal.status
                                             ? this.props.proposal.status === 0 ||
                                             this.props.proposal.status === 'pending' ? 'Nil'
                                                 : this.props.proposal.status === 1 ||
@@ -175,7 +175,7 @@ class ProposalDialog extends Component {
                                 <div className="proposal_dialog_section3">
                                     <div className="proposal_dialog_section3_left">
                                         <div className="pds3l_c">
-                                            <p className="pds3l_c1">Proposer</p>
+                                            <p className="pds3l_c1">{variables[this.props.lang].proposer}</p>
                                             {this.props.proposal?.author && <div className="pds3l_c2 hash_text" title={this.props.proposal.author}>
                                                 <p className="name proposal_address">{this.props.proposal.author}</p>
                                                 {this.props.proposal.author &&
@@ -184,12 +184,12 @@ class ProposalDialog extends Component {
                                         </div>
                                         {content && content.created
                                             ? <div className="pds3l_c">
-                                                <p className="pds3l_c1">Submitted on</p>
+                                                <p className="pds3l_c1">{variables[this.props.lang].submitted_on}</p>
                                                 <p className="pds3l_c2">{moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss')}</p>
                                             </div>
                                             : null}
                                         <div className="pds3l_c">
-                                            <p className="pds3l_c1">Voting Period</p>
+                                            <p className="pds3l_c1">{variables[this.props.lang].voting_period}</p>
                                             <div className="pds3l_c2 vp_cards">
                                                 <p>{this.props.proposal && this.props.proposal.startTime
                                                     ? moment.unix(this.props.proposal.startTime).format('DD-MMM-YYYY HH:mm:ss') : ''}</p>
@@ -198,21 +198,21 @@ class ProposalDialog extends Component {
                                             </div>
                                         </div>
                                         <div className="pds3l_c">
-                                            <p className="pds3l_c1">Voting Status</p>
+                                            <p className="pds3l_c1">{variables[this.props.lang].voting_status}</p>
                                             <div className={ClassNames('pds3l_c2 vote_details',
                                                 this.props.proposal && (this.props.proposal.status === 2 ||
                                                     this.props.proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD') ? 'vote_in_progress' : '')}>
                                                 <div className="yes">
                                                     <div>
                                                         <span/>
-                                                        <p>YES ({this.VoteCalculation('yayVotes')})</p>
+                                                        <p>{variables[this.props.lang].yes} ({this.VoteCalculation('yayVotes')})</p>
                                                     </div>
                                                     <p className="total_nam_count">{formatCount(this.props && this.props.proposal && this.props.proposal.yayVotes)} NAM</p>
                                                 </div>
                                                 <div className="no">
                                                     <div>
                                                         <span/>
-                                                        <p>NO ({this.VoteCalculation('nayVotes')})</p>
+                                                        <p>{variables[this.props.lang].no} ({this.VoteCalculation('nayVotes')})</p>
                                                     </div>
                                                     <p className="total_nam_count">{formatCount(this.props && this.props.proposal && this.props.proposal.nayVotes)} NAM</p>
                                                 </div>
@@ -223,14 +223,14 @@ class ProposalDialog extends Component {
                                                 <div className="option4">
                                                     <div>
                                                         <span/>
-                                                        <p>Abstain ({this.VoteCalculation('abstainVotes')})</p>
+                                                        <p>{variables[this.props.lang].abstain} ({this.VoteCalculation('abstainVotes')})</p>
                                                     </div>
                                                     <p className="total_nam_count">{formatCount(this.props && this.props.proposal && this.props.proposal.abstainVotes)} NAM</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="pds3l_c">
-                                            <p className="pds3l_c1">Type</p>
+                                            <p className="pds3l_c1">{variables[this.props.lang].type}</p>
                                             <p className="pds3l_c2 type">{this.props.proposal && this.props.proposal.type
                                                 ? this.props.proposal.type
                                                 : null}</p>

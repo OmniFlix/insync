@@ -8,7 +8,8 @@ import NamadaConnectButton from './NamadaConnectButton';
 import KeplrConnectButton from './KeplrConnectButton';
 import './index.css';
 import ConnectWalletImage from '../../../assets/connect_wallet_image.png';
-import CloseIcon from '../../../assets/close_icon.png'
+import CloseIcon from '../../../assets/close_icon.png';
+import variables from '../../../utils/variables';
 
 const ConnectDialog = (props) => {
     return (
@@ -24,7 +25,7 @@ const ConnectDialog = (props) => {
                 </div>
                 <img alt="connectWallet" className="connect_wallet_image" src={ConnectWalletImage}/>
                 <h2 className="heading">
-                    Supported Wallets
+                    {variables[props.lang].supported_wallets}
                 </h2>
                 <div className="connect_wallets">
                     {props.ibc

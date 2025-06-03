@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import IBCTransferDialog from "containers/IBCTransfer/IBCTransferDialog";
 import closeIcon from '../../../assets/close_icon.png';
+import variables from "utils/variables";
 
 class ShieldedDepositDialog extends React.Component {
    render () {
@@ -17,7 +18,7 @@ class ShieldedDepositDialog extends React.Component {
             className="dialog tokens_deposit_dialog">
                <div className="ibc_content padding">
                     <div className="header_div">
-                        <p>Deposit {' '}  {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' to Namada'}</p>
+                        <p>{variables[this.props.lang].deposit} {' '}  {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' to Namada'}</p>
                         <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
                     </div>
                     <IBCTransferDialog from='shielded_deposit' depositData={this.props.value}/>

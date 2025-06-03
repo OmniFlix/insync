@@ -48,6 +48,7 @@ import ProfileAvatar from '../../assets/profile_avatar_icon.png';
 // import { init as initShared } from '../../private_modules/namada/shared/init-inline';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
 import syncedIcon from '../../assets/synced.png';
+import variables from 'utils/variables';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -542,7 +543,7 @@ class NavBar extends Component {
                             : <Button
                                 className="connect_button"
                                 onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
-                                Connect
+                                {variables[this.props.lang].connect}
                             </Button>}
                     </div>
                     <ConnectDialog/>

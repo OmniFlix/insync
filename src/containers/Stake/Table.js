@@ -12,6 +12,7 @@ import { config } from '../../config';
 import { Button } from '@material-ui/core';
 import { showConnectDialog } from '../../actions/navBar';
 import TextSkeleton from '../../components/TextSkeleton';
+import variables from '../../utils/variables';
 
 class Table extends Component {
     render () {
@@ -32,13 +33,13 @@ class Table extends Component {
                         ? <Button
                             className="disconnect_button"
                             onClick={() => this.props.showConnectDialog()}>
-                                Connect
+                                {variables[this.props.lang].connect}
                         </Button>
                         : <span
                             className="no_data_table" onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                            }}> Stake with a Validator now! </span>,
+                            }}> {variables[this.props.lang].stake_with_validator} </span>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {

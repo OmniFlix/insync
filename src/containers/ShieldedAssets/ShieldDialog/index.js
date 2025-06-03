@@ -20,6 +20,7 @@ import { showMessage } from 'actions/snackbar';
 import { feeList } from 'dummy/ibcList';
 import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensConvertDialog } from 'actions/assets';
+import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 
 const ShieldDialog = (props) => {
@@ -158,7 +159,7 @@ const ShieldDialog = (props) => {
                 <div className="header">
                     <p>
                         <img alt="NamadaLogo" src={NamadaLogo}/>
-                        Namada Transparent
+                        {variables[props.lang].namada_transparent}
                     </p>
                     <div className="address">
                         <span>{props.address}</span>
@@ -173,10 +174,10 @@ const ShieldDialog = (props) => {
                 {fromNamadaSelectedConfig
                     ? <div className="transparent_tokens_secion">
                         <span>
-                            <p>Available</p>
+                            <p>{variables[props.lang].available}</p>
                             <p>{namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                         </span>
-                        <Button onClick={() => props.setAmount(namadaBalance)}>Max</Button>
+                        <Button onClick={() => props.setAmount(namadaBalance)}>{variables[props.lang].max}</Button>
                     </div> : null}
             </div>
             <div className="arrow">
@@ -186,7 +187,7 @@ const ShieldDialog = (props) => {
                 <div>
                     <p>
                         <img alt="NamadaShieldedLogo" src={NamadaShieldedLogo}/>
-                        Namada Shielded
+                        {variables[props.lang].namada_shielded}
                     </p>
                     <div className="address">
                         <span>{props.shieldedAddress}</span>
@@ -198,7 +199,7 @@ const ShieldDialog = (props) => {
             {fee && fee.fee
 
                 ? <div className="transparent_fee">
-                    <p>fee</p>
+                    <p>{variables[props.lang].fee}</p>
                     <p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
                 {inProgress

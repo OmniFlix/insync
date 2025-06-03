@@ -15,6 +15,7 @@ import WithdrawIcon from '../../assets/transactions/withdraw.svg';
 import ConvertIcon from '../../assets/transactions/convert.svg';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
 import { setSelectedSource } from 'actions/shieldedAssets';
+import variables from 'utils/variables';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -132,7 +133,7 @@ class TokensListTable extends React.Component {
                 body: {
                     noMatch: this.props.inProgress
                         ? <CircularProgress/>
-                        : <div className="no_data_table"> No Tokens Found! </div>,
+                        : <div className="no_data_table"> {variables[this.props.lang].no_tokens_found} </div>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {
@@ -172,7 +173,7 @@ class TokensListTable extends React.Component {
                     if (value && value.name === 'Shielded Namada') {
                         return (
                             <div className="voting_power token_name">
-                                <p className="percentage">Coming Soon...</p>
+                                <p className="percentage">{variables[this.props.lang].coming_soon}</p>
                             </div>
                         )
                     }
@@ -197,26 +198,26 @@ class TokensListTable extends React.Component {
                             ? null 
                             : <Button onClick={() => this.handleDeposit(value)}>
                             <img src={DepositIcon} alt="Deposit"/>
-                                Deposit
+                                {variables[this.props.lang].deposit}
                             </Button>}
                             {token === 'NAM'
                                 ? null 
                                 : <Button onClick={() => this.handleWithdraw(value)}>
                                 <img src={WithdrawIcon} alt="Withdraw"/>
-                                    Withdraw
+                                    {variables[this.props.lang].withdraw}
                                 </Button>}
                                 {token === 'NAM'
                                     ? <CustomTooltip title="Enables in Phase 5">
                                         <span className='disabled_tx_button'>
                                             <Button disabled={true} onClick={() => this.handleTransfer(value)}>
                                                 <img src={TransferIcon} alt="Transfer"/>
-                                                Transfer
+                                                {variables[this.props.lang].transfer}
                                             </Button>
                                         </span>
                                     </CustomTooltip>
                                     : <Button onClick={() => this.handleTransfer(value)}>
                                         <img src={TransferIcon} alt="Transfer"/>
-                                        Transfer
+                                        {variables[this.props.lang].transfer}
                                     </Button>}
                                 {/* <CustomTooltip title={token === 'NAM' ? 'Enables in Phase 5' : "Coming Soon"}>
                                     <span className='disabled_tx_button'>
@@ -231,14 +232,14 @@ class TokensListTable extends React.Component {
                                         <span className='disabled_tx_button'>
                                             <Button disabled={true} onClick={() => this.handleConvert(value)}>
                                                 <img src={ConvertIcon} alt="Convert"/>
-                                                Shield
+                                                {variables[this.props.lang].shield}
                                             </Button>
                                         </span>
                                     </CustomTooltip> 
                                     : <CustomTooltip title="Convert to Shielded">
                                         <Button onClick={() => this.handleConvert(value)}>
                                             <img src={ConvertIcon} alt="Convert"/>
-                                            Shield
+                                            {variables[this.props.lang].shield}
                                         </Button>
                                     </CustomTooltip>}
                         </div>

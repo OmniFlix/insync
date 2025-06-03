@@ -5,6 +5,7 @@ import SelectField from '../../../components/SelectField/WithChildren';
 import { setClaimRewardsValidator } from '../../../actions/stake';
 import { MenuItem } from '@material-ui/core';
 import { config } from '../../../config';
+import variables from 'utils/variables';
 
 const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
     '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
@@ -36,7 +37,7 @@ const ValidatorSelectField = (props) => {
             value={props.value}
             onChange={handleChange}>
             <MenuItem disabled value="none">
-                Select the validator
+                {variables[props.lang].select_validator}
             </MenuItem>
             {props.rewards && props.rewards.length &&
                 props.rewards.map((item, index) => {
@@ -100,6 +101,7 @@ ValidatorSelectField.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        lang: state.language,
         value: state.stake.claimDialog.validator,
         rewards: state.accounts.rewards.result,
         validatorList: state.stake.validators.list,

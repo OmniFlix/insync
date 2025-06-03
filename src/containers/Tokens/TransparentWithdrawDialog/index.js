@@ -7,6 +7,7 @@ import withRouter from 'components/WithRouter';
 import NamadaToIBCTransparentTransfer from "containers/IBCTransfer/NamadaToIBCTransparentTransfer";
 import SuccessDialog from 'containers/Stake/DelegateDialog/SuccessDialog';
 import closeIcon from '../../../assets/close_icon.png';
+import variables from "utils/variables";
 
 class TransparentWithdrawDialog extends React.Component {
     render () {
@@ -18,7 +19,7 @@ class TransparentWithdrawDialog extends React.Component {
                 className="dialog tokens_withdraw_dialog">
                 <div className="ibc_content padding">
                     <div className="header_div">
-                        <p>Withdraw Asset</p>
+                        <p>{variables[this.props.lang].withdraw_asset}</p>
                         <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
                     </div>
                     <NamadaToIBCTransparentTransfer from="transparent_withdraw" transparentWithdrawData={this.props.value}/>

@@ -129,7 +129,7 @@ const Voting = (props) => {
 
     return (
         <div className="proposal_dialog_section3_right">
-            <p className="pds3r_heading">Please choose your vote</p>
+            <p className="pds3r_heading">{variables[props.lang].choose_vote}</p>
             <form
                 noValidate
                 autoComplete="off"
@@ -149,7 +149,7 @@ const Voting = (props) => {
                         className="cancel_button"
                         variant="outlined"
                         onClick={props.handleClose}>
-                        Cancel
+                        {variables[props.lang].cancel}
                     </Button>
                     <Button
                         className="confirm_button"

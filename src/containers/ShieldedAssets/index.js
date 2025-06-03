@@ -10,6 +10,7 @@ import UnSuccessDialog from 'containers/Stake/DelegateDialog/UnSuccessDialog';
 import PendingDialog from 'containers/Stake/DelegateDialog/PendingDialog';
 import ShieldingTabs from './Tabs';
 import ShieldedToTransparent from './ShieldDialog/ShieldedToTransparent';
+import variables from '../../utils/variables';
 
 class ShieldedAssets extends Component {
     render () {
@@ -19,13 +20,13 @@ class ShieldedAssets extends Component {
                 <ShieldingTabs/>
                 {this.props.subTabs === 'transparent_to_shielding' && <div className="shielded_content">
                     <div className="shield_tranfer">
-                        <p>Namada Transparent to Namada Shielded</p>
+                        <p>{variables[this.props.lang].nam_trans_to_nam_shield}</p>
                         <ShieldDialog/>
                     </div>
                 </div>}
                 {this.props.subTabs === 'shielded_to_transparent' && <div className="shielded_content">
                     <div className="shield_tranfer">
-                        <p>Namada Shielded to Namada Transparent</p>
+                        <p>{variables[this.props.lang].nam_shield_to_nam_trans}</p>
                         <ShieldedToTransparent/>
                     </div>
                 </div>}

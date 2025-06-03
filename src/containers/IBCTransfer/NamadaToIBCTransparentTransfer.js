@@ -33,6 +33,7 @@ import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
+import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 
 const NamadaToIBCTransparentTransfer = (props) => {
@@ -242,7 +243,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
                 <div className="nam_header">
                     <img alt="NamadaLogo" src={NamadaLogo}/>
                     <div className="address">
-                        NAM
+                        {variables[props.lang].nam}
                         <div>
                             <span>{props.address}</span>
                             {props.address && props.address.slice(props.address.length - 6, props.address.length)}
@@ -255,7 +256,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
                     <AmountTextField data={props.transparentWithdrawData}/>
                 </div>
                 <span className="available_balance">
-                    <p>Available</p>
+                    <p>{variables[props.lang].available}</p>
                     <p>{namadaBalance || 0} {fromNamadaSelectedConfig?.COIN_DENOM}</p>
                 </span>
                 {fromNamadaSelectedConfig
@@ -296,7 +297,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
             </div>
             {fee && fee.fee
                     ? <div className="fee">
-                        <p>fee:<p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
+                        <p>{variables[props.lang].fee}:<p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
                     </div> : null}
                     {inProgress
                     ? <ProcessingButton>

@@ -2,6 +2,7 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { setValidator, selectMultiValidators } from '../../../actions/stake';
+import variables from 'utils/variables';
 import { MenuItem, Checkbox, FormControl, Select, OutlinedInput, Divider, ListItemIcon } from '@material-ui/core';
 
 const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
@@ -49,9 +50,9 @@ const MultiValidatorSelectField = (props) => {
                     input={<OutlinedInput />}
                     renderValue={(selected) => {
                         if (selected.length === 0) {
-                            return <em>Nothing Selected</em>;
+                            return <em>{variables[props.lang].nothing_selected}</em>;
                         }
-                        return <em>{selected.length} out of {validatorList.length} Selected</em>;
+                        return <em>{selected.length} {variables[props.lang].out_of} {validatorList.length} {variables[props.lang].selected}</em>;
                     } }
                     value={props.selectedMultiValidatorArray}
                     onChange={handleChange}>
@@ -59,7 +60,7 @@ const MultiValidatorSelectField = (props) => {
                         <ListItemIcon>
                             <Checkbox checked={isAllSelected} className={'checkbox'}/>
                         </ListItemIcon>
-                        Select All
+                        {variables[props.lang].select_all}
                     </MenuItem>
                     <Divider className={'divider'} />
                     {validatorList && validatorList.length > 0 &&
@@ -108,10 +109,12 @@ MultiValidatorSelectField.propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     validatorList: PropTypes.array,
+    lang: PropTypes.string,
 };
 
 const stateToProps = (state) => {
     return {
+        lang: state.language,
         value: state.stake.validator.value,
         validatorList: state.stake.validators.list,
         validatorImages: state.stake.validators.images,
