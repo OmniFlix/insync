@@ -483,49 +483,97 @@ export const shieldedBalanceFetchError = (error) => ({
 
 
 export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = config.CHAIN_ID, cb) => async (dispatch) => {
-        dispatch({ type: FETCH_SHIELDED_BALANCE_IN_PROGRESS });
-        try {
-            const url = urlFetchBlockHeight(timestamp);
-            let response = 0;
-            if (timestamp > 0) {
-                response = await Axios.get(url);
-            }
-
-            const birthday = response?.data?.height || 0;
-            const { cryptoMemory } = await init();
-            const sdk = getSdk(
-                cryptoMemory,
-                config.RPC_URL,
-                config.MASP_REST_URL,
-                '',
-                config.TOKEN_ADDRESS,
-            );
-
-            const datedViewingKeys = [{
-                key: viewingKey,
-                birthday: birthday,
-            }];
-            // console.log('55555', sdk.rpc);
-            // await sdk.getMasp().clearShieldedContext(chainId);
-            await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
-            const balance = await sdk.rpc.queryBalance(
-                viewingKey,
-                [config.TOKEN_ADDRESS],
-                chainId,
-            );
-            dispatch(shieldedBalanceFetchSuccess(balance));
-            if (cb) {
-                cb(balance);
-            }
-        } catch (error) {
-            console.error('❌ Shielded balance error:', {
-                message: error.message || 'Unknown error',
-                error,
-                chainId,
-            });
-            dispatch(shieldedBalanceFetchError(error.message || 'Unknown error'));
-            if (cb) {
-                cb(null);
-            }
+    dispatch({ type: FETCH_SHIELDED_BALANCE_IN_PROGRESS });
+    try {
+        const url = urlFetchBlockHeight(timestamp);
+        let response = 0;
+        if (timestamp > 0) {
+            response = await Axios.get(url);
         }
-    };
+
+        const birthday = response?.data?.height || 0;
+        const { cryptoMemory } = await init();
+        const sdk = getSdk(
+            cryptoMemory,
+            config.RPC_URL,
+            config.MASP_REST_URL,
+            '',
+            config.TOKEN_ADDRESS,
+        );
+
+        const datedViewingKeys = [{
+            key: viewingKey,
+            birthday: birthday,
+        }];
+        // console.log('55555', sdk.rpc);
+        // await sdk.getMasp().clearShieldedContext(chainId);
+        await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
+        const balance = await sdk.rpc.queryBalance(
+            viewingKey,
+            [config.TOKEN_ADDRESS],
+            chainId,
+        );
+        dispatch(shieldedBalanceFetchSuccess(balance));
+        if (cb) {
+            cb(balance);
+        }
+    } catch (error) {
+        console.error('❌ Shielded balance error:', {
+            message: error.message || 'Unknown error',
+            error,
+            chainId,
+        });
+        dispatch(shieldedBalanceFetchError(error.message || 'Unknown error'));
+        if (cb) {
+            cb(null);
+        }
+    }
+};
+
+
+export const reSyncBalance = (viewingKey, timestamp, tnam, znam, chainId = config.CHAIN_ID, cb) => async (dispatch) => {
+    dispatch({ type: FETCH_SHIELDED_BALANCE_IN_PROGRESS });
+    try {
+        const url = urlFetchBlockHeight(timestamp);
+        let response = 0;
+        if (timestamp > 0) {
+            response = await Axios.get(url);
+        }
+
+        const birthday = response?.data?.height || 0;
+        const { cryptoMemory } = await init();
+        const sdk = getSdk(
+            cryptoMemory,
+            config.RPC_URL,
+            config.MASP_REST_URL,
+            '',
+            config.TOKEN_ADDRESS,
+        );
+
+        const datedViewingKeys = [{
+            key: viewingKey,
+            birthday: birthday,
+        }];
+        await sdk.getMasp().clearShieldedContext(chainId);
+        await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
+        const balance = await sdk.rpc.queryBalance(
+            viewingKey,
+            [config.TOKEN_ADDRESS],
+            chainId,
+        );
+        dispatch(shieldedBalanceFetchSuccess(balance));
+        if (cb) {
+            cb(balance);
+        }
+    } catch (error) {
+        console.error('❌ Shielded balance error:', {
+            message: error.message || 'Unknown error',
+            error,
+            chainId,
+        });
+        dispatch(shieldedBalanceFetchError(error.message || 'Unknown error'));
+        if (cb) {
+            cb(null);
+        }
+    }
+};
