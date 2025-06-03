@@ -10,6 +10,7 @@ import variables from '../../utils/variables';
 const useStyles = makeStyles((theme) => ({
     popover: {
         marginTop: '5px',
+        pointerEvents: 'none',
     },
     paper: {
         padding: theme.spacing(2),
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#FFFFFF',
         fontFamily: 'Blinker, sans-serif',
         minWidth: '200px',
+        pointerEvents: 'auto',
     },
 }));
 
@@ -67,7 +69,7 @@ const ProfilePopover = (props) => {
                     </div>
                 </div>
                 <span></span>
-                <DisconnectButton />
+                <DisconnectButton onClose={props.onClose}/>
             </div>
         </Popover>
     );

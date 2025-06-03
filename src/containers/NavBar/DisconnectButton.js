@@ -11,6 +11,7 @@ const DisconnectButton = (props) => {
         localStorage.removeItem('of_co_address');
         localStorage.removeItem('of_co_wallet');
         props.disconnectSet();
+        props.onClose();
     };
 
     return (
@@ -26,6 +27,7 @@ const DisconnectButton = (props) => {
 DisconnectButton.propTypes = {
     disconnectSet: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
+    onClose: PropTypes.func.isRequired,
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }),
