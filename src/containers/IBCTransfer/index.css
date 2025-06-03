@@ -315,7 +315,22 @@
     border: 2px solid #000;
 }
 
-.transfer_dialog > button:disabled {
+.transfer_dialog .submit_button {
+    height: 47px;
+    background: #FFFF46 !important;
+    border-radius: 24px;
+    font-family: 'Blinker', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 130%;
+    color: #000;
+    text-transform: capitalize;
+    padding: 10px 30px;
+}
+
+.transfer_dialog > button:disabled,
+.transfer_dialog .submit_button:disabled {
     opacity: 0.5;
 }
 

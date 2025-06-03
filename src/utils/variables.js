@@ -1,4 +1,3 @@
-import { transfer } from 'comlink';
 import { config } from '../config';
 
 const variables = {

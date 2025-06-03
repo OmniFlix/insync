@@ -18,8 +18,8 @@ import { config } from "config";
 import { TransparentTransferDataMsgValue } from "@harish551/namada-types";
 import BigNumber from "bignumber.js";
 import { ibcTransparentTransfer } from "helper";
-import CircularProgress from "components/CircularProgress";
 import variables from "utils/variables";
+import ProcessingButton from "components/ProcessingButton";
 
 class TransparentTransferDialog extends React.Component {
     constructor (props) {
@@ -183,14 +183,22 @@ class TransparentTransferDialog extends React.Component {
                                 <span>Fee options</span>
                             </div> */}
                     </div> : null}
-                    {this.state.inProgress && <CircularProgress className="full_screen"/>}
                     <div className="actions">
-                        <Button disabled={disable} onClick={this.handleTransfer}>
-                            {this.state.approval
-                                ? 'Approval pending...'
-                                : this.state.inProgress
-                                    ? 'InProgress...' : 'Transfer'}
-                        </Button>
+                        {this.state.inProgress ?
+                            <ProcessingButton>
+                                <Button disabled={disable} onClick={this.handleTransfer}>
+                                    {this.state.approval
+                                        ? 'Approval pending...'
+                                        : this.state.inProgress
+                                            ? 'InProgress...' : 'Transfer'}
+                                </Button>
+                            </ProcessingButton>
+                            : <Button disabled={disable} onClick={this.handleTransfer}>
+                                {this.state.approval
+                                    ? 'Approval pending...'
+                                    : this.state.inProgress
+                                        ? 'InProgress...' : 'Transfer'}
+                            </Button>}
                     </div>
                 </div>
             </Dialog>

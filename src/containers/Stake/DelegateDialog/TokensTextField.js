@@ -71,6 +71,7 @@ const TokensTextField = (props) => {
     return (
         <>
             <TextField
+            className="delegate_amount_field"
                 error={(props.name === 'Delegate' || props.name === 'Stake') && vestingTokens
                     ? props.value > parseFloat(availableTokens + vestingTokens)
                     : props.name === 'Delegate' || props.name === 'Stake' || props.name === 'Multi-Delegate'

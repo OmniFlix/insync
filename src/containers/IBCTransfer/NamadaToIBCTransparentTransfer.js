@@ -34,6 +34,7 @@ import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
 import variables from 'utils/variables';
+import ProcessingButton from 'components/ProcessingButton';
 
 const NamadaToIBCTransparentTransfer = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -298,7 +299,9 @@ const NamadaToIBCTransparentTransfer = (props) => {
                     ? <div className="fee">
                         <p>{variables[props.lang].fee}:<p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
                     </div> : null}
-            <Button
+                    {inProgress
+                    ? <ProcessingButton>
+                          <Button
                 className="submit_button"
                 disabled={disable || inProgress || props.amountValid === false}
                 onClick={handleSubmit}>
@@ -309,7 +312,19 @@ const NamadaToIBCTransparentTransfer = (props) => {
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
             </Button>
-            {inProgress && <CircularProgress className="full_screen"/>}
+                    </ProcessingButton>
+                :  <Button
+                className="submit_button"
+                disabled={disable || inProgress || props.amountValid === false}
+                onClick={handleSubmit}>
+                {params
+                    ? 'Generating MASP Parameters...'
+                    : approval
+                        ? 'Approval pending...'
+                        : inProgress
+                            ? 'InProgress...' : 'Submit'}
+            </Button>}
+            {/* {inProgress && <CircularProgress className="full_screen"/>} */}
         </div>
     );
 };

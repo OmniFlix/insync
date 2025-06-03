@@ -44,6 +44,10 @@
     align-items: center;
 }
 
+.delegate_dialog .delegate_amount_field > div {
+    border: 1px solid #696969;
+}
+
 .delegate_dialog .select_field svg {
     fill: #696969;
     right: 20px;

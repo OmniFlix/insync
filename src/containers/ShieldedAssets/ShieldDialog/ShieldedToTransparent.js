@@ -21,6 +21,7 @@ import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from 'containers/IBCTransfer/ShieldedSourceSelectField';
 import { fetchIBCBalance } from 'actions/IBCTransfer';
 import variables from 'utils/variables';
+import ProcessingButton from 'components/ProcessingButton';
 
 const ShieldedToTransparent = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -130,7 +131,7 @@ const ShieldedToTransparent = (props) => {
     });
 
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
-    const disable = inProgress || !props.amount;
+    const disable = inProgress || !props.amount || props.amountValid === false;
 
     const fromNamadaSelectedConfig = props.selectedAsset?.config;
     const namadaBalance = props.selectedAsset?.balance && Number(props.selectedAsset?.balance) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
@@ -183,8 +184,11 @@ const ShieldedToTransparent = (props) => {
                     <p>{variables[props.lang].fee}</p>
                     <p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
-            {inProgress && <CircularProgress className="full_screen"/>}
-            <Button
+            {/* {inProgress && <CircularProgress className="full_screen"/>} */}
+            {inProgress
+            ? <ProcessingButton>
+                  <Button
+                  className='submit_button'
                 disabled={disable}
                 onClick={handleSubmit}>
                 {params
@@ -194,6 +198,18 @@ const ShieldedToTransparent = (props) => {
                         : inProgress
                             ? 'InProgress...' : 'Submit'}
             </Button>
+            </ProcessingButton>
+            :   <Button
+            className='submit_button'
+            disabled={disable}
+            onClick={handleSubmit}>
+            {params
+                ? 'Generating MASP Parameters...'
+                : approval
+                    ? 'Approval pending...'
+                    : inProgress
+                        ? 'InProgress...' : 'Submit'}
+        </Button>}
         </div>
     );
 };
@@ -213,6 +229,8 @@ ShieldedToTransparent.propTypes = {
     showMessage: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
+    amount: PropTypes.string,
+    amountValid: PropTypes.bool,
     revealPublicKey: PropTypes.object,
     selectedAsset: PropTypes.object,
     shieldedData: PropTypes.object,
@@ -226,6 +244,7 @@ const stateToProps = (state) => {
         lang: state.language,
         address: state.accounts.address.value,
         amount: state.shieldedAssets.amount.value,
+        amountValid: state.shieldedAssets.amount.valid,
         details: state.accounts.address.details,
         shieldedAddress: state.accounts.address.shieldedDetails,
         shieldedData: state.accounts.address.shieldedData,
