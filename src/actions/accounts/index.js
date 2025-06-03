@@ -505,8 +505,6 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
             key: viewingKey,
             birthday: birthday,
         }];
-        // console.log('55555', sdk.rpc);
-        // await sdk.getMasp().clearShieldedContext(chainId);
         await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
         const balance = await sdk.rpc.queryBalance(
             viewingKey,
@@ -530,6 +528,69 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
     }
 };
 
+// export const shieldedSyncFetchInProgress = () => ({
+//     type: FETCH_SHIELDED_SYNC_IN_PROGRESS,
+// });
+
+// export const shieldedSyncFetchSuccess = () => ({
+//     type: FETCH_SHIELDED_SYNC_SUCCESS,
+// });
+
+// export const shieldedSyncFetchError = (error) => ({
+//     type: FETCH_SHIELDED_SYNC_ERROR,
+//     error: error.message || 'Failed to fetch shielded balance',
+// });
+
+// export const getShieldedSync = (viewingKeys, chainId = config.CHAIN_ID, cb) => async (dispatch) => {
+//     dispatch(shieldedSyncFetchInProgress());
+//     try {
+//         const { cryptoMemory } = await init();
+//         const sdk = getSdk(
+//             cryptoMemory,
+//             config.RPC_URL,
+//             config.MASP_REST_URL,
+//             '',
+//             config.TOKEN_ADDRESS,
+//         );
+
+//         const datedViewingKeys = [];
+//         viewingKeys.map(async (viewingKey) => {
+//             if (viewingKey?.source === 'generated') {
+//                 const url = urlFetchBlockHeight(viewingKey?.timestamp);
+//                 let response = 0;
+//                 if (viewingKey?.timestamp > 0) {
+//                     response = await Axios.get(url);
+//                 }
+//                 const birthday = response?.data?.height || 0;
+//                 datedViewingKeys.push({
+//                     key: viewingKey?.viewingKey,
+//                     birthday: birthday,
+//                 });
+//             } else {
+//                 datedViewingKeys.push({
+//                     key: viewingKey?.viewingKey,
+//                     birthday: 0,
+//                 });
+//             }
+//         })
+
+//         await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
+//         dispatch(shieldedSyncFetchSuccess());
+//         if (cb) {
+//             cb(true);
+//         }
+//     } catch (error) {
+//         console.error('❌ Shielded balance error:', {
+//             message: error?.message || 'Unknown error',
+//             error,
+//             chainId,
+//         });
+//         dispatch(shieldedSyncFetchError(error));
+//         if (cb) {
+//             cb(null);
+//         }
+//     }
+// };
 
 export const reSyncBalance = (viewingKey, timestamp, tnam, znam, chainId = config.CHAIN_ID, cb) => async (dispatch) => {
     dispatch({ type: FETCH_SHIELDED_BALANCE_IN_PROGRESS });

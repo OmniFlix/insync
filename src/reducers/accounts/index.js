@@ -135,6 +135,7 @@ const balance = (state = {
 export const shieldedBalance = (state = {
     result: [],
     inProgress: false,
+    // shieldedSyncInProgress: false
 }, action) => {
     switch (action.type) {
     case FETCH_SHIELDED_BALANCE_IN_PROGRESS:
@@ -142,6 +143,11 @@ export const shieldedBalance = (state = {
             ...state,
             inProgress: true,
         };
+    // case FETCH_SHIELDED_SYNC_IN_PROGRESS:
+    //     return {
+    //         ...state,
+    //         shieldedSyncInProgress: true,
+    //     };
     case FETCH_SHIELDED_BALANCE_SUCCESS:
         return {
             ...state,
@@ -153,6 +159,12 @@ export const shieldedBalance = (state = {
             ...state,
             inProgress: false,
         };
+    // case FETCH_SHIELDED_SYNC_ERROR:
+    // case FETCH_SHIELDED_SYNC_SUCCESS:
+    //     return {
+    //         ...state,
+    //         shieldedSyncInProgress: false,
+    //     };
     case DISCONNECT_SET:
         return {
             ...state,

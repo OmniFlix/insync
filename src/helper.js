@@ -1498,6 +1498,8 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
             memo: txs.memo || '',
         };
 
+        const disposableSigner = await namada?.getSigner().genDisposableKeypair();
+        wrapperProps.publicKey = disposableSigner.publicKey;
         const newTxs = [];
         if (revealPublicKey && !revealPublicKey.publicKey) {
             const revealPkTx = await tx.buildRevealPk(wrapperProps);
@@ -1515,7 +1517,7 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
                 payload: {
                     account: {
                         ...account,
-                        publicKey: txs.publicKey,
+                        publicKey: disposableSigner.publicKey,
                     },
                     gasConfig: {
                         gasLimit: txs.gasLimit,
@@ -1531,7 +1533,6 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
             return (await workerLink.shieldedTransfer(msg)).payload;
             },
         });
-        console.log('encoded', encoded);
         newTxs.push(encoded);
         cb(null, null, true);
 
@@ -1542,7 +1543,7 @@ export const ibcShieldedTransfer = async (address, Tx, txs, revealPublicKey, typ
             updatedData = tx.buildBatch(newTxs);
         }
 
-        client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
+        client.sign(updatedData, disposableSigner.address, checksums).then((signedBondTxBytes) => {
             cb(null, null, null, true);
             rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
                 if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
