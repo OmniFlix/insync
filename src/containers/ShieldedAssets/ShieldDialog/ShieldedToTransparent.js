@@ -13,7 +13,7 @@ import BigNumber from 'bignumber.js';
 import { shieldedToTransparentTransaction } from 'helper';
 import CircularProgress from 'components/CircularProgress';
 import { UnshieldingTransferDataMsgValue } from '@harish551/namada-types';
-import { getBalance, getShieldedBalance } from 'actions/accounts';
+import { fetchBalanceList, getBalance, getShieldedBalance } from 'actions/accounts';
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';
 import { showMessage } from 'actions/snackbar';
 import { feeList } from 'dummy/ibcList';
@@ -67,7 +67,7 @@ const ShieldedToTransparent = (props) => {
 
         setParams(true);
         setApproval(true);
-        shieldedToTransparentTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
+        shieldedToTransparentTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, props.details, handleFetch);
     };
 
     const handleFetch = (error, value, params, approval) => {
@@ -104,8 +104,8 @@ const ShieldedToTransparent = (props) => {
                     resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
             resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
             if (resultBalance !== balance) {
-                props.getBalance(props.address);
-                props.successDialog(res1.hash);
+                props.fetchBalanceList(props.address);
+                props.successDialog(res1.hash, null, ibcConfig);
                 setInProgress(false);
                 setParams(false);
                 setApproval(false);
@@ -173,11 +173,13 @@ const ShieldedToTransparent = (props) => {
                         {props.address && props.address.slice(props.address.length - 6, props.address.length)}
                     </div>
                 </div>
-                {fee && fee.fee
-                ? <div className="fee">
-                    <p>fee:<b>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</b></p>
-                </div> : null}
+                {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
+            {fee && fee.fee
+                ? <div className="fee">
+                    <p>fee</p>
+                    <p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                </div> : null}
             {inProgress && <CircularProgress className="full_screen"/>}
             <Button
                 disabled={disable}
@@ -198,6 +200,7 @@ ShieldedToTransparent.propTypes = {
     details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    fetchBalanceList: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     pendingDialog: PropTypes.func.isRequired,
@@ -232,6 +235,7 @@ const stateToProps = (state) => {
 const actionToProps = {
     setAmount,
     getBalance,
+    fetchBalanceList,
     successDialog: showDelegateSuccessDialog,
     failedDialog: showDelegateFailedDialog,
     pendingDialog: showDelegateProcessingDialog,

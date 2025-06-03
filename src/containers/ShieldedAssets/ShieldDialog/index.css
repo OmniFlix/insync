@@ -139,10 +139,35 @@
 
 .transfer_source .header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 10px;
+}
+
+.header .balance_span {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+.balance_span > p:first-child {
+    color: #FFFFFF80;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 130%;
+}
+
+.balance_span > p:last-child {
+    color: #FFFFFF;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
 }
 
 /* .transfer_source .header > button {
@@ -294,4 +319,41 @@
     font-weight: 500;
     color: #FFFF46;
     font-family: "Inter", sans-serif;
+}
+
+.shield_dialog .fee {
+    background: none;
+    border: none;
+    padding: 0px;
+    border-radius: 0px;
+    margin-top: 0px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.shield_dialog .fee > p:first-child {
+    font-size: 16px;
+    font-weight: 400;
+    color: #FFFFFF80;
+    font-family: 'Blinker', sans-serif;
+}
+
+.shield_dialog .fee > p:last-child {
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+    font-family: 'Blinker', sans-serif;
+}
+
+@media (max-width: 600px) {
+    .transfer_source .header {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .transfer_destination > div {
+        flex-direction: column;
+    }
 }

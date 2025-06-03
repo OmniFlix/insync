@@ -16,13 +16,13 @@ class TransparentConvertDialog extends React.Component {
             aria-labelledby="claim-dialog-title"
             className="dialog tokens_convert_dialog">
                  <div className="ibc_content shield_tranfer">
-                        {/* <p>Namada Transparent to Namada Shielded</p> */}
                         <div className="header_div">
                             <p>Namada Transparent to Namada Shielded</p>
                             <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
                         </div>
                         <ShieldDialog/>
                     </div>
+                    <ShieldDialog/>
             </Dialog>
         )
     }

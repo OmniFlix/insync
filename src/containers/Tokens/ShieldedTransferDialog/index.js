@@ -81,7 +81,7 @@ class ShieldedTransferDialog extends React.Component {
         }
 
         this.setState({ params: true, approval: true });
-        ibcShieldedTransfer(this.props.address, tx, txs, this.props.revealPublicKey, this.props.details && this.props.details.type, this.handleFetch);
+        ibcShieldedTransfer(this.props.address, tx, txs, this.props.revealPublicKey, this.props.details && this.props.details.type, this.props.details, this.handleFetch);
     }
 
     handleFetch (error, value, params, approval) {
@@ -119,7 +119,7 @@ class ShieldedTransferDialog extends React.Component {
             if (resultBalance !== balance) {
                 this.props.fetchIBCBalance(ibcConfig?.REST_URL, this.props.ibcTransferAddress);
                 this.props.getBalance(this.props.address);
-                this.props.successDialog(res1.hash);
+                this.props.successDialog(res1.hash, null, ibcConfig);
                 this.setState({ inProgress: false, params: false, approval: false });
             } else {
                 handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
@@ -155,7 +155,7 @@ class ShieldedTransferDialog extends React.Component {
                     <div className="section1">
                         <div className="row1">
                             <div className="text">Asset</div>
-                            <div className="available">
+                            <div className="available_balance">
                                 <span>Available</span>
                                 <p>{amount}{' '}{this.props.value?.symbol}</p>
                             </div>
@@ -190,7 +190,7 @@ class ShieldedTransferDialog extends React.Component {
                     ? <div className="section5">
                             <div className="left_section">
                                 <span>Fee</span>
-                                {formatCount(fee.fee * fee.shieldedgas)}{' '} {fromSelectedConfig.COIN_DENOM}
+                                <p>{formatCount(fee.fee * fee.shieldedgas)}{' '} {fromSelectedConfig.COIN_DENOM}</p>
                             </div>
                             {/* <div className="right_section">
                                 <span>Fee options</span>

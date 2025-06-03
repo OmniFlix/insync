@@ -132,7 +132,7 @@ const IBCTransferDialog = (props) => {
 
         setParams(true);
         setApproval(true);
-        ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
+        ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, props.details, handleFetch);
     };
 
     const handleSubmit = () => {
@@ -182,9 +182,11 @@ const IBCTransferDialog = (props) => {
             let memo = '';
             let receiver = '';
             if (props.ibcTransferType === 'shielded') {
+                setParams(true);
                 const { memo: shieldedMemo , receiver: shieldedReceiver } = await getShieldedArgs(props.shieldedAddress, config.COIN_MINIMAL_DENOM, new BigNumber(props.amount * (10 ** config.COIN_DECIMALS)), namadaChannelId);
                 memo = shieldedMemo;
                 receiver = shieldedReceiver;
+                setParams(false);
             }
             const timeoutTimestampNanoseconds =
             BigInt(Math.floor(Date.now() / 1000) + 60) * BigInt(1_000_000_000);
@@ -214,16 +216,19 @@ const IBCTransferDialog = (props) => {
                 },
                 memo: '',
             };
+            setApproval(true);
             props.protoBufSigning(config, Tx, props.ibcTransferAddress, (result, txBytes) => {
                 if (result) {
                     const txData = {
                         tx_bytes: txBytes,
                         mode: 'BROADCAST_MODE_SYNC',
                     };
+                    setApproval(false);
                     props.txSignAndBroadCast(config, txData, (res1) => {
                         if (res1 && res1.code !== undefined && res1.code !== 0) {
                             props.showMessage(res1.raw_log || res1.logs, 'error', res1 && res1.hash);
                             setInProgress(false);
+                            setApproval(false);
 
                             return;
                         }
@@ -247,6 +252,8 @@ const IBCTransferDialog = (props) => {
                                                 props.getBalance(props.address);
                                                 props.showDelegateSuccessDialog(res1.txhash, config);
                                                 setInProgress(false);
+                                                setParams(false);
+                                                setApproval(false);
                                                 clearInterval(time);
                                             }
                                         });
@@ -285,9 +292,11 @@ const IBCTransferDialog = (props) => {
                             props.fetchBalanceList(props.address);
                         }, 5000);
                         setInProgress(false);
+                        setApproval(false);
                     });
                 } else {
                     setInProgress(false);
+                    setApproval(false);
                 }
             });
         });

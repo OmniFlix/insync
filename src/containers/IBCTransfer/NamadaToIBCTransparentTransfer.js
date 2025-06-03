@@ -23,13 +23,11 @@ import NamadaLogo from '../../assets/masp/namada_logo.svg';
 import SourceSelectField from './SourceSelectField';
 import { showMessage } from 'actions/snackbar';
 import { showConnectDialog } from 'actions/navBar';
-import { getWrapAddress } from '../../utils/strings';
 import keplrIcon from '../../assets/keplr.png';
 import { fetchBalanceList, fetchTokensList, getBalance } from '../../actions/accounts';
 import { showDelegateSuccessDialog } from '../../actions/stake';
 import CircularProgress from '../../components/CircularProgress';
 import { feeList, ibcList } from 'dummy/ibcList';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
@@ -117,7 +115,6 @@ const NamadaToIBCTransparentTransfer = (props) => {
         const source = props.address;
         let token = fromNamadaSelectedConfig?.COIN_MINIMAL_DENOM;
         let amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
-        // const amount = String(Number(props.amount) * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
         const namadaChannelId = getChannelIdForChain(props.ibcChannel, 'namada');
         if (props.fromNamadaSelectedAsset?.balance?.minDenomAmount) {
             amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
@@ -150,9 +147,9 @@ const NamadaToIBCTransparentTransfer = (props) => {
             }
         }
 
-        setParams(true);
+        // setParams(true);
         setApproval(true);
-        ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
+        ibcTransaction(props.address, tx, txs, props.revealPublicKey, props.details && props.details.type, props.details, handleFetch);
     };
 
     const handleSubmit = () => {
@@ -193,31 +190,15 @@ const NamadaToIBCTransparentTransfer = (props) => {
             props.showMessage(error);
             return;
         }
-        let balance = null;
-        props.balance && props.balance.length && props.balance.map((val) => {
-            if (val && val.length) {
-                val.map((value) => {
-                    if (value === config.TOKEN_ADDRESS) {
-                        balance = val[1];
-                    }
-                });
-            }
-
-            return null;
-        });
-
-        const available = balance;
+        const available = props.fromNamadaSelectedAsset?.balance?.minDenomAmount;
+        const token = props.fromNamadaSelectedAsset?.balance?.tokenAddress;
         const intervalTime = setInterval(() => {
-            props.getBalance(props.address, (result) => {
+            props.fetchBalanceList(props.address, (result) => {
                 if (result && result.length) {
                     let localBalance = null;
                     result && result.length && result.map((val) => {
-                        if (val && val.length) {
-                            val.map((value) => {
-                                if (value === config.TOKEN_ADDRESS) {
-                                    localBalance = val[1];
-                                }
-                            });
+                        if (val && val.tokenAddress === token) {
+                            localBalance = val.minDenomAmount;
                         }
 
                         return null;
@@ -228,12 +209,8 @@ const NamadaToIBCTransparentTransfer = (props) => {
                         setParams(false);
                         setApproval(false);
                         clearInterval(intervalTime);
-                        props.showDelegateSuccessDialog(value && value.hash, fromNamadaSelectedConfig);
-                        props.fetchTokensList();
-                        props.fetchBalanceList(props.address);
-                        if(props.from === 'transparent_withdraw') {
-                            props.hideTransparentTokensWithdrawDialog();
-                        }
+                        props.showDelegateSuccessDialog(value && value.hash, null, fromNamadaSelectedConfig);
+                        // props.fetchBalanceList(props.address);
                     }
                 }
             });
@@ -245,7 +222,9 @@ const NamadaToIBCTransparentTransfer = (props) => {
                 setParams(false);
                 setApproval(false);
                 clearInterval(intervalTime);
-            }, 60000);
+                props.showDelegateSuccessDialog(value && value.hash, null, fromNamadaSelectedConfig);
+                props.fetchBalanceList(props.address);
+            }, 30000);
         }
     };
 
@@ -292,8 +271,9 @@ const NamadaToIBCTransparentTransfer = (props) => {
             <div className="nam_transfer_destination" style={{ minHeight: 'unset' }}>
                 {fromNamadaSelectedConfig
                 ? <div>
+                    <img alt={keplrIcon} src={keplrIcon} style={{ width: '24px', height: '24px', marginRight: '8px' }} />
                         <p>
-                            <img alt={keplrIcon} src={keplrIcon} style={{ width: '24px', height: '24px', marginRight: '8px' }} />
+                            
                             {props.ibcTransferAddress}
                         </p>
                         <div className="header_right">

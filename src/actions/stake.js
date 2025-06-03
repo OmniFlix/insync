@@ -182,11 +182,12 @@ export const hideDelegateDialog = () => {
     };
 };
 
-export const showDelegateSuccessDialog = (value, config) => {
+export const showDelegateSuccessDialog = (value, config, ibcToken) => {
     return {
         type: DELEGATE_SUCCESS_DIALOG_SHOW,
         value,
         config,
+        ibcToken,
     };
 };
 

@@ -16,6 +16,7 @@
     "@emotion/react": "^11.11.3",
     "@harish551/namada-sdk": "^0.18.1",
     "@harish551/namada-types": "^0.6.0",
+    "@harish551/namada-utils": "^0.2.1",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
@@ -53,7 +54,8 @@
     "ts-jest": "^29.2.5",
     "typescript": "^5.3.3",
     "web-vitals": "^3.5.2",
-    "webpack": "^5.89.0"
+    "webpack": "^5.89.0",
+    "worker-loader": "^3.0.8"
   },
   "scripts": {
     "start": "react-app-rewired start",
