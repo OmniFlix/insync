@@ -233,7 +233,7 @@ table .disconnect_button {
     font-weight: 600;
     line-height: 130%;
     text-transform: uppercase;
-    margin-left: 20px;
+    margin-left: 10px;
 }
 
 .nav_bar .connect_button:hover {
@@ -327,11 +327,15 @@ table .disconnect_button {
 .sync_progress span.starts:first-child {
     background: #FFFF46 !important;
     animation: pulse 2s infinite !important;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: inline-block; 
 }
 
 .shielded_synced {
     border-radius: 50px;
-    background: rgba(255, 255, 255, 0.10);
+    background: #22c55e29;
     backdrop-filter: blur(10px);
     width: 40px;
     height: 40px;
@@ -339,6 +343,13 @@ table .disconnect_button {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.shielded_synced span.completed {
+    width: 14px;
+    height: 14px;
+    background: #22c55e;
+    border-radius: 50%;
 }
 
 .shielded_synced img {

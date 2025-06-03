@@ -506,7 +506,7 @@ class NavBar extends Component {
                             <Icon className="cross" icon="cross"/>
                         </div>
                         <Tabs/>
-                        {this.props.shieldedBalanceProgress
+                        {this.props.shieldedBalanceProgress && this.props.address
                         ?  <CustomTooltip title="Syncing">
                             <div 
                             className='sync_progress'>
@@ -515,11 +515,13 @@ class NavBar extends Component {
                                 </div>
                             </div>
                             </CustomTooltip>
-                            : <CustomTooltip title="Fully Synced">
+                            : this.props.address
+                            ? <CustomTooltip title="Fully Synced">
                                 <div className="shielded_synced">
-                                   <img src={syncedIcon} alt="synced" />
+                                    <span className="completed"/>
+                                   {/* <img src={syncedIcon} alt="synced" /> */}
                                 </div>
-                            </CustomTooltip>}
+                            </CustomTooltip> : null}
                         {localStorage.getItem('of_co_address') || this.props.address
                             ? (<div 
                                 onMouseEnter={this.handleProfilePopoverOpen}
