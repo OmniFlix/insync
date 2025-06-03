@@ -125,6 +125,13 @@ table .disconnect_button {
     opacity: 1;
 }
 
+.nav_bar .profile_button > div  {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center;
+}
+
 .nav_bar .right_content .tab:disabled {
     opacity: 0.6;
 }
