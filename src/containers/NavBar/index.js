@@ -46,6 +46,7 @@ import ConnectDialog from './ConnectDialog';
 import withRouter from '../../components/WithRouter';
 import ShieldedSyncPercentage from 'containers/ShieldedSyncPercentage';
 import ProfilePopover from './ProfilePopover';
+import ProfileAvatar from '../../assets/profile_avatar_icon.png';
 // import { init as initShared } from '@namada/shared/dist/init-inline';
 // import { init as initShared } from '../../private_modules/namada/shared/init-inline';
 
@@ -485,7 +486,7 @@ class NavBar extends Component {
                                 className="profile_button"
                                 style={{ cursor: 'pointer', position: 'relative' }}
                             >
-                                <div>{available}{' '}{config.COIN_DENOM}</div>
+                                <div><img alt="profileAvatar" src={ProfileAvatar}/>{available}{' '}{config.COIN_DENOM}</div>
                                 {profileOpen && (
                                     <ProfilePopover
                                         anchorEl={profileAnchorEl}
@@ -493,11 +494,6 @@ class NavBar extends Component {
                                         onClose={this.handleProfilePopoverClose}
                                     />
                                 )}
-                                <ProfilePopover
-                                        anchorEl={profileAnchorEl}
-                                        open={profileOpen}
-                                        onClose={this.handleProfilePopoverClose}
-                                    />
                             </div>)
                             : <Button
                                 className="connect_button"
