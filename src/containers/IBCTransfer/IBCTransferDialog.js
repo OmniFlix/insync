@@ -402,7 +402,7 @@ const IBCTransferDialog = (props) => {
                 ? <>
                     <div className="transfer_source">
                         <div className="header">
-                            {!props.ibcTransferAddress && <Button>Connect Wallet</Button>}
+                            {!props.ibcTransferAddress && <Button>{variables[props.lang].connect_wallet}</Button>}
                             <SourceChainSelectField from={props.from} data={props.depositData}/>
                             {/* <div className="header_right">
                                 <Button className="connect_keplr" disabled={props.ibcTransferAddress} onClick={() => props.showConnectDialog(false, false, true)}>
@@ -426,7 +426,7 @@ const IBCTransferDialog = (props) => {
                             <AmountTextField  from="namada_deposit"/>
                         </div>
                         <span className="available_balance">
-                            <p>Available</p>
+                            <p>{variables[props.lang].available}</p>
                             <p>{ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
                         </span>
                         <div className="deposit_nam_tokens_secion">
@@ -467,7 +467,7 @@ const IBCTransferDialog = (props) => {
                             ? <div>
                                 <p>
                                     <img alt="NamadaShieldedLogo" src={NamadaShieldedLogo}/>
-                                    Namada Shielded
+                                    {variables[props.lang].namada_shielded}
                                 </p>
                                 <div className="address">
                                     <span>{props.shieldedAddress}</span>
@@ -477,7 +477,7 @@ const IBCTransferDialog = (props) => {
                             : <div>
                                 <p>
                                     <img alt="NamadaLogo" src={NamadaLogo}/>
-                                    NAM
+                                    {variables[props.lang].nam}
                                 </p>
                                 <div className="address">
                                     <span>{props.address}</span>
@@ -491,7 +491,7 @@ const IBCTransferDialog = (props) => {
                         <div className="header">
                             <p>
                                 <img alt="NamadaLogo" src={NamadaLogo}/>
-                                Namada Transparent
+                                {variables[props.lang].namada_transparent}
                             </p>
                             <div className="address">
                                 <span>{props.address}</span>
@@ -505,7 +505,7 @@ const IBCTransferDialog = (props) => {
                         </div>
                         {fromNamadaSelectedConfig
                             ? <div className="tokens_secion">
-                                <p>Available: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                                <p>{variables[props.lang].available}: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                                 <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
                             </div> : null}
                     </div>

@@ -34,13 +34,13 @@ class UnbondingTable extends Component {
                         ? <Button
                             className="disconnect_button"
                             onClick={() => this.props.showConnectDialog()}>
-                                Connect
+                                {variables[this.props.lang].connect}
                         </Button>
                         : <span
                             className="no_data_table" onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                            }}> No Data </span>,
+                            }}> {variables[this.props.lang].no_data} </span>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {

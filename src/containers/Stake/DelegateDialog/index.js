@@ -331,22 +331,22 @@ const DelegateDialog = (props) => {
                 <h1>{props.name + ' ' + variables[props.lang].tokens}</h1>
                 {props.name === 'Redelegate'
                     ? <>
-                        <p>From validator</p>
+                        <p>{variables[props.lang].from_validator}</p>
                         <ValidatorSelectField/>
-                        <p>To validator</p>
+                        <p>{variables[props.lang].to_validator}</p>
                         <ToValidatorSelectField/>
                     </>
                     : props.name === 'Multi-Delegate'
                         ? <>
-                            <p>Select Multi Validators</p>
+                            <p>{variables[props.lang].select_multi_validators}</p>
                             <MultiValidatorSelectField />
                         </>
                         : <>
-                            <p>Choose the validator</p>
+                            <p>{variables[props.lang].choose_validator}</p>
                             <ValidatorSelectField/>
                         </>
                 }
-                <p>Enter tokens to {props.name || 'Delegate'}</p>
+                <p>{variables[props.lang].enter_tokens_to} {props.name || 'Delegate'}</p>
                 <TokensTextField/>
             </DialogContent>
             <DialogActions className="footer">

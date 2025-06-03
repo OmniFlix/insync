@@ -235,7 +235,7 @@ const IBCUnShielding = (props) => {
                     <p>
                         <img alt="NamadaLogo" src={NamadaShieldedLogo}/>
                         <span>
-                            <p>NAM Shielded</p>
+                            <p>{variables[props.lang].nam_shielded}</p>
                             <div className="address">
                                 <span>{props.shieldedAddress}</span>
                                 {props.shieldedAddress && props.shieldedAddress.slice(props.shieldedAddress.length - 6, props.shieldedAddress.length)}
@@ -243,7 +243,7 @@ const IBCUnShielding = (props) => {
                         </span>
                     </p>
                     <span className="balance_span">
-                        <p>Available </p>
+                        <p>{variables[props.lang].available} </p>
                         <p>{namadaBalance}{' '}{config.COIN_DENOM}</p>
                     </span>
                     
@@ -256,7 +256,7 @@ const IBCUnShielding = (props) => {
                 {fromNamadaSelectedConfig
                     ? <div className="shielded_tokens_secion">
                         <span className="available_balance">
-                            <p>Available</p>
+                            <p>{variables[props.lang].available}</p>
                             <p>{namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>                        
                         </span>
                         {/* <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button> */}
@@ -307,7 +307,7 @@ const IBCUnShielding = (props) => {
             </div>
             {fee && fee.fee
                     ? <div className="fee">
-                        <p>fee:<p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
+                        <p>{variables[props.lang].fee}:<p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
                     </div> : null}
             <Button
                 className="submit_button"

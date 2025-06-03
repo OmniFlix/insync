@@ -97,7 +97,7 @@ const SuccessDialog = (props) => {
                 <div className="heading" style={{ width: '100%' }}>
                     <img alt="success" src={success}/>
                     {props.shielded
-                        ? <h1>Tokens Shielded Successfully</h1>
+                        ? <h1>{variables[props.lang].tokens_shielded}</h1>
                         : props.name && props.name !== 'Multi-Delegate'
                             ? <h1>{props.name + 'd Successfully'}</h1>
                             : props.name
@@ -106,7 +106,7 @@ const SuccessDialog = (props) => {
                                 props.router.location.pathname === '/internalTransfer' || props.router.location.pathname === '/externalTransfer/withdraw' ||
                                 props.router.location.pathname === '/externalShielding' || props.router.location.pathname === '/internalShielding' ||
                                 props.router.location.pathname === '/tokens' || props.router.location.pathname === '/tokensShielded')
-                                    ? <h1>Token Transferred Successfully</h1>
+                                    ? <h1>{variables[props.lang].tokens_trans_success}</h1>
                                     : props.router && props.router.params && props.router.params.proposalID
                                         ? <h1>{variables[props.lang].vote_success}</h1>
                                         : props.claimValidator && props.claimValidator !== 'none'
@@ -198,7 +198,7 @@ const SuccessDialog = (props) => {
                                 {props.name === 'Redelegate'
                                     ? <>
                                         <div className="row">
-                                            <p>From {variables[props.lang]['validator_address']}</p>
+                                            <p>{variables[props.lang].from} {variables[props.lang]['validator_address']}</p>
                                             <div className="validator">
                                                 <div className="hash_text" title={props.validator}>
                                                     <p className="name">{props.validator}</p>
@@ -211,7 +211,7 @@ const SuccessDialog = (props) => {
                                             </div>
                                         </div>
                                         <div className="row">
-                                            <p>To {variables[props.lang]['validator_address']}</p>
+                                            <p>{variables[props.lang].to} {variables[props.lang]['validator_address']}</p>
                                             <div className="validator">
                                                 <div className="hash_text" title={props.toValidator}>
                                                     <p className="name">{props.toValidator}</p>

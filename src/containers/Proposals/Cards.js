@@ -97,7 +97,7 @@ const Cards = (props) => {
                                             : (proposal.status === 2 || proposal.status === 'voting') &&
                                             votedOption
                                                 ? <div className="details">
-                                                    <p>your vote is taken: <b>
+                                                    <p>{variables[props.lang].vote_taken}<b>
                                                         {votedOption && (votedOption.vote === 1 || votedOption.vote === 'yay') ? 'Yes'
                                                             : votedOption && (votedOption.vote === 2 || votedOption.vote === 'abstain') ? 'Abstain'
                                                                 : votedOption && (votedOption.vote === 3 || votedOption.vote === 'nay') ? 'No'
@@ -107,7 +107,7 @@ const Cards = (props) => {
                                                     <Button
                                                         variant="contained"
                                                         onClick={() => props.handleShow(proposal)}>
-                                                        Details
+                                                        {variables[props.lang].details}
                                                     </Button>
                                                 </div>
                                                 : proposal.status === 2 || proposal.status === 'PROPOSAL_STATUS_VOTING_PERIOD'
@@ -115,7 +115,7 @@ const Cards = (props) => {
                                                         className="vote_button"
                                                         variant="contained"
                                                         onClick={() => props.handleShow(proposal)}>
-                                                        Vote
+                                                        {variables[props.lang].vote}
                                                     </Button>
                                                     : null}
                                     </div>
@@ -123,7 +123,7 @@ const Cards = (props) => {
                                     <div className="row">
                                         <div className="icon_info">
                                             <Icon className="person" icon="person"/>
-                                            <span className="key_text">Proposer &nbsp;/&nbsp;
+                                            <span className="key_text">{variables[props.lang].proposer} &nbsp;/&nbsp;
                                                 {inProgress
                                                     ? <DotsLoading/>
                                                     : proposal && proposal.author &&
@@ -135,14 +135,14 @@ const Cards = (props) => {
                                             </span>
                                         </div>
                                         {content && content.created
-                                            ? <p className="key_text">Submitted
+                                            ? <p className="key_text">{variables[props.lang].submitted}
                                                 on &nbsp;/&nbsp; {moment(fixDateString(content.created)).format('DD-MMM-YYYY HH:mm:ss')}</p>
                                             : null}
                                     </div>
                                     <div className="row">
                                         <div className="icon_info">
                                             <Icon className="time" icon="time"/>
-                                            <p className="key_text">Voting Period</p>
+                                            <p className="key_text">{variables[props.lang].voting_period}</p>
                                             <p className="value_text">
                                                 {`${proposal && proposal.startTime
                                                     ? moment.unix(proposal.startTime).format('DD-MMM-YYYY HH:mm:ss') : ''} -> 
@@ -158,7 +158,7 @@ const Cards = (props) => {
                                             proposal.status === 'rejected' || proposal.status === 'executedRejected')
                                             ? 'rejected'
                                             : null)}>
-                                        <p>Proposal Status: {
+                                        <p>{variables[props.lang].proposal_status} {
                                             proposal.status === 0 ||
                                             proposal.status === 'pending' ? 'Nil'
                                                 : proposal.status === 1 ||
@@ -178,16 +178,16 @@ const Cards = (props) => {
                                         <div className="yes">
                                             <div>
                                                 <span/>
-                                                <p>YES ({VoteCalculation(proposal, 'yayVotes')})</p>
+                                                <p>{variables[props.lang].yes} ({VoteCalculation(proposal, 'yayVotes')})</p>
                                             </div>
-                                            <p className="total_nam_count">{formatCount(proposal && proposal.yayVotes)} NAM</p>
+                                            <p className="total_nam_count">{formatCount(proposal && proposal.yayVotes)} {variables[props.lang].nam}</p>
                                         </div>
                                         <div className="no">
                                             <div>
                                                 <span/>
-                                                <p>NO ({VoteCalculation(proposal, 'nayVotes')})</p>
+                                                <p>{variables[props.lang].no} ({VoteCalculation(proposal, 'nayVotes')})</p>
                                             </div>
-                                            <p className="total_nam_count">{formatCount(proposal && proposal.nayVotes)} NAM</p>
+                                            <p className="total_nam_count">{formatCount(proposal && proposal.nayVotes)} {variables[props.lang].nam}</p>
                                         </div>
                                         {/* <div className="option3">
                                             <span/>
@@ -196,9 +196,9 @@ const Cards = (props) => {
                                         <div className="option4">
                                             <div>
                                                 <span/>
-                                                <p>Abstain ({VoteCalculation(proposal, 'abstainVotes')})</p>
+                                                <p>{variables[props.lang].abstain} ({VoteCalculation(proposal, 'abstainVotes')})</p>
                                             </div>
-                                            <p className="total_nam_count">{formatCount(proposal && proposal.abstainVotes)} NAM</p>
+                                            <p className="total_nam_count">{formatCount(proposal && proposal.abstainVotes)} {variables[props.lang].nam}</p>
                                         </div>
                                     </div>
                                 </div>

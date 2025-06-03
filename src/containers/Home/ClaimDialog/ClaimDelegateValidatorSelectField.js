@@ -6,6 +6,7 @@ import { setClaimDelegateValidator } from '../../../actions/stake';
 import { MenuItem } from '@material-ui/core';
 import { config } from '../../../config';
 import { gas } from '../../../defaultGasValues';
+import variables from 'utils/variables';
 
 const colors = ['#0023DA', '#C9387E', '#EC2C00', '#80E3F2',
     '#E86FC5', '#1F3278', '#FFE761', '#7041B9'];
@@ -41,7 +42,7 @@ const ClaimDelegateValidatorSelectField = (props) => {
             value={props.value}
             onChange={handleChange}>
             <MenuItem disabled value="none">
-                Select the validator
+                {variables[props.lang].select_a_valdiator}
             </MenuItem>
             {props.rewards && props.rewards.rewards &&
                 props.rewards.rewards.length &&
@@ -109,6 +110,7 @@ ClaimDelegateValidatorSelectField.propTypes = {
     inProgress: PropTypes.bool,
     items: PropTypes.array,
     validatorList: PropTypes.array,
+    lang: PropTypes.string,
 };
 
 const stateToProps = (state) => {
@@ -118,6 +120,8 @@ const stateToProps = (state) => {
         validatorList: state.stake.validators.list,
         inProgress: state.accounts.rewards.inProgress,
         validatorImages: state.stake.validators.images,
+        lang: state.language,
+
     };
 };
 

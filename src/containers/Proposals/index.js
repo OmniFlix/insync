@@ -57,10 +57,10 @@ const Proposals = (props) => {
                     {/* <p>Voting Period: 8 Days</p> */}
                 </div>
                 {props.proposalsInProgress || props.voteDetailsInProgress
-                    ? <div className="cards_content">Loading...</div>
+                    ? <div className="cards_content">{variables[props.lang].loading}</div>
                     : filteredProposals && filteredProposals.length
                         ? <Cards proposals={filteredProposals}/>
-                        : <div className="cards_content">No data found</div>}
+                        : <div className="cards_content">{variables[props.lang].no_data_found}</div>}
             </div>
             <UnSuccessDialog/>
             <PendingDialog/>

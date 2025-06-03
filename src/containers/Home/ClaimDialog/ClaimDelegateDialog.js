@@ -182,11 +182,11 @@ const ClaimDelegateDialog = (props) => {
             onClose={props.handleClose}>
             {inProgress && <CircularProgress className="full_screen"/>}
             <DialogContent className="content">
-                <h1>Claim and Delegate Rewards</h1>
-                <p>Select validator</p>
+                <h1>{variables[props.lang].claim_and_delegate}</h1>
+                <p>{variables[props.lang].select_a_validator}</p>
                 <ClaimDelegateValidatorsSelectField/>
                 {tokens && tokens > 0
-                    ? <p>rewards: {tokens.toFixed(4)}</p>
+                    ? <p>{variables[props.lang].rewards}: {tokens.toFixed(4)}</p>
                     : null}
             </DialogContent>
             <DialogActions className="footer">

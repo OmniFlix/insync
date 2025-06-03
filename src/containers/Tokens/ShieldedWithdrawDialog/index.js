@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import IBCUnShielding from "containers/IBCTransfer/IBCUnShielding";
 import closeIcon from '../../../assets/close_icon.png';
+import variables from "utils/variables";
 
 class ShieldedWithdrawDialog extends React.Component {
    render () {
@@ -17,7 +18,7 @@ class ShieldedWithdrawDialog extends React.Component {
             className="dialog tokens_withdraw_dialog">
                 <div className="ibc_content padding">
                     <div className="header_div">
-                        <p>Withdraw {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                        <p>{variables[this.props.lang].deposit} {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
                         <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
                     </div>
                     <IBCUnShielding/>

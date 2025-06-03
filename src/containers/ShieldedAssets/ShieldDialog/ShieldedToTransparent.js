@@ -141,7 +141,7 @@ const ShieldedToTransparent = (props) => {
                 <div className="header">
                     <p>
                         <img alt="NamadaLogo" src={NamadaShieldedLogo}/>
-                        Namada Shielded
+                        {variables[props.lang].namada_shielded}
                     </p>
                     <div className="address">
                         <span>{props.shieldedAddress}</span>
@@ -155,10 +155,10 @@ const ShieldedToTransparent = (props) => {
                 </div>
                 {fromNamadaSelectedConfig
                     ? <div className="tokens_secion">
-                        <p>Available {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                        <p>{variables[props.lang].available} {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                         {/* <Button onClick={() => props.setAmount(namadaBalance)}>Max</Button> */}
                     </div> : null}
-                <Button className="max_button" onClick={() => props.setAmount(namadaBalance)}>Max</Button>
+                <Button className="max_button" onClick={() => props.setAmount(namadaBalance)}>{variables[props.lang].max}</Button>
 
             </div>
             <div className="arrow shield_convert_arrow">
@@ -168,7 +168,7 @@ const ShieldedToTransparent = (props) => {
                 <div>
                     <p>
                         <img alt="NamadaLogo" src={NamadaLogo}/>
-                        Namada Transparent
+                        {variables[props.lang].namada_transparent}
                     </p>
                     <div className="address">
                         <span>{props.address}</span>
@@ -179,7 +179,7 @@ const ShieldedToTransparent = (props) => {
             </div>
             {fee && fee.fee
                 ? <div className="fee">
-                    <p>fee</p>
+                    <p>{variables[props.lang].fee}</p>
                     <p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
             {inProgress && <CircularProgress className="full_screen"/>}

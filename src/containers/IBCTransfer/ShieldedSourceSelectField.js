@@ -65,8 +65,8 @@ const ShieldedSourceSelectField = (props) => {
             : <MenuItem className="phase5_disable" value="Namada" disabled>
                 <img alt="NamadaLogo" src={NamadaLogo}/>
                 <div>
-                    Namada
-                    <p>Enables in Phase 5</p>
+                    {variables[props.lang].namada}
+                    <p>{variables[props.lang].enables_in_phase_5}</p>
                 </div>
             </MenuItem>}
             {enrichedAssets && enrichedAssets.map((asset, index) => {

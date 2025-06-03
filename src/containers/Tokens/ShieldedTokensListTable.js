@@ -15,6 +15,7 @@ import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCC
 import { Button, withStyles, Tooltip } from '@material-ui/core';
 import classNames from 'classnames';
 import DotsLoading from 'components/DotsLoading';
+import variables from 'utils/variables';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -121,7 +122,7 @@ class ShieldedTokensListTable extends React.Component {
                 body: {
                     noMatch: this.props.inProgress
                         ? <CircularProgress/>
-                        : <div className="no_data_table"> No Tokens Found! </div>,
+                        : <div className="no_data_table"> {variables[this.props.lang].no_tokens_found} </div>,
                     toolTip: 'Sort',
                 },
                 viewColumns: {
@@ -188,39 +189,39 @@ class ShieldedTokensListTable extends React.Component {
                             ? null 
                             : <Button onClick={() => this.handleDeposit(value)} disabled={this.props.shieldedBalanceProgress}>
                                 <img src={DepositIcon} alt="Deposit"/>
-                                Deposit
+                                {variables[this.props.lang].deposit}
                             </Button>}
                             {token === 'NAM'
                                 ? null 
                                 : <Button onClick={() => this.handleWithdraw(value)} disabled={this.props.shieldedBalanceProgress}> 
                                     <img src={WithdrawIcon} alt="Withdraw"/>
-                                    Withdraw
+                                    {variables[this.props.lang].withdraw}
                                 </Button>}
                                 {token === 'NAM'
                                     ? <CustomTooltip  title="Enables in Phase 5">
                                         <span className='disabled_tx_button'>
                                             <Button disabled={true} onClick={() => this.handleTransfer(value)}>
                                                 <img src={TransferIcon} alt="Transfer"/>
-                                                Transfer
+                                                {variables[this.props.lang].transfer}
                                             </Button>
                                         </span>
                                     </CustomTooltip> 
                                     : <Button onClick={() => this.handleTransfer(value)} disabled={this.props.shieldedBalanceProgress}>
                                         <img src={TransferIcon} alt="Transfer"/>
-                                        Transfer
+                                        {variables[this.props.lang].transfer}
                                     </Button>}
                                 {token === 'NAM'
                                     ? <CustomTooltip  title="Enables in Phase 5">
                                         <span className='disabled_tx_button'>
                                             <Button disabled={true} onClick={() => this.handleConvert(value)}>
                                                 <img src={ConvertIcon} alt="Convert"/>
-                                                Unshield
+                                                {variables[this.props.lang].unshield}
                                             </Button>
                                         </span>
                                     </CustomTooltip> 
                                     : <Button onClick={() => this.handleConvert(value)} disabled={this.props.shieldedBalanceProgress}>
                                         <img src={ConvertIcon} alt="Convert"/>
-                                        Unshield
+                                        {variables[this.props.lang].unshield}
                                     </Button>}
                         </div>
                     );

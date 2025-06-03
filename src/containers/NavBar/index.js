@@ -542,7 +542,7 @@ class NavBar extends Component {
                             : <Button
                                 className="connect_button"
                                 onClick={() => this.props.showConnectDialog(this.props.proposalTab, this.props.stake)}>
-                                Connect
+                                {variables[this.props.lang].connect}
                             </Button>}
                     </div>
                     <ConnectDialog/>

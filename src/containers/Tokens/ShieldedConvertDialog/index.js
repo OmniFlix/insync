@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
 import ShieldedToTransparent from "containers/ShieldedAssets/ShieldDialog/ShieldedToTransparent";
 import closeIcon from '../../../assets/close_icon.png';
+import variables from "utils/variables";
 
 class ShieldedConvertDialog extends React.Component {
    render () {
@@ -17,7 +18,7 @@ class ShieldedConvertDialog extends React.Component {
             className="dialog tokens_convert_dialog">
                 <div className="ibc_content shield_tranfer">
                     <div className="header_div">
-                        <p>Namada Shielded to Namada Transparent</p>
+                        <p>{variables[this.props.lang].nam_shield_to_nam_trans}</p>
                         <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
                     </div>
                     <ShieldedToTransparent/>

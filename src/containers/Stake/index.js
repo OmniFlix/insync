@@ -74,13 +74,13 @@ const Stake = (props) => {
                         {/* <span/> */}
                         {/* <MultiDelegateButton/> */}
                     </div>
-                    <p>Unbonding Period: 14 Days</p>
+                    <p>{variables[props.lang].unbouding_period}</p>
                 </div>
                 <Table active={active}/>
             </div>
               {(active === 2 && props.unBondingValidatorsList && props.unBondingValidatorsList.length)
                                 ? <div style={{paddingTop: 0}} className='stake_content padding'> 
-                                    <h2 style={{textAlign: 'left', fontSize: '30px'}}>Unbonding</h2>
+                                    <h2 style={{textAlign: 'left', fontSize: '30px'}}>{variables[props.lang].unbounding}</h2>
                                     <UnbondingTable />
                                 </div> : null}
             <DelegateDialog/>

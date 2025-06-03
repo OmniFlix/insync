@@ -103,14 +103,13 @@ class Home extends Component {
                     <div className="card">
                         <div className="left_content">
                             <h2>
-                                {/* {variables[this.props.lang].welcome} */}
-                            NAM Staking & Governance
+                                {variables[this.props.lang].nam_staking_governance}
                             </h2>
                             <p className="info">
                                 {/* <span>developed by OmniFlix for Cosmic Validator</span>
                             <span>supported with a grant by Mandragora</span> */}
                                 {/* {variables[this.props.lang].participate} */}
-                                developed by <strong>OmniFlix Network</strong> in association with
+                                {variables[this.props.lang].developed_by} <strong>OmniFlix Network</strong> in association with
                             </p>
                             <img alt="cv" src={cvIcon} />
                         </div>
@@ -148,7 +147,7 @@ class Home extends Component {
                             </div>
                             <div className="buttons">
                                 {/* <MultiDelegateButton/> */}
-                                <p>Unbonding Period: 14 Days</p>
+                                <p>{variables[this.props.lang].unbounding_period}</p>
                                 <Button className="view_all" onClick={() => this.handleRedirect('/stake')}>
                                     {variables[this.props.lang]['view_all']}
                                 </Button>
@@ -158,7 +157,7 @@ class Home extends Component {
                     </div>
                     {(active === 2 && this.props.unBondingValidatorsList && this.props.unBondingValidatorsList.length)
                     ? <div style={{paddingTop: 0}} className='stake_content padding'> 
-                        <h2 style={{textAlign: 'left', fontSize: '30px'}}>Unbonding</h2>
+                        <h2 style={{textAlign: 'left', fontSize: '30px'}}>{variables[this.props.lang].unbounding}</h2>
                         <UnbondingTable />
                     </div> : null}
                 </div>
@@ -176,7 +175,7 @@ class Home extends Component {
                                 </Button>
                             </div>
                             {this.props.proposalsInProgress || this.props.voteDetailsInProgress
-                                ? <div className="cards_content">Loading...</div>
+                                ? <div className="cards_content">{variables[this.props.lang].loading}</div>
                                 : filteredProposals && filteredProposals.length
                                     ? <Cards home={true} proposals={filteredProposals}/>
                                     : <div className="cards_content">{variables[this.props.lang]['no_data_found']}</div>}
@@ -221,7 +220,7 @@ const stateToProps = (state) => {
         delegatedValidatorList: state.stake.delegatedValidators.list,
         inActiveValidators: state.stake.inActiveValidators.list,
         validatorList: state.stake.validators.list,
-          unBondingValidatorsList: state.stake.unBondingValidators.list,
+        unBondingValidatorsList: state.stake.unBondingValidators.list,
     };
 };
 

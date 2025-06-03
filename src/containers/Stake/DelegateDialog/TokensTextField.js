@@ -85,7 +85,7 @@ const TokensTextField = (props) => {
                 onChange={props.onChange}/>
             <div className="available_tokens">
                 <p className="heading">
-                    Max Available tokens:
+                    {variables[props.lang].max_available_tokens}
                 </p>
                 {props.name === 'Delegate' || props.name === 'Stake'
                     ? <p className="value" onClick={() => props.onChange(availableTokens)}>

@@ -19,6 +19,7 @@ import SyncCompleteIcon from '../../assets/sync_complete_tick.png';
 import Button from '@material-ui/core/Button';
 import { reSyncBalance } from '../../actions/accounts';
 import { config } from 'config';
+import variables from 'utils/variables';
 
 const Tokens = (props) => {
     const handleReSync = () => {
@@ -40,8 +41,8 @@ const Tokens = (props) => {
                         ? (
                             <div className="sync_container">
                                 <div className="left_div">
-                                    <p>Shielded Sync in Progress</p>
-                                    <p>Hang tight, this might take a moment</p>
+                                    <p>{variables[props.lang].shielded_sync_progress}</p>
+                                    <p>{variables[props.lang].hang_tight_text}</p>
                                 </div>
                                 <div className="right_div">
                                     <ShieldedSyncPercentageText/>
@@ -53,12 +54,12 @@ const Tokens = (props) => {
                                 <div className="success_left_div">
                                     <img alt="syncComplete" src={SyncCompleteIcon}/>
                                     <span>
-                                        <p>Shielded synced successfully</p>
-                                        <p>Your shielded balance is now up to date.</p>
+                                        <p>{variables[props.lang].shielded_sync_success}</p>
+                                        <p>{variables[props.lang].shielded_balance_uptodate}</p>
                                     </span>
                                 </div>
                                 <div className="right_div">
-                                    <Button onClick={handleReSync}>Sync Again</Button>
+                                    <Button onClick={handleReSync}>{variables[props.lang].sync_again}</Button>
                                 </div>
                             </div>
                         )

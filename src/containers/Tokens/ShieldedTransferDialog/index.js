@@ -20,6 +20,7 @@ import BigNumber from "bignumber.js";
 import { ibcShieldedTransfer } from "helper";
 import { fetchIBCBalance } from "actions/IBCTransfer";
 import CircularProgress from "components/CircularProgress";
+import variables from "utils/variables";
 
 class ShieldedTransferDialog extends React.Component {
     constructor (props) {
@@ -144,7 +145,7 @@ class ShieldedTransferDialog extends React.Component {
             className="dialog tokens_transfer_dialog">
                 <div className="ibc_content ibc_transfer_dialog">
                     <div className="header">
-                        <h2>Transfer Asset</h2>
+                        <h2>{variables[this.props.lang].transfer_asset}</h2>
                         <Button
                             className="close_button"
                             onClick={this.props.handleClose}
@@ -154,9 +155,9 @@ class ShieldedTransferDialog extends React.Component {
                     </div>
                     <div className="section1">
                         <div className="row1">
-                            <div className="text">Asset</div>
+                            <div className="text">{variables[this.props.lang].asset}</div>
                             <div className="available_balance">
-                                <span>Available</span>
+                                <span>{variables[this.props.lang].available}</span>
                                 <p>{amount}{' '}{this.props.value?.symbol}</p>
                             </div>
                         </div>
@@ -172,7 +173,7 @@ class ShieldedTransferDialog extends React.Component {
                     </div>
                     <div className="section3">
                         <div className="row1">
-                            Enter recipient address
+                            {variables[this.props.lang].enter_recipient_address}
                         </div>
                         <div className="row2">
                             <AddressTextField />
@@ -180,7 +181,7 @@ class ShieldedTransferDialog extends React.Component {
                     </div>
                     <div className="section4">
                         <div className="row1">
-                            Memo
+                            {variables[this.props.lang].memo}
                         </div>
                         <div className="row2">
                             <MemoTextField />

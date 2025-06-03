@@ -131,11 +131,11 @@ const ClaimDialog = (props) => {
             onClose={props.handleClose}>
             {inProgress && <CircularProgress className="full_screen"/>}
             <DialogContent className="content">
-                <h1>Claim Rewards</h1>
-                <p>Select validator</p>
+                <h1>{variables[props.lang].claim_rewards}</h1>
+                <p>{variables[props.lang].select_a_validator}</p>
                 <ValidatorsSelectField/>
                 {tokens && tokens > 0
-                    ? <p>rewards: {tokens.toFixed(4)}</p>
+                    ? <p>{variables[props.lang].rewards}: {tokens.toFixed(4)}</p>
                     : null}
             </DialogContent>
             <DialogActions className="footer">

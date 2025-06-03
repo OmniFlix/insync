@@ -10,6 +10,7 @@ import ExternalShieldingTabs from './ExternalShieldingTabs';
 import ExternalTransferTabs from './ExternalTransferTabs';
 import NamadaToIBCTransparentTransfer from './NamadaToIBCTransparentTransfer';
 import IBCUnShielding from './IBCUnShielding';
+import variables from '../../utils/variables';
 
 class IBCTransfer extends Component {
     render () {
@@ -23,17 +24,17 @@ class IBCTransfer extends Component {
                 {route === 'externalTransfer' && <ExternalTransferTabs/>}
                 {((this.props.subTabs === 'ibc_shielding' && route === 'externalShielding') || (this.props.externalTransferSubTabs === 'ibc_chain_to_namada_transparent_transfer' && route === 'externalTransfer')) && <div className="ibc_content padding">
                     {this.props.ibcSwapType === 'to_namada'
-                        ? <p>IBC Transfer to Namada</p>
+                        ? <p>{variables[this.props.lang].ibc_to_namada}</p>
                         : <>
-                            <p>Withdraw assets from Namada via IBC</p>
-                            <span>To withdraw shielded assets please unshield them to your transparent account</span>
+                            <p>{variables[this.props.lang].withdraw_namada_ibc}</p>
+                            <span>{variables[this.props.lang].unshield_text}</span>
                         </>}
                     <IBCTransferDialog/>
                 </div>}
                 {(this.props.externalTransferSubTabs === 'namada_to_ibc_chain_transparent_transfer' && route === 'externalTransfer') &&
                 <div className="ibc_content padding">
                     <>
-                        <p>Withdraw assets from Namada via IBC</p>
+                        <p>{variables[this.props.lang].withdraw_namada_ibc}</p>
                         {/* <span>To withdraw shielded assets please unshield them to your transparent account</span> */}
                     </>
                     <NamadaToIBCTransparentTransfer/>
@@ -48,7 +49,7 @@ class IBCTransfer extends Component {
                 {((this.props.subTabs === 'ibc_unshielding' && route === 'externalShielding')) &&
                 <div className="ibc_content padding">
                     <>
-                        <p>Withdraw shielded assets from Namada via IBC</p>
+                        <p>{variables[this.props.lang].withdraw_namada_ibc}</p>
                     </>
                     <IBCUnShielding/>
                 </div>}
