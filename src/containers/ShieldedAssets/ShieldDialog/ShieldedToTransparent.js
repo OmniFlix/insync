@@ -53,7 +53,7 @@ const ShieldedToTransparent = (props) => {
         const txs = {
             token: config.TOKEN_ADDRESS,
             feeAmount: new BigNumber(0.000001),
-            gasLimit: new BigNumber(fee?.shieldedgas || 152624),
+            gasLimit: new BigNumber(fee?.shieldedTransfer || 62500),
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
         };
@@ -182,7 +182,7 @@ const ShieldedToTransparent = (props) => {
             {fee && fee.fee
                 ? <div className="fee">
                     <p>{variables[props.lang].fee}</p>
-                    <p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                    <p>{formatCount(fee.fee * fee.shieldedTransfer)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                 </div> : null}
             {/* {inProgress && <CircularProgress className="full_screen"/>} */}
             {inProgress

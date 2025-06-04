@@ -48,8 +48,20 @@ export const formatCount = (value, decimals) => {
         return formatCountAbbr(value, true);
     }
 
+    if (value < 0.0001) {
+        return floatDecimals(value, 5);
+    }
+
+    if (value < 0.01) {
+        return floatDecimals(value, 4);
+    }
+
+    if (value < 0.1) {
+        return floatDecimals(value, 2);
+    }
+
     if (value < 1) {
-        return floatDecimals(value, decimals || 5);
+        return floatDecimals(value, 2);
     }
 
     if (value < 1000) {
