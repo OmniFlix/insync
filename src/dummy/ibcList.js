@@ -264,26 +264,31 @@ export const feeList = {
         fee: 0.00001,
         gas: 32032,
         shieldedgas: 152624, // Gas for shielded transfer
+        shieldedTransfer: 62500,
     },
     ATOM: {
         fee: 0.000001,
         gas: 32032,
         shieldedgas: 152624,
+        shieldedTransfer: 62500,
     },
     TIA: {
         fee: 0.000001,
         gas: 28432,
         shieldedgas: 102624,
+        shieldedTransfer: 62500,
     },
     NTRN: {
-        fee: 0.00001,
+        fee: 0.0001,
         gas: 32032,
         shieldedgas: 152624,
+        shieldedTransfer: 12500,
     },
     stATOM: {
         fee: 0.000001,
         gas: 28432,
         shieldedgas: 102624,
+        shieldedTransfer: 62500,
     },
 };
 
