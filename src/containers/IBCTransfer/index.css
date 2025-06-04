@@ -136,7 +136,7 @@
 .transfer_source .deposit_nam_tokens_secion {
     position: absolute;
     right: 5%;
-    bottom: 112px;
+    top: 85px;
 }
 
 .transfer_source .nam_tokens_secion > button,
@@ -151,6 +151,10 @@
     font-family: 'Blinker', sans-serif;
     color: #fff;
     padding: 0px 5px;
+}
+
+.transfer_source .header {
+    margin-bottom: 10px;
 }
 
 .transfer_source .header button {
@@ -228,6 +232,7 @@
 .transfer_source .header > .select_field {
     width: 100%;
     margin-top: 0px;
+    margin-bottom: 0;
 }
 
 .transfer_dialog .header .logout_icon {
@@ -346,6 +351,29 @@
     width: 80%;
     height: auto;
     margin: auto;
+}
+
+.transfer_dialog .transfer_source .select_section {
+    position: relative;
+}
+
+.transfer_dialog .transfer_source .select_section .max_button {
+    position: absolute;
+    right: 8px;
+    /* bottom: 60px; */
+    background: #FFFFFF1F;
+    padding: 4px 6px;
+    border: 1px solid #FFFFFF14;
+    color: #fff;
+    text-align: center;
+    font-family: 'Blinker', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    text-transform: none;
+    width: auto;
+    border-radius: 8px;
 }
 
 .transfer_dialog .transfer_source .select_section > div {
@@ -713,7 +741,11 @@
     .transfer_source .deposit_nam_tokens_secion {
         position: absolute;
         right: 6%;
-        bottom: 88px;
+        top: 80px;
+    }
+
+    .transfer_source_connect .deposit_nam_tokens_secion {
+        top: 135px;
     }
 
     .transfer_dialog > .arrow {
@@ -733,7 +765,11 @@
     .transfer_source .deposit_nam_tokens_secion {
         position: absolute;
         right: 8%;
-        bottom: 88px;
+        top: 80px;
+    }
+
+    .transfer_source_connect .deposit_nam_tokens_secion {
+        top: 192px !important;
     }
 
     .transfer_dialog .transfer_source .select_section > div {

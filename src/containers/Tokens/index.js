@@ -20,6 +20,8 @@ import Button from '@material-ui/core/Button';
 import { reSyncBalance } from '../../actions/accounts';
 import { config } from 'config';
 import variables from 'utils/variables';
+import TokensSuccessDialog from 'containers/Tokens/SuccessDialog';
+
 
 const Tokens = (props) => {
     const handleReSync = () => {
@@ -78,6 +80,7 @@ const Tokens = (props) => {
             <ShieldedTransferDialog />
             <ShieldedConvertDialog />
             <SuccessDialog/>
+            <TokensSuccessDialog />
         </>
     );
 };

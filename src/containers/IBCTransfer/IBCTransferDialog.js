@@ -4,7 +4,7 @@ import { Button, Tooltip } from '@material-ui/core';
 import './index.css';
 import { connect } from 'react-redux';
 import AmountTextField from './AmountTextField';
-import { setIBCSwapType, setIBCTransferAmount, setIBCTransferType, fetchTimeoutHeight, executeIBCTransfer, fetchIBCBalance, aminoSignIBCTx, protoBufSigning, txSignAndBroadCast, connectIBCAccount, connectIBCAccountSuccess, fetchIBCChannel } from '../../actions/IBCTransfer';
+import { setIBCSwapType, setIBCTransferAmount, setIBCTransferType, fetchTimeoutHeight, executeIBCTransfer, fetchIBCBalance, aminoSignIBCTx, protoBufSigning, txSignAndBroadCast, connectIBCAccount, connectIBCAccountSuccess, fetchIBCChannel, showTokensTransactionSuccessDialog } from '../../actions/IBCTransfer';
 import { config } from '../../config';
 // import TransferIcon from '../../assets/transfer.svg';
 import AssetSelectField from './AssetSelectField';
@@ -57,7 +57,7 @@ const IBCTransferDialog = (props) => {
             //     localStorage.setItem('namada_keplr_address', address[0].address);
             //     props.fetchIBCBalance(config.REST_URL, address[0].address);
             //     props.fetchIBCChannel(selectedChain.channel_link);
-            // });
+            // })
         }
     }, []);
 
@@ -237,6 +237,12 @@ const IBCTransferDialog = (props) => {
 
                         setTransactionCompleted(true);
                         if (props.from === 'transparent_deposit') {
+                            const tokenName = props.transparentTokensDepositDialogValue?.name || props.transparentTokensDepositDialogValue?.symbol;
+                            const successObject = {
+                                text: `${tokenName} Deposit Successfully`,
+                                content: 'Your deposit was completed and funds are available',
+                            }
+
                             props.fetchBalanceList(props.address);
                             const tokenAddress = props.transparentTokensDepositDialogValue && props.transparentTokensDepositDialogValue.balance &&
                                 props.transparentTokensDepositDialogValue.balance.tokenAddress;
@@ -252,7 +258,8 @@ const IBCTransferDialog = (props) => {
                                             if (resultBalance !== balance) {
                                                 props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                                                 props.getBalance(props.address);
-                                                props.showDelegateSuccessDialog(res1.txhash, config);
+                                                // props.showDelegateSuccessDialog(res1.txhash, config);
+                                                props.showTokensTransactionSuccessDialog(successObject)
                                                 setInProgress(false);
                                                 setParams(false);
                                                 setApproval(false);
@@ -273,10 +280,19 @@ const IBCTransferDialog = (props) => {
 
                             return;
                         }
+            
                         props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                         props.getBalance(props.address);
                         props.fetchTokensList();
                         props.fetchBalanceList(props.address);
+
+                        const tokenName = props.fromNamadaSelectedAsset?.name || props.fromNamadaSelectedAsset?.symbol;
+                        const successObject = {
+                            text: `${tokenName} Deposit Successfully`,
+                            content: 'Your deposit was completed and funds are available',
+                        }
+
+                        props.showTokensTransactionSuccessDialog(successObject);
                         // if(props.from === 'shielded_deposit') {
                         //     props.hideShieldedTokensDepositDialog();
                         // } else if (props.from === 'transparent_deposit') {
@@ -285,7 +301,7 @@ const IBCTransferDialog = (props) => {
                         setTimeout(() => {
                             props.fetchBalanceList(props.address);
                         }, 10000);
-                        props.showDelegateSuccessDialog(res1.txhash, config);
+                        // props.showDelegateSuccessDialog(res1.txhash, config);
                         // props.setIBCTransferAmount('');
                         setTimeout(() => {
                             props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
@@ -361,7 +377,14 @@ const IBCTransferDialog = (props) => {
                         setParams(false);
                         setApproval(false);
                         clearInterval(intervalTime);
-                        props.showDelegateSuccessDialog(value && value.hash);
+
+                        const tokenName = props.fromNamadaSelectedAsset?.name || props.fromNamadaSelectedAsset?.symbol;
+                        const successObject = {
+                            text: `${tokenName} Withdraw Successfully`,
+                            content: 'Your withdraw was completed and funds are available',
+                        }
+                        props.showTokensTransactionSuccessDialog(successObject)
+                        // props.showDelegateSuccessDialog(value && value.hash);
                     }
                 }
             });
@@ -378,6 +401,12 @@ const IBCTransferDialog = (props) => {
     };
 
     const handleFetchShieldedBalance = (tokenAddress, balance, ibcConfig, res1) => {
+        const tokenName = props.shieldedTokensDepositDialogValue?.name || props.shieldedTokensDepositDialogValue?.symbol;
+        const successObject = {
+            text: `${tokenName} Deposit Successfully`,
+            content: 'Your deposit was completed and funds are available',
+        }
+
         props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
             let resultBalance = resBalance && resBalance.length && tokenAddress &&
                     resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
@@ -385,7 +414,8 @@ const IBCTransferDialog = (props) => {
             if (resultBalance !== balance) {
                 props.fetchIBCBalance(ibcConfig?.REST_URL, props.ibcTransferAddress);
                 props.getBalance(props.address);
-                props.showDelegateSuccessDialog(res1.txhash, ibcConfig);
+                // props.showDelegateSuccessDialog(res1.txhash, ibcConfig);
+                props.showTokensTransactionSuccessDialog(successObject);
                 setInProgress(false);
             } else {
                 handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
@@ -402,7 +432,7 @@ const IBCTransferDialog = (props) => {
         <div className="transfer_dialog">
             {props.ibcSwapType === 'to_namada'
                 ? <>
-                    <div className="transfer_source">
+                    <div className={!props.ibcTransferAddress ? "transfer_source_connect transfer_source" : "transfer_source"}>
                         <div className="header">
                             {!props.ibcTransferAddress && <Button>{variables[props.lang].connect_wallet}</Button>}
                             <SourceChainSelectField from={props.from} data={props.depositData}/>
@@ -426,14 +456,15 @@ const IBCTransferDialog = (props) => {
                         <div className="select_section">
                             <AssetSelectField/>
                             <AmountTextField  from="namada_deposit"/>
+                            <Button className='max_button' onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>
                         </div>
                         <span className="available_balance">
                             <p>{variables[props.lang].available}</p>
                             <p>{ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
                         </span>
-                        <div className="deposit_nam_tokens_secion">
+                        {/* <div className="deposit_nam_tokens_secion">
                             <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>
-                        </div>
+                        </div> */}
                         <div className="border"></div>
                         {props.ibcTransferAddress && 
                         <div className="tokens_secion">
@@ -489,7 +520,7 @@ const IBCTransferDialog = (props) => {
                     </div>
                 </>
                 : <>
-                    <div className="transfer_source">
+                    <div className={!props.ibcTransferAddress ? "transfer_source_connect transfer_source" : "transfer_source"}>
                         <div className="header">
                             <p>
                                 <img alt="NamadaLogo" src={NamadaLogo}/>
@@ -504,16 +535,17 @@ const IBCTransferDialog = (props) => {
                         <div className="select_section">
                             <SourceSelectField/>
                             <AmountTextField from="from_namada_deposit"/>
+                            <Button className='max_button' onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
                         </div>
-                        {fromNamadaSelectedConfig
-                            ? <div className="tokens_secion">
-                                <p>{variables[props.lang].available}: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
-                                <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
-                            </div> : null}
                     </div>
                     <div className="arrow">
                         <img alt="Arrow" src={DownArrowIcon}/>
                     </div>
+                    {fromNamadaSelectedConfig
+                            ? <div className="tokens_secion">
+                                <p>{variables[props.lang].available}: {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
+                                {/* <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button> */}
+                            </div> : null}
                     <div className="transfer_destination header">
                         {fromNamadaSelectedConfig
                         ? <div>
@@ -597,6 +629,7 @@ IBCTransferDialog.propTypes = {
     fromNamadaSelectedAsset: PropTypes.object.isRequired,
     transparentTokensDepositDialogValue: PropTypes.object,
     shieldedTokensDepositDialogValue: PropTypes.object,
+    showTokensTransactionSuccessDialog: PropTypes.func,
     address: PropTypes.string,
     amount: PropTypes.string,
     amountValid: PropTypes.bool,
@@ -663,6 +696,8 @@ const actionToProps = {
 
     hideTransparentTokensDepositDialog,
     hideShieldedTokensDepositDialog,
+
+    showTokensTransactionSuccessDialog,
 };
 
 export default connect(stateToProps, actionToProps)(IBCTransferDialog);

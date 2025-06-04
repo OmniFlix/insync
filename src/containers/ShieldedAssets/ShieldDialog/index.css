@@ -244,7 +244,7 @@
     width: 40% !important;
 }
 
-.transfer_source .select_section > div:last-child {
+.transfer_source .select_section > div:nth-child(2) {
     background: #FFFFFF0F;
     width: 60% !important;
     border-radius: 12px;
@@ -453,7 +453,7 @@
         margin: 0px !important;
     }
 
-    .transfer_source .select_section > div:last-child {
+    .transfer_source .select_section > div:nth-child(2) {
         width: 100% !important;
         margin-top: 0px;
     }
@@ -461,5 +461,9 @@
     .shield_dialog .transfer_source .max_button {
         right: 7%;
         bottom: 59%;
+    }
+
+    .transfer_dialog .transfer_source .select_section .max_button {
+        bottom: 14px;
     }
 }

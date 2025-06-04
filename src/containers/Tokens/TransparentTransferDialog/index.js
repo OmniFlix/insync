@@ -20,6 +20,7 @@ import BigNumber from "bignumber.js";
 import { ibcTransparentTransfer } from "helper";
 import variables from "utils/variables";
 import ProcessingButton from "components/ProcessingButton";
+import { showTokensTransactionSuccessDialog } from "actions/IBCTransfer";
 
 class TransparentTransferDialog extends React.Component {
     constructor (props) {
@@ -85,6 +86,11 @@ class TransparentTransferDialog extends React.Component {
             this.setState({ approval: false });
             return;
         }
+        const tokenName = this.props.value?.name || this.props.value?.symbol;
+        const successObject = {
+            text: `${tokenName} Transfer Successfully`,
+            content: 'Your transfer was completed',
+        }
 
         const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         const selectedBalance = this.props.value && this.props.value.balance;
@@ -101,7 +107,8 @@ class TransparentTransferDialog extends React.Component {
             return;
         }
 
-        this.props.successDialog(value && value.hash, null, fromSelectedConfig);
+        // this.props.successDialog(value && value.hash, null, fromSelectedConfig);
+        this.props.showTokensTransactionSuccessDialog(successObject)
         this.setState({ inProgress: false, approval: false });
         this.props.fetchBalanceList(this.props.address);
         this.props.getBalance(this.props.address);
@@ -237,6 +244,7 @@ TransparentTransferDialog.propTypes = {
     tokensTransferAddressValid: PropTypes.bool,
     tokensTransferMemo: PropTypes.string,
     shieldedData: PropTypes.object,
+    showTokensTransactionSuccessDialog: PropTypes.func,
 };
 
 const stateToProps = (state) => {
@@ -267,6 +275,7 @@ const actionToProps = {
     failedDialog: showDelegateFailedDialog,
     pendingDialog: showDelegateProcessingDialog,
     showMessage,
+    showTokensTransactionSuccessDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(TransparentTransferDialog));

@@ -1,0 +1,95 @@
+.tokens_success_dialog > div:nth-child(3) > div {
+    border-radius: 16px;
+    border: 1px solid #1A1A1A;
+    background: #000;
+
+    display: inline-flex;
+    padding: 16px;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 24px;
+
+    max-width: 600px;
+    width: 600px;
+    height: 400px;
+}
+
+.tokens_success_dialog .dialog_animation {
+    width: -webkit-fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: -30px;
+}
+
+.tokens_success_dialog .dialog_animation .close_button {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+.tokens_success_dialog .dialog_animation .close_button svg {
+    fill: #d7d7d7;
+}
+
+.tokens_success_dialog .dialog_animation .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0%, -65%) rotate(45deg);
+    opacity: 40%;
+}
+
+.tokens_success_dialog .dialog_animation .success_gif {
+    width: 200px;
+    height: 200px;
+    margin-bottom: -40px;
+    z-index: 2;
+}
+
+.tokens_success_dialog .dialog_content {
+    width: -webkit-fill-available;
+    display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+}
+
+.tokens_success_dialog .dialog_content h2 {
+    color: #FFF;
+    font-family: "Inter", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 32px;
+}
+
+.tokens_success_dialog .dialog_content p {
+    color: #808080;
+    font-family:  "Inter", sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; 
+    margin: 6px 0 24px 0;
+}
+
+.tokens_success_dialog .dialog_content button {
+    display: flex;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+
+    border-radius: 24px;
+    background: #FFFF46;
+
+    color: #000;
+    font-family: 'Blinker', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 130%;
+    text-transform: capitalize;
+}
