@@ -36,7 +36,7 @@ import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensWithdrawDialog, showFeeOptionsPopover } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
-import ArrowDownIcon from '../../assets/chevron-down.png';
+import FeeOptions from 'containers/Tokens/FeeOptions';
 
 const NamadaToIBCTransparentTransfer = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -248,7 +248,6 @@ const NamadaToIBCTransparentTransfer = (props) => {
 
     const disable = !props.amount || props.amount === '';
 
-    console.log('asdhjasjdasd', props.feeOption)
     return (
         <div className="transfer_dialog">
             <div className="transfer_source">
@@ -313,13 +312,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
                        {fee && fee.fee 
                        ? <p>{variables[props.lang].fee}:<p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
                        : null}
-                        <div className='fee_options_div'>
-                            <span>Fee Options</span>
-                            <Button onClick={(e) => props.showFeeOptionsPopover(e.currentTarget)}>
-                                {props.feeOption}
-                                <img alt="down" src={ArrowDownIcon} />
-                            </Button>
-                        </div>
+                        <FeeOptions/>
                     </div>
                     {inProgress
                     ? <ProcessingButton>
@@ -392,7 +385,6 @@ NamadaToIBCTransparentTransfer.propTypes = {
     selectedChain: PropTypes.string,
     shieldedAddress: PropTypes.string,
     transparentWithdrawData: PropTypes.object,
-    feeOption: PropTypes.string,
 };
 
 const stateToProps = (state) => {
@@ -414,7 +406,6 @@ const stateToProps = (state) => {
         keys: state.ibcTransfer.connection.keys,
         revealPublicKey: state.accounts.revealPublicKey.result,
         fromNamadaSelectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.result,
-        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 
