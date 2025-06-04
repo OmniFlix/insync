@@ -18,7 +18,7 @@ import { config } from "../../../config";
 import { ShieldedTransferDataMsgValue } from "@harish551/namada-types";
 import BigNumber from "bignumber.js";
 import { ibcShieldedTransfer } from "helper";
-import { fetchIBCBalance } from "actions/IBCTransfer";
+import { fetchIBCBalance, showTokensTransactionSuccessDialog } from "actions/IBCTransfer";
 import CircularProgress from "components/CircularProgress";
 import variables from "utils/variables";
 import ProcessingButton from "components/ProcessingButton";
@@ -114,6 +114,12 @@ class ShieldedTransferDialog extends React.Component {
     };
 
     handleFetchShieldedBalance (tokenAddress, balance, ibcConfig, res1) {
+        const tokenName = ibcConfig?.COIN_DENOM || ibcConfig?.CHAIN_NAME;
+        const successObject = {
+            text: `${tokenName} Transfer Successfully`,
+            content: 'Your transfer was completed',
+        }
+
         this.props.getShieldedBalance(this.props.shieldedData?.viewingKey, this.props.shieldedData?.timestamp, this.props.address, this.props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
             let resultBalance = resBalance && resBalance.length && tokenAddress &&
                     resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
@@ -121,10 +127,12 @@ class ShieldedTransferDialog extends React.Component {
             if (resultBalance !== balance) {
                 this.props.fetchIBCBalance(ibcConfig?.REST_URL, this.props.ibcTransferAddress);
                 this.props.getBalance(this.props.address);
-                this.props.successDialog(res1.hash, null, ibcConfig);
+                // this.props.successDialog(res1.hash, null, ibcConfig);
+                this.props.showTokensTransactionSuccessDialog(successObject);
+                this.props.handleClose();
                 this.setState({ inProgress: false, params: false, approval: false });
             } else {
-                handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
+                this.handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
             }
         });
     };
@@ -236,6 +244,7 @@ ShieldedTransferDialog.propTypes = {
     getBalance: PropTypes.func.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
+    showTokensTransactionSuccessDialog: PropTypes.func.isRequired,
     failedDialog: PropTypes.func.isRequired,
     pendingDialog: PropTypes.func.isRequire,
     showMessage: PropTypes.func.isRequired,
@@ -295,6 +304,7 @@ const actionToProps = {
     showMessage,
     getShieldedBalance,
     fetchIBCBalance,
+    showTokensTransactionSuccessDialog,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(ShieldedTransferDialog));

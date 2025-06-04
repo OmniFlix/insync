@@ -17,6 +17,7 @@ import {
     connectIBCAccount,
     connectIBCAccountSuccess,
     fetchIBCChannel,
+    showTokensTransactionSuccessDialog,
 } from '../../actions/IBCTransfer';
 import { config } from '../../config';
 import NamadaShieldedLogo from '../../assets/masp/namada_shielded.svg';
@@ -36,6 +37,7 @@ import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from './ShieldedSourceSelectField';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
+import { hideShieldedTokensWithdrawDialog } from 'actions/assets';
 
 const IBCUnShielding = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -206,6 +208,12 @@ const IBCUnShielding = (props) => {
     };
 
     const handleFetchShieldedBalance = (tokenAddress, balance, ibcConfig, res1) => {
+        const tokenName = props.fromNamadaSelectedAsset?.symbol || props.fromNamadaSelectedAsset?.name;
+        const successObject = {
+            text: `${tokenName} Withdraw Successfully`,
+            content: 'Your withdraw was completed and funds are available',
+        }
+
         props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
             let resultBalance = resBalance && resBalance.length && tokenAddress &&
                     resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
@@ -213,7 +221,9 @@ const IBCUnShielding = (props) => {
             if (resultBalance !== balance) {
                 props.fetchIBCBalance(ibcConfig?.REST_URL, props.ibcTransferAddress);
                 props.getBalance(props.address);
-                props.showDelegateSuccessDialog(res1.hash, null, ibcConfig);
+                // props.showDelegateSuccessDialog(res1.hash, null, ibcConfig);
+                props.showTokensTransactionSuccessDialog(successObject);
+                props.hideShieldedTokensWithdrawDialog();
                 setInProgress(false);
                 setParams(false);
                 setApproval(false);
@@ -362,6 +372,8 @@ IBCUnShielding.propTypes = {
     setIBCTransferType: PropTypes.func.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
     showDelegateSuccessDialog: PropTypes.func.isRequired,
+    showTokensTransactionSuccessDialog: PropTypes.func.isRequired,
+    hideShieldedTokensWithdrawDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     protoBufSigning: PropTypes.func.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
@@ -426,6 +438,9 @@ const actionToProps = {
     fetchTokensList,
     fetchBalanceList,
     getShieldedBalance,
+
+    showTokensTransactionSuccessDialog,
+    hideShieldedTokensWithdrawDialog,
 };
 
 export default connect(stateToProps, actionToProps)(IBCUnShielding);

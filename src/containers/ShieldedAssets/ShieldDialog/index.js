@@ -22,6 +22,7 @@ import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensConvertDialog } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
+import { showTokensTransactionSuccessDialog } from 'actions/IBCTransfer';
 
 const ShieldDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -97,6 +98,11 @@ const ShieldDialog = (props) => {
         const available = props.selectedAsset?.balance?.minDenomAmount;
         const token = props.selectedAsset?.balance?.tokenAddress;
         const intervalTime = setInterval(() => {
+            const tokenName = props.selectedAsset?.symbol || props.selectedAsset?.name;
+            const successObject = {
+                text: `${tokenName} Shielded Successfully`,
+                content: 'Your shielded transaction was completed',
+            }
             props.fetchBalanceList(props.address, (result) => {
                 if (result && result.length) {
                     let localBalance = null;
@@ -113,9 +119,10 @@ const ShieldDialog = (props) => {
                         setParams(false);
                         setApproval(false);
                         clearInterval(intervalTime);
-                        props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
+                        // props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
+                        props.showTokensTransactionSuccessDialog(successObject)
                         props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID);
-                        // props.hideTransparentTokensConvertDialog();
+                        props.hideTransparentTokensConvertDialog();
                     }
                 }
             });
@@ -128,7 +135,6 @@ const ShieldDialog = (props) => {
                 setApproval(false);
                 clearInterval(intervalTime);
                 props.fetchBalanceList(props.address);
-                // props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
             }, 30000);
         }
     };
@@ -246,6 +252,7 @@ ShieldDialog.propTypes = {
     setAmount: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
+    showTokensTransactionSuccessDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
     amount: PropTypes.number,
     amountValid: PropTypes.bool,
@@ -281,6 +288,7 @@ const actionToProps = {
     showMessage,
 
     hideTransparentTokensConvertDialog,
+    showTokensTransactionSuccessDialog,
 };
 
 export default connect(stateToProps, actionToProps)(ShieldDialog);

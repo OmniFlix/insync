@@ -17,6 +17,7 @@ import {
     connectIBCAccount,
     connectIBCAccountSuccess,
     fetchIBCChannel,
+    showTokensTransactionSuccessDialog,
 } from '../../actions/IBCTransfer';
 import { config } from '../../config';
 import NamadaLogo from '../../assets/masp/namada_logo.svg';
@@ -194,6 +195,13 @@ const NamadaToIBCTransparentTransfer = (props) => {
         }
         const available = props.fromNamadaSelectedAsset?.balance?.minDenomAmount;
         const token = props.fromNamadaSelectedAsset?.balance?.tokenAddress;
+
+        const tokenName = props.fromNamadaSelectedAsset?.symbol || props.fromNamadaSelectedAsset?.name;
+        const successObject = {
+            text: `${tokenName} Withdraw Successfully`,
+            content: 'Your withdraw was completed and funds are available',
+        }
+
         const intervalTime = setInterval(() => {
             props.fetchBalanceList(props.address, (result) => {
                 if (result && result.length) {
@@ -211,7 +219,9 @@ const NamadaToIBCTransparentTransfer = (props) => {
                         setParams(false);
                         setApproval(false);
                         clearInterval(intervalTime);
-                        props.showDelegateSuccessDialog(value && value.hash, null, fromNamadaSelectedConfig);
+                        props.hideTransparentTokensWithdrawDialog();
+                        props.showTokensTransactionSuccessDialog(successObject)
+                        // props.showDelegateSuccessDialog(value && value.hash, null, fromNamadaSelectedConfig);
                         // props.fetchBalanceList(props.address);
                     }
                 }
@@ -350,6 +360,7 @@ NamadaToIBCTransparentTransfer.propTypes = {
     setIBCTransferType: PropTypes.func.isRequired,
     showConnectDialog: PropTypes.func.isRequired,
     showDelegateSuccessDialog: PropTypes.func.isRequired,
+    showTokensTransactionSuccessDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     protoBufSigning: PropTypes.func.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
@@ -413,6 +424,7 @@ const actionToProps = {
     fetchBalanceList,
 
     hideTransparentTokensWithdrawDialog,
+    showTokensTransactionSuccessDialog,
 };
 
 export default connect(stateToProps, actionToProps)(NamadaToIBCTransparentTransfer);

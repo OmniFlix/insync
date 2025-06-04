@@ -24,6 +24,8 @@ import {
     TIMEOUT_HEIGHT_FETCH_ERROR,
     TIMEOUT_HEIGHT_FETCH_IN_PROGRESS,
     TIMEOUT_HEIGHT_FETCH_SUCCESS,
+    TOKENS_TRANSACTION_SUCCESS_DIALOG_HIDE,
+    TOKENS_TRANSACTION_SUCCESS_DIALOG_SHOW,
     TX_SIGN_AND_BROAD_CAST_ERROR,
     TX_SIGN_AND_BROAD_CAST_IN_PROGRESS,
     TX_SIGN_AND_BROAD_CAST_SUCCESS,
@@ -301,6 +303,26 @@ const broadCast = (state = {
     }
 };
 
+const tokensTransactionSuccessDialog = (state = {
+    value: {},
+    open: false,
+}, action) => {
+    switch (action.type) {
+    case TOKENS_TRANSACTION_SUCCESS_DIALOG_SHOW:
+        return {
+            value: action.value,
+            open: true,
+        };
+    case TOKENS_TRANSACTION_SUCCESS_DIALOG_HIDE:
+        return {
+            value: {},
+            open: false,
+        };
+    default:
+        return state;
+    }
+};
+
 export default combineReducers({
     connection,
     balance,
@@ -314,4 +336,6 @@ export default combineReducers({
     ibcTransferAddress,
     fromNamadaSelectedAsset,
     broadCast,
+
+    tokensTransactionSuccessDialog,
 });

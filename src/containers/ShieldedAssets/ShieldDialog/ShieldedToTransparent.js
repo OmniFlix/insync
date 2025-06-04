@@ -19,9 +19,10 @@ import { showMessage } from 'actions/snackbar';
 import { feeList } from 'dummy/ibcList';
 import { formatCount } from 'utils/numberFormats';
 import ShieldedSourceSelectField from 'containers/IBCTransfer/ShieldedSourceSelectField';
-import { fetchIBCBalance } from 'actions/IBCTransfer';
+import { fetchIBCBalance, showTokensTransactionSuccessDialog } from 'actions/IBCTransfer';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
+import { hideShieldedTokensConvertDialog } from 'actions/assets';
 
 const ShieldedToTransparent = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -101,13 +102,21 @@ const ShieldedToTransparent = (props) => {
     };
 
     const handleFetchShieldedBalance = (tokenAddress, balance, ibcConfig, res1) => {
+        const tokenName = props.selectedAsset?.symbol || props.selectedAsset?.name;
+        const successObject = {
+            text: `${tokenName} Unshield Successfully`,
+            content: 'Your unshield was completed',
+        }
+
         props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID, (resBalance) => {
             let resultBalance = resBalance && resBalance.length && tokenAddress &&
                     resBalance.find((val) => val && val.length && val[0] && (val[0] === tokenAddress));
             resultBalance = resultBalance && resultBalance.length && resultBalance[1] && Number(resultBalance[1]);
             if (resultBalance !== balance) {
                 props.fetchBalanceList(props.address);
-                props.successDialog(res1.hash, null, ibcConfig);
+                // props.successDialog(res1.hash, null, ibcConfig);
+                props.showTokensTransactionSuccessDialog(successObject);
+                props.hideShieldedTokensConvertDialog();
                 setInProgress(false);
                 setParams(false);
                 setApproval(false);
@@ -228,6 +237,8 @@ ShieldedToTransparent.propTypes = {
     fetchIBCBalance: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
+    showTokensTransactionSuccessDialog: PropTypes.func.isRequired,
+    hideShieldedTokensConvertDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
     amountValid: PropTypes.bool,
@@ -264,6 +275,8 @@ const actionToProps = {
     showMessage,
     getShieldedBalance,
     fetchIBCBalance,
+    showTokensTransactionSuccessDialog,
+    hideShieldedTokensConvertDialog,
 };
 
 export default connect(stateToProps, actionToProps)(ShieldedToTransparent);

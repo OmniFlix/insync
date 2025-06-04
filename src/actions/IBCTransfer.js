@@ -29,6 +29,8 @@ import {
     TX_SIGN_AND_BROAD_CAST_SUCCESS,
     TX_SIGN_AND_BROAD_CAST_ERROR,
     FROM_SHIELDED_NAMADA_SELECT_ASSET_SET,
+    TOKENS_TRANSACTION_SUCCESS_DIALOG_SHOW,
+    TOKENS_TRANSACTION_SUCCESS_DIALOG_HIDE,
 } from '../constants/IBCTransfer';
 import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
@@ -102,6 +104,19 @@ export const setFromShieldedNamadaSelectedAsset = (value, result) => {
         type: FROM_SHIELDED_NAMADA_SELECT_ASSET_SET,
         value,
         result,
+    };
+};
+
+export const showTokensTransactionSuccessDialog = (value) => {
+    return {
+        type: TOKENS_TRANSACTION_SUCCESS_DIALOG_SHOW,
+        value,
+    };
+};
+
+export const hideTokensTransactionSuccessDialog = () => {
+    return {
+        type: TOKENS_TRANSACTION_SUCCESS_DIALOG_HIDE,
     };
 };
 
