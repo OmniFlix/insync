@@ -259,7 +259,8 @@ const IBCTransferDialog = (props) => {
                                                 props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                                                 props.getBalance(props.address);
                                                 // props.showDelegateSuccessDialog(res1.txhash, config);
-                                                props.showTokensTransactionSuccessDialog(successObject)
+                                                props.showTokensTransactionSuccessDialog(successObject);
+                                                props.hideTransparentTokensDepositDialog();
                                                 setInProgress(false);
                                                 setParams(false);
                                                 setApproval(false);
@@ -293,11 +294,9 @@ const IBCTransferDialog = (props) => {
                         }
 
                         props.showTokensTransactionSuccessDialog(successObject);
-                        // if(props.from === 'shielded_deposit') {
-                        //     props.hideShieldedTokensDepositDialog();
-                        // } else if (props.from === 'transparent_deposit') {
-                        //     props.hideTransparentTokensDepositDialog();
-                        // }
+                        props.hideShieldedTokensDepositDialog();
+                        props.hideTransparentTokensDepositDialog();
+                    
                         setTimeout(() => {
                             props.fetchBalanceList(props.address);
                         }, 10000);
@@ -416,6 +415,7 @@ const IBCTransferDialog = (props) => {
                 props.getBalance(props.address);
                 // props.showDelegateSuccessDialog(res1.txhash, ibcConfig);
                 props.showTokensTransactionSuccessDialog(successObject);
+                props.hideShieldedTokensDepositDialog();
                 setInProgress(false);
             } else {
                 handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);

@@ -129,6 +129,7 @@ class ShieldedTransferDialog extends React.Component {
                 this.props.getBalance(this.props.address);
                 // this.props.successDialog(res1.hash, null, ibcConfig);
                 this.props.showTokensTransactionSuccessDialog(successObject);
+                this.props.handleClose();
                 this.setState({ inProgress: false, params: false, approval: false });
             } else {
                 handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);

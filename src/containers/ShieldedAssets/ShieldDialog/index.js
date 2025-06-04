@@ -122,7 +122,7 @@ const ShieldDialog = (props) => {
                         // props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
                         props.showTokensTransactionSuccessDialog(successObject)
                         props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID);
-                        // props.hideTransparentTokensConvertDialog();
+                        props.hideTransparentTokensConvertDialog();
                     }
                 }
             });

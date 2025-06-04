@@ -108,7 +108,8 @@ class TransparentTransferDialog extends React.Component {
         }
 
         // this.props.successDialog(value && value.hash, null, fromSelectedConfig);
-        this.props.showTokensTransactionSuccessDialog(successObject)
+        this.props.showTokensTransactionSuccessDialog(successObject);
+        this.props.handleClose();
         this.setState({ inProgress: false, approval: false });
         this.props.fetchBalanceList(this.props.address);
         this.props.getBalance(this.props.address);
