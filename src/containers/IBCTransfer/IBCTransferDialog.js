@@ -28,6 +28,7 @@ import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { hideShieldedTokensDepositDialog, hideTransparentTokensDepositDialog } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
+import { formatCount } from 'utils/numberFormats';
 
 const IBCTransferDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -423,6 +424,12 @@ const IBCTransferDialog = (props) => {
         });
     };
 
+    const handleMax = (ibcBalance) => {
+        if (ibcBalance > 0) {
+            props.setIBCTransferAmount(formatCount(ibcBalance - 0.1), true);
+        }
+    };
+
     const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
     const namadaBalance = props.fromNamadaSelectedAsset?.balance?.minDenomAmount && Number(props.fromNamadaSelectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
     const image = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.logo_URIs && (props.fromNamadaSelectedAsset.logo_URIs.svg || props.fromNamadaSelectedAsset.logo_URIs.png);
@@ -456,11 +463,11 @@ const IBCTransferDialog = (props) => {
                         <div className="select_section">
                             <AssetSelectField/>
                             <AmountTextField  from="namada_deposit"/>
-                            <Button className='max_button' onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>
+                            <Button className='max_button' onClick={() => handleMax(ibcBalance)}>Max</Button>
                         </div>
                         <span className="available_balance">
                             <p>{variables[props.lang].available}</p>
-                            <p>{ibcBalance || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
+                            <p>{formatCount(ibcBalance) || 0} {props.selectedAsset && (props.selectedAsset.symbol || props.selectedAsset.display)}</p>
                         </span>
                         {/* <div className="deposit_nam_tokens_secion">
                             <Button onClick={() => props.setIBCTransferAmount(ibcBalance)}>Max</Button>

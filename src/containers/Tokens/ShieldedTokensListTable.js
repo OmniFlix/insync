@@ -16,6 +16,7 @@ import { Button, withStyles, Tooltip } from '@material-ui/core';
 import classNames from 'classnames';
 import DotsLoading from 'components/DotsLoading';
 import variables from 'utils/variables';
+import { fetchGasEstimation } from 'actions/gasPrice';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -58,6 +59,7 @@ class ShieldedTokensListTable extends React.Component {
     handleWithdraw (value) {
         this.initKeplr(value);
         this.props.setIBCTransferType('shielded');
+        this.props.fetchGasEstimation(['ibc_unshielding_transfer']);
         const find = ibcList.find((item) => item.value === value.coingecko_id);
         if (find) {
             this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
@@ -70,12 +72,14 @@ class ShieldedTokensListTable extends React.Component {
     handleTransfer (value) {
         this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
+        this.props.fetchGasEstimation(['shielded_transfer']);
         this.props.showShieldedTokensTransferDialog(value);
     }
 
     handleConvert (value) {
         this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
+        this.props.fetchGasEstimation(['unshielding_transfer']);
         const find = ibcList.find((item) => item.value === value.coingecko_id);
         if (find) {
             this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
@@ -288,6 +292,7 @@ ShieldedTokensListTable.propTypes = {
     connectIBCAccountSuccess: PropTypes.func.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
     fetchIBCChannel: PropTypes.func.isRequired,
+    fetchGasEstimation: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
     address: PropTypes.string,
     inProgress: PropTypes.bool,
@@ -317,6 +322,7 @@ const actionToProps = {
     fetchIBCBalance: fetchIBCBalance,
     fetchIBCChannel: fetchIBCChannel,
     setFromShieldedNamadaSelectedAsset,
+    fetchGasEstimation,
 };
 
 

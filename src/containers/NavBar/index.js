@@ -49,6 +49,7 @@ import ProfileAvatar from '../../assets/profile_avatar_icon.png';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
 import syncedIcon from '../../assets/synced.png';
 import variables from 'utils/variables';
+import { fetchGasPrice } from 'actions/gasPrice';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -116,6 +117,11 @@ class NavBar extends Component {
             setTimeout(() => {
                 this.initKeplr();
             }, 600);
+        }
+
+        if (this.props.gasPrice && !this.props.gasPrice.length &&
+            !this.props.gasPriceInProgress) {
+            this.props.fetchGasPrice();
         }
 
         if (this.props.proposals && !this.props.proposals.length &&
@@ -604,6 +610,9 @@ NavBar.propTypes = {
     vestingBalanceInProgress: PropTypes.bool.isRequired,
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
+    fetchGasPrice: PropTypes.func.isRequired,
+    gasPriceInProgress: PropTypes.bool.isRequired,
+    gasPrice: PropTypes.array.isRequired,
     actualAPR: PropTypes.number,
     address: PropTypes.string,
     balance: PropTypes.array,
@@ -669,6 +678,8 @@ const stateToProps = (state) => {
         inActiveValidatorsInProgress: state.stake.inActiveValidators.inProgress,
 
         shieldedBalanceProgress: state.accounts.shieldedBalance.inProgress,
+        gasPriceInProgress: state.gasPrice.gasPrice.inProgress,
+        gasPrice: state.gasPrice.gasPrice.value,
     };
 };
 
@@ -701,6 +712,7 @@ const actionToProps = {
     getShieldedBalance,
     fetchUnBondingValidators,
     shieldedBalanceFetchSuccess,
+    fetchGasPrice,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));

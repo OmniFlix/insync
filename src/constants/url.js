@@ -39,3 +39,14 @@ export const urlFetchTimeoutHeight = (url, channel) => {
     return `${url}/ibc/core/channel/${version}/channels/${channel}/ports/transfer`;
 };
 export const urlFetchIBCBalance = (url, address) => `${url}/cosmos/bank/v1beta1/balances/${address}`;
+export const urlFetchGasPrice = () => `${REST_URL}/api/v1/gas-price`;
+export const urlFetchGasEstimation = (transactionTypes) => {
+    const params = [];
+    if (transactionTypes && transactionTypes.length) {
+        transactionTypes.map((val) => {
+            params.push(`${val}=1`)
+        })
+    }
+
+    return `${REST_URL}/api/v1/gas/estimate?${params.join('&')}`;
+};

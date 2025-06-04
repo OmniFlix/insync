@@ -8,6 +8,7 @@ import navBar from './navBar';
 import shieldedAssets from './shieldedAssets';
 import ibcTransfer from './IBCTransfer';
 import assets from './assets';
+import gasPrice from './gasPrice';
 
 const reduxObjects = combineReducers({
     accounts,
@@ -19,6 +20,7 @@ const reduxObjects = combineReducers({
     shieldedAssets,
     ibcTransfer,
     assets,
+    gasPrice,
 });
 
 const rootReducer = (state, action) => {
