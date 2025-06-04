@@ -59,14 +59,14 @@ class TokensListTable extends React.Component {
     handleWithdraw (value) {
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['ibc_unshielding_transfer']);
+        this.props.fetchGasEstimation(['ibc_unshielding_transfer'], value);
         this.props.showTransparentTokensWithdrawDialog(value);
     }
 
     handleTransfer (value) {
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['transparent_transfer']);
+        this.props.fetchGasEstimation(['transparent_transfer'], value);
         this.props.showTransparentTokensTransferDialog(value);
     }
 
@@ -90,7 +90,7 @@ class TokensListTable extends React.Component {
 
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['shielding_transfer']);
+        this.props.fetchGasEstimation(['shielding_transfer'], value);
         this.props.showTransparentTokensConvertDialog(value);
         this.props.setSelectedSource(value?.config?.COIN_DENOM, find);
     }

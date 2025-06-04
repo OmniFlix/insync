@@ -177,7 +177,7 @@
 .transfer_dialog .nam_arrow {
     position: absolute;
     left: 45%;
-    bottom: 160px !important;
+    bottom: 180px !important;
 }
 
 .transfer_source .connect_keplr {
@@ -628,6 +628,12 @@
 .transfer_dialog .fee {
     border: none;
     background: none;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 34px;
 }
 
 .transfer_dialog .fee > p,

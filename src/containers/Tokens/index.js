@@ -22,7 +22,6 @@ import { config } from 'config';
 import variables from 'utils/variables';
 import TokensSuccessDialog from 'containers/Tokens/SuccessDialog';
 
-
 const Tokens = (props) => {
     const handleReSync = () => {
         props.reSyncBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID);

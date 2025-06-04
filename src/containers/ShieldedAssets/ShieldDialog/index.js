@@ -24,6 +24,7 @@ import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import { showTokensTransactionSuccessDialog } from 'actions/IBCTransfer';
 import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
+import FeeOptions from 'containers/Tokens/FeeOptions';
 
 const ShieldDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -63,6 +64,11 @@ const ShieldDialog = (props) => {
             txs.token = props.selectedAsset?.balance?.tokenAddress;
             const tokenGasPrice = props.gasPrice.find((val) => val.token === props.selectedAsset?.balance?.tokenAddress);
             txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            if (props.feeOption?.fees?.token) {
+                txs.token = props.feeOption?.fees?.token;
+                const tokenGasPrice = props.gasPrice.find((val) => val.token === props.feeOption?.fees?.token);
+                txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            }
             txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
 
@@ -207,11 +213,12 @@ const ShieldDialog = (props) => {
                 </div>
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
-            {fee && fee.fee
-                ? <div className="transparent_fee">
-                    <p>{variables[props.lang].fee}</p>
-                    <p>{feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.selectedAsset?.balance?.tokenAddress) || formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
-                </div> : null}
+                <div className="fee">
+                    {props.feeOption?.fees?.fee
+                        ? <p>{variables[props.lang].fee}:&nbsp;
+                        <p>{formatCount(props.feeOption?.fees?.fee) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.selectedAsset?.balance?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
+                    <FeeOptions/>
+                </div>
                 {inProgress
                 ? <ProcessingButton>
                     <Button
@@ -249,6 +256,7 @@ ShieldDialog.propTypes = {
     getBalance: PropTypes.func.isRequired,
     gasPrice: PropTypes.array.isRequired,
     gasEstimation: PropTypes.object.isRequired,
+    feeOption: PropTypes.object.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
     getShieldedBalance: PropTypes.func.isRequired,
     hideTransparentTokensConvertDialog: PropTypes.func.isRequired,
@@ -282,6 +290,7 @@ const stateToProps = (state) => {
         shieldedData: state.accounts.address.shieldedData,
         gasEstimation: state.gasPrice.gasEstimation.value,
         gasPrice: state.gasPrice.gasPrice.value,
+        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 

@@ -27,7 +27,6 @@ import { showConnectDialog } from 'actions/navBar';
 import keplrIcon from '../../assets/keplr.png';
 import { fetchBalanceList, fetchTokensList, getBalance } from '../../actions/accounts';
 import { showDelegateSuccessDialog } from '../../actions/stake';
-import CircularProgress from '../../components/CircularProgress';
 import { feeList, ibcList } from 'dummy/ibcList';
 import { ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
@@ -36,6 +35,7 @@ import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
+import FeeOptions from 'containers/Tokens/FeeOptions';
 import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
 
 const NamadaToIBCTransparentTransfer = (props) => {
@@ -146,6 +146,11 @@ const NamadaToIBCTransparentTransfer = (props) => {
             txs.token = props.fromNamadaSelectedAsset?.balance?.tokenAddress;
             const tokenGasPrice = props.gasPrice.find((val) => val.token === props.fromNamadaSelectedAsset?.balance?.tokenAddress);
             txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            if (props.feeOption?.fees?.token) {
+                txs.token = props.feeOption?.fees?.token;
+                const tokenGasPrice = props.gasPrice.find((val) => val.token === props.feeOption?.fees?.token);
+                txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            }
             txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
 
@@ -251,6 +256,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
     const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
 
     const disable = !props.amount || props.amount === '';
+
     return (
         <div className="transfer_dialog">
             <div className="transfer_source">
@@ -310,10 +316,11 @@ const NamadaToIBCTransparentTransfer = (props) => {
                         </div>
                     </div> : null}
             </div>
-            {fee && fee.fee
-                    ? <div className="fee">
-                        <p>{variables[props.lang].fee}:<p>{feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.balance?.tokenAddress) || formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
-                    </div> : null}
+            <div className="fee">
+                {props.feeOption?.fees?.fee
+                    ? <p>{variables[props.lang].fee}:<p>{formatCount(props.feeOption?.fees?.fee) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.balance?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
+                <FeeOptions/>
+            </div>
                     {inProgress
                     ? <ProcessingButton>
                           <Button
@@ -359,6 +366,7 @@ NamadaToIBCTransparentTransfer.propTypes = {
     getBalance: PropTypes.func.isRequired,
     gasPrice: PropTypes.array.isRequired,
     gasEstimation: PropTypes.object.isRequired,
+    feeOption: PropTypes.object.isRequired,
     hideTransparentTokensWithdrawDialog: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
@@ -409,6 +417,7 @@ const stateToProps = (state) => {
         fromNamadaSelectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.result,
         gasEstimation: state.gasPrice.gasEstimation.value,
         gasPrice: state.gasPrice.gasPrice.value,
+        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 

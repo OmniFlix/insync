@@ -1,3 +1,4 @@
+import { SHIELDED_TOKENS_CONVERT_DIALOG_HIDE, SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE, SHIELDED_TOKENS_WITHDRAW_DIALOG_HIDE, TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE, TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE } from "constants/assets";
 import {
     GAS_ESTIMATION_FETCH_ERROR,
     GAS_ESTIMATION_FETCH_IN_PROGRESS,
@@ -37,12 +38,14 @@ const gasPrice = (state = {
 const gasEstimation = (state = {
     inProgress: false,
     value: {},
+    tokenDetails: {},
 }, action) => {
     switch (action.type) {
     case GAS_ESTIMATION_FETCH_IN_PROGRESS:
         return {
             ...state,
             inProgress: true,
+            tokenDetails: action.value,
         };
     case GAS_ESTIMATION_FETCH_SUCCESS:
         return {
@@ -54,6 +57,16 @@ const gasEstimation = (state = {
         return {
             ...state,
             inProgress: false,
+        };
+    case TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE:
+    case TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE:
+    case TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE:
+    case SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE:
+    case SHIELDED_TOKENS_CONVERT_DIALOG_HIDE:
+    case SHIELDED_TOKENS_WITHDRAW_DIALOG_HIDE:
+        return {
+            ...state,
+            tokenDetails: {},
         };
     default:
         return state;

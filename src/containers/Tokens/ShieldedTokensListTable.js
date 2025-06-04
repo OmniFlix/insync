@@ -59,7 +59,7 @@ class ShieldedTokensListTable extends React.Component {
     handleWithdraw (value) {
         this.initKeplr(value);
         this.props.setIBCTransferType('shielded');
-        this.props.fetchGasEstimation(['ibc_unshielding_transfer']);
+        this.props.fetchGasEstimation(['ibc_unshielding_transfer'], value);
         const find = ibcList.find((item) => item.value === value.coingecko_id);
         if (find) {
             this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
@@ -72,14 +72,14 @@ class ShieldedTokensListTable extends React.Component {
     handleTransfer (value) {
         this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['shielded_transfer']);
+        this.props.fetchGasEstimation(['shielded_transfer'], value);
         this.props.showShieldedTokensTransferDialog(value);
     }
 
     handleConvert (value) {
         this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['unshielding_transfer']);
+        this.props.fetchGasEstimation(['unshielding_transfer'], value);
         const find = ibcList.find((item) => item.value === value.coingecko_id);
         if (find) {
             this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);

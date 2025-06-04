@@ -51,9 +51,10 @@ export const fetchGasPrice = () => (dispatch) => {
         });
 };
 
-const fetchGasEstimationInProgress = () => {
+const fetchGasEstimationInProgress = (value) => {
     return {
         type: GAS_ESTIMATION_FETCH_IN_PROGRESS,
+        value,
     };
 };
 
@@ -71,8 +72,8 @@ const fetchGasEstimationError = (message) => {
     };
 };
 
-export const fetchGasEstimation = (transactionTypes) => (dispatch) => {
-    dispatch(fetchGasEstimationInProgress());
+export const fetchGasEstimation = (transactionTypes, value) => (dispatch) => {
+    dispatch(fetchGasEstimationInProgress(value));
     const url = urlFetchGasEstimation(transactionTypes);
     axios.get(url, {
         headers: {

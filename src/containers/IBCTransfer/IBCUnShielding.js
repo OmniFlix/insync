@@ -39,6 +39,7 @@ import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import { hideShieldedTokensWithdrawDialog } from 'actions/assets';
 import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
+import FeeOptions from 'containers/Tokens/FeeOptions';
 
 const IBCUnShielding = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -155,6 +156,11 @@ const IBCUnShielding = (props) => {
             txs.token = props.fromNamadaSelectedAsset?.tokenAddress;
             const tokenGasPrice = props.gasPrice.find((val) => val.token === props.fromNamadaSelectedAsset?.tokenAddress);
             txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            if (props.feeOption?.fees?.token) {
+                txs.token = props.feeOption?.fees?.token;
+                const tokenGasPrice = props.gasPrice.find((val) => val.token === props.feeOption?.fees?.token);
+                txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            }
             txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
 
@@ -283,7 +289,7 @@ const IBCUnShielding = (props) => {
             {/* <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
                 <img alt="TransferIcon" src={TransferIcon}/>
             </div> */}
-            <div className="arrow" style={{ top: '48%', height: 'max-content' }}>
+            <div className="arrow" style={{ top: '46%', height: 'max-content' }}>
                 <img alt="Arrow" src={DownArrowIcon}/>
             </div>
             <div className="shielded_transfer_destination" style={{ minHeight: 'unset' }}>
@@ -322,10 +328,15 @@ const IBCUnShielding = (props) => {
                         </div>
                     </div> : null}
             </div>
-            {fee && fee.fee
+            {/* {fee && fee.fee
                     ? <div className="fee">
                         <p>{variables[props.lang].fee}:<p>{feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.tokenAddress) || formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
-                    </div> : null}
+                    </div> : null} */}
+                    <div className="fee">
+                        {props.feeOption?.fees?.fee
+                            ? <p>{variables[props.lang].fee}:<p>{formatCount(props.feeOption?.fees?.fee) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
+                        <FeeOptions/>
+                    </div>
                     {inProgress
                     ?  <ProcessingButton>
                     <Button
@@ -372,6 +383,7 @@ IBCUnShielding.propTypes = {
     getShieldedBalance: PropTypes.func.isRequired,
     gasPrice: PropTypes.array.isRequired,
     gasEstimation: PropTypes.object.isRequired,
+    feeOption: PropTypes.object.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setIBCSwapType: PropTypes.func.isRequired,
@@ -424,6 +436,7 @@ const stateToProps = (state) => {
         shieldedData: state.accounts.address.shieldedData,
         gasEstimation: state.gasPrice.gasEstimation.value,
         gasPrice: state.gasPrice.gasPrice.value,
+        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 
