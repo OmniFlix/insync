@@ -1,7 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setFeeOptionPopoverValue, showFeeOptionsPopover } from 'actions/assets';
+import { setFeeOptionPopoverValue } from 'actions/assets';
 import { Button, Popover } from '@material-ui/core';
 import ArrowDownIcon from '../../../assets/chevron-down.png';
 import './index.css';
@@ -62,22 +62,18 @@ const FeeOptions = (props) => {
 FeeOptions.propTypes = {
     lang: PropTypes.string.isRequired,
     setFeeOptionPopoverValue: PropTypes.func.isRequired,
-    showFeeOptionsPopover: PropTypes.func.isRequired,
-    anchorEl: PropTypes.any,
     feeOption: PropTypes.string,
 };
 
 const stateToProps = (state) => {
     return {
         lang: state.language,
-        anchorEl: state.assets.feeOptionsPopover.anchorEl,
         feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 
 const actionToProps = {
     setFeeOptionPopoverValue,
-    showFeeOptionsPopover,
 };
 
 export default connect(stateToProps, actionToProps)(FeeOptions);

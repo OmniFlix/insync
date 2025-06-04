@@ -33,7 +33,7 @@ import { ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
-import { hideTransparentTokensWithdrawDialog, showFeeOptionsPopover } from 'actions/assets';
+import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import FeeOptions from 'containers/Tokens/FeeOptions';
@@ -370,7 +370,6 @@ NamadaToIBCTransparentTransfer.propTypes = {
     protoBufSigning: PropTypes.func.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
     fromNamadaSelectedAsset: PropTypes.object.isRequired,
-    showFeeOptionsPopover: PropTypes.func.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
     amountValid: PropTypes.bool,
@@ -431,7 +430,6 @@ const actionToProps = {
 
     hideTransparentTokensWithdrawDialog,
     showTokensTransactionSuccessDialog,
-    showFeeOptionsPopover,
 };
 
 export default connect(stateToProps, actionToProps)(NamadaToIBCTransparentTransfer);
