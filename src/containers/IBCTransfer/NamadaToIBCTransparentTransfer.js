@@ -33,9 +33,10 @@ import { ibcTransaction } from 'helper';
 import BigNumber from 'bignumber.js';
 import DownArrowIcon from '../../assets/down_arrow_nofill.png';
 import { formatCount } from 'utils/numberFormats';
-import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
+import { hideTransparentTokensWithdrawDialog, showFeeOptionsPopover } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
+import ArrowDownIcon from '../../assets/chevron-down.png';
 
 const NamadaToIBCTransparentTransfer = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -246,6 +247,8 @@ const NamadaToIBCTransparentTransfer = (props) => {
     const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
 
     const disable = !props.amount || props.amount === '';
+
+    console.log('asdhjasjdasd', props.feeOption)
     return (
         <div className="transfer_dialog">
             <div className="transfer_source">
@@ -305,10 +308,19 @@ const NamadaToIBCTransparentTransfer = (props) => {
                         </div>
                     </div> : null}
             </div>
-            {fee && fee.fee
-                    ? <div className="fee">
-                        <p>{variables[props.lang].fee}:<p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
-                    </div> : null}
+            
+                    <div className="fee">
+                       {fee && fee.fee 
+                       ? <p>{variables[props.lang].fee}:<p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
+                       : null}
+                        <div className='fee_options_div'>
+                            <span>Fee Options</span>
+                            <Button onClick={(e) => props.showFeeOptionsPopover(e.currentTarget)}>
+                                {props.feeOption}
+                                <img alt="down" src={ArrowDownIcon} />
+                            </Button>
+                        </div>
+                    </div>
                     {inProgress
                     ? <ProcessingButton>
                           <Button
@@ -365,6 +377,7 @@ NamadaToIBCTransparentTransfer.propTypes = {
     protoBufSigning: PropTypes.func.isRequired,
     txSignAndBroadCast: PropTypes.func.isRequired,
     fromNamadaSelectedAsset: PropTypes.object.isRequired,
+    showFeeOptionsPopover: PropTypes.func.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
     amountValid: PropTypes.bool,
@@ -379,6 +392,7 @@ NamadaToIBCTransparentTransfer.propTypes = {
     selectedChain: PropTypes.string,
     shieldedAddress: PropTypes.string,
     transparentWithdrawData: PropTypes.object,
+    feeOption: PropTypes.string,
 };
 
 const stateToProps = (state) => {
@@ -400,6 +414,7 @@ const stateToProps = (state) => {
         keys: state.ibcTransfer.connection.keys,
         revealPublicKey: state.accounts.revealPublicKey.result,
         fromNamadaSelectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.result,
+        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 
@@ -425,6 +440,7 @@ const actionToProps = {
 
     hideTransparentTokensWithdrawDialog,
     showTokensTransactionSuccessDialog,
+    showFeeOptionsPopover,
 };
 
 export default connect(stateToProps, actionToProps)(NamadaToIBCTransparentTransfer);

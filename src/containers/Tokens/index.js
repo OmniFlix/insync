@@ -21,6 +21,7 @@ import { reSyncBalance } from '../../actions/accounts';
 import { config } from 'config';
 import variables from 'utils/variables';
 import TokensSuccessDialog from 'containers/Tokens/SuccessDialog';
+import FeeOptions from './FeeOptions';
 
 
 const Tokens = (props) => {
@@ -81,6 +82,7 @@ const Tokens = (props) => {
             <ShieldedConvertDialog />
             <SuccessDialog/>
             <TokensSuccessDialog />
+            <FeeOptions />
         </>
     );
 };
