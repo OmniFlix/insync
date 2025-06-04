@@ -53,15 +53,15 @@ export const formatCount = (value, decimals) => {
     }
 
     if (value < 0.01) {
-        return floatDecimals(value, 4);
+        return floatDecimals(value, decimals || 4);
     }
 
     if (value < 0.1) {
-        return floatDecimals(value, 2);
+        return floatDecimals(value, decimals || 2);
     }
 
     if (value < 1) {
-        return floatDecimals(value, 2);
+        return floatDecimals(value, decimals || 2);
     }
 
     if (value < 1000) {

@@ -256,7 +256,15 @@ const feeOptionPopoverValue = (state = {
         return {
             value: action.value,
         };
-
+    case TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE:
+    case TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE:
+    case TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE:
+    case SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE:
+    case SHIELDED_TOKENS_CONVERT_DIALOG_HIDE:
+    case SHIELDED_TOKENS_WITHDRAW_DIALOG_HIDE:
+        return {
+            value: '',
+        };
     default:
         return state;
     }

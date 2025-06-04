@@ -16,6 +16,7 @@ import ConvertIcon from '../../assets/transactions/convert.svg';
 import { Button, withStyles, Tooltip } from '@material-ui/core';
 import { setSelectedSource } from 'actions/shieldedAssets';
 import variables from 'utils/variables';
+import { fetchGasEstimation } from 'actions/gasPrice';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -58,12 +59,14 @@ class TokensListTable extends React.Component {
     handleWithdraw (value) {
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
+        this.props.fetchGasEstimation(['ibc_unshielding_transfer'], value);
         this.props.showTransparentTokensWithdrawDialog(value);
     }
 
     handleTransfer (value) {
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
+        this.props.fetchGasEstimation(['transparent_transfer'], value);
         this.props.showTransparentTokensTransferDialog(value);
     }
 
@@ -87,12 +90,10 @@ class TokensListTable extends React.Component {
 
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
+        this.props.fetchGasEstimation(['shielding_transfer'], value);
         this.props.showTransparentTokensConvertDialog(value);
         this.props.setSelectedSource(value?.config?.COIN_DENOM, find);
     }
-
-    
-
 
     initKeplr (value) {
         const config = {
@@ -334,6 +335,7 @@ TokensListTable.propTypes = {
     connectIBCAccount: PropTypes.func.isRequired,
     connectIBCAccountSuccess: PropTypes.func.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
+    fetchGasEstimation: PropTypes.func.isRequired,
     fetchIBCChannel: PropTypes.func.isRequired,
     setSelectedSource: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
@@ -364,6 +366,7 @@ const actionToProps = {
     fetchIBCBalance,
     fetchIBCChannel,
     setSelectedSource,
+    fetchGasEstimation,
 };
 
 

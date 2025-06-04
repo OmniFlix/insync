@@ -38,6 +38,8 @@ import ShieldedSourceSelectField from './ShieldedSourceSelectField';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import { hideShieldedTokensWithdrawDialog } from 'actions/assets';
+import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
+import FeeOptions from 'containers/Tokens/FeeOptions';
 
 const IBCUnShielding = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -149,14 +151,17 @@ const IBCUnShielding = (props) => {
             publicKey: props.details && props.details.publicKey,
             // publicKey: props.disposableSigner?.publicKey,
         };
-        
+
         if (props.fromNamadaSelectedAsset?.balance) {
             txs.token = props.fromNamadaSelectedAsset?.tokenAddress;
-            txs.feeAmount = new BigNumber(0.00001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
-            // txs.chainId = fromNamadaSelectedConfig.CHAIN_ID;
-            if (fromNamadaSelectedConfig?.COIN_DENOM === 'ATOM') {
-                txs.feeAmount = new BigNumber(0.000001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
+            const tokenGasPrice = props.gasPrice.find((val) => val.token === props.fromNamadaSelectedAsset?.tokenAddress);
+            txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            if (props.feeOption?.fees?.token) {
+                txs.token = props.feeOption?.fees?.token;
+                const tokenGasPrice = props.gasPrice.find((val) => val.token === props.feeOption?.fees?.token);
+                txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
             }
+            txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
 
         setParams(true);
@@ -233,6 +238,12 @@ const IBCUnShielding = (props) => {
         });
     };
 
+    const handleMax = (ibcBalance) => {
+        if (ibcBalance > 0) {
+            props.setIBCTransferAmount(feeCalculationMax(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.tokenAddress, ibcBalance), true);
+        }
+    };
+
     const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
     const namadaBalance = props.fromNamadaSelectedAsset?.balance && Number(props.fromNamadaSelectedAsset?.balance) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
     const image = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.logo_URIs && (props.fromNamadaSelectedAsset.logo_URIs.svg || props.fromNamadaSelectedAsset.logo_URIs.png);
@@ -273,12 +284,12 @@ const IBCUnShielding = (props) => {
                         </span>
                         {/* <Button onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button> */}
                     </div> : null}
-                <Button className="max_button" onClick={() => props.setIBCTransferAmount(namadaBalance)}>Max</Button>
+                <Button className="max_button" onClick={() => handleMax(namadaBalance)}>Max</Button>
             </div>
             {/* <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
                 <img alt="TransferIcon" src={TransferIcon}/>
             </div> */}
-            <div className="arrow" style={{ top: '48%', height: 'max-content' }}>
+            <div className="arrow" style={{ top: '46%', height: 'max-content' }}>
                 <img alt="Arrow" src={DownArrowIcon}/>
             </div>
             <div className="shielded_transfer_destination" style={{ minHeight: 'unset' }}>
@@ -317,10 +328,15 @@ const IBCUnShielding = (props) => {
                         </div>
                     </div> : null}
             </div>
-            {fee && fee.fee
+            {/* {fee && fee.fee
                     ? <div className="fee">
-                        <p>{variables[props.lang].fee}:<p>{formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
-                    </div> : null}
+                        <p>{variables[props.lang].fee}:<p>{feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.tokenAddress) || formatCount(fee.fee * fee.shieldedgas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
+                    </div> : null} */}
+                    <div className="fee">
+                        {props.feeOption?.fees?.fee
+                            ? <p>{variables[props.lang].fee}:<p>{formatCount(props.feeOption?.fees?.fee) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
+                        <FeeOptions/>
+                    </div>
                     {inProgress
                     ?  <ProcessingButton>
                     <Button
@@ -365,6 +381,9 @@ IBCUnShielding.propTypes = {
     fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     getShieldedBalance: PropTypes.func.isRequired,
+    gasPrice: PropTypes.array.isRequired,
+    gasEstimation: PropTypes.object.isRequired,
+    feeOption: PropTypes.object.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
     setIBCSwapType: PropTypes.func.isRequired,
@@ -415,6 +434,9 @@ const stateToProps = (state) => {
         revealPublicKey: state.accounts.revealPublicKey.result,
         fromNamadaSelectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.shieldedResult,
         shieldedData: state.accounts.address.shieldedData,
+        gasEstimation: state.gasPrice.gasEstimation.value,
+        gasPrice: state.gasPrice.gasPrice.value,
+        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 

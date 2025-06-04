@@ -21,6 +21,8 @@ import { ibcTransparentTransfer } from "helper";
 import variables from "utils/variables";
 import ProcessingButton from "components/ProcessingButton";
 import { showTokensTransactionSuccessDialog } from "actions/IBCTransfer";
+import { feeCalculation, feeCalculationDisplay } from "utils/feeCalculation";
+import FeeOptions from "../FeeOptions";
 
 class TransparentTransferDialog extends React.Component {
     constructor (props) {
@@ -70,11 +72,14 @@ class TransparentTransferDialog extends React.Component {
 
         if (this.props.value?.balance?.minDenomAmount) {
             txs.token = this.props.value?.balance?.tokenAddress;
-            txs.feeAmount = new BigNumber(0.00001 * (10 ** fromSelectedConfig?.COIN_DECIMALS));
-            // txs.chainId = fromSelectedConfig.CHAIN_ID;
-            if (fromSelectedConfig?.COIN_DENOM === 'ATOM') {
-                txs.feeAmount = new BigNumber(0.000001 * (10 ** fromSelectedConfig?.COIN_DECIMALS));
+            const tokenGasPrice = this.props.gasPrice.find((val) => val.token === this.props.value?.balance?.tokenAddress);
+            txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            if (this.props.feeOption?.fees?.token) {
+                txs.token = this.props.feeOption?.fees?.token;
+                const tokenGasPrice = this.props.gasPrice.find((val) => val.token === this.props.feeOption?.fees?.token);
+                txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
             }
+            txs.gasLimit = new BigNumber(feeCalculation(this.props.gasEstimation))
         }
 
         this.setState({ approval: true });
@@ -181,16 +186,17 @@ class TransparentTransferDialog extends React.Component {
                             <MemoTextField />
                         </div>
                     </div>
-                    {fee && fee.fee 
-                    ? <div className="section5">
-                            <div className="left_section">
-                                <span>{variables[this.props.lang].fee}</span>
-                                <p>{formatCount(fee.fee * fee.gas)}{' '} {fromSelectedConfig.COIN_DENOM}</p>
+                    <div className="section5">
+                        {this.props.feeOption?.fees?.fee
+                            ? <div className="left_section">
+                                <span>{variables[this.props.lang].fee}:</span>
+                                <p>{formatCount(this.props.feeOption?.fees?.fee) || feeCalculationDisplay(this.props.gasEstimation, this.props.gasPrice, this.props.value?.balance?.tokenAddress)} {this.props.feeOption?.symbol}</p>
                             </div>
-                            {/* <div className="right_section">
-                                <span>Fee options</span>
-                            </div> */}
-                    </div> : null}
+                            : null}
+                        <div className="right_section">
+                            <FeeOptions/>
+                        </div>
+                    </div>
                     <div className="actions">
                         {this.state.inProgress ?
                             <ProcessingButton>
@@ -222,7 +228,10 @@ TransparentTransferDialog.propTypes = {
     fetchBalanceList: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
     failedDialog: PropTypes.func.isRequired,
-    pendingDialog: PropTypes.func.isRequire,
+    gasPrice: PropTypes.array.isRequired,
+    gasEstimation: PropTypes.object.isRequired,
+    feeOption: PropTypes.object.isRequired,
+    pendingDialog: PropTypes.func.isRequired,
     showMessage: PropTypes.func.isRequired,
     ibcTransferType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
@@ -264,7 +273,9 @@ const stateToProps = (state) => {
         revealPublicKey: state.accounts.revealPublicKey.result,
         tokensTransferMemo: state.assets.tokensTransferMemo.value,
         shieldedData: state.accounts.address.shieldedData,
-
+        gasEstimation: state.gasPrice.gasEstimation.value,
+        gasPrice: state.gasPrice.gasPrice.value,
+        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 

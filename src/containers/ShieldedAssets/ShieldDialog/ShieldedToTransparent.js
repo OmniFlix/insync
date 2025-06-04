@@ -11,7 +11,6 @@ import NamadaLogo from '../../../assets/masp/namada_logo.svg';
 import NamadaShieldedLogo from '../../../assets/masp/namada_shielded.svg';
 import BigNumber from 'bignumber.js';
 import { shieldedToTransparentTransaction } from 'helper';
-import CircularProgress from 'components/CircularProgress';
 import { UnshieldingTransferDataMsgValue } from '@harish551/namada-types';
 import { fetchBalanceList, getBalance, getShieldedBalance } from 'actions/accounts';
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';
@@ -23,6 +22,8 @@ import { fetchIBCBalance, showTokensTransactionSuccessDialog } from 'actions/IBC
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import { hideShieldedTokensConvertDialog } from 'actions/assets';
+import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
+import FeeOptions from 'containers/Tokens/FeeOptions';
 
 const ShieldedToTransparent = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -61,11 +62,14 @@ const ShieldedToTransparent = (props) => {
 
         if (props.selectedAsset?.balance) {
             txs.token = props.selectedAsset?.tokenAddress;
-            txs.feeAmount = new BigNumber(0.00001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
-            // txs.chainId = fromNamadaSelectedConfig.CHAIN_ID;
-            if (fromNamadaSelectedConfig?.COIN_DENOM === 'ATOM') {
-                txs.feeAmount = new BigNumber(0.000001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
+            const tokenGasPrice = props.gasPrice.find((val) => val.token === props.selectedAsset?.tokenAddress);
+            txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            if (props.feeOption?.fees?.token) {
+                txs.token = props.feeOption?.fees?.token;
+                const tokenGasPrice = props.gasPrice.find((val) => val.token === props.feeOption?.fees?.token);
+                txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
             }
+            txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
 
         setParams(true);
@@ -139,6 +143,12 @@ const ShieldedToTransparent = (props) => {
         return null;
     });
 
+    const handleMax = (ibcBalance) => {
+        if (ibcBalance > 0) {
+            props.setAmount(feeCalculationMax(props.gasEstimation, props.gasPrice, props.selectedAsset?.tokenAddress, ibcBalance), true);
+        }
+    };
+
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
     const disable = inProgress || !props.amount || props.amountValid === false;
 
@@ -169,7 +179,7 @@ const ShieldedToTransparent = (props) => {
                         <p>{variables[props.lang].available} {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                         {/* <Button onClick={() => props.setAmount(namadaBalance)}>Max</Button> */}
                     </div> : null}
-                <Button className="max_button" onClick={() => props.setAmount(namadaBalance)}>{variables[props.lang].max}</Button>
+                <Button className="max_button" onClick={() => handleMax(namadaBalance)}>{variables[props.lang].max}</Button>
 
             </div>
             <div className="arrow shield_convert_arrow">
@@ -188,11 +198,11 @@ const ShieldedToTransparent = (props) => {
                 </div>
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
-            {fee && fee.fee
-                ? <div className="fee">
-                    <p>{variables[props.lang].fee}</p>
-                    <p>{formatCount(fee.fee * fee.shieldedTransfer)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
-                </div> : null}
+            <div className="fee">
+                {props.feeOption?.fees?.fee
+                    ? <p>{variables[props.lang].fee}:<p>{formatCount(props.feeOption?.fees?.fee) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.selectedAsset?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
+                <FeeOptions/>
+            </div>
             {/* {inProgress && <CircularProgress className="full_screen"/>} */}
             {inProgress
             ? <ProcessingButton>
@@ -228,6 +238,9 @@ ShieldedToTransparent.propTypes = {
     details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    gasPrice: PropTypes.array.isRequired,
+    gasEstimation: PropTypes.object.isRequired,
+    feeOption: PropTypes.object.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
@@ -262,6 +275,9 @@ const stateToProps = (state) => {
         disposableSigner: state.accounts.address.disposableSigner,
         revealPublicKey: state.accounts.revealPublicKey.result,
         selectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.shieldedResult,
+        gasEstimation: state.gasPrice.gasEstimation.value,
+        gasPrice: state.gasPrice.gasPrice.value,
+        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 

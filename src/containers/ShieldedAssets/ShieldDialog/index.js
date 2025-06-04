@@ -23,6 +23,8 @@ import { hideTransparentTokensConvertDialog } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import { showTokensTransactionSuccessDialog } from 'actions/IBCTransfer';
+import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
+import FeeOptions from 'containers/Tokens/FeeOptions';
 
 const ShieldDialog = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -60,11 +62,14 @@ const ShieldDialog = (props) => {
 
         if (props.selectedAsset?.balance?.minDenomAmount) {
             txs.token = props.selectedAsset?.balance?.tokenAddress;
-            txs.feeAmount = new BigNumber(0.00001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
-            // txs.chainId = fromNamadaSelectedConfig.CHAIN_ID;
-            if (fromNamadaSelectedConfig?.COIN_DENOM === 'ATOM') {
-                txs.feeAmount = new BigNumber(0.000001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
+            const tokenGasPrice = props.gasPrice.find((val) => val.token === props.selectedAsset?.balance?.tokenAddress);
+            txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            if (props.feeOption?.fees?.token) {
+                txs.token = props.feeOption?.fees?.token;
+                const tokenGasPrice = props.gasPrice.find((val) => val.token === props.feeOption?.fees?.token);
+                txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
             }
+            txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
 
         setParams(true);
@@ -152,6 +157,12 @@ const ShieldDialog = (props) => {
         return null;
     });
 
+    const handleMax = (ibcBalance) => {
+        if (ibcBalance > 0) {
+            props.setAmount(feeCalculationMax(props.gasEstimation, props.gasPrice, props.selectedAsset?.balance?.tokenAddress, ibcBalance), true);
+        }
+    };
+
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
     const disable = inProgress || !props.amount || props.amountValid === false;
 
@@ -183,7 +194,7 @@ const ShieldDialog = (props) => {
                             <p>{variables[props.lang].available}</p>
                             <p>{namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                         </span>
-                        <Button onClick={() => props.setAmount(namadaBalance)}>{variables[props.lang].max}</Button>
+                        <Button onClick={() => handleMax(namadaBalance)}>{variables[props.lang].max}</Button>
                     </div> : null}
             </div>
             <div className="arrow">
@@ -202,12 +213,12 @@ const ShieldDialog = (props) => {
                 </div>
                 {/* <p>Transaction fee: 0.025385 NAM</p> */}
             </div>
-            {fee && fee.fee
-
-                ? <div className="transparent_fee">
-                    <p>{variables[props.lang].fee}</p>
-                    <p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p>
-                </div> : null}
+                <div className="fee">
+                    {props.feeOption?.fees?.fee
+                        ? <p>{variables[props.lang].fee}:&nbsp;
+                        <p>{formatCount(props.feeOption?.fees?.fee) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.selectedAsset?.balance?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
+                    <FeeOptions/>
+                </div>
                 {inProgress
                 ? <ProcessingButton>
                     <Button
@@ -243,6 +254,9 @@ ShieldDialog.propTypes = {
     details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    gasPrice: PropTypes.array.isRequired,
+    gasEstimation: PropTypes.object.isRequired,
+    feeOption: PropTypes.object.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
     getShieldedBalance: PropTypes.func.isRequired,
     hideTransparentTokensConvertDialog: PropTypes.func.isRequired,
@@ -274,6 +288,9 @@ const stateToProps = (state) => {
         revealPublicKey: state.accounts.revealPublicKey.result,
         selectedAsset: state.shieldedAssets.selectedAsset.result,
         shieldedData: state.accounts.address.shieldedData,
+        gasEstimation: state.gasPrice.gasEstimation.value,
+        gasPrice: state.gasPrice.gasPrice.value,
+        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 

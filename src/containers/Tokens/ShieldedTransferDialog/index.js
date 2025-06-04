@@ -22,6 +22,8 @@ import { fetchIBCBalance, showTokensTransactionSuccessDialog } from "actions/IBC
 import CircularProgress from "components/CircularProgress";
 import variables from "utils/variables";
 import ProcessingButton from "components/ProcessingButton";
+import { feeCalculation, feeCalculationDisplay } from "utils/feeCalculation";
+import FeeOptions from "../FeeOptions";
 
 class ShieldedTransferDialog extends React.Component {
     constructor (props) {
@@ -73,13 +75,24 @@ class ShieldedTransferDialog extends React.Component {
             memo: this.props.tokensTransferMemo || '',
         };
 
+        // if (this.props.value?.balance) {
+        //     txs.token = this.props.value?.tokenAddress;
+        //     txs.feeAmount = new BigNumber(0.00001 * (10 ** fromSelectedConfig?.COIN_DECIMALS));
+        //     // txs.chainId = fromSelectedConfig.CHAIN_ID;
+        //     if (fromSelectedConfig?.COIN_DENOM === 'ATOM') {
+        //         txs.feeAmount = new BigNumber(0.000001 * (10 ** fromSelectedConfig?.COIN_DECIMALS));
+        //     }
+        // }
         if (this.props.value?.balance) {
             txs.token = this.props.value?.tokenAddress;
-            txs.feeAmount = new BigNumber(0.00001 * (10 ** fromSelectedConfig?.COIN_DECIMALS));
-            // txs.chainId = fromSelectedConfig.CHAIN_ID;
-            if (fromSelectedConfig?.COIN_DENOM === 'ATOM') {
-                txs.feeAmount = new BigNumber(0.000001 * (10 ** fromSelectedConfig?.COIN_DECIMALS));
+            const tokenGasPrice = this.props.gasPrice.find((val) => val.token === this.props.value?.tokenAddress);
+            txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            if (this.props.feeOption?.fees?.token) {
+                txs.token = this.props.feeOption?.fees?.token;
+                const tokenGasPrice = this.props.gasPrice.find((val) => val.token === this.props.feeOption?.fees?.token);
+                txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
             }
+            txs.gasLimit = new BigNumber(feeCalculation(this.props.gasEstimation))
         }
 
         this.setState({ params: true, approval: true });
@@ -199,16 +212,17 @@ class ShieldedTransferDialog extends React.Component {
                             <MemoTextField />
                         </div>
                     </div>
-                    {fee && fee.fee 
-                    ? <div className="section5">
-                            <div className="left_section">
-                                <span>Fee</span>
-                                <p>{formatCount(fee.fee * fee.shieldedTransfer)}{' '} {fromSelectedConfig.COIN_DENOM}</p>
+                    <div className="section5">
+                        {this.props.feeOption?.fees?.fee
+                            ? <div className="left_section">
+                                <span>{variables[this.props.lang].fee}:</span>
+                                <p>{formatCount(this.props.feeOption?.fees?.fee) || feeCalculationDisplay(this.props.gasEstimation, this.props.gasPrice, this.props.value?.tokenAddress)} {this.props.feeOption?.symbol}</p>
                             </div>
-                            {/* <div className="right_section">
-                                <span>Fee options</span>
-                            </div> */}
-                    </div> : null}
+                            : null}
+                        <div className="right_section">
+                            <FeeOptions/>
+                        </div>
+                    </div>
                     {/* {this.state.inProgress && <CircularProgress className="full_screen"/>} */}
                     <div className="actions">
                         {this.state.inProgress
@@ -243,6 +257,9 @@ ShieldedTransferDialog.propTypes = {
     handleClose: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
+    gasPrice: PropTypes.array.isRequired,
+    gasEstimation: PropTypes.object.isRequired,
+    feeOption: PropTypes.object.isRequired,
     successDialog: PropTypes.func.isRequired,
     showTokensTransactionSuccessDialog: PropTypes.func.isRequired,
     failedDialog: PropTypes.func.isRequired,
@@ -291,6 +308,9 @@ const stateToProps = (state) => {
         tokensTransferMemo: state.assets.tokensTransferMemo.value,
         shieldedData: state.accounts.address.shieldedData,
         disposableSigner: state.accounts.address.disposableSigner,
+        gasEstimation: state.gasPrice.gasEstimation.value,
+        gasPrice: state.gasPrice.gasPrice.value,
+        feeOption: state.assets.feeOptionPopoverValue.value,
     };
 };
 
