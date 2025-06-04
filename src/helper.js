@@ -409,43 +409,53 @@ export const delegateTransaction = (Tx, txs, revealPublicKey, type, cb) => {
                 newTxs.push(revealPkTx);
             }
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-            const encoded = await tx.buildBond(wrapperTxValue, bondMsgValue);
-            newTxs.push(encoded);
+            try {
+                const encoded = await tx.buildBond(wrapperTxValue, bondMsgValue);
+                newTxs.push(encoded);
 
-            // const updatedData = tx.buildBatch(newTxs);
-            let updatedData;
-            if (type === 'ledger') {
-                updatedData = newTxs;
-            } else {
-                updatedData = tx.buildBatch(newTxs);
-            }
+                // const updatedData = tx.buildBatch(newTxs);
+                let updatedData;
+                if (type === 'ledger') {
+                    updatedData = newTxs;
+                } else {
+                    updatedData = tx.buildBatch(newTxs);
+                }
 
-            // const checksums = {
-            //     "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
-            //     "tx_bond.wasm": "490cf419bdbffe616c6aa6c72d38064e350ee65fb04d92472ccf285aec6844b6",
-            //     "tx_change_validator_commission.wasm": "b745bc2b87bf8acd07e2f3409c77eee06c9b5206d2a77a2f23bb8e593c70cbfe",
-            //     "tx_change_validator_metadata.wasm": "1b5a323c140b54700f280cde8b9aac1c12555f9c119e936432ddfa8f194d23ac",
-            //     "tx_claim_rewards.wasm": "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c",
-            //     "tx_ibc.wasm": "cecb1f1b75cd649915423c5e68be20c5232f94ab57a11a908dc66751bbdc4f72",
-            //     "tx_init_proposal.wasm": "33ee28597cf0f6a11dfe6e23e9aedf2eb04dabb44069cbe317768f4d982d80be",
-            //     "tx_redelegate.wasm": "7d5ad1877643f7d9b32a511ef93a11e8503426baee0f5986d29e3f63a2355d58",
-            //     "tx_reveal_pk.wasm": "f1fc74460bd9bbd17140c88dfc0543440f066ffb84849c35c2bb0e331e51cf1c",
-            //     "tx_transfer.wasm": "6d753db0390e7cec16729fc405bfe41384c93bd79f42b8b8be41b22edbbf1b7c",
-            //     "tx_unbond.wasm": "36e774350b865752c9d309d518223abf0a60374bae15a1f73dfe4721b5887048",
-            //     "tx_vote_proposal.wasm": "faad78023b9391596981ac9a536070a3d7d469d5c6e20c2855b2cfca63c38f59",
-            //     "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
-            // };
+                // const checksums = {
+                //     "tx_become_validator.wasm": "c6629064a1c3bde8503212cfa5e9b954169a7f162ad411b63a71db782fe909d7",
+                //     "tx_bond.wasm": "490cf419bdbffe616c6aa6c72d38064e350ee65fb04d92472ccf285aec6844b6",
+                //     "tx_change_validator_commission.wasm": "b745bc2b87bf8acd07e2f3409c77eee06c9b5206d2a77a2f23bb8e593c70cbfe",
+                //     "tx_change_validator_metadata.wasm": "1b5a323c140b54700f280cde8b9aac1c12555f9c119e936432ddfa8f194d23ac",
+                //     "tx_claim_rewards.wasm": "b6a1f7e069360650d2c6a1bdd2e5f4e18bb748d35dad02c31c027673fa042d8c",
+                //     "tx_ibc.wasm": "cecb1f1b75cd649915423c5e68be20c5232f94ab57a11a908dc66751bbdc4f72",
+                //     "tx_init_proposal.wasm": "33ee28597cf0f6a11dfe6e23e9aedf2eb04dabb44069cbe317768f4d982d80be",
+                //     "tx_redelegate.wasm": "7d5ad1877643f7d9b32a511ef93a11e8503426baee0f5986d29e3f63a2355d58",
+                //     "tx_reveal_pk.wasm": "f1fc74460bd9bbd17140c88dfc0543440f066ffb84849c35c2bb0e331e51cf1c",
+                //     "tx_transfer.wasm": "6d753db0390e7cec16729fc405bfe41384c93bd79f42b8b8be41b22edbbf1b7c",
+                //     "tx_unbond.wasm": "36e774350b865752c9d309d518223abf0a60374bae15a1f73dfe4721b5887048",
+                //     "tx_vote_proposal.wasm": "faad78023b9391596981ac9a536070a3d7d469d5c6e20c2855b2cfca63c38f59",
+                //     "tx_withdraw.wasm": "8a9df03a1a8f5e9e606e14a97fdfb2097dba062da1b3b2158bbfa7deabeeadfb"
+                // };
 
-            client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
-                cb(null, null, true);
-                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
-                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                        cb(result.info || result.log || result.rawLog);
-                    } else {
-                        cb(null, result);
-                    }
+                client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
+                    cb(null, null, true);
+                    rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                        if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                            cb(result.info || result.log || result.rawLog);
+                        } else {
+                            cb(null, result);
+                        }
+                    }).catch((error) => {
+                        console.error(`broadcast error: ${error}`);
+                        const message = 'success';
+                        if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                            cb(null, message);
+                        } else {
+                            cb(error && error.message);
+                        }
+                    });
                 }).catch((error) => {
-                    console.error(`broadcast error: ${error}`);
+                    console.error(`Transaction was rejected: ${error}`);
                     const message = 'success';
                     if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                         cb(null, message);
@@ -453,15 +463,9 @@ export const delegateTransaction = (Tx, txs, revealPublicKey, type, cb) => {
                         cb(error && error.message);
                     }
                 });
-            }).catch((error) => {
-                console.error(`Transaction was rejected: ${error}`);
-                const message = 'success';
-                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                    cb(null, message);
-                } else {
-                    cb(error && error.message);
-                }
-            });
+            } catch (error) {
+                cb(error && error.message);
+            }
         } else {
             return null;
         }
@@ -520,27 +524,37 @@ export const withdrawTransaction = (Tx, txs, revealPublicKey, type, cb) => {
                 newTxs.push(revealPkTx);
             }
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-            const encoded = await tx.buildWithdraw(wrapperTxValue, bondMsgValue);
-            newTxs.push(encoded);
+            try {
+                const encoded = await tx.buildWithdraw(wrapperTxValue, bondMsgValue);
+                newTxs.push(encoded);
 
-            // const updatedData = tx.buildBatch(newTxs);
-            let updatedData;
-            if (type === 'ledger') {
-                updatedData = newTxs;
-            } else {
-                updatedData = tx.buildBatch(newTxs);
-            }
+                // const updatedData = tx.buildBatch(newTxs);
+                let updatedData;
+                if (type === 'ledger') {
+                    updatedData = newTxs;
+                } else {
+                    updatedData = tx.buildBatch(newTxs);
+                }
 
-            client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
-                cb(null, null, true);
-                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
-                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                        cb(result.info || result.log || result.rawLog);
-                    } else {
-                        cb(null, result);
-                    }
+                client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
+                    cb(null, null, true);
+                    rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                        if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                            cb(result.info || result.log || result.rawLog);
+                        } else {
+                            cb(null, result);
+                        }
+                    }).catch((error) => {
+                        console.error(`broadcast error: ${error}`);
+                        const message = 'success';
+                        if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                            cb(null, message);
+                        } else {
+                            cb(error && error.message);
+                        }
+                    });
                 }).catch((error) => {
-                    console.error(`broadcast error: ${error}`);
+                    console.error(`Transaction was rejected: ${error}`);
                     const message = 'success';
                     if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                         cb(null, message);
@@ -548,15 +562,9 @@ export const withdrawTransaction = (Tx, txs, revealPublicKey, type, cb) => {
                         cb(error && error.message);
                     }
                 });
-            }).catch((error) => {
-                console.error(`Transaction was rejected: ${error}`);
-                const message = 'success';
-                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                    cb(null, message);
-                } else {
-                    cb(error && error.message);
-                }
-            });
+            } catch (error) {
+                cb(error && error.message);
+            }
         } else {
             return null;
         }
@@ -612,26 +620,36 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
 
             const newTxs = [];
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-            const encoded = await tx.buildUnbond(wrapperTxValue, bondMsgValue);
-            newTxs.push(encoded);
+            try {
+                const encoded = await tx.buildUnbond(wrapperTxValue, bondMsgValue);
+                newTxs.push(encoded);
 
-            let updatedData;
-            if (type === 'ledger') {
-                updatedData = newTxs;
-            } else {
-                updatedData = tx.buildBatch(newTxs);
-            }
+                let updatedData;
+                if (type === 'ledger') {
+                    updatedData = newTxs;
+                } else {
+                    updatedData = tx.buildBatch(newTxs);
+                }
 
-            client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
-                cb(null, null, true);
-                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
-                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                        cb(result.info || result.log || result.rawLog);
-                    } else {
-                        cb(null, result);
-                    }
+                client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
+                    cb(null, null, true);
+                    rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                        if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                            cb(result.info || result.log || result.rawLog);
+                        } else {
+                            cb(null, result);
+                        }
+                    }).catch((error) => {
+                        console.error(`broadcast error: ${error}`);
+                        const message = 'success';
+                        if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                            cb(null, message);
+                        } else {
+                            cb(error && error.message);
+                        }
+                    });
                 }).catch((error) => {
-                    console.error(`broadcast error: ${error}`);
+                    console.error(`Transaction was rejected: ${error}`);
                     const message = 'success';
                     if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                         cb(null, message);
@@ -639,15 +657,9 @@ export const unDelegateTransaction = (Tx, txs, type, cb) => {
                         cb(error && error.message);
                     }
                 });
-            }).catch((error) => {
-                console.error(`Transaction was rejected: ${error}`);
-                const message = 'success';
-                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                    cb(null, message);
-                } else {
-                    cb(error && error.message);
-                }
-            });
+            } catch (error) {
+                cb(error && error.message);
+            }
         } else {
             return null;
         }
@@ -704,26 +716,36 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
 
             const newTxs = [];
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-            const encoded = await tx.buildRedelegate(wrapperTxValue, bondMsgValue);
-            newTxs.push(encoded);
+            try {
+                const encoded = await tx.buildRedelegate(wrapperTxValue, bondMsgValue);
+                newTxs.push(encoded);
 
-            let updatedData;
-            if (type === 'ledger') {
-                updatedData = newTxs;
-            } else {
-                updatedData = tx.buildBatch(newTxs);
-            }
+                let updatedData;
+                if (type === 'ledger') {
+                    updatedData = newTxs;
+                } else {
+                    updatedData = tx.buildBatch(newTxs);
+                }
 
-            client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
-                cb(null, null, true);
-                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
-                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                        cb(result.info || result.log || result.rawLog);
-                    } else {
-                        cb(null, result);
-                    }
+                client.sign(updatedData, Tx.source, checksums).then((signedBondTxBytes) => {
+                    cb(null, null, true);
+                    rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                        if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                            cb(result.info || result.log || result.rawLog);
+                        } else {
+                            cb(null, result);
+                        }
+                    }).catch((error) => {
+                        console.error(`broadcast error: ${error}`);
+                        const message = 'success';
+                        if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                            cb(null, message);
+                        } else {
+                            cb(error && error.message);
+                        }
+                    });
                 }).catch((error) => {
-                    console.error(`broadcast error: ${error}`);
+                    console.error(`Transaction was rejected: ${error}`);
                     const message = 'success';
                     if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                         cb(null, message);
@@ -731,15 +753,9 @@ export const reDelegateTransaction = (Tx, txs, type, cb) => {
                         cb(error && error.message);
                     }
                 });
-            }).catch((error) => {
-                console.error(`Transaction was rejected: ${error}`);
-                const message = 'success';
-                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                    cb(null, message);
-                } else {
-                    cb(error && error.message);
-                }
-            });
+            } catch (error) {
+                cb(error && error.message);
+            }
         } else {
             return null;
         }
@@ -790,44 +806,54 @@ export const claimTransaction = (Tx, txs, type, cb) => {
             const newTxs = [];
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
             let address;
-            if (Tx && Tx.length) {
-                for (let i = 0; i < Tx.length; i++) {
-                    const newTx = Tx[i];
+            try {
+                if (Tx && Tx.length) {
+                    for (let i = 0; i < Tx.length; i++) {
+                        const newTx = Tx[i];
+                        const bondMsgValue = new ClaimRewardsMsgValue({
+                            source: newTx.source,
+                            validator: newTx.validator,
+                        });
+                        const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
+                        newTxs.push(encoded);
+                        address = newTx.source;
+                    }
+                } else {
                     const bondMsgValue = new ClaimRewardsMsgValue({
-                        source: newTx.source,
-                        validator: newTx.validator,
+                        source: Tx.source,
+                        validator: Tx.validator,
                     });
                     const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
                     newTxs.push(encoded);
-                    address = newTx.source;
+                    address = Tx.source;
                 }
-            } else {
-                const bondMsgValue = new ClaimRewardsMsgValue({
-                    source: Tx.source,
-                    validator: Tx.validator,
-                });
-                const encoded = await tx.buildClaimRewards(wrapperTxValue, bondMsgValue);
-                newTxs.push(encoded);
-                address = Tx.source;
-            }
 
-            let updatedData;
-            if (type === 'ledger') {
-                updatedData = newTxs;
-            } else {
-                updatedData = tx.buildBatch(newTxs);
-            }
+                let updatedData;
+                if (type === 'ledger') {
+                    updatedData = newTxs;
+                } else {
+                    updatedData = tx.buildBatch(newTxs);
+                }
 
-            client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
-                cb(null, null, true);
-                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
-                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                        cb(result.info || result.log || result.rawLog);
-                    } else {
-                        cb(null, result);
-                    }
+                client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
+                    cb(null, null, true);
+                    rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                        if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                            cb(result.info || result.log || result.rawLog);
+                        } else {
+                            cb(null, result);
+                        }
+                    }).catch((error) => {
+                        console.error(`broadcast error: ${error}`);
+                        const message = 'success';
+                        if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                            cb(null, message);
+                        } else {
+                            cb(error && error.message);
+                        }
+                    });
                 }).catch((error) => {
-                    console.error(`broadcast error: ${error}`);
+                    console.error(`Transaction was rejected: ${error}`);
                     const message = 'success';
                     if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                         cb(null, message);
@@ -835,15 +861,9 @@ export const claimTransaction = (Tx, txs, type, cb) => {
                         cb(error && error.message);
                     }
                 });
-            }).catch((error) => {
-                console.error(`Transaction was rejected: ${error}`);
-                const message = 'success';
-                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                    cb(null, message);
-                } else {
-                    cb(error && error.message);
-                }
-            });
+            } catch (error) {
+                cb(error && error.message);
+            }
         } else {
             return null;
         }
@@ -899,26 +919,36 @@ export const voteTransaction = (Tx, txs, type, cb) => {
 
             const newTxs = [];
             const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-            const encoded = await tx.buildVoteProposal(wrapperTxValue, bondMsgValue);
-            newTxs.push(encoded);
+            try {
+                const encoded = await tx.buildVoteProposal(wrapperTxValue, bondMsgValue);
+                newTxs.push(encoded);
 
-            let updatedData;
-            if (type === 'ledger') {
-                updatedData = newTxs;
-            } else {
-                updatedData = tx.buildBatch(newTxs);
-            }
+                let updatedData;
+                if (type === 'ledger') {
+                    updatedData = newTxs;
+                } else {
+                    updatedData = tx.buildBatch(newTxs);
+                }
 
-            client.sign(updatedData, Tx.voter, checksums).then((signedBondTxBytes) => {
-                cb(null, null, true);
-                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
-                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                        cb(result.info || result.log || result.rawLog);
-                    } else {
-                        cb(null, result);
-                    }
+                client.sign(updatedData, Tx.voter, checksums).then((signedBondTxBytes) => {
+                    cb(null, null, true);
+                    rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                        if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                            cb(result.info || result.log || result.rawLog);
+                        } else {
+                            cb(null, result);
+                        }
+                    }).catch((error) => {
+                        console.error(`broadcast error: ${error}`);
+                        const message = 'success';
+                        if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                            cb(null, message);
+                        } else {
+                            cb(error && error.message);
+                        }
+                    });
                 }).catch((error) => {
-                    console.error(`broadcast error: ${error}`);
+                    console.error(`Transaction was rejected: ${error}`);
                     const message = 'success';
                     if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                         cb(null, message);
@@ -926,15 +956,9 @@ export const voteTransaction = (Tx, txs, type, cb) => {
                         cb(error && error.message);
                     }
                 });
-            }).catch((error) => {
-                console.error(`Transaction was rejected: ${error}`);
-                const message = 'success';
-                if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                    cb(null, message);
-                } else {
-                    cb(error && error.message);
-                }
-            });
+            } catch (error) {
+                cb(error && error.message);
+            }
         } else {
             return null;
         }
@@ -1404,25 +1428,35 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
             newTxs.push(revealPkTx);
         }
         const wrapperTxValue = new WrapperTxMsgValue(wrapperProps);
-        const encoded = await tx.buildTransparentTransfer(wrapperTxValue, ibcTransfer);
-        newTxs.push(encoded);
+        try {
+            const encoded = await tx.buildTransparentTransfer(wrapperTxValue, ibcTransfer);
+            newTxs.push(encoded);
 
-        let updatedData;
-        if (type === 'ledger') {
-            updatedData = newTxs;
-        } else {
-            updatedData = tx.buildBatch(newTxs);
-        }
+            let updatedData;
+            if (type === 'ledger') {
+                updatedData = newTxs;
+            } else {
+                updatedData = tx.buildBatch(newTxs);
+            }
 
-        client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
-            cb(null, null, true);
-            rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
-                if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
-                    cb(result.info || result.log || result.rawLog);
-                } else {
-                    cb(null, result);
-                }
+            client.sign(updatedData, address, checksums).then((signedBondTxBytes) => {
+                cb(null, null, true);
+                rpc.broadcastTx(signedBondTxBytes && signedBondTxBytes.length && signedBondTxBytes[0]).then((result) => {
+                    if (result && result.code !== undefined && result.code !== 0 && result.code !== '0') {
+                        cb(result.info || result.log || result.rawLog);
+                    } else {
+                        cb(null, result);
+                    }
+                }).catch((error) => {
+                    const message = 'success';
+                    if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
+                        cb(null, message);
+                    } else {
+                        cb(error && error.message);
+                    }
+                });
             }).catch((error) => {
+                console.error(`Transaction was rejected: ${error}`);
                 const message = 'success';
                 if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
                     cb(null, message);
@@ -1430,15 +1464,9 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
                     cb(error && error.message);
                 }
             });
-        }).catch((error) => {
-            console.error(`Transaction was rejected: ${error}`);
-            const message = 'success';
-            if (error && error.message === 'Invalid string. Length must be a multiple of 4') {
-                cb(null, message);
-            } else {
-                cb(error && error.message);
-            }
-        });
+        } catch (error) {
+            cb(error && error.message);
+        }
     } else {
         return null;
     }

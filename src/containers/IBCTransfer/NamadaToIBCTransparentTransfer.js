@@ -36,6 +36,7 @@ import { formatCount } from 'utils/numberFormats';
 import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
+import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
 
 const NamadaToIBCTransparentTransfer = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -140,14 +141,12 @@ const NamadaToIBCTransparentTransfer = (props) => {
             chainId: config.CHAIN_ID,
             publicKey: props.details && props.details.publicKey,
         };
-        
+
         if (props.fromNamadaSelectedAsset?.balance?.minDenomAmount) {
             txs.token = props.fromNamadaSelectedAsset?.balance?.tokenAddress;
-            txs.feeAmount = new BigNumber(0.00001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
-            // txs.chainId = fromNamadaSelectedConfig.CHAIN_ID;
-            if (fromNamadaSelectedConfig?.COIN_DENOM === 'ATOM') {
-                txs.feeAmount = new BigNumber(0.000001 * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
-            }
+            const tokenGasPrice = props.gasPrice.find((val) => val.token === props.fromNamadaSelectedAsset?.balance?.tokenAddress);
+            txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+            txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
 
         // setParams(true);
@@ -240,6 +239,12 @@ const NamadaToIBCTransparentTransfer = (props) => {
         }
     };
 
+    const handleMax = (ibcBalance) => {
+        if (ibcBalance > 0) {
+            props.setIBCTransferAmount (feeCalculationMax(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.balance?.tokenAddress, ibcBalance), true);
+        }
+    };
+
     const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
     const namadaBalance = props.fromNamadaSelectedAsset?.balance?.minDenomAmount && Number(props.fromNamadaSelectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
     const image = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.logo_URIs && (props.fromNamadaSelectedAsset.logo_URIs.svg || props.fromNamadaSelectedAsset.logo_URIs.png);
@@ -271,7 +276,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
                 </span>
                 {fromNamadaSelectedConfig
                     ? <div className="nam_tokens_secion">
-                        <Button onClick={() => props.setIBCTransferAmount(namadaBalance, true)}>Max</Button>
+                        <Button onClick={() => handleMax(namadaBalance, true)}>Max</Button>
                     </div> : null}
             </div>
             {/* <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
@@ -307,7 +312,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
             </div>
             {fee && fee.fee
                     ? <div className="fee">
-                        <p>{variables[props.lang].fee}:<p>{formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
+                        <p>{variables[props.lang].fee}:<p>{feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.balance?.tokenAddress) || formatCount(fee.fee * fee.gas)} {fromNamadaSelectedConfig.COIN_DENOM}</p></p>
                     </div> : null}
                     {inProgress
                     ? <ProcessingButton>
@@ -352,6 +357,8 @@ NamadaToIBCTransparentTransfer.propTypes = {
     fetchTokensList: PropTypes.func.isRequired,
     fetchBalanceList: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
+    gasPrice: PropTypes.array.isRequired,
+    gasEstimation: PropTypes.object.isRequired,
     hideTransparentTokensWithdrawDialog: PropTypes.func.isRequired,
     ibcSwapType: PropTypes.string.isRequired,
     lang: PropTypes.string.isRequired,
@@ -400,6 +407,8 @@ const stateToProps = (state) => {
         keys: state.ibcTransfer.connection.keys,
         revealPublicKey: state.accounts.revealPublicKey.result,
         fromNamadaSelectedAsset: state.ibcTransfer.fromNamadaSelectedAsset.result,
+        gasEstimation: state.gasPrice.gasEstimation.value,
+        gasPrice: state.gasPrice.gasPrice.value,
     };
 };
 
