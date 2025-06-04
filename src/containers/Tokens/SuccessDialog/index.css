@@ -12,6 +12,7 @@
     max-width: 600px;
     width: 600px;
     height: 400px;
+    overflow-x: hidden;
 }
 
 .tokens_success_dialog .dialog_animation {

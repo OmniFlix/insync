@@ -237,7 +237,7 @@ const IBCTransferDialog = (props) => {
 
                         setTransactionCompleted(true);
                         if (props.from === 'transparent_deposit') {
-                            const tokenName = props.transparentTokensDepositDialogValue?.name || props.transparentTokensDepositDialogValue?.symbol;
+                            const tokenName = props.transparentTokensDepositDialogValue?.symbol || props.transparentTokensDepositDialogValue?.name;
                             const successObject = {
                                 text: `${tokenName} Deposit Successfully`,
                                 content: 'Your deposit was completed and funds are available',
@@ -259,7 +259,8 @@ const IBCTransferDialog = (props) => {
                                                 props.fetchIBCBalance(config.REST_URL, props.ibcTransferAddress);
                                                 props.getBalance(props.address);
                                                 // props.showDelegateSuccessDialog(res1.txhash, config);
-                                                props.showTokensTransactionSuccessDialog(successObject)
+                                                props.showTokensTransactionSuccessDialog(successObject);
+                                                props.hideTransparentTokensDepositDialog();
                                                 setInProgress(false);
                                                 setParams(false);
                                                 setApproval(false);
@@ -286,18 +287,16 @@ const IBCTransferDialog = (props) => {
                         props.fetchTokensList();
                         props.fetchBalanceList(props.address);
 
-                        const tokenName = props.fromNamadaSelectedAsset?.name || props.fromNamadaSelectedAsset?.symbol;
+                        const tokenName = props.fromNamadaSelectedAsset?.symbol || props.fromNamadaSelectedAsset?.name;
                         const successObject = {
                             text: `${tokenName} Deposit Successfully`,
                             content: 'Your deposit was completed and funds are available',
                         }
 
                         props.showTokensTransactionSuccessDialog(successObject);
-                        // if(props.from === 'shielded_deposit') {
-                        //     props.hideShieldedTokensDepositDialog();
-                        // } else if (props.from === 'transparent_deposit') {
-                        //     props.hideTransparentTokensDepositDialog();
-                        // }
+                        props.hideShieldedTokensDepositDialog();
+                        props.hideTransparentTokensDepositDialog();
+                    
                         setTimeout(() => {
                             props.fetchBalanceList(props.address);
                         }, 10000);
@@ -378,7 +377,7 @@ const IBCTransferDialog = (props) => {
                         setApproval(false);
                         clearInterval(intervalTime);
 
-                        const tokenName = props.fromNamadaSelectedAsset?.name || props.fromNamadaSelectedAsset?.symbol;
+                        const tokenName = props.fromNamadaSelectedAsset?.symbol || props.fromNamadaSelectedAsset?.name;
                         const successObject = {
                             text: `${tokenName} Withdraw Successfully`,
                             content: 'Your withdraw was completed and funds are available',
@@ -401,7 +400,7 @@ const IBCTransferDialog = (props) => {
     };
 
     const handleFetchShieldedBalance = (tokenAddress, balance, ibcConfig, res1) => {
-        const tokenName = props.shieldedTokensDepositDialogValue?.name || props.shieldedTokensDepositDialogValue?.symbol;
+        const tokenName = props.shieldedTokensDepositDialogValue?.symbol || props.shieldedTokensDepositDialogValue?.name;
         const successObject = {
             text: `${tokenName} Deposit Successfully`,
             content: 'Your deposit was completed and funds are available',
@@ -416,6 +415,7 @@ const IBCTransferDialog = (props) => {
                 props.getBalance(props.address);
                 // props.showDelegateSuccessDialog(res1.txhash, ibcConfig);
                 props.showTokensTransactionSuccessDialog(successObject);
+                props.hideShieldedTokensDepositDialog();
                 setInProgress(false);
             } else {
                 handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);

@@ -86,7 +86,7 @@ class TransparentTransferDialog extends React.Component {
             this.setState({ approval: false });
             return;
         }
-        const tokenName = this.props.value?.name || this.props.value?.symbol;
+        const tokenName = this.props.value?.symbol || this.props.value?.name;
         const successObject = {
             text: `${tokenName} Transfer Successfully`,
             content: 'Your transfer was completed',
@@ -108,7 +108,8 @@ class TransparentTransferDialog extends React.Component {
         }
 
         // this.props.successDialog(value && value.hash, null, fromSelectedConfig);
-        this.props.showTokensTransactionSuccessDialog(successObject)
+        this.props.showTokensTransactionSuccessDialog(successObject);
+        this.props.handleClose();
         this.setState({ inProgress: false, approval: false });
         this.props.fetchBalanceList(this.props.address);
         this.props.getBalance(this.props.address);

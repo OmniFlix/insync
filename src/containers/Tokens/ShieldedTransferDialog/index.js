@@ -114,7 +114,7 @@ class ShieldedTransferDialog extends React.Component {
     };
 
     handleFetchShieldedBalance (tokenAddress, balance, ibcConfig, res1) {
-        const tokenName = this.props.fromNamadaSelectedAsset?.name || this.props.fromNamadaSelectedAsset?.symbol;
+        const tokenName = ibcConfig?.COIN_DENOM || ibcConfig?.CHAIN_NAME;
         const successObject = {
             text: `${tokenName} Transfer Successfully`,
             content: 'Your transfer was completed',
@@ -129,9 +129,10 @@ class ShieldedTransferDialog extends React.Component {
                 this.props.getBalance(this.props.address);
                 // this.props.successDialog(res1.hash, null, ibcConfig);
                 this.props.showTokensTransactionSuccessDialog(successObject);
+                this.props.handleClose();
                 this.setState({ inProgress: false, params: false, approval: false });
             } else {
-                handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
+                this.handleFetchShieldedBalance(tokenAddress, balance, ibcConfig, res1);
             }
         });
     };

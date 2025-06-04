@@ -196,7 +196,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
         const available = props.fromNamadaSelectedAsset?.balance?.minDenomAmount;
         const token = props.fromNamadaSelectedAsset?.balance?.tokenAddress;
 
-        const tokenName = props.fromNamadaSelectedAsset?.name || props.fromNamadaSelectedAsset?.symbol;
+        const tokenName = props.fromNamadaSelectedAsset?.symbol || props.fromNamadaSelectedAsset?.name;
         const successObject = {
             text: `${tokenName} Withdraw Successfully`,
             content: 'Your withdraw was completed and funds are available',

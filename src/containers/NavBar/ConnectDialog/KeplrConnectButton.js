@@ -38,7 +38,7 @@ const KeplrConnectButton = (props) => {
 
     return (
         <Button
-            className="disconnect_button"
+            // className="disconnect_button"
             disabled={inProgress}
             variant="contained"
             onClick={initKeplr}>

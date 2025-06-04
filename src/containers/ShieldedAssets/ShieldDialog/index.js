@@ -98,10 +98,10 @@ const ShieldDialog = (props) => {
         const available = props.selectedAsset?.balance?.minDenomAmount;
         const token = props.selectedAsset?.balance?.tokenAddress;
         const intervalTime = setInterval(() => {
-            const tokenName = props.selectedAsset?.name || props.selectedAsset?.symbol;
+            const tokenName = props.selectedAsset?.symbol || props.selectedAsset?.name;
             const successObject = {
-                text: `${tokenName} Shield Successfully`,
-                content: 'Your shield was completed',
+                text: `${tokenName} Shielded Successfully`,
+                content: 'Your shielded transaction was completed',
             }
             props.fetchBalanceList(props.address, (result) => {
                 if (result && result.length) {
@@ -122,7 +122,7 @@ const ShieldDialog = (props) => {
                         // props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
                         props.showTokensTransactionSuccessDialog(successObject)
                         props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID);
-                        // props.hideTransparentTokensConvertDialog();
+                        props.hideTransparentTokensConvertDialog();
                     }
                 }
             });

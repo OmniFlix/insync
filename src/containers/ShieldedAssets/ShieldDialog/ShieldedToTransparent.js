@@ -22,6 +22,7 @@ import ShieldedSourceSelectField from 'containers/IBCTransfer/ShieldedSourceSele
 import { fetchIBCBalance, showTokensTransactionSuccessDialog } from 'actions/IBCTransfer';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
+import { hideShieldedTokensConvertDialog } from 'actions/assets';
 
 const ShieldedToTransparent = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -101,7 +102,7 @@ const ShieldedToTransparent = (props) => {
     };
 
     const handleFetchShieldedBalance = (tokenAddress, balance, ibcConfig, res1) => {
-        const tokenName = props.selectedAsset?.name || props.selectedAsset?.symbol;
+        const tokenName = props.selectedAsset?.symbol || props.selectedAsset?.name;
         const successObject = {
             text: `${tokenName} Unshield Successfully`,
             content: 'Your unshield was completed',
@@ -114,7 +115,8 @@ const ShieldedToTransparent = (props) => {
             if (resultBalance !== balance) {
                 props.fetchBalanceList(props.address);
                 // props.successDialog(res1.hash, null, ibcConfig);
-                props.showTokensTransactionSuccessDialog(successObject)
+                props.showTokensTransactionSuccessDialog(successObject);
+                props.hideShieldedTokensConvertDialog();
                 setInProgress(false);
                 setParams(false);
                 setApproval(false);
@@ -236,6 +238,7 @@ ShieldedToTransparent.propTypes = {
     showMessage: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
     showTokensTransactionSuccessDialog: PropTypes.func.isRequired,
+    hideShieldedTokensConvertDialog: PropTypes.func.isRequired,
     address: PropTypes.string,
     amount: PropTypes.string,
     amountValid: PropTypes.bool,
@@ -273,6 +276,7 @@ const actionToProps = {
     getShieldedBalance,
     fetchIBCBalance,
     showTokensTransactionSuccessDialog,
+    hideShieldedTokensConvertDialog,
 };
 
 export default connect(stateToProps, actionToProps)(ShieldedToTransparent);
