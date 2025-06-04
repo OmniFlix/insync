@@ -1,18 +1,26 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { hideFeeOptionsPopover, setFeeOptionPopoverValue, showFeeOptionsPopover } from 'actions/assets';
+import { setFeeOptionPopoverValue, showFeeOptionsPopover } from 'actions/assets';
 import { Button, Popover } from '@material-ui/core';
 import ArrowDownIcon from '../../../assets/chevron-down.png';
 import './index.css';
 
 const FeeOptions = (props) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (value) => {
     props.setFeeOptionPopoverValue(value);
-    props.hideFeeOptionsPopover();
+    handleClose();
   }
+  const handleOpen= (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-  const open = Boolean(props.anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
   return (
@@ -20,7 +28,7 @@ const FeeOptions = (props) => {
       <div className='fee_options_section'>
         <div className='fee_options_div'>
             <span>Fee Options</span>
-            <Button onClick={(e) => props.showFeeOptionsPopover(e.currentTarget)}>
+            <Button onClick={handleOpen}>
                 {props.feeOption}
                 <img alt="down" src={ArrowDownIcon} />
             </Button>
@@ -28,8 +36,8 @@ const FeeOptions = (props) => {
         <Popover
           id={id}
           open={open}
-          anchorEl={props.anchorEl}
-          onClose={props.hideFeeOptionsPopover}
+          anchorEl={anchorEl}
+          onClose={handleClose}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left',
@@ -52,7 +60,6 @@ const FeeOptions = (props) => {
 }
 
 FeeOptions.propTypes = {
-    hideFeeOptionsPopover: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     setFeeOptionPopoverValue: PropTypes.func.isRequired,
     showFeeOptionsPopover: PropTypes.func.isRequired,
@@ -69,7 +76,6 @@ const stateToProps = (state) => {
 };
 
 const actionToProps = {
-    hideFeeOptionsPopover,
     setFeeOptionPopoverValue,
     showFeeOptionsPopover,
 };
