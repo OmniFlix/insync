@@ -335,7 +335,7 @@ const IBCUnShielding = (props) => {
                     <div className="fee">
                         {props.feeOption?.fees?.fee
                             ? <p>{variables[props.lang].fee}:<p>{formatCount(props.feeOption?.fees?.fee) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
-                        <FeeOptions/>
+                        <FeeOptions from="shielded"/>
                     </div>
                     {inProgress
                     ?  <ProcessingButton>
