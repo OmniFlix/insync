@@ -187,6 +187,7 @@ const ShieldDialog = (props) => {
                 <div className="transparent_shield_select_section">
                     <SourceSelectField/>
                     <AmountTextField/>
+                    <Button onClick={() => handleMax(namadaBalance)}>{variables[props.lang].max}</Button>
                 </div>
                 {fromNamadaSelectedConfig
                     ? <div className="transparent_tokens_secion">
@@ -194,7 +195,7 @@ const ShieldDialog = (props) => {
                             <p>{variables[props.lang].available}</p>
                             <p>{namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                         </span>
-                        <Button onClick={() => handleMax(namadaBalance)}>{variables[props.lang].max}</Button>
+                        {/* <Button onClick={() => handleMax(namadaBalance)}>{variables[props.lang].max}</Button> */}
                     </div> : null}
             </div>
             <div className="arrow">

@@ -108,6 +108,15 @@
     position: absolute;
     right: 5%;
     bottom: 66%;
+
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Blinker', sans-serif;
+    color: #fff;
+    background: #FFFFFF1F;
+    border: 1px solid #FFFFFF14;
+    border-radius: 8px;
+    padding: 4px 2px;
 }
 
 .shield_dialog > button {
@@ -395,6 +404,25 @@
     font-weight: 600;
     color: #FFFFFF;
     font-family: 'Blinker', sans-serif;
+}
+
+.shield_dialog .transparent_shield_select_section {
+    position: relative;
+}
+
+.shield_dialog .transparent_shield_select_section > button {
+    position: absolute;
+    right: 6px;
+    bottom: 14px;
+
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Blinker', sans-serif;
+    color: #fff;
+    background: #FFFFFF1F;
+    border: 1px solid #FFFFFF14;
+    border-radius: 8px;
+    padding: 3px 2px;
 }
 
 @media (max-width: 600px) {
