@@ -21,23 +21,23 @@ const routes = [{
     path: '/proposals/:proposalID',
     component: ProposalDialog,
 }, {
-    path: '/internalShielding',
-    component: ShieldedAssets,
-}, {
-    path: '/externalShielding',
-    component: IBCTransfer,
-}, {
-    path: '/externalTransfer',
-    component: IBCTransfer,
+//     path: '/internalShielding',
+//     component: ShieldedAssets,
+// }, {
+//     path: '/externalShielding',
+//     component: IBCTransfer,
+// }, {
+//     path: '/externalTransfer',
+//     component: IBCTransfer,
 }, {
     path: '/tokens',
     component: Tokens,
 }, {
     path: '/tokensShielded',
     component: Tokens,
-},  {
-    path: '/externalTransfer/withdraw',
-    component: IBCTransfer,
+// },  {
+//     path: '/externalTransfer/withdraw',
+//     component: IBCTransfer,
 }];
 
 const Router = () => {
