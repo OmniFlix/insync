@@ -173,13 +173,14 @@ const ShieldedToTransparent = (props) => {
                 <div className="select_section">
                     <ShieldedSourceSelectField/>
                     <AmountTextField from={"shield_to_transparent"}/>
+                    <Button className="max_button" onClick={() => handleMax(namadaBalance)}>{variables[props.lang].max}</Button>
                 </div>
                 {fromNamadaSelectedConfig
                     ? <div className="tokens_secion">
                         <p>{variables[props.lang].available} {namadaBalance || 0} {fromNamadaSelectedConfig.COIN_DENOM}</p>
                         {/* <Button onClick={() => props.setAmount(namadaBalance)}>Max</Button> */}
                     </div> : null}
-                <Button className="max_button" onClick={() => handleMax(namadaBalance)}>{variables[props.lang].max}</Button>
+                {/* <Button className="max_button" onClick={() => handleMax(namadaBalance)}>{variables[props.lang].max}</Button> */}
 
             </div>
             <div className="arrow shield_convert_arrow">

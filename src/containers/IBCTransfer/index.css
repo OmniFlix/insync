@@ -150,7 +150,8 @@
     font-weight: 600;
     font-family: 'Blinker', sans-serif;
     color: #fff;
-    padding: 0px 5px;
+    padding: 4px 10px;
+    min-width: 64px;
 }
 
 .transfer_source .header {
@@ -564,7 +565,7 @@
 
 .transfer_source > .max_button {
     background: #FFFFFF1F;
-    padding: 4px 6px;
+    padding: 4px 10px;
     border: 1px solid #FFFFFF14;
     color: #fff;
     text-align: center;
@@ -580,6 +581,7 @@
     position: absolute;
     right: 5%;
     bottom: 60px;
+    min-width: 64px;
 }
 
 .transfer_dialog p {
