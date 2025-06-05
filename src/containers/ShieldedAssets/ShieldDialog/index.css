@@ -107,8 +107,7 @@
     border: 1px solid #FFFFFF14;
     position: absolute;
     right: 5%;
-    bottom: 66%;
-
+    bottom: 66.5%;
     font-size: 16px;
     font-weight: 600;
     font-family: 'Blinker', sans-serif;
@@ -117,6 +116,8 @@
     border: 1px solid #FFFFFF14;
     border-radius: 8px;
     padding: 4px 2px;
+    min-width: 64px;
+    max-height: 30.8px;
 }
 
 .shield_dialog > button {
