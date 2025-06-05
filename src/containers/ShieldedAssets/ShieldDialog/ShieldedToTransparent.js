@@ -201,7 +201,7 @@ const ShieldedToTransparent = (props) => {
             <div className="fee">
                 {props.feeOption?.fees?.fee
                     ? <p>{variables[props.lang].fee}:<p>{formatCount(props.feeOption?.fees?.fee) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.selectedAsset?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
-                <FeeOptions/>
+                <FeeOptions from="shielded"/>
             </div>
             {/* {inProgress && <CircularProgress className="full_screen"/>} */}
             {inProgress

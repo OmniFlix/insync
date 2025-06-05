@@ -28,13 +28,17 @@ const FeeOptions = (props) => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
   const options = feeCoverageOptions(props.gasEstimation, props.gasPrice, props.tokenDetails);
-  const newNamadaAssets = [{
+ let newNamadaAssets = [{
       name: 'Transparent Namada',
       symbol: 'NAM',
       logo_URIs: {
           svg: NamadaLogo,
       },
   }, ...namadaAssets];
+
+  if (props.from && props.from === 'shielded') {
+    newNamadaAssets = namadaAssets;
+  }
 
   let enrichedAssets = (newNamadaAssets || []).map((asset) => {
       // Step 1: Safely find matching token
@@ -115,6 +119,7 @@ FeeOptions.propTypes = {
     inProgress: PropTypes.bool.isRequired,
     tokensList: PropTypes.array.isRequired,
     feeOption: PropTypes.string,
+    from: PropTypes.string,
 };
 
 const stateToProps = (state) => {

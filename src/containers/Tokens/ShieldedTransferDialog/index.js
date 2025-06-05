@@ -220,7 +220,7 @@ class ShieldedTransferDialog extends React.Component {
                             </div>
                             : null}
                         <div className="right_section">
-                            <FeeOptions/>
+                            <FeeOptions from="shielded"/>
                         </div>
                     </div>
                     {/* {this.state.inProgress && <CircularProgress className="full_screen"/>} */}
