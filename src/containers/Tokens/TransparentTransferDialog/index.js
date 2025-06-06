@@ -21,7 +21,7 @@ import { ibcTransparentTransfer } from "helper";
 import variables from "utils/variables";
 import ProcessingButton from "components/ProcessingButton";
 import { showTokensTransactionSuccessDialog } from "actions/IBCTransfer";
-import { feeCalculation, feeCalculationDisplay } from "utils/feeCalculation";
+import { balanceCalculation, feeCalculation, feeCalculationDisplay } from "utils/feeCalculation";
 import FeeOptions from "../FeeOptions";
 
 class TransparentTransferDialog extends React.Component {
@@ -134,7 +134,12 @@ class TransparentTransferDialog extends React.Component {
         const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         const fee = feeList && feeList[fromSelectedConfig?.COIN_DENOM];
 
-        const disable = this.state.inProgress || this.props.inProgress || this.props.tokensTransferAddressValid === false || !this.props.tokensTransferAmount || !this.props.tokensTransferAddress || this.props.tokensTransferAmountValid === false;
+        let token = config.TOKEN_ADDRESS;
+        if (this.props.value?.balance?.minDenomAmount) {
+            token = this.props.value?.balance?.tokenAddress;
+        }
+        const balanceValidation = balanceCalculation(this.props.balanceList, token, this.props.tokensTransferAmount, this.props.feeOption);
+        const disable = this.state.inProgress || this.props.inProgress || this.props.tokensTransferAddressValid === false || !this.props.tokensTransferAmount || !this.props.tokensTransferAddress || this.props.tokensTransferAmountValid === false || !balanceValidation;
 
         return (
             <Dialog open={this.props.open}
@@ -208,10 +213,12 @@ class TransparentTransferDialog extends React.Component {
                                 </Button>
                             </ProcessingButton>
                             : <Button disabled={disable} onClick={this.handleTransfer}>
-                                {this.state.approval
-                                    ? 'Approval pending...'
-                                    : this.state.inProgress
-                                        ? 'InProgress...' : 'Transfer'}
+                                {!balanceValidation
+                                    ? 'Not Enough Balance'
+                                    : this.state.approval
+                                        ? 'Approval pending...'
+                                        : this.state.inProgress
+                                            ? 'InProgress...' : 'Transfer'}
                             </Button>}
                     </div>
                 </div>
@@ -222,6 +229,7 @@ class TransparentTransferDialog extends React.Component {
 
 TransparentTransferDialog.propTypes = {
     balance: PropTypes.array.isRequired,
+    balanceList: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
     handleClose: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
@@ -261,6 +269,7 @@ const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         balance: state.accounts.balance.result,
+        balanceList: state.accounts.balanceList.result,
         lang: state.language,
         open: state.assets.transparentTokensTransferDialog.open,
         value: state.assets.transparentTokensTransferDialog.value,

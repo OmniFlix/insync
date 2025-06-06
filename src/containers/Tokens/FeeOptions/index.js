@@ -64,14 +64,15 @@ const FeeOptions = (props) => {
   }).filter((item) => item.fees);
 
   useEffect(() => {
-    if (enrichedAssets && enrichedAssets.length && props.tokenDetails && props.tokenDetails.symbol && (!props.feeOption)) {
+    if (enrichedAssets && enrichedAssets.length && props.tokenDetails && props.tokenDetails.symbol && (!props.feeOption) && !props.inProgress) {
       const find = enrichedAssets.find((val) => val.symbol ===  props.tokenDetails.symbol);
       if (find?.fees?.fee && Number(find?.fees?.fee)) {
         props.setFeeOptionPopoverValue(find);
       }
     }
-  }, [enrichedAssets, props.tokenDetails]);
+  }, [enrichedAssets, props.tokenDetails, options]);
 
+  // console.log(55555555, enrichedAssets, props.feeOption);
   return (
     <>
       <div className='fee_options_section'>

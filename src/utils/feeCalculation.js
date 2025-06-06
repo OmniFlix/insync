@@ -1,5 +1,5 @@
 import { config } from "../config";
-import { formatCount } from "./numberFormats";
+import { formatCount, truncateTo4Decimals } from "./numberFormats";
 
 export const feeCalculationDisplay = (gasEstimate, gasPrice, token) => {
     const precision = Math.max(
@@ -34,7 +34,7 @@ export const feeCalculationMax = (gasEstimate, gasPrice, token, balance) => {
     const max = balance - (avg * gasItem);
 
     if (Number(max) > 0) {
-      return formatCount(max);
+      return truncateTo4Decimals(max);
     } else {
       return 0;
     }
@@ -48,7 +48,7 @@ export const feeCoverageOptions = (gasEstimate, gasPrice, token) => {
     const avg = Math.ceil(gasEstimate.avg * 1.25 - precision * 0.25);
     let array = [];
     const tokenDenom = token?.balance?.tokenAddress || token?.tokenAddress;
-    gasPrice.find((val) => {
+    gasPrice.map((val) => {
       const object = { ...val, };
       const gasItem = val?.minDenomAmount / (10 ** config.COIN_DECIMALS);
       object.fee = formatCount(avg * gasItem, 4);
@@ -60,4 +60,80 @@ export const feeCoverageOptions = (gasEstimate, gasPrice, token) => {
     });
 
     return array;
+}
+
+export const balanceCalculation = (balanceList, token, transactionAmount, feeOption) => {
+  let amount = transactionAmount;
+  let validBalance = true;
+  let shielded = false;
+  if (feeOption?.fees?.token === token) {
+    amount = Number(amount) + Number(feeOption?.fees?.fee);
+    amount = amount * (10 ** config.COIN_DECIMALS);
+    balanceList.map((balance) => {
+      if (balance && balance.length) {
+        shielded = true;
+        if (balance[0] === token) {
+          if (Number(balance[1]) > amount || Number(balance[1]) === amount) {
+            validBalance = true;
+          } else {
+            validBalance = false;
+          }
+        }
+      }
+
+      if (balance && balance?.tokenAddress === token) {
+        if (Number(balance?.minDenomAmount) > amount || Number(balance?.minDenomAmount) === amount) {
+          validBalance = true;
+        } else {
+          validBalance = false;
+        }
+      }
+    })
+  } else {
+    let feeAmount = feeOption?.fees?.fee;
+    amount = amount * (10 ** config.COIN_DECIMALS);
+    feeAmount = feeAmount * (10 ** config.COIN_DECIMALS);
+    balanceList.map((balance) => {
+      if (balance && balance.length) {
+        shielded = true;
+        if (balance[0] === token) {
+          if (Number(balance[1]) > amount || Number(balance[1]) === amount) {
+            validBalance = validBalance && true;
+          } else {
+            validBalance = false;
+          }
+        } else if (balance[0] === feeOption?.fees?.token) {
+          if (Number(balance[1]) > feeAmount || Number(balance[1]) === feeAmount) {
+            validBalance = validBalance && true;
+          } else {
+            validBalance = false;
+          }
+        }
+      }
+
+      if (balance && balance?.tokenAddress === token) {
+        if (Number(balance?.minDenomAmount) > amount || Number(balance?.minDenomAmount) === amount) {
+          validBalance = validBalance && true;
+        } else {
+          validBalance = false;
+        }
+      } else if (balance && balance?.tokenAddress === feeOption?.fees?.token) {
+          if (Number(balance?.minDenomAmount) > feeAmount || Number(balance?.minDenomAmount) === feeAmount) {
+            validBalance = validBalance && true;
+          } else {
+            validBalance = false;
+          }
+        }
+    })
+  }
+
+  if (shielded && validBalance) {
+    const find = balanceList.find((val) => val[0] === feeOption?.fees?.token);
+
+    if (!find) {
+      validBalance = false;
+    }
+  }
+
+  return validBalance;
 }

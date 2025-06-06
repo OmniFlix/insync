@@ -59,14 +59,22 @@ class TokensListTable extends React.Component {
     handleWithdraw (value) {
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['ibc_unshielding_transfer'], value);
+        const array = ['ibc_unshielding_transfer'];
+        if (this.props.revealPublicKey && !this.props.revealPublicKey.publicKey) {
+            array.push('reveal_pk');
+        }
+        this.props.fetchGasEstimation(array, value);
         this.props.showTransparentTokensWithdrawDialog(value);
     }
 
     handleTransfer (value) {
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['transparent_transfer'], value);
+        const array = ['transparent_transfer'];
+        if (this.props.revealPublicKey && !this.props.revealPublicKey.publicKey) {
+            array.push('reveal_pk');
+        }
+        this.props.fetchGasEstimation(array, value);
         this.props.showTransparentTokensTransferDialog(value);
     }
 
@@ -90,7 +98,11 @@ class TokensListTable extends React.Component {
 
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['shielding_transfer'], value);
+        const array = ['shielding_transfer'];
+        if (this.props.revealPublicKey && !this.props.revealPublicKey.publicKey) {
+            array.push('reveal_pk');
+        }
+        this.props.fetchGasEstimation(array, value);
         this.props.showTransparentTokensConvertDialog(value);
         this.props.setSelectedSource(value?.config?.COIN_DENOM, find);
     }
@@ -340,6 +352,7 @@ TokensListTable.propTypes = {
     setSelectedSource: PropTypes.func.isRequired,
     tokensList: PropTypes.array.isRequired,
     address: PropTypes.string,
+    revealPublicKey: PropTypes.object,
 };
 
 const stateToProps = (state) => {
@@ -350,6 +363,7 @@ const stateToProps = (state) => {
         tokensList: state.accounts.tokensList.result,
         balanceList: state.accounts.balanceList.result,
         balance: state.accounts.balance.result,
+        revealPublicKey: state.accounts.revealPublicKey.result,
     };
 };
 

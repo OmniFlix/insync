@@ -22,7 +22,7 @@ import { fetchIBCBalance, showTokensTransactionSuccessDialog } from "actions/IBC
 import CircularProgress from "components/CircularProgress";
 import variables from "utils/variables";
 import ProcessingButton from "components/ProcessingButton";
-import { feeCalculation, feeCalculationDisplay } from "utils/feeCalculation";
+import { balanceCalculation, feeCalculation, feeCalculationDisplay } from "utils/feeCalculation";
 import FeeOptions from "../FeeOptions";
 
 class ShieldedTransferDialog extends React.Component {
@@ -153,6 +153,10 @@ class ShieldedTransferDialog extends React.Component {
     render () {
         const image = this.props.value && this.props.value.logo_URIs && (this.props.value.logo_URIs.svg || this.props.value.logo_URIs.png);
         let amount = this.props.value && this.props.value.balance;
+        let token = config.TOKEN_ADDRESS;
+        if (this.props.value?.balance) {
+            token = this.props.value?.tokenAddress;
+        }
         if (this.props.value && this.props.value.config && this.props.value.config.COIN_DECIMALS) {
             amount = amount ? (amount / 10 ** this.props.value.config.COIN_DECIMALS) : 0;
         }
@@ -160,7 +164,8 @@ class ShieldedTransferDialog extends React.Component {
         const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         const fee = feeList && feeList[fromSelectedConfig?.COIN_DENOM]
 
-        const disable = this.state.inProgress || this.props.tokensTransferAddressValid === false || !this.props.tokensTransferAmount || !this.props.tokensTransferAddress || this.props.tokensTransferAmountValid === false;
+        const balanceValidation = balanceCalculation(this.props.balanceList, token, this.props.tokensTransferAmount, this.props.feeOption);
+        const disable = this.state.inProgress || this.props.tokensTransferAddressValid === false || !this.props.tokensTransferAmount || !this.props.tokensTransferAddress || this.props.tokensTransferAmountValid === false || !balanceValidation;
 
         return (
             <Dialog open={this.props.open}
@@ -237,12 +242,14 @@ class ShieldedTransferDialog extends React.Component {
                         </Button>
                         </ProcessingButton>
                         : <Button disabled={disable} onClick={this.handleTransfer}>
-                            {this.state.params
-                                ? 'Generating MASP Parameters...'
-                                : this.state.approval
-                                    ? 'Approval pending...'
-                                    : this.state.inProgress
-                                        ? 'InProgress...' : 'Transfer'}
+                            {!balanceValidation
+                                ? 'Not Enough Balance'
+                                : this.state.params
+                                    ? 'Generating MASP Parameters...'
+                                    : this.state.approval
+                                        ? 'Approval pending...'
+                                        : this.state.inProgress
+                                            ? 'InProgress...' : 'Transfer'}
                         </Button>}
                     </div>
                 </div>
@@ -253,6 +260,7 @@ class ShieldedTransferDialog extends React.Component {
 
 ShieldedTransferDialog.propTypes = {
     balance: PropTypes.array.isRequired,
+    balanceList: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
     handleClose: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
@@ -295,6 +303,7 @@ const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         balance: state.accounts.balance.result,
+        balanceList: state.accounts.shieldedBalance.result,
         lang: state.language,
         open: state.assets.shieldedTokensTransferDialog.open,
         value: state.assets.shieldedTokensTransferDialog.value,

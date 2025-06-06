@@ -59,7 +59,11 @@ class ShieldedTokensListTable extends React.Component {
     handleWithdraw (value) {
         this.initKeplr(value);
         this.props.setIBCTransferType('shielded');
-        this.props.fetchGasEstimation(['ibc_unshielding_transfer'], value);
+        const array = ['ibc_unshielding_transfer'];
+        if (this.props.revealPublicKey && !this.props.revealPublicKey.publicKey) {
+            array.push('reveal_pk');
+        }
+        this.props.fetchGasEstimation(array, value);
         const find = ibcList.find((item) => item.value === value.coingecko_id);
         if (find) {
             this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
@@ -72,14 +76,22 @@ class ShieldedTokensListTable extends React.Component {
     handleTransfer (value) {
         this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['shielded_transfer'], value);
+        const array = ['shielded_transfer'];
+        if (this.props.revealPublicKey && !this.props.revealPublicKey.publicKey) {
+            array.push('reveal_pk');
+        }
+        this.props.fetchGasEstimation(array, value);
         this.props.showShieldedTokensTransferDialog(value);
     }
 
     handleConvert (value) {
         this.props.setIBCTransferType('shielded');
         // this.initKeplr(value);
-        this.props.fetchGasEstimation(['unshielding_transfer'], value);
+        const array = ['unshielding_transfer'];
+        if (this.props.revealPublicKey && !this.props.revealPublicKey.publicKey) {
+            array.push('reveal_pk');
+        }
+        this.props.fetchGasEstimation(array, value);
         const find = ibcList.find((item) => item.value === value.coingecko_id);
         if (find) {
             this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
@@ -296,6 +308,7 @@ ShieldedTokensListTable.propTypes = {
     tokensList: PropTypes.array.isRequired,
     address: PropTypes.string,
     inProgress: PropTypes.bool,
+    revealPublicKey: PropTypes.object,
     shieldedBalanceProgress: PropTypes.bool.isRequired,
 };
 
@@ -306,6 +319,7 @@ const stateToProps = (state) => {
         shieldedBalanceProgress: state.accounts.shieldedBalance.inProgress,
         tokensList: state.accounts.tokensList.result,
         balanceList: state.accounts.shieldedBalance.result,
+        revealPublicKey: state.accounts.revealPublicKey.result,
     };
 };
 

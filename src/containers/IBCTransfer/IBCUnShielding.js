@@ -38,7 +38,7 @@ import ShieldedSourceSelectField from './ShieldedSourceSelectField';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import { hideShieldedTokensWithdrawDialog } from 'actions/assets';
-import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
+import { balanceCalculation, feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
 import FeeOptions from 'containers/Tokens/FeeOptions';
 
 const IBCUnShielding = (props) => {
@@ -249,7 +249,12 @@ const IBCUnShielding = (props) => {
     const image = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.logo_URIs && (props.fromNamadaSelectedAsset.logo_URIs.svg || props.fromNamadaSelectedAsset.logo_URIs.png);
     const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
 
-    const disable = !props.amount || props.amount === '' || props.amountValid === false;
+    let token = config.TOKEN_ADDRESS;
+    if (props.fromNamadaSelectedAsset?.balance) {
+        token = props.fromNamadaSelectedAsset?.tokenAddress;
+    }
+    const balanceValidation = balanceCalculation(props.balanceList, token, props.amount, props.feeOption);
+    const disable = !props.amount || props.amount === '' || props.amountValid === false || !balanceValidation;
 
     return (
         <div className="transfer_dialog">
@@ -334,7 +339,7 @@ const IBCUnShielding = (props) => {
                     </div> : null} */}
                     <div className="fee">
                         {props.feeOption?.fees?.fee
-                            ? <p>{variables[props.lang].fee}:<p>{formatCount(props.feeOption?.fees?.fee) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
+                            ? <p>{variables[props.lang].fee}:<p>{formatCount(props.feeOption?.fees?.fee, 4) || feeCalculationDisplay(props.gasEstimation, props.gasPrice, props.fromNamadaSelectedAsset?.tokenAddress)} {props.feeOption?.symbol}</p></p> : null}
                         <FeeOptions from="shielded"/>
                     </div>
                     {inProgress
@@ -355,12 +360,14 @@ const IBCUnShielding = (props) => {
                 className="submit_button"
                 disabled={disable || inProgress}
                 onClick={handleSubmit}>
-                {params
-                    ? 'Generating MASP Parameters...'
-                    : approval
-                        ? 'Approval pending...'
-                        : inProgress
-                            ? 'InProgress...' : 'Submit'}
+                {!balanceValidation
+                    ? 'Not Enough Balance'
+                    : params
+                        ? 'Generating MASP Parameters...'
+                        : approval
+                            ? 'Approval pending...'
+                            : inProgress
+                                ? 'InProgress...' : 'Submit'}
             </Button>}
             {/* {inProgress && <CircularProgress className="full_screen"/>} */}
         </div>
@@ -370,6 +377,7 @@ const IBCUnShielding = (props) => {
 IBCUnShielding.propTypes = {
     aminoSignIBCTx: PropTypes.func.isRequired,
     balance: PropTypes.array.isRequired,
+    balanceList: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
     connectIBCAccount: PropTypes.func.isRequired,
     connectIBCAccountSuccess: PropTypes.func.isRequired,
@@ -416,6 +424,7 @@ IBCUnShielding.propTypes = {
 const stateToProps = (state) => {
     return {
         balance: state.accounts.balance.result,
+        balanceList: state.accounts.shieldedBalance.result,
         ibcBalance: state.ibcTransfer.balance.value,
         lang: state.language,
         address: state.accounts.address.value,

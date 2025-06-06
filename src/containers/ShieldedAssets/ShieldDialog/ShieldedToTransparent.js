@@ -22,7 +22,7 @@ import { fetchIBCBalance, showTokensTransactionSuccessDialog } from 'actions/IBC
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import { hideShieldedTokensConvertDialog } from 'actions/assets';
-import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
+import { balanceCalculation, feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
 import FeeOptions from 'containers/Tokens/FeeOptions';
 
 const ShieldedToTransparent = (props) => {
@@ -149,8 +149,13 @@ const ShieldedToTransparent = (props) => {
         }
     };
 
+    let token = config.TOKEN_ADDRESS;
+    if (props.selectedAsset?.balance) {
+        token = props.selectedAsset?.tokenAddress;
+    }
+    const balanceValidation = balanceCalculation(props.balanceList, token, props.amount, props.feeOption);
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
-    const disable = inProgress || !props.amount || props.amountValid === false;
+    const disable = inProgress || !props.amount || props.amountValid === false || !balanceValidation;
 
     const fromNamadaSelectedConfig = props.selectedAsset?.config;
     const namadaBalance = props.selectedAsset?.balance && Number(props.selectedAsset?.balance) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
@@ -223,12 +228,14 @@ const ShieldedToTransparent = (props) => {
             className='submit_button'
             disabled={disable}
             onClick={handleSubmit}>
-            {params
-                ? 'Generating MASP Parameters...'
-                : approval
-                    ? 'Approval pending...'
-                    : inProgress
-                        ? 'InProgress...' : 'Submit'}
+            {!balanceValidation
+                ? 'Not Enough Balance'
+                : params
+                    ? 'Generating MASP Parameters...'
+                    : approval
+                        ? 'Approval pending...'
+                        : inProgress
+                            ? 'InProgress...' : 'Submit'}
         </Button>}
         </div>
     );
@@ -236,6 +243,7 @@ const ShieldedToTransparent = (props) => {
 
 ShieldedToTransparent.propTypes = {
     balance: PropTypes.array.isRequired,
+    balanceList: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
@@ -266,6 +274,7 @@ ShieldedToTransparent.propTypes = {
 const stateToProps = (state) => {
     return {
         balance: state.accounts.balance.result,
+        balanceList: state.accounts.shieldedBalance.result,
         lang: state.language,
         address: state.accounts.address.value,
         amount: state.shieldedAssets.amount.value,

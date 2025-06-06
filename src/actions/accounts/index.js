@@ -487,9 +487,9 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
     try {
         const url = urlFetchBlockHeight(timestamp);
         let response = 0;
-        if (timestamp > 0) {
-            response = await Axios.get(url);
-        }
+        // if (timestamp > 0) {
+        //     response = await Axios.get(url);
+        // }
 
         const birthday = response?.data?.height || 0;
         const { cryptoMemory } = await init();
@@ -597,9 +597,9 @@ export const reSyncBalance = (viewingKey, timestamp, tnam, znam, chainId = confi
     try {
         const url = urlFetchBlockHeight(timestamp);
         let response = 0;
-        if (timestamp > 0) {
-            response = await Axios.get(url);
-        }
+        // if (timestamp > 0) {
+        //     response = await Axios.get(url);
+        // }
 
         const birthday = response?.data?.height || 0;
         const { cryptoMemory } = await init();
