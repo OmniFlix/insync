@@ -426,7 +426,8 @@ const IBCTransferDialog = (props) => {
 
     const handleMax = (ibcBalance) => {
         if (ibcBalance > 0) {
-            props.setIBCTransferAmount(formatCount(ibcBalance - 0.1), true);
+            const balance = ibcBalance - 0.1 > 0 ? formatCount(ibcBalance - 0.1) : 0
+            props.setIBCTransferAmount(balance, true);
         }
     };
 

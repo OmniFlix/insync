@@ -52,6 +52,7 @@ export const feeCoverageOptions = (gasEstimate, gasPrice, token) => {
       const object = { ...val, };
       const gasItem = val?.minDenomAmount / (10 ** config.COIN_DECIMALS);
       object.fee = formatCount(avg * gasItem, 4);
+      object.gasEstimation = avg * val?.minDenomAmount;
       if (val?.token === tokenDenom) {
         array.splice(0, 0, object);
       } else {

@@ -8,8 +8,17 @@ import './index.css';
 import { feeCoverageOptions } from 'utils/feeCalculation';
 import { namadaAssets } from 'dummy/ibcList';
 import NamadaLogo from '../../../assets/masp/namada_logo.svg';
+import { makeStyles } from '@material-ui/core/styles';
+import variables from '../../../utils/variables';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: 'rgb(0 0 0 / 50%)',
+  },
+}));
 
 const FeeOptions = (props) => {
+  const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (value) => {
@@ -52,16 +61,30 @@ const FeeOptions = (props) => {
         );
       }
   
-      // Step 2: Safely find matching balance
-      const matchingBalance = matchingToken
+      // Step 2: Safely find matching Fee
+      const matchingFee = matchingToken
       ? (options || []).find(b => b.token === matchingToken.address)
       : null;
+
+      // Step 3: Safely find matching balance
+      const matchingBalance = matchingToken
+      ? (props.balanceList || []).find(b => b.tokenAddress === matchingToken.address)
+      : null;
       
+      let balanceAmount = Number(matchingBalance?.minDenomAmount || 0);
+      if (props.from && props.from === 'shielded') {
+        const matchingBalance = matchingToken
+        ? (props.shieldedBalance || []).find(([address]) => address === matchingToken.address)
+        : null;
+        balanceAmount = Number((matchingBalance?.length && matchingBalance[1]) || 0);
+      }
+      const feeAmount = Number(matchingFee?.gasEstimation || 0);
       return {
           ...asset,
-          fees: matchingBalance || null,
+          fees: matchingFee || null,
+          balance: balanceAmount > feeAmount ? matchingBalance : null,
       };
-  }).filter((item) => item.fees);
+  }).filter((item) => item.fees && item.balance);
 
   useEffect(() => {
     if (enrichedAssets && enrichedAssets.length && props.tokenDetails && props.tokenDetails.symbol && (!props.feeOption) && !props.inProgress) {
@@ -77,8 +100,9 @@ const FeeOptions = (props) => {
     <>
       <div className='fee_options_section'>
         <div className='fee_options_div'>
-            <span>Fee Options</span>
+            <span>Fee Options:</span>
             {props.inProgress ? 'Calculating...'
+              : !enrichedAssets.length ? variables[props.lang]['insufficient_balance']
               : <Button onClick={handleOpen}>
                   {props.feeOption && props.feeOption.symbol}
                   <img alt="down" src={ArrowDownIcon} />
@@ -91,9 +115,14 @@ const FeeOptions = (props) => {
           onClose={handleClose}
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left',
+            horizontal: 'center',
           }}
-          className='fee_options_popover'>
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          classes={{ paper: classes.root}}
+          className={'fee_options_popover'}>
           <div className='fee_options'>
             {enrichedAssets && enrichedAssets.length
               ? enrichedAssets.map((val, index) => {
@@ -112,6 +141,7 @@ const FeeOptions = (props) => {
 }
 
 FeeOptions.propTypes = {
+    balanceList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     setFeeOptionPopoverValue: PropTypes.func.isRequired,
     gasPrice: PropTypes.array.isRequired,
@@ -119,12 +149,15 @@ FeeOptions.propTypes = {
     tokenDetails: PropTypes.object.isRequired,
     inProgress: PropTypes.bool.isRequired,
     tokensList: PropTypes.array.isRequired,
+    shieldedBalance: PropTypes.array.isRequired,
     feeOption: PropTypes.string,
     from: PropTypes.string,
 };
 
 const stateToProps = (state) => {
     return {
+        balanceList: state.accounts.balanceList.result,
+        shieldedBalance: state.accounts.shieldedBalance.result,
         lang: state.language,
         feeOption: state.assets.feeOptionPopoverValue.value,
         gasEstimation: state.gasPrice.gasEstimation.value,
