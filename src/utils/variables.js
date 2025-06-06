@@ -100,7 +100,7 @@ const variables = {
         nam_staking_governance: 'Namada Staking & Governance',
         developed_by: 'Developed by',
         unbounding_period: 'Unbonding Period: 14 Days',
-        unbounding: 'Unbounding',
+        unbounding: 'Unbonding',
         loading: 'Loading...',
         connect_wallet: 'Connect Wallet',
         available: 'Available',

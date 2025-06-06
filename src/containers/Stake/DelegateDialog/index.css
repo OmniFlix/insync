@@ -129,6 +129,15 @@
     text-align: center;
 }
 
+.failed.result .content .heading {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .result .content h1 {
     margin-bottom: 30px;
     font-family: 'Blinker', sans-serif;

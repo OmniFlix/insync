@@ -12,7 +12,7 @@ const UnSuccessDialog = (props) => {
         <Dialog
             aria-describedby="delegate-dialog-description"
             aria-labelledby="delegate-dialog-title"
-            className="dialog delegate_dialog result"
+            className="dialog delegate_dialog result failed"
             open={props.open}
             onClose={props.handleClose}>
             <DialogContent className="content">
