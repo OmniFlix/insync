@@ -18,7 +18,7 @@ class ShieldedWithdrawDialog extends React.Component {
             className="dialog tokens_withdraw_dialog">
                 <div className="ibc_content padding">
                     <div className="header_div">
-                        <p>{variables[this.props.lang].deposit} {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
+                        <p>{variables[this.props.lang].withdraw} {' '} {this.props.value?.symbol || this.props.value?.name || this.props.value?.display} {' from Namada'}</p>
                         <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
                     </div>
                     <IBCUnShielding/>
