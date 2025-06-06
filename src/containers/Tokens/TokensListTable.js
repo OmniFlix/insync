@@ -59,7 +59,8 @@ class TokensListTable extends React.Component {
     handleWithdraw (value) {
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
-        const array = ['ibc_unshielding_transfer'];
+        // const array = ['ibc_unshielding_transfer'];
+        const array = ['shielding_transfer'];
         if (this.props.revealPublicKey && !this.props.revealPublicKey.publicKey) {
             array.push('reveal_pk');
         }
@@ -70,7 +71,8 @@ class TokensListTable extends React.Component {
     handleTransfer (value) {
         this.props.setIBCTransferType('transparent');
         // this.initKeplr(value);
-        const array = ['transparent_transfer'];
+        // const array = ['transparent_transfer'];
+        const array = ['shielding_transfer'];
         if (this.props.revealPublicKey && !this.props.revealPublicKey.publicKey) {
             array.push('reveal_pk');
         }
