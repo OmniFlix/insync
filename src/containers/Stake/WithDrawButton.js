@@ -36,7 +36,7 @@ const WithDrawButton = (props) => {
         };
 
         setApproval(true);
-        withdrawTransaction(tx, txs, props.details && props.details.type, handleFetch);
+        withdrawTransaction(tx, txs, props.revealPublicKey, props.details && props.details.type, handleFetch);
     };
 
     const handleFetch = (error, value, approval) => {
