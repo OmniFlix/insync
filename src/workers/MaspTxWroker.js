@@ -32,6 +32,7 @@ import {
   Unshield,
   UnshieldDone,
 } from "./MaspTxMessages";
+import { fetchMaspParams } from "helper";
 
 export class Worker {
   sdk;
@@ -136,16 +137,7 @@ async function ibcTransfer(
 ) {
   const { account, gasConfig, chain, props } = payload;
 
-  try {
-    await sdk.masp.loadMaspParams('', chain);
-  } catch (err) {
-    console.error('❌ MASP load error:', err);
-    if (err?.message?.includes('IDBDatabase')) {
-      // Attempt to clear and reload
-      indexedDB.deleteDatabase('Namada::SDK'); // replace with real name
-      // Optional: show retry button or auto-reload
-    }
-  }
+  await fetchMaspParams(sdk, chain);
   const chainId = { chainId: chain };
   const encodedTxData = await buildTx(
     sdk,
@@ -174,16 +166,7 @@ async function shield(
     memo,
   } = payload;
 
-  try {
-    await sdk.masp.loadMaspParams('', chain);
-  } catch (err) {
-    console.error('❌ MASP load error:', err);
-    if (err?.message?.includes('IDBDatabase')) {
-      // Attempt to clear and reload
-      indexedDB.deleteDatabase('Namada::SDK'); // replace with real name
-      // Optional: show retry button or auto-reload
-    }
-  }
+  await fetchMaspParams(sdk, chain);
   const chainId = { chainId: chain };
   const encodedTxData = await buildTx(
     sdk,
@@ -205,16 +188,7 @@ async function unshield(
 ) {
   const { account, gasConfig, chain, props } = payload;
 
-  try {
-    await sdk.masp.loadMaspParams('', chain);
-  } catch (err) {
-    console.error('❌ MASP load error:', err);
-    if (err?.message?.includes('IDBDatabase')) {
-      // Attempt to clear and reload
-      indexedDB.deleteDatabase('Namada::SDK'); // replace with real name
-      // Optional: show retry button or auto-reload
-    }
-  }
+  await fetchMaspParams(sdk, chain);
   const chainId = { chainId: chain };
   const encodedTxData = await buildTx(
     sdk,
@@ -236,16 +210,7 @@ async function shieldedTransfer(
 ) {
   const { account, gasConfig, chain, props } = payload;
 
-  try {
-    await sdk.masp.loadMaspParams('', chain);
-  } catch (err) {
-    console.error('❌ MASP load error:', err);
-    if (err?.message?.includes('IDBDatabase')) {
-      // Attempt to clear and reload
-      indexedDB.deleteDatabase('Namada::SDK'); // replace with real name
-      // Optional: show retry button or auto-reload
-    }
-  }
+  await fetchMaspParams(sdk, chain);
   const chainId = { chainId: chain };
   const encodedTxData = await buildTx(
     sdk,
@@ -266,17 +231,7 @@ async function generateIbcShieldingMemo(
   payload
 ) {
   const { target, token, amount, destinationChannelId, chainId } = payload;
-
-  try {
-    await sdk.masp.loadMaspParams('', chainId);
-  } catch (err) {
-    console.error('❌ MASP load error:', err);
-    if (err?.message?.includes('IDBDatabase')) {
-      // Attempt to clear and reload
-      indexedDB.deleteDatabase('Namada::SDK'); // replace with real name
-      // Optional: show retry button or auto-reload
-    }
-  }
+  await fetchMaspParams(sdk, chainId);
 
   const memo = await sdk.tx.generateIbcShieldingMemo(
     target,

@@ -967,18 +967,32 @@ export const voteTransaction = (Tx, txs, type, cb) => {
 
 const paramsUrl = '/params/';
 
-const fetchMaspParams = async (sdk, chainId) => {
+export const fetchMaspParams = async (sdk, chainId) => {
     const { masp } = sdk;
 
     return masp.hasMaspParams().then(async (hasMaspParams) => {
         if (hasMaspParams) {
-            await masp.loadMaspParams('', chainId).catch((e) => Promise.reject(e));
+            await masp.loadMaspParams('', chainId).catch((e) => {
+                console.error('❌ MASP load error:', e);
+                if (e?.message?.includes('IDBDatabase')) {
+                    // Attempt to clear and reload
+                    indexedDB.deleteDatabase('Namada::SDK'); // replace with real name
+                    // Optional: show retry button or auto-reload
+                }
+                Promise.reject(e)
+            });
             return true;
         }
         return masp
             .fetchAndStoreMaspParams(paramsUrl)
             .then(() => masp.loadMaspParams('', chainId).then(() => true))
             .catch((e) => {
+                console.error('❌ MASP load error:', e);
+                if (e?.message?.includes('IDBDatabase')) {
+                    // Attempt to clear and reload
+                    indexedDB.deleteDatabase('Namada::SDK'); // replace with real name
+                    // Optional: show retry button or auto-reload
+                }
                 throw new Error(e);
             });
     });
