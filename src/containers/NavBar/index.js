@@ -217,6 +217,10 @@ class NavBar extends Component {
                 }
             };
         }
+
+        window.addEventListener('namada-account-changed', async () => {
+            this.handleNamada(true, true);
+        });
     }
 
     componentDidUpdate (pp, ps, ss) {
@@ -280,7 +284,7 @@ class NavBar extends Component {
             this.props.fetchRevealedPubKey(this.props.address);
             // this.props.fetchVestingBalance(this.props.address);
             this.props.fetchRewards(this.props.address);
-            this.props.getUnBondingDelegations(this.props.address);
+            // this.props.getUnBondingDelegations(this.props.address);
             this.props.getDelegatedValidatorsDetails(this.props.address);
             this.props.fetchUnBondingValidators(this.props.address);
         }
@@ -345,9 +349,9 @@ class NavBar extends Component {
         }
     }
 
-    handleFetch (address, shieldedAddress) {
-        if (this.props.balance && !this.props.balance.length &&
-            !this.props.balanceInProgress) {
+    handleFetch (address, shieldedAddress, reFetchBalance) {
+        if ((this.props.balance && !this.props.balance.length &&
+            !this.props.balanceInProgress) || reFetchBalance) {
             this.props.getBalance(address, (result) => {
                 if (result) {
                     if (this.props.delegations && !this.props.delegations.length &&
@@ -421,7 +425,7 @@ class NavBar extends Component {
         });
     }
 
-    handleNamada (fetch) {
+    handleNamada (fetch, reFetchBalance) {
         initializeNamadaChain((error, addressList, shieldedAddress, disposableSigner) => {
             if (addressList === undefined || !addressList) {
                 window.onload = () => this.handleNamada(true);
@@ -441,7 +445,7 @@ class NavBar extends Component {
             this.props.setAccountAddress(addressList && addressList.address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1]?.address, shieldedAddress && shieldedAddress.length && shieldedAddress[index + 1]);
             this.props.setAccountDetails(addressList, disposableSigner);
             if (fetch) {
-                this.handleFetch(addressList && addressList.address, shieldedAddress);
+                this.handleFetch(addressList && addressList.address, shieldedAddress, reFetchBalance);
             }
             if (addressList && previousAddress !== addressList.address) {
                 localStorage.setItem('of_co_address', encode(addressList && addressList.address));
