@@ -169,6 +169,7 @@ const variables = {
         max_available_tokens: 'Max Available Tokens: ',
         stake_with_validator: 'Stake with a Validator now!',
         shielded_balance_uptodate: 'Your shielded balance is now up to date.',
+        insufficient_balance: 'Insufficient Balance',
     },
 };
 

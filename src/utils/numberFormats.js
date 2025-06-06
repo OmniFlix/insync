@@ -32,7 +32,9 @@ export const formatCountAbbr = (count, withAbbr = false, decimals = 4) => {
 };
 
 export const floatDecimals = (count, decimals = 2) => {
-    return parseFloat(count).toFixed(decimals);
+    const factor = Math.pow(10, decimals);
+    return Math.trunc(parseFloat(count) * factor) / factor;
+    // return parseFloat(count).toFixed(decimals);
 };
 
 export const formatCount = (value, decimals) => {
