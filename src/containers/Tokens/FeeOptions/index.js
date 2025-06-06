@@ -97,7 +97,6 @@ const FeeOptions = (props) => {
     }
   }, [enrichedAssets, props.tokenDetails, options]);
 
-  // console.log(55555555, enrichedAssets, props.feeOption);
   return (
     <>
       <div className='fee_options_section'>
