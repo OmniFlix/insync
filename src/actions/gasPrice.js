@@ -72,8 +72,10 @@ const fetchGasEstimationError = (message) => {
     };
 };
 
-export const fetchGasEstimation = (transactionTypes, value) => (dispatch) => {
-    dispatch(fetchGasEstimationInProgress(value));
+export const fetchGasEstimation = (transactionTypes, value, cb) => (dispatch) => {
+    if (!cb) {
+        dispatch(fetchGasEstimationInProgress(value));
+    }
     const url = urlFetchGasEstimation(transactionTypes);
     axios.get(url, {
         headers: {
@@ -81,9 +83,17 @@ export const fetchGasEstimation = (transactionTypes, value) => (dispatch) => {
         },
     })
         .then((res) => {
+            if (cb) {
+                cb(res.data);
+                return;
+            }
             dispatch(fetchGasEstimationSuccess(res.data));
         })
         .catch((error) => {
+            if (cb) {
+                cb(res.data);
+                return;
+            }
             dispatch(fetchGasEstimationError(
                 error.response &&
                 error.response.data &&

@@ -23,7 +23,7 @@ import { hideTransparentTokensConvertDialog } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import { showTokensTransactionSuccessDialog } from 'actions/IBCTransfer';
-import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
+import { balanceCalculation, feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
 import FeeOptions from 'containers/Tokens/FeeOptions';
 
 const ShieldDialog = (props) => {
@@ -163,8 +163,13 @@ const ShieldDialog = (props) => {
         }
     };
 
+    let token = config.TOKEN_ADDRESS;
+    if (props.selectedAsset?.balance?.minDenomAmount) {
+        token = props.selectedAsset?.balance?.tokenAddress;
+    }
+    const balanceValidation = balanceCalculation(props.balanceList, token, props.amount, props.feeOption);
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
-    const disable = inProgress || !props.amount || props.amountValid === false;
+    const disable = inProgress || !props.amount || props.amountValid === false || !balanceValidation;
 
     const fromNamadaSelectedConfig = props.selectedAsset?.config;
     const namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
@@ -238,12 +243,14 @@ const ShieldDialog = (props) => {
                 className="submit_button"
                 disabled={disable}
                 onClick={handleSubmit}>
-                {params
-                    ? 'Generating MASP Parameters...'
-                    : approval
-                        ? 'Approval pending...'
-                        : inProgress
-                            ? 'InProgress...' : 'Submit'}
+                {!balanceValidation
+                    ? 'Not Enough Balance'
+                    : params
+                        ? 'Generating MASP Parameters...'
+                        : approval
+                            ? 'Approval pending...'
+                            : inProgress
+                                ? 'InProgress...' : 'Submit'}
             </Button>}
            
         </div>
@@ -252,6 +259,7 @@ const ShieldDialog = (props) => {
 
 ShieldDialog.propTypes = {
     balance: PropTypes.array.isRequired,
+    balanceList: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
@@ -280,6 +288,7 @@ ShieldDialog.propTypes = {
 const stateToProps = (state) => {
     return {
         balance: state.accounts.balance.result,
+        balanceList: state.accounts.balanceList.result,
         lang: state.language,
         address: state.accounts.address.value,
         amount: state.shieldedAssets.amount.value,

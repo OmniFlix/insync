@@ -36,7 +36,7 @@ import { hideTransparentTokensWithdrawDialog } from 'actions/assets';
 import variables from 'utils/variables';
 import ProcessingButton from 'components/ProcessingButton';
 import FeeOptions from 'containers/Tokens/FeeOptions';
-import { feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
+import { balanceCalculation, feeCalculation, feeCalculationDisplay, feeCalculationMax } from 'utils/feeCalculation';
 
 const NamadaToIBCTransparentTransfer = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -255,7 +255,12 @@ const NamadaToIBCTransparentTransfer = (props) => {
     const image = props.fromNamadaSelectedAsset && props.fromNamadaSelectedAsset.logo_URIs && (props.fromNamadaSelectedAsset.logo_URIs.svg || props.fromNamadaSelectedAsset.logo_URIs.png);
     const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
 
-    const disable = !props.amount || props.amount === '';
+    let token = config.TOKEN_ADDRESS;
+    if (props.fromNamadaSelectedAsset?.balance?.minDenomAmount) {
+        token = props.fromNamadaSelectedAsset?.balance?.tokenAddress;
+    }
+    const balanceValidation = balanceCalculation(props.balanceList, token, props.amount, props.feeOption);
+    const disable = !props.amount || props.amount === '' || !balanceValidation;
 
     return (
         <div className="transfer_dialog">
@@ -339,12 +344,14 @@ const NamadaToIBCTransparentTransfer = (props) => {
                 className="submit_button"
                 disabled={disable || inProgress || props.amountValid === false}
                 onClick={handleSubmit}>
-                {params
-                    ? 'Generating MASP Parameters...'
-                    : approval
-                        ? 'Approval pending...'
-                        : inProgress
-                            ? 'InProgress...' : 'Submit'}
+                {!balanceValidation
+                    ? 'Not Enough Balance'
+                    : params
+                        ? 'Generating MASP Parameters...'
+                        : approval
+                            ? 'Approval pending...'
+                            : inProgress
+                                ? 'InProgress...' : 'Submit'}
             </Button>}
             {/* {inProgress && <CircularProgress className="full_screen"/>} */}
         </div>
@@ -354,6 +361,7 @@ const NamadaToIBCTransparentTransfer = (props) => {
 NamadaToIBCTransparentTransfer.propTypes = {
     aminoSignIBCTx: PropTypes.func.isRequired,
     balance: PropTypes.array.isRequired,
+    balanceList: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
     connectIBCAccount: PropTypes.func.isRequired,
     connectIBCAccountSuccess: PropTypes.func.isRequired,
@@ -399,6 +407,7 @@ NamadaToIBCTransparentTransfer.propTypes = {
 const stateToProps = (state) => {
     return {
         balance: state.accounts.balance.result,
+        balanceList: state.accounts.balanceList.result,
         ibcBalance: state.ibcTransfer.balance.value,
         lang: state.language,
         address: state.accounts.address.value,
