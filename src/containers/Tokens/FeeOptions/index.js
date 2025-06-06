@@ -91,6 +91,8 @@ const FeeOptions = (props) => {
       const find = enrichedAssets.find((val) => val.symbol ===  props.tokenDetails.symbol);
       if (find?.fees?.fee && Number(find?.fees?.fee)) {
         props.setFeeOptionPopoverValue(find);
+      } else {
+        props.setFeeOptionPopoverValue(enrichedAssets[0]);
       }
     }
   }, [enrichedAssets, props.tokenDetails, options]);
