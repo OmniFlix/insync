@@ -478,7 +478,7 @@ export const shieldedBalanceFetchSuccess = (balance) => ({
 
 export const shieldedBalanceFetchError = (error) => ({
     type: FETCH_SHIELDED_BALANCE_ERROR,
-    error: error.message || 'Failed to fetch shielded balance',
+    message: error || 'Failed to fetch shielded balance',
 });
 
 

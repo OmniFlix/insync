@@ -23,6 +23,7 @@ import {
     getDelegations,
     getShieldedBalance,
     getUnBondingDelegations,
+    reSyncBalance,
     setAccountAddress,
     setAccountDetails,
     shieldedBalanceFetchSuccess,
@@ -99,6 +100,7 @@ class NavBar extends Component {
         this.handleCosmoStation = this.handleCosmoStation.bind(this);
         this.handleProfilePopoverOpen = this.handleProfilePopoverOpen.bind(this);
         this.handleProfilePopoverClose = this.handleProfilePopoverClose.bind(this);
+        // this.handleResync = this.handleResync.bind(this);
     }
 
     componentDidMount () {
@@ -395,6 +397,14 @@ class NavBar extends Component {
         }
     }
 
+    // handleResync (vk, timestamp, address, shieldedAddress, chainId) {
+    //     this.props.reSyncBalance(vk, timestamp, address, shieldedAddress, chainId, (result) => {
+    //         if (!result) {
+    //             this.handleResync(vk, timestamp, address, shieldedAddress, chainId);
+    //         }
+    //     });
+    // };
+
     initKeplr () {
         this.handleChain(true);
     }
@@ -615,6 +625,7 @@ NavBar.propTypes = {
     voteDetails: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
     fetchGasPrice: PropTypes.func.isRequired,
+    reSyncBalance: PropTypes.func.isRequired,
     gasPriceInProgress: PropTypes.bool.isRequired,
     gasPrice: PropTypes.array.isRequired,
     actualAPR: PropTypes.number,
@@ -717,6 +728,7 @@ const actionToProps = {
     fetchUnBondingValidators,
     shieldedBalanceFetchSuccess,
     fetchGasPrice,
+    reSyncBalance,
 };
 
 export default withRouter(connect(stateToProps, actionToProps)(NavBar));

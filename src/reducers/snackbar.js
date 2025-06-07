@@ -2,6 +2,7 @@ import { MESSAGE_SHOW, SNACKBAR_HIDE } from '../constants/snackbar';
 import {
     BALANCE_FETCH_ERROR,
     DELEGATIONS_FETCH_ERROR,
+    FETCH_SHIELDED_BALANCE_ERROR,
     REWARDS_FETCH_ERROR,
     UN_BONDING_DELEGATIONS_FETCH_ERROR,
 } from '../constants/accounts';
@@ -16,6 +17,7 @@ const snackbar = (state = {
     case BALANCE_FETCH_ERROR:
     case UN_BONDING_DELEGATIONS_FETCH_ERROR:
     case REWARDS_FETCH_ERROR:
+    case FETCH_SHIELDED_BALANCE_ERROR:
         return {
             open: true,
             message: action.message,

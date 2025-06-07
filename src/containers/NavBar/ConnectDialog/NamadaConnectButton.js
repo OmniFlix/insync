@@ -14,6 +14,7 @@ import {
     fetchTokensList,
     fetchBalanceList,
     shieldedBalanceFetchSuccess,
+    reSyncBalance,
 } from '../../../actions/accounts';
 import { connect } from 'react-redux';
 import { showMessage } from '../../../actions/snackbar';
@@ -22,7 +23,7 @@ import { getDelegatedValidatorsDetails } from '../../../actions/stake';
 import { ReactComponent as NamadaLogo } from '../../../assets/namadaLogo.svg';
 import { hideConnectDialog } from '../../../actions/navBar';
 import variables from '../../../utils/variables';
-// import { config } from 'process';
+// import { config } from '../../../config';
 
 const KeplrConnectButton = (props) => {
     const [inProgress, setInProgress] = useState(false);
@@ -68,6 +69,14 @@ const KeplrConnectButton = (props) => {
             localStorage.setItem('of_co_wallet', 'namada');
         });
     };
+
+    // const handleResync = (vk, timestamp, address, shieldedAddress, chainId) => {
+    //     props.reSyncBalance(vk, timestamp, address, shieldedAddress, chainId, (result) => {
+    //         if (!result) {
+    //             handleResync(vk, timestamp, address, shieldedAddress, chainId);
+    //         }
+    //     });
+    // };
 
     return (
         <Button
@@ -124,6 +133,7 @@ const actionsToProps = {
     fetchTokensList,
     fetchBalanceList,
     shieldedBalanceFetchSuccess,
+    reSyncBalance,
 };
 
 export default connect(stateToProps, actionsToProps)(KeplrConnectButton);
