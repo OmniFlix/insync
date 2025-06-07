@@ -42,31 +42,31 @@ const NamadaToIBCTransparentTransfer = (props) => {
     const [inProgress, setInProgress] = useState(false);
     const [approval, setApproval] = useState(false);
     const [params, setParams] = useState(false);
-    useEffect(() => {
-        const address = localStorage.getItem('namada_keplr_address');
-        if (address) {
-            const selectedChain = props.selectedChain || ibcList[0];
+    // useEffect(() => {
+    //     const address = localStorage.getItem('namada_keplr_address');
+    //     if (address) {
+    //         const selectedChain = props.selectedChain || ibcList[0];
     
-            const config = {
-                RPC_URL: selectedChain && selectedChain.config && selectedChain.config.RPC_URL,
-                REST_URL: selectedChain && selectedChain.config && selectedChain.config.REST_URL,
-                CHAIN_ID: selectedChain && selectedChain.config && selectedChain.config.CHAIN_ID,
-                CHAIN_NAME: selectedChain && selectedChain.config && selectedChain.config.CHAIN_NAME,
-                COIN_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_DENOM,
-                COIN_MINIMAL_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_MINIMAL_DENOM,
-                COIN_DECIMALS: selectedChain && selectedChain.config && selectedChain.config.COIN_DECIMALS,
-                PREFIX: selectedChain && selectedChain.config && selectedChain.config.PREFIX,
-            };
+    //         const config = {
+    //             RPC_URL: selectedChain && selectedChain.config && selectedChain.config.RPC_URL,
+    //             REST_URL: selectedChain && selectedChain.config && selectedChain.config.REST_URL,
+    //             CHAIN_ID: selectedChain && selectedChain.config && selectedChain.config.CHAIN_ID,
+    //             CHAIN_NAME: selectedChain && selectedChain.config && selectedChain.config.CHAIN_NAME,
+    //             COIN_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_DENOM,
+    //             COIN_MINIMAL_DENOM: selectedChain && selectedChain.config && selectedChain.config.COIN_MINIMAL_DENOM,
+    //             COIN_DECIMALS: selectedChain && selectedChain.config && selectedChain.config.COIN_DECIMALS,
+    //             PREFIX: selectedChain && selectedChain.config && selectedChain.config.PREFIX,
+    //         };
     
-            setInProgress(true);
-            props.connectIBCAccount(config, (address) => {
-                setInProgress(false);
-                localStorage.setItem('namada_keplr_address', address[0].address);
-                props.fetchIBCBalance(config.REST_URL, address[0].address);
-                props.fetchIBCChannel(selectedChain.channel_link);
-            });
-        }
-    }, []);
+    //         setInProgress(true);
+    //         props.connectIBCAccount(config, (address) => {
+    //             setInProgress(false);
+    //             localStorage.setItem('namada_keplr_address', address[0].address);
+    //             props.fetchIBCBalance(config.REST_URL, address[0].address);
+    //             props.fetchIBCChannel(selectedChain.channel_link);
+    //         });
+    //     }
+    // }, []);
 
     let balance = null;
     let ibcBalance = null;
