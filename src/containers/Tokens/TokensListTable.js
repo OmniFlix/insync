@@ -8,7 +8,7 @@ import { ibcList, namadaAssets } from 'dummy/ibcList';
 import { config } from '../../config';
 import NamadaLogo from '../../assets/masp/namada_logo.svg';
 import { showTransparentTokensConvertDialog, showTransparentTokensDepositDialog, showTransparentTokensTransferDialog, showTransparentTokensWithdrawDialog } from 'actions/assets';
-import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
+import { connectIBCAccount, connectIBCAccountSuccess, fetchIBCBalance, fetchIBCChannel, setFromNamadaSelectedAsset, setIBCTransferType, setSelectedChain } from 'actions/IBCTransfer';
 import TransferIcon from '../../assets/transactions/transfer.svg';
 import DepositIcon from '../../assets/transactions/deposit.svg';
 import WithdrawIcon from '../../assets/transactions/withdraw.svg';
@@ -58,7 +58,7 @@ class TokensListTable extends React.Component {
 
     handleWithdraw (value) {
         this.props.setIBCTransferType('transparent');
-        // this.initKeplr(value);
+        this.initKeplr(value, 'withdraw');
         // const array = ['ibc_unshielding_transfer'];
         const array = ['shielding_transfer'];
         if (this.props.revealPublicKey && !this.props.revealPublicKey.publicKey) {
@@ -109,7 +109,7 @@ class TokensListTable extends React.Component {
         this.props.setSelectedSource(value?.config?.COIN_DENOM, find);
     }
 
-    initKeplr (value) {
+    initKeplr (value, from) {
         const config = {
             RPC_URL: value && value.config && value.config.RPC_URL,
             REST_URL: value && value.config && value.config.REST_URL,
@@ -129,6 +129,24 @@ class TokensListTable extends React.Component {
             this.props.fetchIBCChannel(value.channel_link);
             const find = ibcList.find((item) => item.value === value.coingecko_id);
             this.props.setSelectedChain(find);
+            if (from === 'withdraw') {
+                const enrichedAssets = (namadaAssets || []).map((asset) => {
+                const matchingToken = (this.props.tokensList || []).find(token =>
+                token.trace?.includes(`/${asset.base}`)
+                );
+            
+                const matchingBalance = matchingToken
+                ? (this.props.balanceList || []).find(b => b.tokenAddress === matchingToken.address)
+                : null;
+            
+                return {
+                    ...asset,
+                    balance: matchingBalance || null,
+                    };
+                }).filter((item) => item.balance);
+                const find = enrichedAssets.find((item) => item.symbol === value?.config?.COIN_DENOM);
+                this.props.setFromNamadaSelectedAsset(config.COIN_DENOM, find);
+            }
         });
     }
 
@@ -346,6 +364,7 @@ TokensListTable.propTypes = {
     showTransparentTokensWithdrawDialog: PropTypes.func.isRequired,
     setIBCTransferType: PropTypes.func.isRequired,
     setSelectedChain: PropTypes.func.isRequired,
+    setFromNamadaSelectedAsset: PropTypes.func.isRequired,
     connectIBCAccount: PropTypes.func.isRequired,
     connectIBCAccountSuccess: PropTypes.func.isRequired,
     fetchIBCBalance: PropTypes.func.isRequired,
@@ -383,6 +402,7 @@ const actionToProps = {
     fetchIBCChannel,
     setSelectedSource,
     fetchGasEstimation,
+    setFromNamadaSelectedAsset,
 };
 
 

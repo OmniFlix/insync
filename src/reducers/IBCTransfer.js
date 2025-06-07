@@ -273,6 +273,11 @@ const fromNamadaSelectedAsset = (state = {
             shielded: action.value,
             shieldedResult: action.result || {},
         };
+    case TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE:
+        return {
+            value: '',
+            result: {},
+        };
     default:
         return state;
     }

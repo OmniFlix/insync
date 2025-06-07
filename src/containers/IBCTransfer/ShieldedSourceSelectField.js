@@ -5,7 +5,7 @@ import SelectField from '../../components/SelectField/WithChildren';
 import { MenuItem } from '@material-ui/core';
 import variables from '../../utils/variables';
 import NamadaLogo from '../../assets/masp/namada_shielded.svg';
-import { setFromShieldedNamadaSelectedAsset } from '../../actions/IBCTransfer';
+import { connectIBCAccount, setFromShieldedNamadaSelectedAsset } from '../../actions/IBCTransfer';
 import { namadaAssets } from 'dummy/ibcList';
 
 const ShieldedSourceSelectField = (props) => {
@@ -47,10 +47,26 @@ const ShieldedSourceSelectField = (props) => {
         const find = enrichedAssets.find((item) => item.symbol === value);
         if (find) {
             props.onChange(value, find);
+            initKeplr(find);
         } else {
             props.onChange(value);
         }
     };
+
+    const initKeplr = (value) => {
+        const config = {
+            RPC_URL: value && value.config && value.config.RPC_URL,
+            REST_URL: value && value.config && value.config.REST_URL,
+            CHAIN_ID: value && value.config && value.config.CHAIN_ID,
+            CHAIN_NAME: value && value.config && value.config.CHAIN_NAME,
+            COIN_DENOM: value && value.config && value.config.COIN_DENOM,
+            COIN_MINIMAL_DENOM: value && value.config && value.config.COIN_MINIMAL_DENOM,
+            COIN_DECIMALS: value && value.config && value.config.COIN_DECIMALS,
+            PREFIX: value && value.config && value.config.PREFIX,
+        };
+
+        props.connectIBCAccount(config);
+    }
 
     return (
         <SelectField
@@ -86,6 +102,7 @@ const ShieldedSourceSelectField = (props) => {
 };
 
 ShieldedSourceSelectField.propTypes = {
+    connectIBCAccount: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
@@ -105,6 +122,7 @@ const stateToProps = (state) => {
 
 const actionToProps = {
     onChange: setFromShieldedNamadaSelectedAsset,
+    connectIBCAccount,
 };
 
 export default connect(stateToProps, actionToProps)(ShieldedSourceSelectField);
