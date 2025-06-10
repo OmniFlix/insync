@@ -32,6 +32,7 @@ import {
     BALANCE_LIST_FETCH_IN_PROGRESS,
     BALANCE_LIST_FETCH_SUCCESS,
     BALANCE_LIST_FETCH_ERROR,
+    SHIELDED_BALANCE_PROGRESS_SET,
 } from '../../constants/accounts';
 import Axios from 'axios';
 import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance, urlFetchBlockHeight, urlFetchTokensList, urlFetchBalanceList } from '../../constants/url';
@@ -43,6 +44,7 @@ import { config } from '../../config';
 
 import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
+import { workerShieldedSync } from 'workers/balanceServices';
 // import { Tokens } from '@namada/types';
 
 export const setAccountAddress = (value, shieldedAddress, shieldedDetails) => {
@@ -476,6 +478,11 @@ export const shieldedBalanceFetchSuccess = (balance) => ({
     balance, // Format: { [asset]: string } (e.g., { "NAM": "100" })
 });
 
+export const setShieldedBalanceProgress = (progress) => ({
+    type: SHIELDED_BALANCE_PROGRESS_SET,
+    progress,
+});
+
 export const shieldedBalanceFetchError = (error) => ({
     type: FETCH_SHIELDED_BALANCE_ERROR,
     message: error || 'Failed to fetch shielded balance',
@@ -505,7 +512,15 @@ export const getShieldedBalance = (viewingKey, timestamp, tnam, znam, chainId = 
             key: viewingKey,
             birthday: birthday,
         }];
-        await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
+        await workerShieldedSync({
+            rpcUrl: config.RPC_URL,
+            maspIndexerUrl: config.MASP_REST_URL,
+            token: config.TOKEN_ADDRESS,
+            viewingKeys: datedViewingKeys,
+            chainId,
+            onProgress: (progress) => dispatch(setShieldedBalanceProgress(progress)),
+        });
+        // await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
         const balance = await sdk.rpc.queryBalance(
             viewingKey,
             [config.TOKEN_ADDRESS],
@@ -616,7 +631,15 @@ export const reSyncBalance = (viewingKey, timestamp, tnam, znam, chainId = confi
             birthday: birthday,
         }];
         await sdk.getMasp().clearShieldedContext(chainId);
-        await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
+        // await sdk.rpc.shieldedSync(datedViewingKeys, chainId);
+        await workerShieldedSync({
+            rpcUrl: config.RPC_URL,
+            maspIndexerUrl: config.MASP_REST_URL,
+            token: config.TOKEN_ADDRESS,
+            viewingKeys: datedViewingKeys,
+            chainId,
+            onProgress: (progress) => dispatch(setShieldedBalanceProgress(progress)),
+        });
         const balance = await sdk.rpc.queryBalance(
             viewingKey,
             [config.TOKEN_ADDRESS],

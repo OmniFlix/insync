@@ -18,7 +18,7 @@ const AmountTextField = (props) => {
         const value = input === '' ? '' : parseFloat(input);
         const isValid = value <= amount;
         props.onChange(value, isValid);
-    }
+    };
 
     return (
         <TextField
@@ -36,12 +36,12 @@ const AmountTextField = (props) => {
 AmountTextField.propTypes = {
     lang: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    balance: PropTypes.array,
-    transferValue: PropTypes.object,
-    value: PropTypes.number,
-    valid: PropTypes.bool,
-    from: PropTypes.string,
     amount: PropTypes.any,
+    balance: PropTypes.array,
+    from: PropTypes.string,
+    transferValue: PropTypes.object,
+    valid: PropTypes.bool,
+    value: PropTypes.number,
 };
 
 const stateToProps = (state) => {

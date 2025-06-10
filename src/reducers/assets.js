@@ -1,6 +1,6 @@
-import { setTokensTransferAmount } from "actions/assets";
-import { ASSETS_TABS_SET, FEE_OPTIONS_POPOVER_SET, SHIELDED_TOKENS_CONVERT_DIALOG_HIDE, SHIELDED_TOKENS_CONVERT_DIALOG_SHOW, SHIELDED_TOKENS_DEPOSIT_DIALOG_HIDE, SHIELDED_TOKENS_DEPOSIT_DIALOG_SHOW, SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE, SHIELDED_TOKENS_TRANSFER_DIALOG_SHOW, SHIELDED_TOKENS_WITHDRAW_DIALOG_HIDE, SHIELDED_TOKENS_WITHDRAW_DIALOG_SHOW, TOKENS_TRANSFER_ADDRESS_SET, TOKENS_TRANSFER_AMOUNT_SET, TOKENS_TRANSFER_MEMO_SET, TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE, TRANSPARENT_TOKENS_CONVERT_DIALOG_SHOW, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_HIDE, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_SHOW, TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE, TRANSPARENT_TOKENS_TRANSFER_DIALOG_SHOW, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_SHOW } from "constants/assets";
-import { combineReducers } from "redux";
+import { setTokensTransferAmount } from 'actions/assets';
+import { ASSETS_TABS_SET, FEE_OPTIONS_POPOVER_SET, SHIELDED_TOKENS_CONVERT_DIALOG_HIDE, SHIELDED_TOKENS_CONVERT_DIALOG_SHOW, SHIELDED_TOKENS_DEPOSIT_DIALOG_HIDE, SHIELDED_TOKENS_DEPOSIT_DIALOG_SHOW, SHIELDED_TOKENS_TRANSFER_DIALOG_HIDE, SHIELDED_TOKENS_TRANSFER_DIALOG_SHOW, SHIELDED_TOKENS_WITHDRAW_DIALOG_HIDE, SHIELDED_TOKENS_WITHDRAW_DIALOG_SHOW, TOKENS_TRANSFER_ADDRESS_SET, TOKENS_TRANSFER_AMOUNT_SET, TOKENS_TRANSFER_MEMO_SET, TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE, TRANSPARENT_TOKENS_CONVERT_DIALOG_SHOW, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_HIDE, TRANSPARENT_TOKENS_DEPOSIT_DIALOG_SHOW, TRANSPARENT_TOKENS_TRANSFER_DIALOG_HIDE, TRANSPARENT_TOKENS_TRANSFER_DIALOG_SHOW, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_HIDE, TRANSPARENT_TOKENS_WITHDRAW_DIALOG_SHOW } from 'constants/assets';
+import { combineReducers } from 'redux';
 
 const assetsTab = (state = {
     value: 'transparent',
@@ -18,7 +18,7 @@ const assetsTab = (state = {
 // Transparent Tokens Dialogs
 const transparentTokensDepositDialog = (state = {
     open: false,
-    value: {}
+    value: {},
 }, action) => {
     switch (action.type) {
     case TRANSPARENT_TOKENS_DEPOSIT_DIALOG_SHOW:
@@ -34,11 +34,11 @@ const transparentTokensDepositDialog = (state = {
     default:
         return state;
     }
-}
+};
 
 const transparentTokensWithdrawDialog = (state = {
     open: false,
-    value: {}
+    value: {},
 }, action) => {
     switch (action.type) {
     case TRANSPARENT_TOKENS_WITHDRAW_DIALOG_SHOW:
@@ -54,11 +54,11 @@ const transparentTokensWithdrawDialog = (state = {
     default:
         return state;
     }
-}
+};
 
 const transparentTokensTransferDialog = (state = {
     open: false,
-    value: {}
+    value: {},
 }, action) => {
     switch (action.type) {
     case TRANSPARENT_TOKENS_TRANSFER_DIALOG_SHOW:
@@ -84,11 +84,11 @@ const transparentTokensTransferDialog = (state = {
     default:
         return state;
     }
-}
+};
 
 const transparentTokensConvertDialog = (state = {
     open: false,
-    value: {}
+    value: {},
 }, action) => {
     switch (action.type) {
     case TRANSPARENT_TOKENS_CONVERT_DIALOG_SHOW:
@@ -104,12 +104,12 @@ const transparentTokensConvertDialog = (state = {
     default:
         return state;
     }
-}
+};
 
 // Shielded Tokens Dialogs
 const shieldedTokensDepositDialog = (state = {
     open: false,
-    value: {}
+    value: {},
 }, action) => {
     switch (action.type) {
     case SHIELDED_TOKENS_DEPOSIT_DIALOG_SHOW:
@@ -125,11 +125,11 @@ const shieldedTokensDepositDialog = (state = {
     default:
         return state;
     }
-}
+};
 
 const shieldedTokensWithdrawDialog = (state = {
     open: false,
-    value: {}
+    value: {},
 }, action) => {
     switch (action.type) {
     case SHIELDED_TOKENS_WITHDRAW_DIALOG_SHOW:
@@ -145,11 +145,11 @@ const shieldedTokensWithdrawDialog = (state = {
     default:
         return state;
     }
-}
+};
 
 const shieldedTokensTransferDialog = (state = {
     open: false,
-    value: {}
+    value: {},
 }, action) => {
     switch (action.type) {
     case SHIELDED_TOKENS_TRANSFER_DIALOG_SHOW:
@@ -165,11 +165,11 @@ const shieldedTokensTransferDialog = (state = {
     default:
         return state;
     }
-}
+};
 
 const shieldedTokensConvertDialog = (state = {
     open: false,
-    value: {}
+    value: {},
 }, action) => {
     switch (action.type) {
     case SHIELDED_TOKENS_CONVERT_DIALOG_SHOW:
@@ -185,7 +185,7 @@ const shieldedTokensConvertDialog = (state = {
     default:
         return state;
     }
-}
+};
 
 // Tokens Transfer Fields
 const tokensTransferAmount = (state = {
@@ -207,7 +207,7 @@ const tokensTransferAmount = (state = {
     default:
         return state;
     }
-}
+};
 
 const tokensTransferAddress = (state = {
     value: '',
@@ -228,7 +228,7 @@ const tokensTransferAddress = (state = {
     default:
         return state;
     }
-}
+};
 
 const tokensTransferMemo = (state = {
     value: '',
@@ -246,7 +246,7 @@ const tokensTransferMemo = (state = {
     default:
         return state;
     }
-}
+};
 
 const feeOptionPopoverValue = (state = {
     value: '',
@@ -268,8 +268,7 @@ const feeOptionPopoverValue = (state = {
     default:
         return state;
     }
-}
-
+};
 
 export default combineReducers({
     assetsTab,

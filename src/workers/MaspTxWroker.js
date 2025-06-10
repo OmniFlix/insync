@@ -11,27 +11,6 @@ import {
 import BigNumber from "bignumber.js";
 import * as Comlink from "comlink";
 import { buildTx, EncodedTxData } from "../lib/query";
-// import { namadaAsset, toDisplayAmount } from "utils";
-import {
-  Broadcast,
-  BroadcastDone,
-  GenerateIbcShieldingMemo,
-  GenerateIbcShieldingMemoDone,
-  IbcTransfer,
-  IbcTransferDone,
-  Init,
-  InitDone,
-  Shield,
-  ShieldDone,
-  ShieldedRewards,
-  ShieldedRewardsDone,
-  ShieldedRewardsPerToken,
-  ShieldedRewardsPerTokenDone,
-  ShieldedTransfer,
-  ShieldedTransferDone,
-  Unshield,
-  UnshieldDone,
-} from "./MaspTxMessages";
 import { fetchMaspParams } from "helper";
 
 export class Worker {

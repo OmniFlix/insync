@@ -119,8 +119,8 @@ const WithDrawButton = (props) => {
     return (
         <Button
             className="delegate_button"
-            variant="outlined"
             disabled={inProgress}
+            variant="outlined"
             onClick={handleClick}>
             {approval
                 ? 'Approval pending...'
@@ -131,42 +131,42 @@ const WithDrawButton = (props) => {
 };
 
 WithDrawButton.propTypes = {
-    handleOpen: PropTypes.func.isRequired,
-    showMessage: PropTypes.func.isRequired,
-    address: PropTypes.string,
-    valAddress: PropTypes.string,
     balance: PropTypes.array.isRequired,
     delegations: PropTypes.array.isRequired,
     details: PropTypes.object.isRequired,
     failedDialog: PropTypes.func.isRequired,
-    fetchRewards: PropTypes.func.isRequired,
-    fetchVestingBalance: PropTypes.func.isRequired,
-    successDialog: PropTypes.func.isRequired,
     failedDialog: PropTypes.func.isRequired,
-    pendingDialog: PropTypes.func.isRequired,
+    fetchRewards: PropTypes.func.isRequired,
+    fetchRewards: PropTypes.func.isRequired,
+    fetchUnBondingValidators: PropTypes.func.isRequired,
+    fetchUnBondingValidators: PropTypes.func.isRequired,
+    fetchVestingBalance: PropTypes.func.isRequired,
     genesisValidatorList: PropTypes.object.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
-    getDelegations: PropTypes.func.isRequired,
-    fetchRewards: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
-    fetchUnBondingValidators: PropTypes.func.isRequired,
-    fetchUnBondingValidators: PropTypes.func.isRequired,
+    getDelegations: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
+    handleOpen: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     pendingDialog: PropTypes.func.isRequired,
+    pendingDialog: PropTypes.func.isRequired,
     selectedMultiValidatorArray: PropTypes.array.isRequired,
     showMessage: PropTypes.func.isRequired,
+    showMessage: PropTypes.func.isRequired,
+    successDialog: PropTypes.func.isRequired,
     successDialog: PropTypes.func.isRequired,
     vestingBalance: PropTypes.object.isRequired,
+    address: PropTypes.string,
     address: PropTypes.string,
     amount: PropTypes.any,
     revealPublicKey: PropTypes.object,
     toValidator: PropTypes.string,
+    valAddress: PropTypes.string,
     validator: PropTypes.string,
 };
 

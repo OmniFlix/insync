@@ -30,17 +30,17 @@ const AssetTabs = (props) => {
     };
 
     return (
-        <div className='tokens_section_tabs'>
+        <div className="tokens_section_tabs">
             <div>
-                <Button className={props.value === 'transparent' ? 'active tab' : "tab"} onClick={() => handleChange('transparent')}>
+                <Button className={props.value === 'transparent' ? 'active tab' : 'tab'} onClick={() => handleChange('transparent')}>
                     {variables[props.lang].transparent}
                 </Button>
                 <span />
-                <Button className={props.value === 'shielded' ? 'active tab' : "tab"} onClick={() => handleChange('shielded')}>
+                <Button className={props.value === 'shielded' ? 'active tab' : 'tab'} onClick={() => handleChange('shielded')}>
                     {variables[props.lang].shielded}
                 </Button>
             </div>
-            
+
         </div>
     );
 };

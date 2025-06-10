@@ -61,7 +61,7 @@ module.exports = {
                         from: path.resolve(__dirname, 'node_modules/@namada/sdk/dist/crypto.namada.wasm'),
                         to: '',
                     },
-                        // static/js path
+                    // static/js path
                     {
                         from: path.resolve(__dirname, 'node_modules/@namada/sdk/dist/shared.namada.wasm'),
                         to: 'static/js/shared.namada.wasm',

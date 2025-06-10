@@ -44,8 +44,8 @@ export const urlFetchGasEstimation = (transactionTypes) => {
     const params = [];
     if (transactionTypes && transactionTypes.length) {
         transactionTypes.map((val) => {
-            params.push(`${val}=1`)
-        })
+            params.push(`${val}=1`);
+        });
     }
 
     return `${REST_URL}/api/v1/gas/estimate?${params.join('&')}`;

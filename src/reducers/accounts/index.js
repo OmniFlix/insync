@@ -33,6 +33,7 @@ import {
     BALANCE_LIST_FETCH_IN_PROGRESS,
     BALANCE_LIST_FETCH_SUCCESS,
     BALANCE_LIST_FETCH_ERROR,
+    SHIELDED_BALANCE_PROGRESS_SET,
 } from '../../constants/accounts';
 
 const address = (state = {
@@ -135,6 +136,7 @@ const balance = (state = {
 export const shieldedBalance = (state = {
     result: [],
     inProgress: false,
+    progress: null,
     // shieldedSyncInProgress: false
 }, action) => {
     switch (action.type) {
@@ -153,11 +155,18 @@ export const shieldedBalance = (state = {
             ...state,
             inProgress: false,
             result: action.balance,
+            progress: null,
+        };
+    case SHIELDED_BALANCE_PROGRESS_SET:
+        return {
+            ...state,
+            progress: action.progress,
         };
     case FETCH_SHIELDED_BALANCE_ERROR:
         return {
             ...state,
             inProgress: false,
+            progress: null,
         };
     // case FETCH_SHIELDED_SYNC_ERROR:
     // case FETCH_SHIELDED_SYNC_SUCCESS:

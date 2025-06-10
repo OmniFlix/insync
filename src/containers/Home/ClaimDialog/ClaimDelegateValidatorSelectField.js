@@ -109,8 +109,8 @@ ClaimDelegateValidatorSelectField.propTypes = {
     onChange: PropTypes.func.isRequired,
     inProgress: PropTypes.bool,
     items: PropTypes.array,
-    validatorList: PropTypes.array,
     lang: PropTypes.string,
+    validatorList: PropTypes.array,
 };
 
 const stateToProps = (state) => {

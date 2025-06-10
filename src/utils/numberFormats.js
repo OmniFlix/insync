@@ -106,9 +106,9 @@ export const floatCountWithoutABBRS = (value, decimals) => {
 };
 
 export const truncateTo4Decimals = (num, decimals) => {
-  const parts = num.toString().split('.');
-  if (parts.length === 1) return parts[0]; // no decimals
+    const parts = num.toString().split('.');
+    if (parts.length === 1) { return parts[0]; } // no decimals
 
-  const truncated = parts[1].substring(0, decimals || 4); // get up to 4 digits
-  return Number(`${parts[0]}.${truncated}`);
-}
+    const truncated = parts[1].substring(0, decimals || 4); // get up to 4 digits
+    return Number(`${parts[0]}.${truncated}`);
+};
