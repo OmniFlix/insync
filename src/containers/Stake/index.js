@@ -78,11 +78,11 @@ const Stake = (props) => {
                 </div>
                 <Table active={active}/>
             </div>
-              {(active === 2 && props.unBondingValidatorsList && props.unBondingValidatorsList.length)
-                                ? <div style={{paddingTop: 0}} className='stake_content padding'> 
-                                    <h2 style={{textAlign: 'left', fontSize: '30px'}}>{variables[props.lang].unbounding}</h2>
-                                    <UnbondingTable />
-                                </div> : null}
+            {(active === 2 && props.unBondingValidatorsList && props.unBondingValidatorsList.length)
+                ? <div className="stake_content padding" style={{ paddingTop: 0 }}>
+                    <h2 style={{ textAlign: 'left', fontSize: '30px' }}>{variables[props.lang].unbounding}</h2>
+                    <UnbondingTable />
+                </div> : null}
             <DelegateDialog/>
             <SuccessDialog/>
             <UnSuccessDialog/>
@@ -93,11 +93,11 @@ const Stake = (props) => {
 
 Stake.propTypes = {
     delegatedValidatorList: PropTypes.array.isRequired,
+    delegatedValidatorListInProgress: PropTypes.bool.isRequired,
     inActiveValidators: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
+    unBondingValidatorsList: PropTypes.array.isRequired,
     validatorList: PropTypes.array.isRequired,
-    delegatedValidatorListInProgress: PropTypes.bool.isRequired,
-     unBondingValidatorsList: PropTypes.array.isRequired,
 };
 
 const stateToProps = (state) => {
@@ -106,7 +106,7 @@ const stateToProps = (state) => {
         delegatedValidatorList: state.stake.delegatedValidators.list,
         inActiveValidators: state.stake.inActiveValidators.list,
         validatorList: state.stake.validators.list,
-          unBondingValidatorsList: state.stake.unBondingValidators.list,
+        unBondingValidatorsList: state.stake.unBondingValidators.list,
     };
 };
 

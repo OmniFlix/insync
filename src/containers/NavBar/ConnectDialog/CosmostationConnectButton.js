@@ -66,10 +66,10 @@ const CosmostationConnectButton = (props) => {
 
 CosmostationConnectButton.propTypes = {
     fetchRewards: PropTypes.func.isRequired,
+    fetchUnBondingValidators: PropTypes.func.isRequired,
     fetchVestingBalance: PropTypes.func.isRequired,
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
-    fetchUnBondingValidators: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     hideConnectDialog: PropTypes.func.isRequired,

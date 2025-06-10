@@ -1,30 +1,31 @@
-import { Dialog, Button } from "@material-ui/core";
-import { hideTransparentTokensConvertDialog } from "actions/assets";
-import React from "react";
+import { Dialog, Button } from '@material-ui/core';
+import { hideTransparentTokensConvertDialog } from 'actions/assets';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
-import ShieldDialog from "containers/ShieldedAssets/ShieldDialog";
+import ShieldDialog from 'containers/ShieldedAssets/ShieldDialog';
 import closeIcon from '../../../assets/close_icon.png';
-import variables from "utils/variables";
+import variables from 'utils/variables';
 
 class TransparentConvertDialog extends React.Component {
-   render () {
+    render () {
         return (
-            <Dialog open={this.props.open}
-            onClose={this.props.handleClose}
-            aria-describedby="claim-dialog-description"
-            aria-labelledby="claim-dialog-title"
-            className="dialog tokens_convert_dialog">
-                 <div className="ibc_content shield_tranfer">
-                        <div className="header_div">
-                            <p>{variables[this.props.lang].nam_trans_to_nam_shield}</p>
-                            <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
-                        </div>
-                        <ShieldDialog/>
+            <Dialog
+                aria-describedby="claim-dialog-description"
+                aria-labelledby="claim-dialog-title"
+                className="dialog tokens_convert_dialog"
+                open={this.props.open}
+                onClose={this.props.handleClose}>
+                <div className="ibc_content shield_tranfer">
+                    <div className="header_div">
+                        <p>{variables[this.props.lang].nam_trans_to_nam_shield}</p>
+                        <Button onClick={this.props.handleClose}><img alt="closeIcon" src={closeIcon}/></Button>
                     </div>
+                    <ShieldDialog/>
+                </div>
             </Dialog>
-        )
+        );
     }
 }
 
@@ -32,6 +33,7 @@ TransparentConvertDialog.propTypes = {
     handleClose: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    value: PropTypes.object.isRequired,
     router: PropTypes.shape({
         location: PropTypes.shape({
             pathname: PropTypes.string.isRequired,
@@ -41,7 +43,6 @@ TransparentConvertDialog.propTypes = {
             proposalID: PropTypes.string,
         }).isRequired,
     }),
-    value: PropTypes.object.isRequired,
 };
 
 const stateToProps = (state) => {

@@ -1,21 +1,22 @@
-import { Dialog, Button } from "@material-ui/core";
-import { hideShieldedTokensConvertDialog } from "actions/assets";
-import React from "react";
+import { Dialog, Button } from '@material-ui/core';
+import { hideShieldedTokensConvertDialog } from 'actions/assets';
+import React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import withRouter from 'components/WithRouter';
-import ShieldedToTransparent from "containers/ShieldedAssets/ShieldDialog/ShieldedToTransparent";
+import ShieldedToTransparent from 'containers/ShieldedAssets/ShieldDialog/ShieldedToTransparent';
 import closeIcon from '../../../assets/close_icon.png';
-import variables from "utils/variables";
+import variables from 'utils/variables';
 
 class ShieldedConvertDialog extends React.Component {
-   render () {
+    render () {
         return (
-            <Dialog open={this.props.open}
-            onClose={this.props.handleClose}
-            aria-describedby="claim-dialog-description"
-            aria-labelledby="claim-dialog-title"
-            className="dialog tokens_convert_dialog">
+            <Dialog
+                aria-describedby="claim-dialog-description"
+                aria-labelledby="claim-dialog-title"
+                className="dialog tokens_convert_dialog"
+                open={this.props.open}
+                onClose={this.props.handleClose}>
                 <div className="ibc_content shield_tranfer">
                     <div className="header_div">
                         <p>{variables[this.props.lang].nam_shield_to_nam_trans}</p>
@@ -24,7 +25,7 @@ class ShieldedConvertDialog extends React.Component {
                     <ShieldedToTransparent/>
                 </div>
             </Dialog>
-        )
+        );
     }
 }
 

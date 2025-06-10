@@ -13,11 +13,11 @@ const amount = (state = {
             valid: action.valid,
         };
     case TRANSPARENT_TOKENS_CONVERT_DIALOG_HIDE:
-        case SHIELDED_TOKENS_CONVERT_DIALOG_HIDE:
+    case SHIELDED_TOKENS_CONVERT_DIALOG_HIDE:
         return {
             value: '',
             valid: true,
-        }
+        };
     default:
         return state;
     }

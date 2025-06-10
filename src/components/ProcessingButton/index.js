@@ -4,17 +4,17 @@ import * as PropTypes from 'prop-types';
 import './index.css';
 
 const ProcessingButton = ({ children }) => {
-  return (
-    <p className='processing_button'>
-      <Box className='button_div'>
-        {children}
-      </Box>
-    </p>
-  );
+    return (
+        <p className="processing_button">
+            <Box className="button_div">
+                {children}
+            </Box>
+        </p>
+    );
 };
 
 ProcessingButton.propTypes = {
-  children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 export default ProcessingButton;

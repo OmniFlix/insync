@@ -66,8 +66,8 @@ export const ibcList = [{
             display: 'tia',
             symbol: 'TIA',
             logo_URIs: {
-                png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png",
-                svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.svg"
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.svg',
             },
             coingecko_id: 'celestia',
         },
@@ -140,8 +140,8 @@ export const ibcList = [{
             display: 'ntrn',
             symbol: 'NTRN',
             logo_URIs: {
-                png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/ntrn.png",
-                svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/ntrn.svg"
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/ntrn.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/neutron/images/ntrn.svg',
             },
             coingecko_id: 'neutron',
         },
@@ -177,8 +177,8 @@ export const ibcList = [{
             display: 'statom',
             symbol: 'stATOM',
             logo_URIs: {
-                png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png",
-                svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.svg"
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.svg',
             },
             coingecko_id: 'stride',
         },

@@ -156,10 +156,10 @@ class Home extends Component {
                         <Table active={active} />
                     </div>
                     {(active === 2 && this.props.unBondingValidatorsList && this.props.unBondingValidatorsList.length)
-                    ? <div style={{paddingTop: 0}} className='stake_content padding'> 
-                        <h2 style={{textAlign: 'left', fontSize: '30px'}}>{variables[this.props.lang].unbounding}</h2>
-                        <UnbondingTable />
-                    </div> : null}
+                        ? <div className="stake_content padding" style={{ paddingTop: 0 }}>
+                            <h2 style={{ textAlign: 'left', fontSize: '30px' }}>{variables[this.props.lang].unbounding}</h2>
+                            <UnbondingTable />
+                        </div> : null}
                 </div>
                 <div className="proposals">
                     {!this.props.open
@@ -199,6 +199,7 @@ Home.propTypes = {
     lang: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     proposals: PropTypes.array.isRequired,
+    unBondingValidatorsList: PropTypes.array.isRequired,
     validatorList: PropTypes.array.isRequired,
     voteDetailsInProgress: PropTypes.bool.isRequired,
     address: PropTypes.string,
@@ -206,7 +207,6 @@ Home.propTypes = {
     router: PropTypes.shape({
         navigate: PropTypes.func.isRequired,
     }),
-    unBondingValidatorsList: PropTypes.array.isRequired,
 };
 
 const stateToProps = (state) => {

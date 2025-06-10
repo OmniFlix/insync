@@ -8,12 +8,12 @@ const AddressTextField = (props) => {
     const handleChange = (value) => {
         if (value) {
             let valid = false;
-            if(props.ibcTransferType === 'transparent') {
+            if (props.ibcTransferType === 'transparent') {
                 valid = value && (value.indexOf('tnam') > -1);
-            } else if(props.ibcTransferType === 'shielded') {
+            } else if (props.ibcTransferType === 'shielded') {
                 valid = value && (value.indexOf('znam') > -1);
             }
-            
+
             props.onChange(value, valid);
         } else {
             props.onChange(value, true);
@@ -27,7 +27,7 @@ const AddressTextField = (props) => {
             error={!props.valid}
             id="amount-text-field"
             name="address"
-            placeholder={props.ibcTransferType === 'transparent' ? "e.g. tnamomabc...xyz9k" : props.ibcTransferType === 'shielded' ? "e.g. znamomabc...xyz9k" : "e.g. denomabc...xyz9k"}
+            placeholder={props.ibcTransferType === 'transparent' ? 'e.g. tnamomabc...xyz9k' : props.ibcTransferType === 'shielded' ? 'e.g. znamomabc...xyz9k' : 'e.g. denomabc...xyz9k'}
             type="text"
             value={props.value}
             onChange={handleChange}/>
@@ -39,14 +39,14 @@ AddressTextField.propTypes = {
     lang: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     balance: PropTypes.array,
-    value: PropTypes.number,
     valid: PropTypes.bool,
+    value: PropTypes.number,
 };
 
 const stateToProps = (state) => {
     return {
         lang: state.language,
-        value: state.assets.tokensTransferAddress.value, 
+        value: state.assets.tokensTransferAddress.value,
         valid: state.assets.tokensTransferAddress.valid,
         ibcTransferType: state.ibcTransfer.ibcTransferType.value,
     };

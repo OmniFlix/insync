@@ -108,8 +108,8 @@ MultiValidatorSelectField.propTypes = {
     validatorImages: PropTypes.array.isRequired,
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    validatorList: PropTypes.array,
     lang: PropTypes.string,
+    validatorList: PropTypes.array,
 };
 
 const stateToProps = (state) => {

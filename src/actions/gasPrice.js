@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import {
     GAS_ESTIMATION_FETCH_ERROR,
     GAS_ESTIMATION_FETCH_IN_PROGRESS,
@@ -6,8 +6,8 @@ import {
     GAS_PRICE_FETCH_ERROR,
     GAS_PRICE_FETCH_IN_PROGRESS,
     GAS_PRICE_FETCH_SUCCESS,
-} from "constants/gasPrice";
-import { urlFetchGasEstimation, urlFetchGasPrice } from "constants/url";
+} from 'constants/gasPrice';
+import { urlFetchGasEstimation, urlFetchGasPrice } from 'constants/url';
 
 const fetchGasPriceInProgress = () => {
     return {

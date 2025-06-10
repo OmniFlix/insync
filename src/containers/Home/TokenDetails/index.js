@@ -14,7 +14,7 @@ import ClaimButton from './ClaimButton';
 // import Compound from './Compound';
 import { config } from '../../../config';
 // import { gas } from '../../../defaultGasValues';
-import ChipSkeleton from '../../../components/ChipSkeletonLoader'
+import ChipSkeleton from '../../../components/ChipSkeletonLoader';
 
 const TokenDetails = (props) => {
     let staked = props.delegatedValidatorList && props.delegatedValidatorList.reduce((accumulator, currentValue) => {
@@ -123,7 +123,7 @@ const TokenDetails = (props) => {
                         <p>{rewards > 0 ? rewards.toFixed(4) : 0}</p>
                     </div>
                 )}
-                
+
                 <div className="buttons_div">
                     <ClaimButton disable={rewards <= 0}/>
                     {/*         /!* <span/> *!/ */}
