@@ -84,7 +84,7 @@ const IBCTransferDialog = (props) => {
     });
 
     balance = balance && balance / 10 ** config.COIN_DECIMALS;
-    ibcBalance = ibcBalance && ibcBalance / 10 ** (props.selectedChain && props.selectedChain.config && props.selectedChain.config.COIN_DECIMALS);
+    ibcBalance = (ibcBalance && ibcBalance / 10 ** (props.selectedChain && props.selectedChain.config && props.selectedChain.config.COIN_DECIMALS)) || 0;
     if (ibcBalance > 0.5) {
         ibcBalance = ibcBalance - 0.05;
     }
@@ -94,16 +94,21 @@ const IBCTransferDialog = (props) => {
             return undefined;
         }
 
-        const channel = ibcData.channels.find((ch) => {
+        let channels = ibcData.channels;
+        let newIBCData = ibcData;
+        if (props.selectedChain?.channel?.channels) {
+            channels = props.selectedChain?.channel?.channels;
+            newIBCData = props.selectedChain?.channel;
+        }
+        const channel = channels.find((ch) => {
             if (!ch) { return false; }
 
-            return (ibcData.chain_1 && ibcData.chain_1.chain_name === targetChain && ch.chain_1 && ch.chain_1.channel_id) ||
-                (ibcData.chain_2 && ibcData.chain_2.chain_name === targetChain && ch.chain_2 && ch.chain_2.channel_id);
+            return (newIBCData.chain_1 && newIBCData.chain_1.chain_name === targetChain && ch.chain_1 && ch.chain_1.channel_id) ||
+                (newIBCData.chain_2 && newIBCData.chain_2.chain_name === targetChain && ch.chain_2 && ch.chain_2.channel_id);
         });
-
         if (!channel) { return undefined; }
 
-        const chainKey = ibcData.chain_1 && ibcData.chain_1.chain_name === targetChain ? 'chain_1' : 'chain_2';
+        const chainKey = newIBCData.chain_1 && newIBCData.chain_1.chain_name === targetChain ? 'chain_1' : 'chain_2';
         return channel[chainKey] && channel[chainKey].channel_id;
     };
 
@@ -247,8 +252,8 @@ const IBCTransferDialog = (props) => {
                             props.fetchBalanceList(props.address);
                             const tokenAddress = props.transparentTokensDepositDialogValue && props.transparentTokensDepositDialogValue.balance &&
                                 props.transparentTokensDepositDialogValue.balance.tokenAddress;
-                            const balance = props.transparentTokensDepositDialogValue && props.transparentTokensDepositDialogValue.balance &&
-                                props.transparentTokensDepositDialogValue.balance.minDenomAmount && Number(props.transparentTokensDepositDialogValue.balance.minDenomAmount);
+                            const balance = (props.transparentTokensDepositDialogValue && props.transparentTokensDepositDialogValue.balance &&
+                                props.transparentTokensDepositDialogValue.balance.minDenomAmount && Number(props.transparentTokensDepositDialogValue.balance.minDenomAmount)) || 0;
                             if (tokenAddress) {
                                 const time = setInterval(() => {
                                     (async () => {
