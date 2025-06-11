@@ -103,16 +103,22 @@ const IBCUnShielding = (props) => {
             return undefined;
         }
 
-        const channel = ibcData.channels.find((ch) => {
+        let channels = ibcData.channels;
+        let newIBCData = ibcData;
+        if (props.fromNamadaSelectedAsset?.channel?.channels) {
+            channels = props.fromNamadaSelectedAsset?.channel?.channels;
+            newIBCData = props.fromNamadaSelectedAsset?.channel;
+        }
+        const channel = channels.find((ch) => {
             if (!ch) { return false; }
 
-            return (ibcData.chain_1 && ibcData.chain_1.chain_name === targetChain && ch.chain_1 && ch.chain_1.channel_id) ||
-                (ibcData.chain_2 && ibcData.chain_2.chain_name === targetChain && ch.chain_2 && ch.chain_2.channel_id);
+            return (newIBCData.chain_1 && newIBCData.chain_1.chain_name === targetChain && ch.chain_1 && ch.chain_1.channel_id) ||
+                (newIBCData.chain_2 && newIBCData.chain_2.chain_name === targetChain && ch.chain_2 && ch.chain_2.channel_id);
         });
 
         if (!channel) { return undefined; }
 
-        const chainKey = ibcData.chain_1 && ibcData.chain_1.chain_name === targetChain ? 'chain_1' : 'chain_2';
+        const chainKey = newIBCData.chain_1 && newIBCData.chain_1.chain_name === targetChain ? 'chain_1' : 'chain_2';
         return channel[chainKey] && channel[chainKey].channel_id;
     };
 

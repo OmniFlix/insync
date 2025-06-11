@@ -183,6 +183,64 @@ export const ibcList = [{
             coingecko_id: 'stride',
         },
     ],
+}, {
+    name: 'USDC',
+    value: 'usdc',
+    chain_name: 'noble',
+    config: {
+        RPC_URL: 'https://noble-rpc.polkachu.com',
+        REST_URL: 'https://noble-api.polkachu.com',
+        CHAIN_ID: 'noble-1',
+        CHAIN_NAME: 'noble',
+        NETWORK: 'mainnet',
+        COIN_DENOM: 'USDC',
+        COIN_MINIMAL_DENOM: 'uusdc',
+        COIN_DECIMALS: 6,
+        PREFIX: 'noble',
+        gasPriceStep: {
+            low: 0.005,
+            average: 0.005,
+            high: 0.05,
+        },
+        AVG_GAS_STEP: 0.005,
+        EXPLORER_URL: 'https://www.mintscan.io/noble',
+    },
+    channel: {
+        "chain_1": {
+            "chain_name": "namada",
+        },
+        "chain_2": {
+            "chain_name": "noble",
+        },
+        "channels": [
+            {
+            "chain_1": {
+                "channel_id": "channel-5",
+                "port_id": "transfer"
+            },
+            "chain_2": {
+                "channel_id": "channel-136",
+                "port_id": "transfer"
+            },
+                "ordering": "unordered",
+                "version": "ics20-1"
+            }
+        ]
+    },
+    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.png',
+    assets: [
+        {
+            base: 'uusdc',
+            name: 'USDC',
+            display: 'usdc',
+            symbol: 'USDC',
+            logo_URIs: {
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.svg',
+            },
+            coingecko_id: 'usdc',
+        },
+    ],
 // }, {
 //     name: 'Noble',
 //     value: 'noble',
@@ -293,9 +351,16 @@ export const feeList = {
 };
 
 export const namadaAssets = ibcList.flatMap((chain) =>
-    chain.assets.map((asset) => ({
-        ...asset,
-        config: chain.config, // Attach the chain's config to each asset
-        channel_link: chain.channel_link,
-    })),
+    chain.assets.map((asset) => {
+        const obj = {
+            ...asset,
+            config: chain.config, // Attach the chain's config to each asset
+            channel_link: chain.channel_link,
+        };
+        if (chain?.channel) {
+            obj.channel = chain.channel;
+        }
+
+        return obj;
+    }),
 );
