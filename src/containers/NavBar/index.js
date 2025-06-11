@@ -90,6 +90,9 @@ class NavBar extends Component {
             profileAnchorEl: null,
         };
 
+        this.hoveringProfileArea = false;
+        this.closeTimeout = null;
+
         this.initKeplr = this.initKeplr.bind(this);
         this.handleFetch = this.handleFetch.bind(this);
         this.handleFetchValidators = this.handleFetchValidators.bind(this);
@@ -497,6 +500,24 @@ class NavBar extends Component {
         });
     };
 
+    handleProfileMouseEnter = (event) => {
+        this.hoveringProfileArea = true;
+        clearTimeout(this.closeTimeout);
+
+        if (!this.state.profileAnchorEl) {
+            this.setState({ profileAnchorEl: event.currentTarget });
+        }
+    };
+
+    handleProfileMouseLeave = () => {
+        this.hoveringProfileArea = false;
+        this.closeTimeout = setTimeout(() => {
+            if (!this.hoveringProfileArea) {
+                this.setState({ profileAnchorEl: null });
+            }
+        }, 200);
+    };
+
     render () {
         const { profileAnchorEl } = this.state;
         const profileOpen = Boolean(profileAnchorEl);
@@ -546,8 +567,8 @@ class NavBar extends Component {
                             </CustomTooltip> : null}
                         {localStorage.getItem('of_co_address') || this.props.address
                             ? (<div 
-                                onMouseEnter={this.handleProfilePopoverOpen}
-                                onMouseLeave={this.handleProfilePopoverClose}
+                                onMouseEnter={this.handleProfileMouseEnter}
+                                onMouseLeave={this.handleProfileMouseLeave}
                                 className="profile_button"
                                 style={{ cursor: 'pointer', position: 'relative' }}
                             >
@@ -556,6 +577,8 @@ class NavBar extends Component {
                                     <ProfilePopover
                                         anchorEl={profileAnchorEl}
                                         open={profileOpen}
+                                        onMouseEnter={this.handleProfileMouseEnter}
+                                        onMouseLeave={this.handleProfileMouseLeave}
                                         onClose={this.handleProfilePopoverClose}
                                     />
                                 )}
