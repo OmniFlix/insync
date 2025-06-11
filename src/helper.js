@@ -1413,6 +1413,7 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
         );
 
         const { rpc, tx } = sdk;
+        console.log('asdljhaskdasd', txs, tx, Tx)
 
         const checksums = await rpc.queryChecksums();
         if (checksums && Object.keys(checksums).length) {
@@ -1428,7 +1429,7 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
         });
 
         const wrapperProps = {
-            token: txs.token,
+            token: txs.token || config.TOKEN_ADDRESS,
             feeAmount: txs.feeAmount,
             gasLimit: txs.gasLimit,
             chainId: txs.chainId,

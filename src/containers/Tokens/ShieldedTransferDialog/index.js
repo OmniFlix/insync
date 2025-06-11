@@ -41,7 +41,9 @@ class ShieldedTransferDialog extends React.Component {
     }
 
     handleTransfer () {
-        const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
+        const fromSelectedConfig = this.props.value && this.props.value?.symbol === 'NAM'
+        ? config
+        : this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         this.setState({ inProgress: true });
 
         // const source = this.props.address;
@@ -167,6 +169,7 @@ class ShieldedTransferDialog extends React.Component {
         const balanceValidation = balanceCalculation(this.props.balanceList, token, this.props.tokensTransferAmount, this.props.feeOption);
         const disable = this.state.inProgress || this.props.tokensTransferAddressValid === false || !this.props.tokensTransferAmount || !this.props.tokensTransferAddress || this.props.tokensTransferAmountValid === false || !balanceValidation;
 
+        console.log('asjkdgajksads', this.props.value)
         return (
             <Dialog open={this.props.open}
             onClose={this.props.handleClose}

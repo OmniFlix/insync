@@ -14,7 +14,7 @@ import { formatCount } from "utils/numberFormats";
 import { fetchBalanceList, getBalance } from "actions/accounts";
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from "actions/stake";
 import { showMessage } from "actions/snackbar";
-import { config } from "config";
+import { config } from "../../../config";
 import { TransparentTransferDataMsgValue } from "@harish551/namada-types";
 import BigNumber from "bignumber.js";
 import { ibcTransparentTransfer } from "helper";
@@ -38,7 +38,9 @@ class TransparentTransferDialog extends React.Component {
     }
 
     handleTransfer () {
-        const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
+        const fromSelectedConfig = this.props.value && this.props.value?.symbol === 'NAM'
+        ? config
+        : this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         this.setState({ inProgress: true });
 
         const source = this.props.address;
@@ -53,7 +55,7 @@ class TransparentTransferDialog extends React.Component {
         const msgValue = new TransparentTransferDataMsgValue({
             source: source,
             target: this.props.tokensTransferAddress,
-            token: token,
+            token: config.TOKEN_ADDRESS,
             amount: amount,
         });
 
@@ -69,6 +71,8 @@ class TransparentTransferDialog extends React.Component {
             publicKey: this.props.details && this.props.details.publicKey,
             memo: this.props.tokensTransferMemo || '',
         };
+
+        console.log('askdhgadsas', txs, config, tx)
 
         if (this.props.value?.balance?.minDenomAmount) {
             txs.token = this.props.value?.balance?.tokenAddress;

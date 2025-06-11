@@ -239,7 +239,7 @@ class TokensListTable extends React.Component {
                                 <img src={WithdrawIcon} alt="Withdraw"/>
                                     {variables[this.props.lang].withdraw}
                                 </Button>}
-                                {token === 'NAM'
+                                {/* {token === 'NAM'
                                     ? <CustomTooltip title="Enables in Phase 5">
                                         <span className='disabled_tx_button'>
                                             <Button disabled={true} onClick={() => this.handleTransfer(value)}>
@@ -247,11 +247,11 @@ class TokensListTable extends React.Component {
                                                 {variables[this.props.lang].transfer}
                                             </Button>
                                         </span>
-                                    </CustomTooltip>
-                                    : <Button onClick={() => this.handleTransfer(value)}>
+                                    </CustomTooltip> */}
+                                    <Button onClick={() => this.handleTransfer(value)}>
                                         <img src={TransferIcon} alt="Transfer"/>
                                         {variables[this.props.lang].transfer}
-                                    </Button>}
+                                    </Button>
                                 {/* <CustomTooltip title={token === 'NAM' ? 'Enables in Phase 5' : "Coming Soon"}>
                                     <span className='disabled_tx_button'>
                                         <Button disabled={true} onClick={() => this.handleTransfer(value)}>
