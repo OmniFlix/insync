@@ -39,7 +39,7 @@ const ProfilePopover = (props) => {
             classes={{
                 paper: classes.paper,
             }}
-            open={props.open}
+            open={props.open && Boolean(props.anchorEl)}
             transformOrigin={{
                 vertical: 'top',
                 horizontal: 'center',
@@ -54,15 +54,19 @@ const ProfilePopover = (props) => {
                     <p className="address_heading">{variables[props.lang].transparent_address}</p>
                     <div className="hash_text" title={props.address}>
                         <p className="name">{props.address}</p>
-                        {props.address && props.address.slice(props.address.length - 6, props.address.length)}
+                        {props.address &&
+  props.address.slice(props.address.length - 6)}
                         <CopyButton data={props.address}>
                             {variables[props.lang].copy}
                         </CopyButton>
                     </div>
                     <p className="address_heading">{variables[props.lang].shielded_address}</p>
                     <div className="hash_text" title={props.address}>
-                        <p className="name">{props.shieldedaddress?.shieldedDetails}</p>
-                        {props.address && props.shieldedaddress?.shieldedDetails.slice(props.shieldedaddress?.shieldedDetails.length - 6, props.shieldedaddress?.shieldedDetails.length)}
+                        <p className="name">{props.shieldedaddress?.shieldedDetails || '-'}</p>
+                        {props.shieldedaddress?.shieldedDetails &&
+                            props.shieldedaddress.shieldedDetails.slice(
+                                props.shieldedaddress.shieldedDetails.length - 6
+                            )}
                         <CopyButton data={props.shieldedaddress?.shieldedDetails}>
                             {variables[props.lang].copy}
                         </CopyButton>
