@@ -38,9 +38,7 @@ class TransparentTransferDialog extends React.Component {
     }
 
     handleTransfer () {
-        const fromSelectedConfig = this.props.value && this.props.value?.symbol === 'NAM'
-        ? config
-        : this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
+        const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         this.setState({ inProgress: true });
 
         const source = this.props.address;
@@ -90,7 +88,6 @@ class TransparentTransferDialog extends React.Component {
             txs.gasLimit = new BigNumber(feeCalculation(this.props.gasEstimation))
         }
 
-        console.log('555555', tx, txs);
         this.setState({ approval: true });
         ibcTransparentTransfer(this.props.address, tx, txs, this.props.revealPublicKey, this.props.details && this.props.details.type, this.handleFetch);
     }

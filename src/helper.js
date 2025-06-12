@@ -1428,7 +1428,7 @@ export const ibcTransparentTransfer = async (address, Tx, txs, revealPublicKey, 
         });
 
         const wrapperProps = {
-            token: txs.token || config.TOKEN_ADDRESS,
+            token: txs.token,
             feeAmount: txs.feeAmount,
             gasLimit: txs.gasLimit,
             chainId: txs.chainId,
