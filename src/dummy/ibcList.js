@@ -36,43 +36,6 @@ export const ibcList = [{
         },
     ],
 }, {
-    name: 'Celestia',
-    value: 'celestia',
-    chain_name: 'celestia',
-    config: {
-        RPC_URL: 'https://public-celestia-rpc.numia.xyz',
-        REST_URL: 'https://public-celestia-lcd.numia.xyz',
-        CHAIN_ID: 'celestia',
-        CHAIN_NAME: 'celestia',
-        NETWORK: 'mainnet',
-        COIN_DENOM: 'TIA',
-        COIN_MINIMAL_DENOM: 'utia',
-        COIN_DECIMALS: 6,
-        PREFIX: 'celestia',
-        gasPriceStep: {
-            low: 0.01,
-            average: 0.025,
-            high: 0.04,
-        },
-        AVG_GAS_STEP: 0.010,
-        EXPLORER_URL: 'https://www.mintscan.io/celestia',
-    },
-    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-celestia.json',
-    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png',
-    assets: [
-        {
-            base: 'utia',
-            name: 'Celestia',
-            display: 'tia',
-            symbol: 'TIA',
-            logo_URIs: {
-                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png',
-                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.svg',
-            },
-            coingecko_id: 'celestia',
-        },
-    ],
-}, {
     name: 'Cosmos Hub',
     value: 'cosmos',
     chain_name: 'cosmoshub',
@@ -107,6 +70,102 @@ export const ibcList = [{
                 svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.svg',
             },
             coingecko_id: 'cosmos',
+        },
+    ],
+}, {
+    name: 'USDC',
+    value: 'usdc',
+    chain_name: 'noble',
+    config: {
+        RPC_URL: 'https://noble-rpc.polkachu.com',
+        REST_URL: 'https://noble-api.polkachu.com',
+        CHAIN_ID: 'noble-1',
+        CHAIN_NAME: 'noble',
+        NETWORK: 'mainnet',
+        COIN_DENOM: 'USDC',
+        COIN_MINIMAL_DENOM: 'uusdc',
+        COIN_DECIMALS: 6,
+        PREFIX: 'noble',
+        gasPriceStep: {
+            low: 0.005,
+            average: 0.005,
+            high: 0.05,
+        },
+        AVG_GAS_STEP: 0.005,
+        EXPLORER_URL: 'https://www.mintscan.io/noble',
+    },
+    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-noble.json',
+    // channel: {
+    //     "chain_1": {
+    //         "chain_name": "namada",
+    //     },
+    //     "chain_2": {
+    //         "chain_name": "noble",
+    //     },
+    //     "channels": [
+    //         {
+    //         "chain_1": {
+    //             "channel_id": "channel-5",
+    //             "port_id": "transfer"
+    //         },
+    //         "chain_2": {
+    //             "channel_id": "channel-136",
+    //             "port_id": "transfer"
+    //         },
+    //             "ordering": "unordered",
+    //             "version": "ics20-1"
+    //         }
+    //     ]
+    // },
+    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.png',
+    assets: [
+        {
+            base: 'uusdc',
+            name: 'USDC',
+            display: 'usdc',
+            symbol: 'USDC',
+            logo_URIs: {
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.svg',
+            },
+            coingecko_id: 'usdc',
+        },
+    ],
+}, {
+    name: 'Celestia',
+    value: 'celestia',
+    chain_name: 'celestia',
+    config: {
+        RPC_URL: 'https://public-celestia-rpc.numia.xyz',
+        REST_URL: 'https://public-celestia-lcd.numia.xyz',
+        CHAIN_ID: 'celestia',
+        CHAIN_NAME: 'celestia',
+        NETWORK: 'mainnet',
+        COIN_DENOM: 'TIA',
+        COIN_MINIMAL_DENOM: 'utia',
+        COIN_DECIMALS: 6,
+        PREFIX: 'celestia',
+        gasPriceStep: {
+            low: 0.01,
+            average: 0.025,
+            high: 0.04,
+        },
+        AVG_GAS_STEP: 0.010,
+        EXPLORER_URL: 'https://www.mintscan.io/celestia',
+    },
+    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-celestia.json',
+    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png',
+    assets: [
+        {
+            base: 'utia',
+            name: 'Celestia',
+            display: 'tia',
+            symbol: 'TIA',
+            logo_URIs: {
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.svg',
+            },
+            coingecko_id: 'celestia',
         },
     ],
 }, {
@@ -147,6 +206,43 @@ export const ibcList = [{
         },
     ],
 }, {
+    name: 'Nym',
+    value: 'nym',
+    chain_name: 'nyx',
+    config: {
+        RPC_URL: 'https://rpc.nyx.nodes.guru',
+        REST_URL: 'https://api.nyx.nodes.guru',
+        CHAIN_ID: 'nyx',
+        CHAIN_NAME: 'nyx',
+        NETWORK: 'mainnet',
+        COIN_DENOM: 'NYM',
+        COIN_MINIMAL_DENOM: 'unym',
+        COIN_DECIMALS: 6,
+        PREFIX: 'n',
+        gasPriceStep: {
+            low: 0.025,
+            average: 0.025,
+            high: 0.04,
+        },
+        AVG_GAS_STEP: 0.025,
+        EXPLORER_URL: 'https://ping.pub/nyx',
+    },
+    channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-nyx.json',
+    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/nyx/images/nym_token_light.png',
+    assets: [
+        {
+            base: 'unym',
+            name: 'NYM',
+            display: 'nym',
+            symbol: 'NYM',
+            logo_URIs: {
+                png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/nyx/images/nym_token_light.png",
+                svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/nyx/images/nym_token_light.svg"
+            },
+            coingecko_id: 'nym',
+        },
+    ],
+}, {
     name: 'Stride',
     value: 'stride',
     chain_name: 'stride',
@@ -166,10 +262,10 @@ export const ibcList = [{
             high: 0.05,
         },
         AVG_GAS_STEP: 0.0005,
-        EXPLORER_URL: 'https://explorer.bccnodes.com/stride-M',
+        EXPLORER_URL: 'https://www.mintscan.io/stride',
     },
     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-stride.json',
-    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png',
+    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.png',
     assets: [
         {
             base: 'stuatom',
@@ -177,119 +273,98 @@ export const ibcList = [{
             display: 'statom',
             symbol: 'stATOM',
             logo_URIs: {
-                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png',
-                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.svg',
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.svg',
             },
             coingecko_id: 'stride',
         },
     ],
-}, {
-    name: 'USDC',
-    value: 'usdc',
-    chain_name: 'noble',
-    config: {
-        RPC_URL: 'https://noble-rpc.polkachu.com',
-        REST_URL: 'https://noble-api.polkachu.com',
-        CHAIN_ID: 'noble-1',
-        CHAIN_NAME: 'noble',
-        NETWORK: 'mainnet',
-        COIN_DENOM: 'USDC',
-        COIN_MINIMAL_DENOM: 'uusdc',
-        COIN_DECIMALS: 6,
-        PREFIX: 'noble',
-        gasPriceStep: {
-            low: 0.005,
-            average: 0.005,
-            high: 0.05,
-        },
-        AVG_GAS_STEP: 0.005,
-        EXPLORER_URL: 'https://www.mintscan.io/noble',
-    },
-    channel: {
-        "chain_1": {
-            "chain_name": "namada",
-        },
-        "chain_2": {
-            "chain_name": "noble",
-        },
-        "channels": [
-            {
-            "chain_1": {
-                "channel_id": "channel-5",
-                "port_id": "transfer"
-            },
-            "chain_2": {
-                "channel_id": "channel-136",
-                "port_id": "transfer"
-            },
-                "ordering": "unordered",
-                "version": "ics20-1"
-            }
-        ]
-    },
-    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.png',
-    assets: [
-        {
-            base: 'uusdc',
-            name: 'USDC',
-            display: 'usdc',
-            symbol: 'USDC',
-            logo_URIs: {
-                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.png',
-                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/ethereum/images/usdc.svg',
-            },
-            coingecko_id: 'usdc',
-        },
-    ],
 // }, {
-//     name: 'Noble',
-//     value: 'noble',
-//     chain_name: 'noble',
+//     name: 'Stride',
+//     value: 'stride',
+//     chain_name: 'stride',
 //     config: {
-//         RPC_URL: 'https://noble-rpc.polkachu.com',
-//         REST_URL: 'https://noble-api.polkachu.com',
-//         CHAIN_ID: 'noble-1',
-//         CHAIN_NAME: 'noble',
+//         RPC_URL: 'https://stride-rpc.polkachu.com',
+//         REST_URL: 'https://stride-api.polkachu.com',
+//         CHAIN_ID: 'stride-1',
+//         CHAIN_NAME: 'stride',
 //         NETWORK: 'mainnet',
-//         COIN_DENOM: 'USDC',
-//         COIN_MINIMAL_DENOM: 'uusdc',
+//         COIN_DENOM: 'stOSMO',
+//         COIN_MINIMAL_DENOM: 'stuosmo',
 //         COIN_DECIMALS: 6,
-//         PREFIX: 'noble',
+//         PREFIX: 'stride',
 //         gasPriceStep: {
 //             low: 0.005,
 //             average: 0.005,
 //             high: 0.05,
 //         },
 //         AVG_GAS_STEP: 0.0005,
-//         EXPLORER_URL: 'https://www.mintscan.io/noble',
+//         EXPLORER_URL: 'https://www.mintscan.io/stride',
 //     },
-//     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-noble.json',
-//     image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/noble/images/stake.png',
+//     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-stride.json',
+//     image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stosmo.png',
 //     assets: [
 //         {
-//             base: 'uusdc',
-//             name: 'USDC',
-//             display: 'usdc',
-//             symbol: 'noble',
+//             base: 'stuosmo',
+//             name: 'stride',
+//             display: 'stosmo',
+//             symbol: 'stOSMO',
 //             logo_URIs: {
-//                 png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/noble/images/stake.png",
-//                 svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/noble/images/stake.svg"
+//                 png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stosmo.png',
+//                 svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stosmo.svg',
 //             },
-//             coingecko_id: 'usdc',
+//             coingecko_id: 'stride',
 //         },
 //     ],
 // }, {
-//     name: 'Nym',
-//     value: 'nym',
-//     chain_name: 'nym',
+//     name: 'Stride',
+//     value: 'stride',
+//     chain_name: 'stride',
+//     config: {
+//         RPC_URL: 'https://stride-rpc.polkachu.com',
+//         REST_URL: 'https://stride-api.polkachu.com',
+//         CHAIN_ID: 'stride-1',
+//         CHAIN_NAME: 'stride',
+//         NETWORK: 'mainnet',
+//         COIN_DENOM: 'stTIA',
+//         COIN_MINIMAL_DENOM: 'stutia',
+//         COIN_DECIMALS: 6,
+//         PREFIX: 'stride',
+//         gasPriceStep: {
+//             low: 0.005,
+//             average: 0.005,
+//             high: 0.05,
+//         },
+//         AVG_GAS_STEP: 0.0005,
+//         EXPLORER_URL: 'https://www.mintscan.io/stride',
+//     },
+//     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-stride.json',
+//     image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/sttia.png',
+//     assets: [
+//         {
+//             base: 'stutia',
+//             name: 'stride',
+//             display: 'sttia',
+//             symbol: 'stTIA',
+//             logo_URIs: {
+//                 png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/sttia.png',
+//                 svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/sttia.svg',
+//             },
+//             coingecko_id: 'stride',
+//         },
+//     ],
+// }, {
+//     name: 'penumbra',
+//     value: 'penumbra',
+//     chain_name: 'penumbra',
 //     config: {
 //         RPC_URL: 'https://nym-rpc.polkachu.com',
 //         REST_URL: 'https://nym-api.polkachu.com',
 //         CHAIN_ID: 'nyx',
 //         CHAIN_NAME: 'nyx',
 //         NETWORK: 'mainnet',
-//         COIN_DENOM: 'NYM',
-//         COIN_MINIMAL_DENOM: 'unym',
+//         COIN_DENOM: 'UM',
+//         COIN_MINIMAL_DENOM: 'upenumbra',
 //         COIN_DECIMALS: 6,
 //         PREFIX: 'n',
 //         gasPriceStep: {
@@ -300,19 +375,19 @@ export const ibcList = [{
 //         AVG_GAS_STEP: 0.025,
 //         EXPLORER_URL: 'https://www.mintscan.io/nyx',
 //     },
-//     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-nyx.json',
-//     image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/nyx/images/nym_token_light.png',
+//     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-penumbra.json',
+//     image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/penumbra/images/um.png',
 //     assets: [
 //         {
-//             base: 'nym',
-//             name: 'NYM',
-//             display: 'nym',
-//             symbol: 'NYM',
+//             base: 'upenumbra',
+//             name: 'UM',
+//             display: 'penumbra',
+//             symbol: 'UM',
 //             logo_URIs: {
-//                 png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/nyx/images/nym_token_light.png",
-//                 svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/nyx/images/nym_token_light.svg"
+//                 png: "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/penumbra/images/um.png",
+//                 svg: "https://raw.githubusercontent.com/cosmos/chain-registry/master/_non-cosmos/penumbra/images/um.svg"
 //             },
-//             coingecko_id: 'nym',
+//             coingecko_id: 'penumbra',
 //         },
 //     ],
 }];
