@@ -17,6 +17,7 @@ import classNames from 'classnames';
 import DotsLoading from 'components/DotsLoading';
 import variables from 'utils/variables';
 import { fetchGasEstimation } from 'actions/gasPrice';
+import { config } from '../../config';
 
 const CustomTooltip = withStyles({
     tooltip: {
@@ -96,6 +97,12 @@ class ShieldedTokensListTable extends React.Component {
         if (find) {
             this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
         } else {
+            // Enable in phase 5
+            // if (!find && value?.config?.COIN_DENOM === config.COIN_DENOM) {
+            //     this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
+            // } else {
+            //     this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM);
+            // }
             this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM);
         }
         this.props.showShieldedTokensConvertDialog(value);
@@ -213,7 +220,7 @@ class ShieldedTokensListTable extends React.Component {
                                     <img src={WithdrawIcon} alt="Withdraw"/>
                                     {variables[this.props.lang].withdraw}
                                 </Button>}
-                                {/* {token === 'NAM'
+                                {token === 'NAM'
                                     ? <CustomTooltip  title="Enables in Phase 5">
                                         <span className='disabled_tx_button'>
                                             <Button disabled={true} onClick={() => this.handleTransfer(value)}>
@@ -221,11 +228,11 @@ class ShieldedTokensListTable extends React.Component {
                                                 {variables[this.props.lang].transfer}
                                             </Button>
                                         </span>
-                                    </CustomTooltip>  */}
-                                    <Button onClick={() => this.handleTransfer(value)} disabled={this.props.shieldedBalanceProgress}>
+                                    </CustomTooltip>
+                                    : <Button onClick={() => this.handleTransfer(value)} disabled={this.props.shieldedBalanceProgress}>
                                         <img src={TransferIcon} alt="Transfer"/>
                                         {variables[this.props.lang].transfer}
-                                    </Button>
+                                    </Button>}
                                 {token === 'NAM'
                                     ? <CustomTooltip  title="Enables in Phase 5">
                                         <span className='disabled_tx_button'>
@@ -260,13 +267,18 @@ class ShieldedTokensListTable extends React.Component {
                 tokenAddress: (matchingBalance && matchingBalance.length && matchingBalance[0]) || (matchingToken && matchingToken.address) || null,
             };
         }).filter((item) => item);
+        const matchingBalance = (this.props.balanceList || []).find(([address]) => address === config.TOKEN_ADDRESS);
         enrichedAssets.unshift({
             name: 'Shielded Namada',
             symbol: 'NAM',
             logo_URIs: {
                 svg: NamadaShieldedLogo,
             },
-            balance: 0,
+            config: {
+                COIN_DENOM: 'NAM',
+            },
+            balance: (matchingBalance && matchingBalance.length && matchingBalance[1]) || 0,
+            tokenAddress: config.TOKEN_ADDRESS,
         });
 
         const tableData = enrichedAssets && enrichedAssets.length

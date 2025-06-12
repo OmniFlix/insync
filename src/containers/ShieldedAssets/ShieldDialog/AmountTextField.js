@@ -11,9 +11,12 @@ const AmountTextField = (props) => {
     if (props.from === 'shield_to_transparent') {
         const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
         namadaBalance = props.fromNamadaSelectedAsset?.balance && Number(props.fromNamadaSelectedAsset?.balance) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+        if (props.fromNamadaSelectedAsset?.tokenAddress === config.TOKEN_ADDRESS) {
+            namadaBalance = props.fromNamadaSelectedAsset?.balance && Number(props.fromNamadaSelectedAsset?.balance);
+        }
     }
     if (props.selectedAsset?.balance?.tokenAddress === config.TOKEN_ADDRESS) {
-        namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount)
+        namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount);
     }
     
     const handleChange = (input) => {

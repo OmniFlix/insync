@@ -77,14 +77,14 @@ const ShieldedSourceSelectField = (props) => {
             value={props.value}
             onChange={handleChange}>
             {props.ibcOnly
-            ? null
-            : <MenuItem className="phase5_disable" value="Namada" disabled>
-                <img alt="NamadaLogo" src={NamadaLogo}/>
-                <div>
-                    {variables[props.lang].namada}
-                    <p>{variables[props.lang].enables_in_phase_5}</p>
-                </div>
-            </MenuItem>}
+                ? null
+                : <MenuItem className="phase5_disable" value="NAM" disabled>
+                    <img alt="NamadaLogo" src={NamadaLogo}/>
+                    <div>
+                        {variables[props.lang].namada}
+                        <p>{variables[props.lang].enables_in_phase_5}</p>
+                    </div>
+                </MenuItem>}
             {enrichedAssets && enrichedAssets.map((asset, index) => {
                 if (asset?.balance?.minDenomAmount === "0") {
                     return null;

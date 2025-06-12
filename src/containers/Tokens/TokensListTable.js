@@ -106,10 +106,11 @@ class TokensListTable extends React.Component {
         }
         this.props.fetchGasEstimation(array, value);
         this.props.showTransparentTokensConvertDialog(value);
-        if (!find && value?.config?.COIN_DENOM === config.COIN_DENOM) {
-            this.props.setSelectedSource(value?.config?.COIN_DENOM, value);
-            return;
-        }
+        // Enable in phase 5
+        // if (!find && value?.config?.COIN_DENOM === config.COIN_DENOM) {
+        //     this.props.setSelectedSource(value?.config?.COIN_DENOM, value);
+        //     return;
+        // }
         this.props.setSelectedSource(value?.config?.COIN_DENOM, find);
     }
 

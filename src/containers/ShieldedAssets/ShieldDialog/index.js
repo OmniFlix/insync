@@ -71,6 +71,8 @@ const ShieldDialog = (props) => {
                 if (props.feeOption?.fees?.token === config.TOKEN_ADDRESS) {
                     txs.feeAmount = new BigNumber(0.000001);
                 }
+            } else if (props.selectedAsset?.balance?.tokenAddress === config.TOKEN_ADDRESS) {
+                txs.feeAmount = new BigNumber(0.000001);
             }
             txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }

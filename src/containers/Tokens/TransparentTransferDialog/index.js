@@ -56,7 +56,7 @@ class TransparentTransferDialog extends React.Component {
         const msgValue = new TransparentTransferDataMsgValue({
             source: source,
             target: this.props.tokensTransferAddress,
-            token: config.TOKEN_ADDRESS,
+            token: token,
             amount: amount,
         });
 
@@ -84,10 +84,13 @@ class TransparentTransferDialog extends React.Component {
                 if (this.props.feeOption?.fees?.token === config.TOKEN_ADDRESS) {
                     txs.feeAmount = new BigNumber(0.000001);
                 }
+            } else if (this.props.value?.balance?.tokenAddress === config.TOKEN_ADDRESS) {
+                txs.feeAmount = new BigNumber(0.000001);
             }
             txs.gasLimit = new BigNumber(feeCalculation(this.props.gasEstimation))
         }
 
+        console.log('555555', tx, txs);
         this.setState({ approval: true });
         ibcTransparentTransfer(this.props.address, tx, txs, this.props.revealPublicKey, this.props.details && this.props.details.type, this.handleFetch);
     }

@@ -35,7 +35,8 @@ const ShieldedToTransparent = (props) => {
         const source = props.shieldedData?.pseudoExtendedKey;
         let token = config.TOKEN_ADDRESS;
         let amount = new BigNumber(props.amount);
-        if (props.selectedAsset?.balance) {
+        if (props.selectedAsset?.balance && props.selectedAsset?.tokenAddress &&
+            props.selectedAsset?.tokenAddress !== config.TOKEN_ADDRESS) {
             amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
             token = props.selectedAsset?.tokenAddress;
         }
@@ -71,6 +72,8 @@ const ShieldedToTransparent = (props) => {
                 if (props.feeOption?.fees?.token === config.TOKEN_ADDRESS) {
                     txs.feeAmount = new BigNumber(0.000001);
                 }
+            } else if (props.selectedAsset?.tokenAddress === config.TOKEN_ADDRESS) {
+                txs.feeAmount = new BigNumber(0.000001);
             }
             txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
@@ -161,7 +164,10 @@ const ShieldedToTransparent = (props) => {
     const disable = inProgress || !props.amount || props.amountValid === false || !balanceValidation;
 
     const fromNamadaSelectedConfig = props.selectedAsset?.config;
-    const namadaBalance = props.selectedAsset?.balance && Number(props.selectedAsset?.balance) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    let namadaBalance = props.selectedAsset?.balance && Number(props.selectedAsset?.balance) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    if (props.selectedAsset?.tokenAddress === config.TOKEN_ADDRESS) {
+        namadaBalance = props.selectedAsset?.balance && Number(props.selectedAsset?.balance)
+    }
     const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
 
     return (
