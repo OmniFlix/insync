@@ -14,7 +14,7 @@ import { formatCount } from "utils/numberFormats";
 import { fetchBalanceList, getBalance } from "actions/accounts";
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from "actions/stake";
 import { showMessage } from "actions/snackbar";
-import { config } from "config";
+import { config } from "../../../config";
 import { TransparentTransferDataMsgValue } from "@harish551/namada-types";
 import BigNumber from "bignumber.js";
 import { ibcTransparentTransfer } from "helper";
@@ -45,7 +45,8 @@ class TransparentTransferDialog extends React.Component {
         // const source = this.props.shieldedData?.pseudoExtendedKey;
         let token = config.TOKEN_ADDRESS;
         let amount = new BigNumber(this.props.tokensTransferAmount);
-        if (this.props.value?.balance?.minDenomAmount) {
+        if (this.props.value?.balance?.minDenomAmount && this.props.value?.balance?.tokenAddress &&
+            this.props.value?.balance?.tokenAddress !== config.TOKEN_ADDRESS) {
             amount = new BigNumber(this.props.tokensTransferAmount * (10 ** fromSelectedConfig?.COIN_DECIMALS));
             token = this.props.value?.balance?.tokenAddress;
         }
@@ -81,6 +82,8 @@ class TransparentTransferDialog extends React.Component {
                 if (this.props.feeOption?.fees?.token === config.TOKEN_ADDRESS) {
                     txs.feeAmount = new BigNumber(0.000001);
                 }
+            } else if (this.props.value?.balance?.tokenAddress === config.TOKEN_ADDRESS) {
+                txs.feeAmount = new BigNumber(0.000001);
             }
             txs.gasLimit = new BigNumber(feeCalculation(this.props.gasEstimation))
         }

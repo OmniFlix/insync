@@ -48,8 +48,8 @@ const SourceSelectField = (props) => {
             placeholder={variables[props.lang]['select_asset']}
             value={props.value}
             onChange={handleChange}>
-            <MenuItem className="phase5_disable" value="Namada" disabled>
-                <img alt="NamadaLogo" src={NamadaLogo}/>
+            <MenuItem className="phase5_disable" value="NAM" disabled>
+                <img alt="NamadaLogo" src={NamadaLogo} style={{ width: '24px', height: '24px', marginRight: '8px' }}/>
                 <div>
                     {variables[props.lang].namada}
                     <p>{variables[props.lang].enables_in_phase_5}</p>

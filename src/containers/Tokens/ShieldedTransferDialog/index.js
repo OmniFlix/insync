@@ -19,7 +19,6 @@ import { ShieldedTransferDataMsgValue } from "@harish551/namada-types";
 import BigNumber from "bignumber.js";
 import { ibcShieldedTransfer } from "helper";
 import { fetchIBCBalance, showTokensTransactionSuccessDialog } from "actions/IBCTransfer";
-import CircularProgress from "components/CircularProgress";
 import variables from "utils/variables";
 import ProcessingButton from "components/ProcessingButton";
 import { balanceCalculation, feeCalculation, feeCalculationDisplay } from "utils/feeCalculation";
@@ -41,14 +40,17 @@ class ShieldedTransferDialog extends React.Component {
     }
 
     handleTransfer () {
-        const fromSelectedConfig = this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
+        const fromSelectedConfig = this.props.value && this.props.value?.symbol === 'NAM'
+        ? config
+        : this.props.value && this.props.value.config && this.props.value.config.CHAIN_NAME ? this.props.value.config : null;
         this.setState({ inProgress: true });
 
         // const source = this.props.address;
         const source = this.props.shieldedData?.pseudoExtendedKey;
         let token = config.TOKEN_ADDRESS;
         let amount = new BigNumber(this.props.tokensTransferAmount);
-        if (this.props.value?.balance) {
+        if (this.props.value?.balance && this.props.value?.tokenAddress &&
+            this.props.value?.tokenAddress !== config.TOKEN_ADDRESS) {
             amount = new BigNumber(this.props.tokensTransferAmount * (10 ** fromSelectedConfig?.COIN_DECIMALS));
             token = this.props.value?.tokenAddress;
         }
@@ -94,6 +96,8 @@ class ShieldedTransferDialog extends React.Component {
                 if (this.props.feeOption?.fees?.token === config.TOKEN_ADDRESS) {
                     txs.feeAmount = new BigNumber(0.000001);
                 }
+            } else if (this.props.value?.tokenAddress === config.TOKEN_ADDRESS) {
+                txs.feeAmount = new BigNumber(0.000001);
             }
             txs.gasLimit = new BigNumber(feeCalculation(this.props.gasEstimation))
         }
