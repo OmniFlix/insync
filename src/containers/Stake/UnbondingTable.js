@@ -105,7 +105,7 @@ class UnbondingTable extends Component {
                 customBodyRender: (value, index) => {
                     return (
                         <div className="actions">
-                            {moment.unix(value?.withdrawTime).isBefore(moment())
+                            {moment.unix(value?.withdrawTime).isBefore(moment()) && value.canWithdraw
                                 ? <WithDrawButton validator={value?.validator?.address}/>
                                 : <div className="voting_power">
                                     {getPendingTime(value?.withdrawTime)}
