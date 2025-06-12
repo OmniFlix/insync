@@ -16,7 +16,7 @@ export const config = {
     // // COIN_MINIMAL_DENOM: 'uflix',
     // COIN_DECIMALS: 6,
     // // PREFIX: 'omniflix',
-    // // COIN_TYPE: 118,
+    // // COIN_TYPE: 118, 
     // // COSMOSTAION: 'omniflix',
     // // COINGECKO_ID: 'omniflix-network',
     // // GAS_PRICE_STEP_LOW: 0.001,
@@ -26,7 +26,7 @@ export const config = {
 
     RPC_URL: 'https://rpc.campfire.tududes.com',
     REST_URL: 'https://indexer.campfire.tududes.com',
-    MASP_REST_URL: 'https://masp.campfire.tududes.com',
+    MASP_REST_URL: 'https://masp.campfire.tududes.com:443',
     EXPLORER_URL: 'https://testnet.namada.tududes.com/omniflix',
     STAKING_URL: 'https://namada.omniflix.co/stake',
     NETWORK_NAME: 'Namada',

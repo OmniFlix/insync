@@ -106,6 +106,10 @@ class TokensListTable extends React.Component {
         }
         this.props.fetchGasEstimation(array, value);
         this.props.showTransparentTokensConvertDialog(value);
+        if (!find && value?.config?.COIN_DENOM === config.COIN_DENOM) {
+            this.props.setSelectedSource(value?.config?.COIN_DENOM, value);
+            return;
+        }
         this.props.setSelectedSource(value?.config?.COIN_DENOM, find);
     }
 
@@ -239,7 +243,7 @@ class TokensListTable extends React.Component {
                                 <img src={WithdrawIcon} alt="Withdraw"/>
                                     {variables[this.props.lang].withdraw}
                                 </Button>}
-                                {/* {token === 'NAM'
+                                {token === 'NAM'
                                     ? <CustomTooltip title="Enables in Phase 5">
                                         <span className='disabled_tx_button'>
                                             <Button disabled={true} onClick={() => this.handleTransfer(value)}>
@@ -247,19 +251,11 @@ class TokensListTable extends React.Component {
                                                 {variables[this.props.lang].transfer}
                                             </Button>
                                         </span>
-                                    </CustomTooltip> */}
-                                    <Button onClick={() => this.handleTransfer(value)}>
+                                    </CustomTooltip>
+                                    : <Button onClick={() => this.handleTransfer(value)}>
                                         <img src={TransferIcon} alt="Transfer"/>
                                         {variables[this.props.lang].transfer}
-                                    </Button>
-                                {/* <CustomTooltip title={token === 'NAM' ? 'Enables in Phase 5' : "Coming Soon"}>
-                                    <span className='disabled_tx_button'>
-                                        <Button disabled={true} onClick={() => this.handleTransfer(value)}>
-                                            <img src={TransferIcon} alt="Transfer"/>
-                                            Transfer
-                                        </Button>
-                                    </span>
-                                </CustomTooltip> */}
+                                    </Button>}
                                 {token === 'NAM'
                                     ? <CustomTooltip title="Enables in Phase 5">
                                         <span className='disabled_tx_button'>
@@ -328,8 +324,12 @@ class TokensListTable extends React.Component {
             logo_URIs: {
                 svg: NamadaLogo,
             },
+            config: {
+                COIN_DENOM: 'NAM',
+            },
             balance: {
-                minDenomAmount: available
+                minDenomAmount: available,
+                tokenAddress: config.TOKEN_ADDRESS,
             }
         });
 

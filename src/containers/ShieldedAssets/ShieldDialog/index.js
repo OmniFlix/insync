@@ -12,7 +12,6 @@ import NamadaLogo from '../../../assets/masp/namada_logo.svg';
 import NamadaShieldedLogo from '../../../assets/masp/namada_shielded.svg';
 import BigNumber from 'bignumber.js';
 import { maspTransaction } from 'helper';
-import CircularProgress from 'components/CircularProgress';
 import { ShieldingTransferDataMsgValue } from '@harish551/namada-types';
 import { fetchBalanceList, getBalance, getShieldedBalance } from 'actions/accounts';
 import { showDelegateFailedDialog, showDelegateProcessingDialog, showDelegateSuccessDialog } from 'actions/stake';
@@ -36,7 +35,8 @@ const ShieldDialog = (props) => {
         const source = props.address;
         let token = config.TOKEN_ADDRESS;
         let amount = new BigNumber(props.amount);
-        if (props.selectedAsset?.balance?.minDenomAmount) {
+        if (props.selectedAsset?.balance?.minDenomAmount && props.selectedAsset?.balance?.tokenAddress &&
+            props.selectedAsset?.balance?.tokenAddress !== config.TOKEN_ADDRESS) {
             amount = new BigNumber(props.amount * (10 ** fromNamadaSelectedConfig?.COIN_DECIMALS));
             token = props.selectedAsset?.balance?.tokenAddress;
         }
@@ -68,6 +68,9 @@ const ShieldDialog = (props) => {
                 txs.token = props.feeOption?.fees?.token;
                 const tokenGasPrice = props.gasPrice.find((val) => val.token === props.feeOption?.fees?.token);
                 txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+                if (props.feeOption?.fees?.token === config.TOKEN_ADDRESS) {
+                    txs.feeAmount = new BigNumber(0.000001);
+                }
             }
             txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
@@ -108,6 +111,38 @@ const ShieldDialog = (props) => {
                 text: `${tokenName} Shielded Successfully`,
                 content: 'Your shielded transaction was completed',
             }
+            if (token === config.TOKEN_ADDRESS) {
+                props.getBalance(props.address, (result) => {
+                    if (result && result.length) {
+                        let localBalance = null;
+                        result && result.length && result.map((val) => {
+                            if (val && val.length) {
+                                val.map((value) => {
+                                    if (value === config.TOKEN_ADDRESS) {
+                                        localBalance = val[1];
+                                    }
+                                });
+                            }
+    
+                            return null;
+                        });
+    
+                        if (localBalance !== available) {
+                            setInProgress(false);
+                            setParams(false);
+                            setApproval(false);
+                            clearInterval(intervalTime);
+                            // props.successDialog(value && value.hash, null, fromNamadaSelectedConfig);
+                            props.showTokensTransactionSuccessDialog(successObject)
+                            props.getShieldedBalance(props.shieldedData?.viewingKey, props.shieldedData?.timestamp, props.address, props.shieldedData?.address, config.CHAIN_ID);
+                            props.hideTransparentTokensConvertDialog();
+                        }
+                    }
+                });
+
+                return;
+            }
+
             props.fetchBalanceList(props.address, (result) => {
                 if (result && result.length) {
                     let localBalance = null;
@@ -172,7 +207,10 @@ const ShieldDialog = (props) => {
     const disable = inProgress || !props.amount || props.amountValid === false || !balanceValidation;
 
     const fromNamadaSelectedConfig = props.selectedAsset?.config;
-    const namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    let namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    if (props.selectedAsset?.balance?.tokenAddress === config.TOKEN_ADDRESS) {
+        namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount)
+    }
     const fee = feeList && fromNamadaSelectedConfig && feeList[fromNamadaSelectedConfig?.COIN_DENOM];
 
     return (

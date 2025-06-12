@@ -93,6 +93,9 @@ class ShieldedTransferDialog extends React.Component {
                 txs.token = this.props.feeOption?.fees?.token;
                 const tokenGasPrice = this.props.gasPrice.find((val) => val.token === this.props.feeOption?.fees?.token);
                 txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+                if (this.props.feeOption?.fees?.token === config.TOKEN_ADDRESS) {
+                    txs.feeAmount = new BigNumber(0.000001);
+                }
             }
             txs.gasLimit = new BigNumber(feeCalculation(this.props.gasEstimation))
         }
@@ -169,7 +172,6 @@ class ShieldedTransferDialog extends React.Component {
         const balanceValidation = balanceCalculation(this.props.balanceList, token, this.props.tokensTransferAmount, this.props.feeOption);
         const disable = this.state.inProgress || this.props.tokensTransferAddressValid === false || !this.props.tokensTransferAmount || !this.props.tokensTransferAddress || this.props.tokensTransferAmountValid === false || !balanceValidation;
 
-        console.log('asjkdgajksads', this.props.value)
         return (
             <Dialog open={this.props.open}
             onClose={this.props.handleClose}

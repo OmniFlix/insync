@@ -47,7 +47,8 @@ class TransparentTransferDialog extends React.Component {
         // const source = this.props.shieldedData?.pseudoExtendedKey;
         let token = config.TOKEN_ADDRESS;
         let amount = new BigNumber(this.props.tokensTransferAmount);
-        if (this.props.value?.balance?.minDenomAmount) {
+        if (this.props.value?.balance?.minDenomAmount && this.props.value?.balance?.tokenAddress &&
+            this.props.value?.balance?.tokenAddress !== config.TOKEN_ADDRESS) {
             amount = new BigNumber(this.props.tokensTransferAmount * (10 ** fromSelectedConfig?.COIN_DECIMALS));
             token = this.props.value?.balance?.tokenAddress;
         }
@@ -72,8 +73,6 @@ class TransparentTransferDialog extends React.Component {
             memo: this.props.tokensTransferMemo || '',
         };
 
-        console.log('askdhgadsas', txs, config, tx)
-
         if (this.props.value?.balance?.minDenomAmount) {
             txs.token = this.props.value?.balance?.tokenAddress;
             const tokenGasPrice = this.props.gasPrice.find((val) => val.token === this.props.value?.balance?.tokenAddress);
@@ -82,6 +81,9 @@ class TransparentTransferDialog extends React.Component {
                 txs.token = this.props.feeOption?.fees?.token;
                 const tokenGasPrice = this.props.gasPrice.find((val) => val.token === this.props.feeOption?.fees?.token);
                 txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+                if (this.props.feeOption?.fees?.token === config.TOKEN_ADDRESS) {
+                    txs.feeAmount = new BigNumber(0.000001);
+                }
             }
             txs.gasLimit = new BigNumber(feeCalculation(this.props.gasEstimation))
         }

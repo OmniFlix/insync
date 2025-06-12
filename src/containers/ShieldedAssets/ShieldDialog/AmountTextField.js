@@ -3,6 +3,7 @@ import React from 'react';
 import TextField from '../../../components/TextField';
 import { connect } from 'react-redux';
 import { setAmount } from '../../../actions/shieldedAssets';
+import { config } from 'config';
 
 const AmountTextField = (props) => {
     const fromNamadaSelectedConfig = props.selectedAsset?.config;
@@ -10,6 +11,9 @@ const AmountTextField = (props) => {
     if (props.from === 'shield_to_transparent') {
         const fromNamadaSelectedConfig = props.fromNamadaSelectedAsset?.config;
         namadaBalance = props.fromNamadaSelectedAsset?.balance && Number(props.fromNamadaSelectedAsset?.balance) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
+    }
+    if (props.selectedAsset?.balance?.tokenAddress === config.TOKEN_ADDRESS) {
+        namadaBalance = props.selectedAsset?.balance?.minDenomAmount && Number(props.selectedAsset?.balance?.minDenomAmount)
     }
     
     const handleChange = (input) => {

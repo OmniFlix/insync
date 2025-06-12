@@ -68,6 +68,9 @@ const ShieldedToTransparent = (props) => {
                 txs.token = props.feeOption?.fees?.token;
                 const tokenGasPrice = props.gasPrice.find((val) => val.token === props.feeOption?.fees?.token);
                 txs.feeAmount = new BigNumber(tokenGasPrice?.minDenomAmount);
+                if (props.feeOption?.fees?.token === config.TOKEN_ADDRESS) {
+                    txs.feeAmount = new BigNumber(0.000001);
+                }
             }
             txs.gasLimit = new BigNumber(feeCalculation(props.gasEstimation))
         }
