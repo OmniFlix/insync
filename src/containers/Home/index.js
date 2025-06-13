@@ -20,6 +20,9 @@ import withRouter from '../../components/WithRouter';
 // import SendButton from './SendButton';
 import cvIcon from '../../assets/cv.png';
 import UnbondingTable from 'containers/Stake/UnbondingTable';
+import TransparentTransferDialog from 'containers/Tokens/TransparentTransferDialog';
+import TokensSuccessDialog from 'containers/Tokens/SuccessDialog';
+
 class Home extends Component {
     constructor (props) {
         super(props);
@@ -188,6 +191,8 @@ class Home extends Component {
                 <PendingDialog/>
                 <ClaimDialog/>
                 <ClaimDelegateDialog/>
+                <TransparentTransferDialog/>
+                <TokensSuccessDialog/>
             </>
         );
     }
