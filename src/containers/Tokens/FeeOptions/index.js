@@ -11,6 +11,7 @@ import NamadaLogo from '../../../assets/masp/namada_logo.svg';
 import ShieldedNamadaLogo from '../../../assets/masp/namada_shielded.svg';
 import { makeStyles } from '@material-ui/core/styles';
 import variables from '../../../utils/variables';
+import { config } from '../../../config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,6 +80,21 @@ const FeeOptions = (props) => {
       : null;
       
       let balanceAmount = Number(matchingBalance?.minDenomAmount || 0);
+      if (matchingToken.address === config.TOKEN_ADDRESS && !balanceAmount) {
+        let balance = null;
+        props.balance && props.balance.length && props.balance.map((val) => {
+            if (val && val.length) {
+                val.map((value) => {
+                    if (value === config.TOKEN_ADDRESS) {
+                        balance = val[1];
+                    }
+                });
+            }
+        
+            return null;
+        });
+        balanceAmount = balanceAmount || balance;
+      }
       if (props.from && props.from === 'shielded') {
         const matchingBalance = matchingToken
         ? (props.shieldedBalance || []).find(([address]) => address === matchingToken.address)
@@ -149,6 +165,7 @@ const FeeOptions = (props) => {
 }
 
 FeeOptions.propTypes = {
+    balance: PropTypes.array.isRequired,
     balanceList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     setFeeOptionPopoverValue: PropTypes.func.isRequired,
@@ -164,6 +181,7 @@ FeeOptions.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        balance: state.accounts.balance.result,
         balanceList: state.accounts.balanceList.result,
         shieldedBalance: state.accounts.shieldedBalance.result,
         lang: state.language,
