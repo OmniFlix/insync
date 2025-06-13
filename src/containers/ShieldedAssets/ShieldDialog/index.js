@@ -112,6 +112,8 @@ const ShieldDialog = (props) => {
             const successObject = {
                 text: `${tokenName} Shielded Successfully`,
                 content: 'Your shielded transaction was completed',
+                tokenName: tokenName,
+                shielded: true,
             }
             if (token === config.TOKEN_ADDRESS) {
                 props.getBalance(props.address, (result) => {

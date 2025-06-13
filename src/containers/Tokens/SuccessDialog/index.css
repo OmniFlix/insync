@@ -94,3 +94,7 @@
     line-height: 130%;
     text-transform: capitalize;
 }
+
+.tokens_success_dialog .dialog_content button img {
+    margin-left: 8px;
+}

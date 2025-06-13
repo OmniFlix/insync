@@ -7,10 +7,21 @@ import { hideTokensTransactionSuccessDialog } from "actions/IBCTransfer";
 import Lottie from 'lottie-react';
 import backgroundAnimation from 'assets/abstract_waves_circles.json';
 import successGif from 'assets/success.gif';
+import xlogo from 'assets/x.png';
 import Close from "@material-ui/icons/Close";
 import './index.css';
 
 const SuccessDialog = (props) => {
+    const handleClick = () => {
+        const pageUrl = encodeURIComponent('https://namada.OmniFlix.co');
+        const newShareText = encodeURIComponent(
+            `I care about my privacy & just shielded ${props.value?.tokenName} via Namada!\n\nI walk the talk!\n\nDo you? Take action 👇\n`,
+        );
+
+        const targetUrl = `https://twitter.com/intent/tweet?text=${newShareText}&url=${pageUrl}`;
+        window.open(targetUrl, '_blank');
+    };
+
     return (
         <Dialog open={props.open}
         onClose={props.handleClose}
@@ -27,9 +38,14 @@ const SuccessDialog = (props) => {
             <div className="dialog_content">
                 <h2>{props.value?.text || 'OSMO Deposited Successfully'}</h2>
                 <p>{props.value?.content || 'Your deposit was completed and funds are available'}</p>
-                <Button onClick={props.handleClose}>
-                    Done
-                </Button>
+                {props.value?.shielded
+                    ? <Button onClick={handleClick}>
+                        Share on
+                        <img unoptimized alt={'x'} className="x_logo" src={xlogo}/>
+                    </Button>
+                    : <Button onClick={props.handleClose}>
+                        Done
+                    </Button>}
             </div>
         </Dialog>
     )
