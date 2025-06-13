@@ -163,6 +163,14 @@ class TransparentTransferDialog extends React.Component {
                                 <Close className="icon" />
                             </Button>
                     </div>
+                    <div className="section3">
+                        <div className="row1">
+                            {variables[this.props.lang].enter_recipient_address}
+                        </div>
+                        <div className="row2">
+                            <AddressTextField />
+                        </div>
+                    </div>
                     <div className="section1">
                         <div className="row1">
                             <div className="text">{variables[this.props.lang].asset}</div>
@@ -179,14 +187,6 @@ class TransparentTransferDialog extends React.Component {
                             <div className="right_section">
                                 <AmountTextField />
                             </div>
-                        </div>
-                    </div>
-                    <div className="section3">
-                        <div className="row1">
-                            {variables[this.props.lang].enter_recipient_address}
-                        </div>
-                        <div className="row2">
-                            <AddressTextField />
                         </div>
                     </div>
                     <div className="section4">
