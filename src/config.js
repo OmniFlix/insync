@@ -11,18 +11,8 @@ export const config = {
     NETWORK_TYPE: 'mainnet',
     CHAIN_ID: 'namada.5f5de2dd1b88cba30586420',
     TOKEN_ADDRESS: 'tnam1q9gr66cvu4hrzm0sd5kmlnjje82gs3xlfg3v6nu7',
-    // CHAIN_NAME: 'OmniFlix Hub',
     COIN_DENOM: 'NAM',
-    // COIN_MINIMAL_DENOM: 'uflix',
     COIN_DECIMALS: 6,
-    // PREFIX: 'omniflix',
-    // COIN_TYPE: 118,
-    // COSMOSTAION: 'omniflix',
-    // COINGECKO_ID: 'omniflix-network',
-    // GAS_PRICE_STEP_LOW: 0.001,
-    // GAS_PRICE_STEP_AVERAGE: 0.0025,
-    // GAS_PRICE_STEP_HIGH: 0.025,
-    // FEATURES: ['ibc-transfer', 'ibc-go'],
 };
 
 export const osmosisChainConfig = {
