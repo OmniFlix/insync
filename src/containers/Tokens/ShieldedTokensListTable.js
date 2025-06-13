@@ -97,13 +97,11 @@ class ShieldedTokensListTable extends React.Component {
         if (find) {
             this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
         } else {
-            // Enable in phase 5
-            // if (!find && value?.config?.COIN_DENOM === config.COIN_DENOM) {
-            //     this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
-            // } else {
-            //     this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM);
-            // }
-            this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM);
+            if (!find && value?.config?.COIN_DENOM === config.COIN_DENOM) {
+                this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM, value);
+            } else {
+                this.props.setFromShieldedNamadaSelectedAsset(value?.config?.COIN_DENOM);
+            }
         }
         this.props.showShieldedTokensConvertDialog(value);
     }
@@ -220,32 +218,14 @@ class ShieldedTokensListTable extends React.Component {
                                     <img src={WithdrawIcon} alt="Withdraw"/>
                                     {variables[this.props.lang].withdraw}
                                 </Button>}
-                                {token === 'NAM'
-                                    ? <CustomTooltip  title="Enables in Phase 5">
-                                        <span className='disabled_tx_button'>
-                                            <Button disabled={true} onClick={() => this.handleTransfer(value)}>
-                                                <img src={TransferIcon} alt="Transfer"/>
-                                                {variables[this.props.lang].transfer}
-                                            </Button>
-                                        </span>
-                                    </CustomTooltip>
-                                    : <Button onClick={() => this.handleTransfer(value)} disabled={this.props.shieldedBalanceProgress}>
-                                        <img src={TransferIcon} alt="Transfer"/>
-                                        {variables[this.props.lang].transfer}
-                                    </Button>}
-                                {token === 'NAM'
-                                    ? <CustomTooltip  title="Enables in Phase 5">
-                                        <span className='disabled_tx_button'>
-                                            <Button disabled={true} onClick={() => this.handleConvert(value)}>
-                                                <img src={ConvertIcon} alt="Convert"/>
-                                                {variables[this.props.lang].unshield}
-                                            </Button>
-                                        </span>
-                                    </CustomTooltip> 
-                                    : <Button onClick={() => this.handleConvert(value)} disabled={this.props.shieldedBalanceProgress}>
-                                        <img src={ConvertIcon} alt="Convert"/>
-                                        {variables[this.props.lang].unshield}
-                                    </Button>}
+                            <Button onClick={() => this.handleTransfer(value)} disabled={this.props.shieldedBalanceProgress}>
+                                <img src={TransferIcon} alt="Transfer"/>
+                                {variables[this.props.lang].transfer}
+                            </Button>
+                            <Button onClick={() => this.handleConvert(value)} disabled={this.props.shieldedBalanceProgress}>
+                                <img src={ConvertIcon} alt="Convert"/>
+                                {variables[this.props.lang].unshield}
+                            </Button>
                         </div>
                     );
                 },

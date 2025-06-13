@@ -106,11 +106,10 @@ class TokensListTable extends React.Component {
         }
         this.props.fetchGasEstimation(array, value);
         this.props.showTransparentTokensConvertDialog(value);
-        // Enable in phase 5
-        // if (!find && value?.config?.COIN_DENOM === config.COIN_DENOM) {
-        //     this.props.setSelectedSource(value?.config?.COIN_DENOM, value);
-        //     return;
-        // }
+        if (!find && value?.config?.COIN_DENOM === config.COIN_DENOM) {
+            this.props.setSelectedSource(value?.config?.COIN_DENOM, value);
+            return;
+        }
         this.props.setSelectedSource(value?.config?.COIN_DENOM, find);
     }
 
@@ -244,34 +243,16 @@ class TokensListTable extends React.Component {
                                 <img src={WithdrawIcon} alt="Withdraw"/>
                                     {variables[this.props.lang].withdraw}
                                 </Button>}
-                                {token === 'NAM'
-                                    ? <CustomTooltip title="Enables in Phase 5">
-                                        <span className='disabled_tx_button'>
-                                            <Button disabled={true} onClick={() => this.handleTransfer(value)}>
-                                                <img src={TransferIcon} alt="Transfer"/>
-                                                {variables[this.props.lang].transfer}
-                                            </Button>
-                                        </span>
-                                    </CustomTooltip>
-                                    : <Button onClick={() => this.handleTransfer(value)}>
-                                        <img src={TransferIcon} alt="Transfer"/>
-                                        {variables[this.props.lang].transfer}
-                                    </Button>}
-                                {token === 'NAM'
-                                    ? <CustomTooltip title="Enables in Phase 5">
-                                        <span className='disabled_tx_button'>
-                                            <Button disabled={true} onClick={() => this.handleConvert(value)}>
-                                                <img src={ConvertIcon} alt="Convert"/>
-                                                {variables[this.props.lang].shield}
-                                            </Button>
-                                        </span>
-                                    </CustomTooltip> 
-                                    : <CustomTooltip title="Convert to Shielded">
-                                        <Button onClick={() => this.handleConvert(value)}>
-                                            <img src={ConvertIcon} alt="Convert"/>
-                                            {variables[this.props.lang].shield}
-                                        </Button>
-                                    </CustomTooltip>}
+                            <Button onClick={() => this.handleTransfer(value)}>
+                                <img src={TransferIcon} alt="Transfer"/>
+                                {variables[this.props.lang].transfer}
+                            </Button>
+                            <CustomTooltip title="Convert to Shielded">
+                                <Button onClick={() => this.handleConvert(value)}>
+                                    <img src={ConvertIcon} alt="Convert"/>
+                                    {variables[this.props.lang].shield}
+                                </Button>
+                            </CustomTooltip>
                         </div>
                     );
                 },

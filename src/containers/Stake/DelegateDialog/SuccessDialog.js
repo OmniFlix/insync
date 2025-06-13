@@ -37,13 +37,13 @@ const CustomTooltip = withStyles(() => ({
 const SuccessDialog = (props) => {
     const handleRedirect = () => {
         if (props.router.location.pathname === '/externalTransfer/withdraw' && config.EXPLORER_URL) {
-            const link = `${config.EXPLORER_URL}/tx/${props.hash}`;
+            const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
             window.open(link, '_blank');
         } else if (props.ibcConfig && props.ibcConfig.EXPLORER_URL) {
             const link = `${props.ibcConfig.EXPLORER_URL}/tx/${props.hash}`;
             window.open(link, '_blank');
         } else if (config.EXPLORER_URL) {
-            const link = `${config.EXPLORER_URL}/tx/${props.hash}`;
+            const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
             window.open(link, '_blank');
         }
     };

@@ -5,7 +5,7 @@ export const config = {
     RPC_URL: 'https://namada-rpc.cosmicvalidator.com',
     REST_URL: 'https://namada-indexer.cosmicvalidator.com',
     // MASP_REST_URL: 'https://namada-masp.cosmicvalidator.com',
-    EXPLORER_URL: 'https://explorer75.org/namada',
+    EXPLORER_URL: 'https://namada.valopers.com',
     STAKING_URL: 'https://namada.omniflix.co/stake',
     NETWORK_NAME: 'Namada',
     NETWORK_TYPE: 'mainnet',
