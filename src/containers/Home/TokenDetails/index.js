@@ -4,6 +4,7 @@ import * as PropTypes from 'prop-types';
 import variables from '../../../utils/variables';
 import totalTokens from '../../../assets/userDetails/totalTokens.png';
 import stakedTokens from '../../../assets/userDetails/stakedTokens.png';
+import NamadaLogo from '../../../assets/masp/namada_logo.svg';
 // import unStake from '../../../assets/userDetails/unstake.png';
 import rewardsIcon from '../../../assets/userDetails/rewards.svg';
 import { connect } from 'react-redux';
@@ -15,6 +16,10 @@ import ClaimButton from './ClaimButton';
 import { config } from '../../../config';
 // import { gas } from '../../../defaultGasValues';
 import ChipSkeleton from '../../../components/ChipSkeletonLoader';
+import { setIBCTransferType } from 'actions/IBCTransfer';
+import { fetchGasEstimation } from 'actions/gasPrice';
+import { showTransparentTokensTransferDialog } from 'actions/assets';
+import { Button } from '@material-ui/core';
 
 const TokenDetails = (props) => {
     let staked = props.delegatedValidatorList && props.delegatedValidatorList.reduce((accumulator, currentValue) => {
@@ -76,6 +81,32 @@ const TokenDetails = (props) => {
             }
         }, 0);
     rewards = rewards ? rewards / 10 ** config.COIN_DECIMALS : 0;
+
+    const handleTransfer = () => {
+        const value = {
+            name: 'Transparent Namada',
+            symbol: 'NAM',
+            logo_URIs: {
+                svg: NamadaLogo,
+            },
+            config: {
+                COIN_DENOM: 'NAM',
+            },
+            balance: {
+                minDenomAmount: available,
+                tokenAddress: config.TOKEN_ADDRESS,
+            }
+        };
+
+        props.setIBCTransferType('transparent');
+        const array = ['shielding_transfer'];
+        if (props.revealPublicKey && !props.revealPublicKey.publicKey) {
+            array.push('reveal_pk');
+        }
+        props.fetchGasEstimation(array, value);
+        props.showTransparentTokensTransferDialog(value);
+    }
+
     return (
         <div className="token_details">
             <div className="chip_info">
@@ -88,7 +119,13 @@ const TokenDetails = (props) => {
                         <p>{available || 0}</p>
                     </div>
                 )}
-                <StakeTokensButton/>
+                <div className="buttons_div">
+                    <Button className='outline_button' onClick={handleTransfer}>
+                        {variables[props.lang].transfer}
+                    </Button>
+                    <span/>
+                    <StakeTokensButton/>
+                </div>
             </div>
             {/* <div className="chip_info">
                 <p>{variables[props.lang]['shielded_available_tokens']}</p>
@@ -154,6 +191,9 @@ TokenDetails.propTypes = {
     }).isRequired,
     rewardsInProgress: PropTypes.bool.isRequired,
     unBondingDelegationsInProgress: PropTypes.bool.isRequired,
+    setIBCTransferType: PropTypes.func.isRequired,
+    fetchGasEstimation: PropTypes.func.isRequired,
+    showTransparentTokensTransferDialog: PropTypes.func.isRequired,
     shieldedBalance: PropTypes.array,
     shieldedBalanceInProgress: PropTypes.bool,
     unBondingDelegations: PropTypes.arrayOf(
@@ -165,6 +205,7 @@ TokenDetails.propTypes = {
             ),
         }),
     ),
+    revealPublicKey: PropTypes.object,
 };
 
 const stateToProps = (state) => {
@@ -182,7 +223,14 @@ const stateToProps = (state) => {
         rewards: state.accounts.rewards.result,
         rewardsInProgress: state.accounts.rewards.inProgress,
         lang: state.language,
+        revealPublicKey: state.accounts.revealPublicKey.result,
     };
 };
 
-export default connect(stateToProps, null)(TokenDetails);
+const actionToProps = {
+    setIBCTransferType,
+    fetchGasEstimation,
+    showTransparentTokensTransferDialog,
+};
+
+export default connect(stateToProps, actionToProps)(TokenDetails);
