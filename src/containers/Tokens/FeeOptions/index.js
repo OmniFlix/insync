@@ -8,6 +8,7 @@ import './index.css';
 import { feeCoverageOptions } from 'utils/feeCalculation';
 import { namadaAssets } from 'dummy/ibcList';
 import NamadaLogo from '../../../assets/masp/namada_logo.svg';
+import ShieldedNamadaLogo from '../../../assets/masp/namada_shielded.svg';
 import { makeStyles } from '@material-ui/core/styles';
 import variables from '../../../utils/variables';
 
@@ -46,7 +47,13 @@ const FeeOptions = (props) => {
   }, ...namadaAssets];
 
   if (props.from && props.from === 'shielded') {
-    newNamadaAssets = namadaAssets;
+    newNamadaAssets = [{
+      name: 'Shielded Namada',
+      symbol: 'NAM',
+      logo_URIs: {
+          svg: ShieldedNamadaLogo,
+      },
+    }, ...namadaAssets];
   }
 
   let enrichedAssets = (newNamadaAssets || []).map((asset) => {

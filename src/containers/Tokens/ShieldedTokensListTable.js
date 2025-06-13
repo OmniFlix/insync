@@ -257,7 +257,7 @@ class ShieldedTokensListTable extends React.Component {
             config: {
                 COIN_DENOM: 'NAM',
             },
-            balance: (matchingBalance && matchingBalance.length && matchingBalance[1]) || 0,
+            balance: (matchingBalance && matchingBalance.length && matchingBalance[1] && matchingBalance[1] / (10 ** config.COIN_DECIMALS)) || 0,
             tokenAddress: config.TOKEN_ADDRESS,
         });
 
