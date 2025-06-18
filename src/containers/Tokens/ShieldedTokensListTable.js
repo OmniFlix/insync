@@ -123,7 +123,16 @@ class ShieldedTokensListTable extends React.Component {
             this.props.fetchIBCBalance(config.REST_URL, address[0].address);
             this.props.fetchIBCChannel(value.channel_link);
             const find = ibcList.find((item) => item.value === value.coingecko_id);
-            this.props.setSelectedChain(find);
+            if (find?.assets && find.assets.length > 1) {
+                const index = find?.assets?.findIndex((val) => val.base === value.base);
+                if (index > -1 && find.assets && find.assets.length > 1) {
+                    const [item] = find.assets.splice(index, 1); // remove item at index i
+                    find.assets.unshift(item);
+                    find.config.COIN_DENOM = item.symbol;
+                    find.config.COIN_MINIMAL_DENOM = item.base;
+                }
+            }
+            this.props.setSelectedChain({...find});
         });
     }
 
