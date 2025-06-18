@@ -265,7 +265,7 @@ export const ibcList = [{
         EXPLORER_URL: 'https://www.mintscan.io/stride',
     },
     channel_link: 'https://raw.githubusercontent.com/anoma/namada-chain-registry/refs/heads/main/_IBC/namada-stride.json',
-    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.png',
+    image_URL: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/strd.png',
     assets: [
         {
             base: 'stuatom',
@@ -275,6 +275,28 @@ export const ibcList = [{
             logo_URIs: {
                 png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.png',
                 svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/statom.svg',
+            },
+            coingecko_id: 'stride',
+        },
+        {
+            base: 'stuosmo',
+            name: 'stride',
+            display: 'stosmo',
+            symbol: 'stOSMO',
+            logo_URIs: {
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stosmo.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/stosmo.svg',
+            },
+            coingecko_id: 'stride',
+        },
+        {
+            base: 'stutia',
+            name: 'stride',
+            display: 'sttia',
+            symbol: 'stTIA',
+            logo_URIs: {
+                png: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/sttia.png',
+                svg: 'https://raw.githubusercontent.com/cosmos/chain-registry/master/stride/images/sttia.svg',
             },
             coingecko_id: 'stride',
         },

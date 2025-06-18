@@ -279,11 +279,10 @@ const IBCUnShielding = (props) => {
                             </div>
                         </span>
                     </p>
-                    <span className="balance_span">
+                    {/* <span className="balance_span">
                         <p>{variables[props.lang].available} </p>
                         <p>{namadaBalance}{' '}{config.COIN_DENOM}</p>
-                    </span>
-                    
+                    </span> */}
                 </div>
                 <div className="border"></div>
                 <div className="select_section">

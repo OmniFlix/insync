@@ -76,7 +76,7 @@ const IBCTransferDialog = (props) => {
         return null;
     });
     props.ibcBalance && props.ibcBalance.length && props.ibcBalance.map((val) => {
-        if (val) {
+        if (val && val.denom === props.selectedChain?.config?.COIN_MINIMAL_DENOM) {
             ibcBalance = val && val.amount;
         }
 
