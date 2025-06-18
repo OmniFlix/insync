@@ -82,6 +82,8 @@ const TokenDetails = (props) => {
         }, 0);
     rewards = rewards ? rewards / 10 ** config.COIN_DECIMALS : 0;
 
+    const shieldedRewards = props.shieldedRewards && props.shieldedRewards / 10 ** config.COIN_DECIMALS;
+
     const handleTransfer = () => {
         const value = {
             name: 'Transparent Namada',
@@ -167,6 +169,21 @@ const TokenDetails = (props) => {
                     {/*         /!* <Compound disable={tokens <= 0}/> *!/ */}
                 </div>
             </div>
+            {/* <div className="chip_info">
+                <p>{variables[props.lang].shielded_rewards}</p>
+                {props.shieldedRewardsInProgress ? (
+                    <ChipSkeleton/>
+                ) : (
+                    <div className="chip">
+                        <img alt="total tokens" src={rewardsIcon}/>
+                        <p>{shieldedRewards > 0 ? shieldedRewards.toFixed(4) : 0}</p>
+                    </div>
+                )}
+
+                <div className="buttons_div">
+                    <ClaimButton disable={rewards <= 0}/>
+                </div>
+            </div> */}
             {/* <div className="chip_info"> */}
             {/*     <p>{variables[props.lang]['un_staked_tokens']}</p> */}
             {/*     <div className="chip"> */}
@@ -194,6 +211,8 @@ TokenDetails.propTypes = {
     setIBCTransferType: PropTypes.func.isRequired,
     fetchGasEstimation: PropTypes.func.isRequired,
     showTransparentTokensTransferDialog: PropTypes.func.isRequired,
+    shieldedRewards: PropTypes.object.isRequired,
+    shieldedRewardsInProgress: PropTypes.bool.isRequired,
     shieldedBalance: PropTypes.array,
     shieldedBalanceInProgress: PropTypes.bool,
     unBondingDelegations: PropTypes.arrayOf(
@@ -222,6 +241,8 @@ const stateToProps = (state) => {
         unBondingDelegationsInProgress: state.accounts.unBondingDelegations.inProgress,
         rewards: state.accounts.rewards.result,
         rewardsInProgress: state.accounts.rewards.inProgress,
+        shieldedRewards: state.accounts.shieldedRewards.result,
+        shieldedRewardsInProgress: state.accounts.shieldedRewards.inProgress,
         lang: state.language,
         revealPublicKey: state.accounts.revealPublicKey.result,
     };

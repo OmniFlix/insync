@@ -23,7 +23,7 @@ const AssetTabs = (props) => {
     const handleChange = (newValue) => {
         props.onChange(newValue);
         if (newValue === 'shielded') {
-            props.router.navigate('/tokensShielded');
+            props.router.navigate('/shieldedTokens');
         } else {
             props.router.navigate('/tokens');
         }

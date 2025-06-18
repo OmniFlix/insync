@@ -11,7 +11,7 @@ const AmountTextField = (props) => {
         amount = props.fromNamadaSelectedAsset?.balance?.minDenomAmount && Number(props.fromNamadaSelectedAsset?.balance?.minDenomAmount) / 10 ** fromNamadaSelectedConfig.COIN_DECIMALS;
     } else if(props.from === 'namada_deposit') {
         props.ibcBalance && props.ibcBalance.length && props.ibcBalance.map((val) => {
-            if (val) {
+            if (val && val.denom === props.selectedChain?.config?.COIN_MINIMAL_DENOM) {
                 amount = val && val.amount;
             }
     

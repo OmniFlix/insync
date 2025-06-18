@@ -34,6 +34,9 @@ import {
     BALANCE_LIST_FETCH_SUCCESS,
     BALANCE_LIST_FETCH_ERROR,
     SHIELDED_BALANCE_PROGRESS_SET,
+    FETCH_SHIELDED_REWARDS_IN_PROGRESS,
+    FETCH_SHIELDED_REWARDS_SUCCESS,
+    FETCH_SHIELDED_REWARDS_ERROR,
 } from '../../constants/accounts';
 
 const address = (state = {
@@ -389,6 +392,39 @@ const revealPublicKey = (state = {
     }
 };
 
+const shieldedRewards = (state = {
+    result: 0,
+    inProgress: false,
+}, action) => {
+    switch (action.type) {
+    case FETCH_SHIELDED_REWARDS_IN_PROGRESS:
+        return {
+            ...state,
+            inProgress: true,
+        };
+    case FETCH_SHIELDED_REWARDS_SUCCESS:
+        return {
+            ...state,
+            inProgress: false,
+            result: action.value,
+        };
+    case FETCH_SHIELDED_REWARDS_ERROR:
+        return {
+            ...state,
+            inProgress: false,
+        };
+    case DISCONNECT_SET:
+        return {
+            ...state,
+            result: {},
+        };
+    default:
+        return state;
+    }
+};
+
+
+
 export default combineReducers({
     address,
     delegations,
@@ -402,4 +438,5 @@ export default combineReducers({
     rewards,
     revealPublicKey,
     shieldedBalance,
+    shieldedRewards,
 });
