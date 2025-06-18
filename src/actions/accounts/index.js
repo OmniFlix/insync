@@ -33,6 +33,9 @@ import {
     BALANCE_LIST_FETCH_SUCCESS,
     BALANCE_LIST_FETCH_ERROR,
     SHIELDED_BALANCE_PROGRESS_SET,
+    FETCH_SHIELDED_REWARDS_IN_PROGRESS,
+    FETCH_SHIELDED_REWARDS_SUCCESS,
+    FETCH_SHIELDED_REWARDS_ERROR,
 } from '../../constants/accounts';
 import Axios from 'axios';
 import { urlFetchRevealedPubkey, urlFetchRewards, urlFetchUnBondingDelegations, urlFetchVestingBalance, urlFetchBlockHeight, urlFetchTokensList, urlFetchBalanceList } from '../../constants/url';
@@ -45,6 +48,7 @@ import { config } from '../../config';
 import { getSdk } from '@namada/sdk/web';
 import init from '@namada/sdk/web-init';
 import { workerShieldedSync } from 'workers/balanceServices';
+import { fetchShieldedRewards } from 'workers/services';
 // import { Tokens } from '@namada/types';
 
 export const setAccountAddress = (value, shieldedAddress, shieldedDetails) => {
@@ -656,6 +660,46 @@ export const reSyncBalance = (viewingKey, timestamp, tnam, znam, chainId = confi
             chainId,
         });
         dispatch(shieldedBalanceFetchError(error.message || 'Unknown error'));
+        if (cb) {
+            cb(null);
+        }
+    }
+};
+
+const shieldedRewardsFetchInProgress = () => ({
+    type: FETCH_SHIELDED_REWARDS_IN_PROGRESS,
+});
+
+const shieldedRewardsFetchSuccess = (value) => ({
+    type: FETCH_SHIELDED_REWARDS_SUCCESS,
+    value,
+});
+
+const shieldedRewardsFetchError = (error) => ({
+    type: FETCH_SHIELDED_REWARDS_ERROR,
+    message: error || 'Failed to fetch shielded Rewards',
+});
+
+
+export const getShieldedRewards = (viewingKey, chainId = config.CHAIN_ID, cb) => async (dispatch) => {
+    dispatch(shieldedRewardsFetchInProgress());
+    try {
+        const rewards =  await fetchShieldedRewards(
+            viewingKey,
+            chainId,
+            config.RPC_URL,
+        );
+        dispatch(shieldedRewardsFetchSuccess(rewards));
+        if (cb) {
+            cb(rewards);
+        }
+    } catch (error) {
+        console.error('❌ Shielded rewards error:', {
+            message: error.message || 'Unknown error',
+            error,
+            chainId,
+        });
+        dispatch(shieldedRewardsFetchError(error.message || 'Unknown error'));
         if (cb) {
             cb(null);
         }

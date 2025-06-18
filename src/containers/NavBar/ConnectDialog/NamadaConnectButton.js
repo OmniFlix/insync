@@ -15,6 +15,7 @@ import {
     fetchBalanceList,
     shieldedBalanceFetchSuccess,
     reSyncBalance,
+    getShieldedRewards,
 } from '../../../actions/accounts';
 import { connect } from 'react-redux';
 import { showMessage } from '../../../actions/snackbar';
@@ -60,6 +61,7 @@ const KeplrConnectButton = (props) => {
             // const address2 = `${shieldedAddress?.[1]?.address ?? ""}`;
             if (shieldedAddress && shieldedAddress.length && shieldedAddress[1]) {
                 props.getShieldedBalance(shieldedAddress[1]?.viewingKey, shieldedAddress[1]?.timestamp, addressList?.address, shieldedAddress[1]?.address);
+                // props.getShieldedRewards(shieldedAddress[1]?.viewingKey);
             }
             // props.fetchVestingBalance(addressList && addressList.address);
             // if (!props.proposalTab) {
@@ -99,6 +101,7 @@ KeplrConnectButton.propTypes = {
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
     getShieldedBalance: PropTypes.func.isRequired,
+    getShieldedRewards: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     hideConnectDialog: PropTypes.func.isRequired,
     lang: PropTypes.string.isRequired,
@@ -127,6 +130,7 @@ const actionsToProps = {
     hideConnectDialog,
     getBalance,
     getShieldedBalance,
+    getShieldedRewards,
     getUnBondingDelegations,
     fetchRewards,
     setAccountDetails,

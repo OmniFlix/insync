@@ -33,7 +33,7 @@ const routes = [{
     path: '/tokens',
     component: Tokens,
 }, {
-    path: '/tokensShielded',
+    path: '/shieldedTokens',
     component: Tokens,
 // },  {
 //     path: '/externalTransfer/withdraw',

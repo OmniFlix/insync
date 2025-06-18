@@ -50,6 +50,7 @@ const variables = {
         pending: 'Pending',
         closed: 'Rejected',
         rewards: 'Rewards',
+        shielded_rewards: 'Shielded Rewards',
         claim: 'Claim',
         send: 'Send',
         compound: 'Compound',
