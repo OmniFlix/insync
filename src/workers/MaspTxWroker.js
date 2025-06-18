@@ -75,16 +75,16 @@ export class Worker {
     };
   }
 
-//   async shieldedRewards(m: ShieldedRewards): Promise<ShieldedRewardsDone> {
-//     if (!this.sdk) {
-//       throw new Error("SDK is not initialized");
-//     }
+  async shieldedRewards(m) {
+    if (!this.sdk) {
+      throw new Error("SDK is not initialized");
+    }
 
-//     return {
-//       type: "shielded-rewards-done",
-//       payload: await shieldedRewards(this.sdk, m.payload),
-//     };
-//   }
+    return {
+      type: "shielded-rewards-done",
+      payload: await shieldedRewards(this.sdk, m.payload),
+    };
+  }
 
 //   async shieldedRewardsPerToken(
 //     m: ShieldedRewardsPerToken
@@ -222,6 +222,16 @@ async function generateIbcShieldingMemo(
   return memo;
 }
 
+async function shieldedRewards(
+  sdk,
+  payload,
+) {
+  const { viewingKey, chainId } = payload;
+  await fetchMaspParams(sdk, chainId);
+
+  return await sdk.rpc.shieldedRewards(viewingKey, chainId);
+}
+
 function newSdk(
   cryptoMemory,
   payload
@@ -248,8 +258,8 @@ export const registerTransferHandlers = () => {
 //   registerBNTransferHandler<ShieldedRewardsPerTokenDone>(
 //     "shielded-rewards-per-token-done"
 //   );
-//   registerBNTransferHandler<ShieldedRewards>("shielded-rewards");
-//   registerBNTransferHandler<ShieldedRewardsDone>("shielded-rewards-done");
+  registerBNTransferHandler("shielded-rewards");
+  registerBNTransferHandler("shielded-rewards-done");
 //   registerBNTransferHandler<Broadcast>("broadcast");
 };
 

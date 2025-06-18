@@ -22,6 +22,7 @@ import {
     getBalance,
     getDelegations,
     getShieldedBalance,
+    getShieldedRewards,
     getUnBondingDelegations,
     reSyncBalance,
     setAccountAddress,
@@ -369,6 +370,7 @@ class NavBar extends Component {
                 const index = shieldedAddress.findIndex((val) => val.address === address);
                 if (shieldedAddress[index + 1]) {
                     this.props.getShieldedBalance(shieldedAddress[index + 1]?.viewingKey, shieldedAddress[index + 1]?.timestamp, address, shieldedAddress[index + 1]?.address);
+                    // this.props.getShieldedRewards(shieldedAddress[index + 1]?.viewingKey);
                 }
             }
             this.props.fetchTokensList();
@@ -622,6 +624,7 @@ NavBar.propTypes = {
     getUnBondingDelegations: PropTypes.func.isRequired,
     getValidators: PropTypes.func.isRequired,
     getShieldedBalance: PropTypes.func.isRequired,
+    getShieldedRewards: PropTypes.func.isRequired,
     fetchUnBondingValidators: PropTypes.func.isRequired,
     shieldedBalanceFetchSuccess: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
@@ -748,6 +751,7 @@ const actionToProps = {
     fetchTokensList,
     fetchBalanceList,
     getShieldedBalance,
+    getShieldedRewards,
     fetchUnBondingValidators,
     shieldedBalanceFetchSuccess,
     fetchGasPrice,

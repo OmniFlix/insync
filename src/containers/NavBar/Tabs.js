@@ -42,7 +42,7 @@ class Tabs extends Component {
             if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
                 this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer');
             }
-        } else if (this.state.value !== route && (route === 'tokensShielded')) {
+        } else if (this.state.value !== route && (route === 'shieldedTokens')) {
             this.props.setAssetsTabs('shielded');
             this.setState({
                 value: 'tokens',
@@ -74,7 +74,7 @@ class Tabs extends Component {
                 if (this.props.router.location.pathname.split('/')[2] && this.props.router.location.pathname.split('/')[2] === 'withdraw') {
                     this.props.setExternalTransferSubTabs('namada_to_ibc_chain_transparent_transfer');
                 }
-            } else if (value !== this.state.value && (value === 'tokensShielded')) {
+            } else if (value !== this.state.value && (value === 'shieldedTokens')) {
                 this.props.setAssetsTabs('shielded');
                 this.setState({
                     value: 'tokens',
