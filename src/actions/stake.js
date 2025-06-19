@@ -45,6 +45,7 @@ import {
 } from '../constants/stake';
 import Axios from 'axios';
 import {
+    APR_PARAMETERS_URL,
     GENESIS_VALIDATORS_LIST_URL,
     getDelegatedValidatorsURL,
     getUnBondingValidatorsURL,
@@ -546,11 +547,11 @@ const fetchAPRInProgress = () => {
     };
 };
 
-export const fetchAPRSuccess = (nominalAPR, actualAPR) => {
+export const fetchAPRSuccess = (apr, result) => {
     return {
         type: APR_FETCH_SUCCESS,
-        nominalAPR,
-        actualAPR,
+        apr,
+        result,
     };
 };
 
@@ -561,37 +562,33 @@ const fetchAPRError = (message) => {
     };
 };
 
-export const fetchAPR = () => (dispatch) => {
+export const fetchAPR = (cb) => (dispatch) => {
     dispatch(fetchAPRInProgress());
-    (async () => {
-        try {
-            const apiUrl = config.REST_URL;
-            const lcdApi = axios.create({
-                baseURL: apiUrl,
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    Accept: 'application/json',
-                },
-                timeout: 10000,
-            });
 
-            const params = await getParams(lcdApi);
-            const blocksYearReal = await getBlocksPerYearReal(lcdApi);
-            const nominalAPR = calculateNominalAPR(params);
-            const actualAPR = calculateRealAPR(params, nominalAPR, blocksYearReal);
-
-            dispatch(fetchAPRSuccess((nominalAPR * 100), (actualAPR * 100)));
-        } catch (error) {
+    Axios.get(APR_PARAMETERS_URL, {
+        headers: {
+            Accept: 'application/json, text/plain, */*',
+        },
+    })
+        .then((result) => {
+            const apr = result?.data?.apr && Number(result.data.apr) * 100 ;
+            dispatch(fetchAPRSuccess(apr, result));
+            if (cb) {
+                cb(apr, result);
+            }
+        })
+        .catch((error) => {
             dispatch(fetchAPRError(
                 error.response &&
                 error.response.data &&
                 error.response.data.message
                     ? error.response.data.message
-                    : error,
+                    : 'Failed!',
             ));
-            return null;
-        }
-    })();
+            if (cb) {
+                cb(null);
+            }
+        });
 };
 
 export const selectMultiValidators = (value) => {

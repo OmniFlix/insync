@@ -197,7 +197,7 @@ UnbondingTable.propTypes = {
 
 const stateToProps = (state) => {
     return {
-        actualAPR: state.stake.apr.actualAPR,
+        actualAPR: state.stake.apr.apr,
         address: state.accounts.address.value,
         lang: state.language,
         validatorList: state.stake.validators.list,
@@ -210,7 +210,7 @@ const stateToProps = (state) => {
         delegatedValidatorListInProgress: state.stake.delegatedValidators.inProgress,
         inActiveValidators: state.stake.inActiveValidators.list,
         unBondingValidatorsList: state.stake.unBondingValidators.list,
-          unBondingValidatorsProgress: state.stake.unBondingValidators.inProgress,
+        unBondingValidatorsProgress: state.stake.unBondingValidators.inProgress,
     };
 };
 

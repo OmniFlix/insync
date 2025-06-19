@@ -28,11 +28,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 210px;
     padding: 10px 20px;
-    margin: 10px 0;
-    width: 230px;
-    padding: 10px 40px;
-    height: 80px;
+    height: 60px;
     margin: 10px auto;
 }
 
