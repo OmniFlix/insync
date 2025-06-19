@@ -216,6 +216,14 @@ margin-bottom: 0;
     }
 }
 
+@media (max-width: 1441px) {
+    .home .card {
+        flex-direction: column;
+        padding: 50px;
+        text-align: center;
+    }
+}
+
 @media (max-width: 1300px) {
     .home .card {
         flex-direction: column;

@@ -187,9 +187,9 @@ class NavBar extends Component {
             this.handleFetchValidators(DEFAULT_PAGE, 0);
         }
 
-        // if (!this.props.actualAPR && !this.props.aprInProgress) {
-        //     this.props.fetchAPR();
-        // }
+        if (!this.props.actualAPR && !this.props.aprInProgress) {
+            this.props.fetchAPR();
+        }
 
         // if (this.props.inActiveValidatorsList && !this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
         //     this.props.getInActiveValidators((data) => {
@@ -692,7 +692,7 @@ const stateToProps = (state) => {
     return {
         address: state.accounts.address.value,
         aprInProgress: state.stake.apr.inProgress,
-        actualAPR: state.stake.apr.actualAPR,
+        actualAPR: state.stake.apr.apr,
         balance: state.accounts.balance.result,
         balanceInProgress: state.accounts.balance.inProgress,
         delegations: state.accounts.delegations.result,

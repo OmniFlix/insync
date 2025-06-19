@@ -5,7 +5,7 @@ import variables from '../../../utils/variables';
 import totalTokens from '../../../assets/userDetails/totalTokens.png';
 import stakedTokens from '../../../assets/userDetails/stakedTokens.png';
 import NamadaLogo from '../../../assets/masp/namada_logo.svg';
-// import unStake from '../../../assets/userDetails/unstake.png';
+import unStake from '../../../assets/userDetails/unstake.png';
 import rewardsIcon from '../../../assets/userDetails/rewards.svg';
 import { connect } from 'react-redux';
 import StakeTokensButton from './StakeTokensButton';
@@ -46,32 +46,13 @@ const TokenDetails = (props) => {
         return null;
     });
 
-    // let shieldedBalance = null;
-    // props.shieldedBalance && props.shieldedBalance.length && props.shieldedBalance.map((val) => {
-    //     if (val && val.length) {
-    //         val.map((value) => {
-    //             if (value === config.TOKEN_ADDRESS) {
-    //                 shieldedBalance = val[1];
-    //             }
-    //         });
-    //     }
-
-    //     return null;
-    // });
-
     const available = balance && balance / 10 ** config.COIN_DECIMALS;
-    // const shieldedAvailable = shieldedBalance && shieldedBalance / 10 ** config.COIN_DECIMALS;
-    let unStaked = 0;
-    props.unBondingDelegations && props.unBondingDelegations.length &&
-    props.unBondingDelegations.map((delegation) => {
-        delegation.entries && delegation.entries.length &&
-        delegation.entries.map((entry) => {
-            unStaked = unStaked + Number(entry.balance);
-
-            return null;
-        });
-        return null;
-    });
+    let unStaked = props.unBondingDelegations && props.unBondingDelegations.reduce((accumulator, currentValue) => {
+        if (currentValue && currentValue.minDenomAmount) {
+            return accumulator + Number(currentValue.minDenomAmount);
+        }
+    }, 0);
+    unStaked = unStaked && unStaked / 10 ** config.COIN_DECIMALS;
 
     // const gasValue = (gas.claim_reward + gas.delegate) * config.GAS_PRICE_STEP_AVERAGE;
     let rewards = props.rewards && props.rewards.length &&
@@ -81,8 +62,6 @@ const TokenDetails = (props) => {
             }
         }, 0);
     rewards = rewards ? rewards / 10 ** config.COIN_DECIMALS : 0;
-
-    const shieldedRewards = props.shieldedRewards && props.shieldedRewards / 10 ** config.COIN_DECIMALS;
 
     const handleTransfer = () => {
         const value = {
@@ -129,13 +108,6 @@ const TokenDetails = (props) => {
                     <StakeTokensButton/>
                 </div>
             </div>
-            {/* <div className="chip_info">
-                <p>{variables[props.lang]['shielded_available_tokens']}</p>
-                <div className="chip">
-                    <img alt="available tokens" src={totalTokens}/>
-                    <p>{shieldedAvailable || 0}</p>
-                </div>
-            </div> */}
             <div className="chip_info">
                 <p>{variables[props.lang]['staked_tokens']}</p>
                 {props.delegatedValidatorListInProgress ? (
@@ -184,13 +156,20 @@ const TokenDetails = (props) => {
                     <ClaimButton disable={rewards <= 0}/>
                 </div>
             </div> */}
-            {/* <div className="chip_info"> */}
-            {/*     <p>{variables[props.lang]['un_staked_tokens']}</p> */}
-            {/*     <div className="chip"> */}
-            {/*         <img alt="unstaked tokens" src={unStake}/> */}
-            {/*         <p>{unStaked}</p> */}
-            {/*     </div> */}
-            {/* </div> */}
+            <div className="chip_info">
+                <p>{variables[props.lang]['unbounding']}</p>
+                <div className="chip">
+                    <img alt="unstaked tokens" src={unStake}/>
+                    <p>{unStaked}</p>
+                </div>
+            </div>
+            {props.actualAPR
+                ? <div className="chip_info">
+                    <p>{variables[props.lang]['staking_apr']}</p>
+                    <div className="chip">
+                        <p>{props.actualAPR.toFixed(2) + ' %'}</p>
+                    </div>
+                </div> : null}
         </div>
     );
 };
@@ -213,6 +192,7 @@ TokenDetails.propTypes = {
     showTransparentTokensTransferDialog: PropTypes.func.isRequired,
     shieldedRewards: PropTypes.object.isRequired,
     shieldedRewardsInProgress: PropTypes.bool.isRequired,
+    actualAPR: PropTypes.number,
     shieldedBalance: PropTypes.array,
     shieldedBalanceInProgress: PropTypes.bool,
     unBondingDelegations: PropTypes.arrayOf(
@@ -229,6 +209,7 @@ TokenDetails.propTypes = {
 
 const stateToProps = (state) => {
     return {
+        actualAPR: state.stake.apr.apr,
         delegations: state.accounts.delegations.result,
         delegatedValidatorList: state.stake.delegatedValidators.list,
         delegatedValidatorListInProgress: state.stake.delegatedValidators.inProgress,
@@ -237,8 +218,8 @@ const stateToProps = (state) => {
         balanceInProgress: state.accounts.balance.inProgress,
         shieldedBalance: state.accounts.shieldedBalance.result,
         shieldedBalanceInProgress: state.accounts.shieldedBalance.inProgress,
-        unBondingDelegations: state.accounts.unBondingDelegations.result,
-        unBondingDelegationsInProgress: state.accounts.unBondingDelegations.inProgress,
+        unBondingDelegations: state.stake.unBondingValidators.list,
+        unBondingDelegationsInProgress: state.stake.unBondingValidators.inProgress,
         rewards: state.accounts.rewards.result,
         rewardsInProgress: state.accounts.rewards.inProgress,
         shieldedRewards: state.accounts.shieldedRewards.result,

@@ -454,8 +454,8 @@ const inActiveValidators = (state = {
 
 const apr = (state = {
     inProgress: false,
-    nominalAPR: null,
-    actualAPR: null,
+    apr: null,
+    result: null,
 }, action) => {
     switch (action.type) {
     case APR_FETCH_IN_PROGRESS:
@@ -467,8 +467,8 @@ const apr = (state = {
         return {
             ...state,
             inProgress: false,
-            nominalAPR: action.nominalAPR,
-            actualAPR: action.actualAPR,
+            apr: action.apr,
+            result: action.result,
         };
     case APR_FETCH_ERROR:
         return {
