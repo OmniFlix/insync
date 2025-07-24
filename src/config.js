@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-assetmantle-ia.cosmosia.notional.ventures',
-    REST_URL: 'https://api-assetmantle-ia.cosmosia.notional.ventures',
+    RPC_URL: 'https://assetmantle-rpc.publicnode.com:443',
+    REST_URL: 'https://assetmantle-rest.publicnode.com',
     EXPLORER_URL: 'https://www.mintscan.io/asset-mantle',
     STAKING_URL: 'https://assetmantle.omniflix.co/stake',
     NETWORK_NAME: 'Assetmantle',
