@@ -1,6 +1,6 @@
 export const config = {
-    RPC_URL: 'https://rpc-akash-ia.cosmosia.notional.ventures:443',
-    REST_URL: 'https://api-akash-ia.cosmosia.notional.ventures',
+    RPC_URL: 'https://akash-rpc.publicnode.com:443',
+    REST_URL: 'https://akash-rest.publicnode.com',
     EXPLORER_URL: 'https://www.mintscan.io/akash',
     STAKING_URL: 'https://akash.omniflix.co/stake',
     NETWORK_NAME: 'Akash',
