@@ -82,7 +82,7 @@ export const floatCountWithoutABBRS = (value, decimals) => {
         return formatCountAbbr(value, false);
     }
 
-    if (parseInt(value) === value) {
+    if (parseInt(value) === value && value < 1000) {
         return formatCountAbbr(value, false);
     }
 
@@ -102,7 +102,7 @@ export const floatCountWithoutABBRS = (value, decimals) => {
         return floatDecimals(value, decimals);
     }
 
-    return floatDecimals(value, decimals || 2);
+    return formatCountAbbr(value, true);
 };
 
 export const truncateTo4Decimals = (num, decimals) => {
