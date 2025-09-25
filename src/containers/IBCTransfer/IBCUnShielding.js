@@ -302,7 +302,7 @@ const IBCUnShielding = (props) => {
             {/* <div className="arrow from_namada_transfer" onClick={() => props.setIBCSwapType('to_namada')}>
                 <img alt="TransferIcon" src={TransferIcon}/>
             </div> */}
-            <div className="arrow" style={{ top: '46%', height: 'max-content' }}>
+            <div className="shielded_nam_arrow">
                 <img alt="Arrow" src={DownArrowIcon}/>
             </div>
             <div className="shielded_transfer_destination" style={{ minHeight: 'unset' }}>

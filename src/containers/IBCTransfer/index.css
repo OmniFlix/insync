@@ -340,7 +340,7 @@
     opacity: 0.5;
 }
 
-.transfer_dialog > .arrow {
+.transfer_dialog > .arrow{
     display: flex;
     align-items: center;
     position: absolute;
@@ -348,7 +348,16 @@
     bottom: 140px;
 }
 
-.transfer_dialog .arrow > img {
+.transfer_dialog .shielded_nam_arrow {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 45%;
+    bottom: 175px;
+}
+
+.transfer_dialog .arrow > img,
+.transfer_dialog .shielded_nam_arrow > img {
     width: 80%;
     height: auto;
     margin: auto;
@@ -757,7 +766,7 @@
     }
 
     .transfer_dialog > .arrow {
-        bottom: 164px;
+        bottom: 136px;
     }
 }
 
@@ -782,5 +791,9 @@
 
     .transfer_dialog .transfer_source .select_section > div {
         width: 100% !important;
+    }
+
+    .transfer_dialog > .arrow {
+        bottom: 165px;
     }
 }
